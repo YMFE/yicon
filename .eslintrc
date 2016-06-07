@@ -4,8 +4,16 @@
     "browser": true,
     "node": true
   },
-  "globals": {
-    "__project": false
+  "parser": "babel-eslint",
+  "rules": {
+    "no-underscore-dangle": ["off"],
+    "react/prefer-stateless-function": ["warn"]
   },
-  "parser": "babel-eslint"
+  "globals": {
+    "__CLIENT__": true,
+    "__SERVER__": true,
+    "__DEVELOPMENT__": true,
+    "__DEVTOOLS__": true,
+    "__INITIAL_STATE__": true
+  }
 }
