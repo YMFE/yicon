@@ -22,7 +22,7 @@ export default (initialState) => {
   const store = finalCreateStore(reducer, initialState);
 
   if (__DEVELOPMENT__ && module.hot) {
-    module.hot.accept('./modules/reducer', () => {
+    module.hot.accept('./modules', () => {
       store.replaceReducer(reducer);
     });
   }

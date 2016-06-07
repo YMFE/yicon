@@ -4,7 +4,7 @@ import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import routes from './routes';
 import { Provider } from 'react-redux';
-import createStore from './redux';
+import createStore from './reducer';
 
 import DevTools from './containers/DevTools/DevTools';
 

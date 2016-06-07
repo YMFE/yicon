@@ -7,7 +7,7 @@ import favicon from 'serve-favicon';
 import compression from 'compression';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
-import { createStore } from './redux';
+import createStore from './reducer';
 import Html from './helpers/Html';
 
 const app = new Express();
@@ -35,7 +35,7 @@ app.use((req, res) => {
       );
 
       res.status(200);
-      res.send(`<!doctype html>\n${
+      res.send(`<!DOCTYPE html>\n${
         ReactDOM.renderToString(
           <Html
             assets={webpackIsomorphicTools.assets()}

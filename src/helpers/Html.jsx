@@ -16,11 +16,19 @@ export default class Html extends Component {
           <title>qicon</title>
         </head>
         <body>
-          <div id="app">{content}</div>
-          <script charSet="utf-8">
-            window.__data={serialize(store.getState())};
+          <div
+            id="app"
+            dangerouslySetInnerHTML={{ __html: content }}
+          >
+          </div>
+          <script
+            charSet="utf-8"
+            dangerouslySetInnerHTML={{
+              __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`,
+            }}
+          >
           </script>
-          <script src={assets.javascript.main} charSet="utf-8" />
+          <script src={assets.javascript.main} charSet="utf-8"></script>
         </body>
       </html>
     );

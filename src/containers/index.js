@@ -1,4 +1,6 @@
-export DevTools from './DevTools/DevTools';
-export Home from './Home/Home';
-export Project from './Project/Project';
-export Repository from './Repository/Repository';
+import DevTools from './DevTools/DevTools';
+import Home from './Home/Home';
+import Project from './Project/Project';
+import Repository from './Repository/Repository';
+
+export { DevTools, Home, Project, Repository };

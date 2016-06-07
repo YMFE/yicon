@@ -6,23 +6,22 @@ var assetsPath = path.resolve(__dirname, '../static/dist');
 var host = (process.env.HOST || 'localhost');
 var port = (+process.env.PORT + 1) || 3001;
 
-// 先看一下 webpack-isomorphic-tools 到底有没有用
-// var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
-// var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
+var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
-    'main': [
+    main: [
       'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
       './src/client.js'
     ]
   },
   output: {
     path: assetsPath,
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js',
+    filename: '[name]-[hash].js',
+    chunkFilename: '[name]-[hash].js',
     publicPath: 'http://' + host + ':' + port + '/dist/'
   },
   module: {
@@ -47,6 +46,7 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
-    })
+    }),
+    webpackIsomorphicToolsPlugin.development()
   ]
 };
