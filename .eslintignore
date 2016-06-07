@@ -1,4 +1,5 @@
 webpack/*
+bin/*
 karma.conf.js
 tests.webpack.js
 server.babel.js

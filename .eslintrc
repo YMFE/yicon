@@ -10,6 +10,7 @@
     "react/prefer-stateless-function": ["warn"]
   },
   "globals": {
+    "webpackIsomorphicTools": true,
     "__CLIENT__": true,
     "__SERVER__": true,
     "__DEVELOPMENT__": true,
