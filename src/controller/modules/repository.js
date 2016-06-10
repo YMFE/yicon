@@ -9,7 +9,6 @@ export function* getOne(next) {
     ? Promise.resolve(versionTools.v2n(version))
     : RepoVersion.max('version', { where: { repositoryId: id } });
 
-  // TODO: 玛德好难用，回头改成 yield koa
   const finalVersion = yield getVersion;
   let replacedIcons = yield Icon.findAll({
     attributes: ['replaceId'],

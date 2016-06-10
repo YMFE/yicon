@@ -10,12 +10,14 @@ global.__SERVER__ = true;
 global.__DISABLE_SSR__ = false;
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+// for material-ui
+global.navigator = { userAgent: 'all' };
+
+var Wit = require('webpack-isomorphic-tools');
 var witConfig = require('../webpack/webpack-isomorphic-tools');
 
-global.webpackIsomorphicTools = new WebpackIsomorphicTools(witConfig)
+global.webpackIsomorphicTools = new Wit(witConfig)
   .development(__DEVELOPMENT__)
   .server(rootDir, function() {
     require('../src/server');
   });
-

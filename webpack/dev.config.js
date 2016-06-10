@@ -26,7 +26,16 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' }
+      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' },
+      { test: /\.scss$/, loaders: [
+        'style',
+        'css' +
+          '?modules' +
+          '&localIdentName=[path][name]-[local]',
+        'postcss',
+        'sass' +
+          '?outputStyle=expanded',
+      ] },
     ]
   },
   progress: true,
