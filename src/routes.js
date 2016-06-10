@@ -1,6 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import {
+  App,
   Home,
   Project,
   Repository,
@@ -11,8 +12,8 @@ export default () => {
   const requireLogin = () => {};
 
   return (
-    <Route path="/" component={Home}>
-      {/* Home (main) route */}
+    <Route path="/" component={App}>
+      {/* 首页路由 */}
       <IndexRoute component={Home} />
 
       {/* Routes requiring login */}
@@ -24,7 +25,6 @@ export default () => {
       <Route path="repository" component={Repository} />
 
       {/* Catch all route */}
-      <Route path="*" component={Home} status={404} />
     </Route>
   );
 };

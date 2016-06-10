@@ -1,29 +1,32 @@
-import Express from 'express';
+import Koa from 'koa';
 import React from 'react';
 import path from 'path';
 import routes from './routes';
 import ReactDOM from 'react-dom/server';
-import favicon from 'serve-favicon';
-import compression from 'compression';
+import compress from 'koa-compress';
+import session from 'koa-session-store';
+import serve from 'koa-static';
+import favicon from 'koa-favicon';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
 
-const app = new Express();
+const app = new Koa();
 
-app.use(compression());
+app.use(compress());
 app.use(favicon(path.join(__dirname, '../static/favicon.ico')));
-app.use(Express.static(path.join(__dirname, '../static')));
+app.use(session());
+app.use(serve(path.join(__dirname, '../static')));
 
-app.use((req, res) => {
+app.use(function* serverRender() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }
 
   match({
     routes: routes(),
-    location: req.originalUrl,
+    location: this.originalUrl,
   }, (error, redirectLocation, renderProps) => {
     // TODO: 添加前两者的处理
     if (renderProps) {
@@ -34,15 +37,14 @@ app.use((req, res) => {
         </Provider>
       );
 
-      res.status(200);
-      res.send(`<!DOCTYPE html>\n${
+      this.body = `<!DOCTYPE html>\n${
         ReactDOM.renderToString(
           <Html
             assets={webpackIsomorphicTools.assets()}
             component={component}
             store={store}
           />
-        )}`);
+        )}`;
     }
   });
 });

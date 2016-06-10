@@ -1,4 +1,4 @@
-var Express = require('express');
+var Koa = require('koa');
 var webpack = require('webpack');
 
 var webpackConfig = require('./dev.config');
@@ -18,10 +18,10 @@ var serverOptions = {
   stats: {colors: true}
 };
 
-var app = new Express();
+var app = new Koa();
 
-app.use(require('webpack-dev-middleware')(compiler, serverOptions));
-app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('koa-webpack-dev-middleware')(compiler, serverOptions));
+app.use(require('koa-webpack-hot-middleware')(compiler));
 
 app.listen(port, function onAppListening(err) {
   if (err) {

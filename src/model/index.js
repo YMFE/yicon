@@ -4,23 +4,16 @@ import Log from './tables/logs';
 import Project from './tables/projects';
 import Repo from './tables/repositories';
 import { seq, Seq } from './tables/_db';
+import { versionTools } from '../helpers/utils';
 
 const versionAttribute = {
   version: {
     type: Seq.INTEGER,
     get() {
-      return (this.getDataValue('version') / 1000000)
-        .toFixed(6)
-        .match(/\d{2}/g)
-        .map(d => +d)
-        .join('.');
+      return versionTools.n2v(this.getDataValue('version'));
     },
     set(val) {
-      this.setDataValue(
-        'version',
-        val.split('.')
-          .reduce((p, n, i) => p + n * Math.pow(100, 2 - i), 0)
-      );
+      this.setDataValue('version', versionTools.v2n(val));
     },
   },
 };
