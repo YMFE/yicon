@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
-import { model } from '../../config';
+import config from '../../config';
+
+const { model } = config;
 
 const define = {
   charset: 'utf8',

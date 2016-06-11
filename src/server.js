@@ -11,6 +11,7 @@ import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
+import { router } from './controller';
 
 const app = new Koa();
 
@@ -18,6 +19,8 @@ app.use(compress());
 app.use(favicon(path.join(__dirname, '../static/favicon.ico')));
 app.use(session());
 app.use(serve(path.join(__dirname, '../static')));
+
+app.use(router.routes());
 
 app.use(function* serverRender() {
   if (__DEVELOPMENT__) {
