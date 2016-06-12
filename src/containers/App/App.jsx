@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import Header from '../../components/Header/Header';
+import { Header } from '../../components';
 
 import './App.scss';
 

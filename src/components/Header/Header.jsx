@@ -1,8 +1,12 @@
 import React from 'react';
 
+import Logo from './Logo/Logo';
+import Cart from './Cart/Cart';
+
 const Header = () => (
   <header>
-    This is header!
+    <Logo />
+    <Cart />
   </header>
 );
 

@@ -5,12 +5,11 @@
   "main": "bin/server.js",
   "scripts": {
     "lint": "eslint --ext .js,.jsx src",
-    "start": "webpack --progress && qxf dev",
     "start:dev": "better-npm-run start:dev",
     "client": "better-npm-run client",
     "dev": "concurrently --kill-others \"npm run client\" \"npm run start:dev\"",
-    "sync": "SEQUELIZE_SYNC=SYNC qxf dev",
-    "force": "SEQUELIZE_SYNC=SYNC_FORCE qxf dev",
+    "database:sync": "better-npm-run database:sync",
+    "database:force": "better-npm-run database:force",
     "test": "karma start"
   },
   "betterScripts": {
@@ -25,6 +24,24 @@
     "start:dev": {
       "command": "./node_modules/.bin/nodemon ./bin/server.js",
       "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "development",
+        "PORT": 3000
+      }
+    },
+    "database:sync": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "SEQUELIZE_SYNC": "SYNC",
+        "NODE_PATH": "./src",
+        "NODE_ENV": "development",
+        "PORT": 3000
+      }
+    },
+    "database:force": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "SEQUELIZE_SYNC": "SYNC_FORCE",
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "PORT": 3000

@@ -4,10 +4,10 @@ const development = {
   model: {
     database: 'iconfont',
     username: 'root',
-    password: '123456',
+    password: 'odmMj7H6x2IaACrs',
     dialect: 'mysql',
     port: '3306',
-    host: '127.0.0.1',
+    host: '10.86.43.48',
   },
   port: 3000,
 };

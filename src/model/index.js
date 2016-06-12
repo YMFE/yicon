@@ -50,3 +50,13 @@ Log.belongsTo(Project, { foreignKey: 'rpId' });
 Log.belongsToMany(User, { through: UserLog });
 
 export { seq, Seq, User, Icon, Log, Project, Repo, RepoVersion };
+
+// 处理与数据库的连接情况
+const force = { SYNC_FORCE: true, SYNC: false }[process.env.SEQUELIZE_SYNC];
+
+if (typeof force === 'boolean') {
+  seq
+    .query('SET FOREIGN_KEY_CHECKS = 0')
+    .then(() => seq.sync({ force }))
+    .then(() => seq.query('SET FOREIGN_KEY_CHECKS = 1'));
+}
