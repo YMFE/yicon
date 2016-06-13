@@ -1,3 +1,0 @@
-[submodule "sensitive"]
-	path = sensitive
-	url = git@gitlab.corp.qunar.com:minghao.yu/sensitive.git
