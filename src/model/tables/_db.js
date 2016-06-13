@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize';
-// import config from '../../../sensitive/config';
+import config from '../../../sensitive/config';
 import debugTool from 'debug';
 
 const debug = debugTool('database');
-const { model } = {};
+const { model } = config;
 
 const sequelize = new Sequelize(
   model.database,
