@@ -23,7 +23,7 @@
       }
     },
     "start:dev": {
-      "command": "./node_modules/.bin/nodemon ./bin/server.js",
+      "command": "node ./node_modules/nodemon/bin/nodemon.js ./bin/server.js",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
