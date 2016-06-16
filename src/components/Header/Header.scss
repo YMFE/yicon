@@ -8,7 +8,7 @@
   height: 64px;
   line-height: 64px;
   &:after{
-  	clear: both;
+    clear: both;
     content: "\0020";
     display: block;
     height: 0;
@@ -21,4 +21,3 @@
     margin-right: auto;
   }
 }
-
