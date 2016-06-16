@@ -36,6 +36,10 @@ module.exports = {
         'sass' +
           '?outputStyle=expanded',
       ] },
+      {
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+        loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
+      }
     ]
   },
   progress: true,

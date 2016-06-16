@@ -43,7 +43,11 @@ class Nav extends Component {
         iconButtonElement={
           <FlatButton
             label={menu.menuName}
-            className={styles.label}
+            labelStyle={{
+              color: '#212121',
+              fontSize: '16px',
+              fontWeight: 'bold',
+            }}
             style={{ marginLeft: '34px' }}
           />}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
