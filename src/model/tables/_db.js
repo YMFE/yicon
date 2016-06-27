@@ -12,8 +12,10 @@ const sequelize = new Sequelize(
   {
     port: model.port,
     host: model.host,
-    charset: 'utf8',
-    timestamps: false,
+    define: {
+      charset: 'utf8',
+      timestamps: false,
+    },
   }
 );
 

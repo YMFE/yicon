@@ -22,7 +22,7 @@ export default () => {
       </Route>
 
       {/* Routes */}
-      <Route path="repository" component={Repository} />
+      <Route path="repositories/:id" component={Repository} />
 
       {/* Catch all route */}
     </Route>

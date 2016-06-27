@@ -3,16 +3,19 @@
 import { seq, Seq } from './_db';
 
 // TODO: 思考一下模板放到哪儿比较合适（或许是全局）
-// 这里或许可以写在数据库，通过 dao 来实现
 const descriptionMap = {
-  UPLOAD_SUCCEED: '',
-  AUDIT_SUCCEED: '',
+  UPLOAD: '',
+  AUDIT_OK: '',
   AUDIT_FAILED: '',
-  REPLACE_SUCCEED: '',
-  PROJECT_INSERT: '',
-  PROJECT_REMOVE: '',
-  PROJECT_OWNER: '',
+  REPO_VERSION: '',
+  REPLACE: '',
+  PROJECT_DEL: '',
+  PROJECT_EDIT: '',
+  PROJECT_ADD: '',
+  PROJECT_MEMBER: '',
+  PROJECT_VERSION: '',
   REPO_ADMIN: '',
+  PROJECT_OWNER: '',
 };
 
 export default seq.define('logs', {
@@ -20,17 +23,12 @@ export default seq.define('logs', {
     type: Seq.STRING,
     allowNull: false,
     validate: {
-      isIn: ['repo', 'project'],
-    },
-  },
-  iconAdded: Seq.STRING,
-  iconRemoved: Seq.STRING,
-  operation: {
-    type: Seq.STRING,
-    allowNull: false,
-    validate: {
       isIn: Object.keys(descriptionMap),
     },
+  },
+  operation: {
+    type: Seq.STRING(1000),
+    allowNull: false,
   },
 }, {
   timestamps: true,

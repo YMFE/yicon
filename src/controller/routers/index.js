@@ -27,7 +27,7 @@ router.use(function* respond(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
-    this.app.emit('error', e, this);
+    // this.app.emit('error', e, this);
     return;
   }
 });

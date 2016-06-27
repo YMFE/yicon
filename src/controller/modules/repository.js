@@ -1,14 +1,14 @@
 import { Repo, Icon, RepoVersion } from '../../model';
 import { versionTools } from '../../helpers/utils';
 
-function* getRepoByVersion({ repoId, version, limit = null }) {
+function* getRepoByVersion({ repoId, version, limit }) {
   const getVersion = version
     ? Promise.resolve(versionTools.v2n(version))
     : RepoVersion.max('version', { where: { repositoryId: repoId } });
 
   const finalVersion = yield getVersion;
   let replacedIcons = yield Icon.findAll({
-    attributes: ['replaceId'],
+    attributes: ['oldId'],
     include: [{
       model: Repo,
       where: { id: repoId },
@@ -17,21 +17,31 @@ function* getRepoByVersion({ repoId, version, limit = null }) {
   });
 
   replacedIcons = replacedIcons
-    .filter(i => i.replaceId)
-    .map(i => i.replaceId);
+    .filter(i => i.oldId)
+    .map(i => i.oldId);
 
-  return yield Repo.findOne({
+  const whereClause = {
+    status: { $gte: 20 },
+  };
+  if (replacedIcons.length) {
+    whereClause.id = { $notIn: replacedIcons };
+  }
+
+  const repo = yield Repo.findOne({
     where: { id: repoId },
     include: [{
       model: Icon,
-      where: {
-        status: { $gte: 20 },
-        id: { $notIn: replacedIcons },
-      },
+      where: whereClause,
       on: { version: { $lte: finalVersion } },
-      limit,
     }],
   });
+
+  // TODO: hard-code，但是 dao 似乎没有更好的解决方案
+  if (limit > 0 && repo.icons.length > limit) {
+    repo.icons.length = limit;
+  }
+
+  return repo;
 }
 
 
@@ -39,12 +49,13 @@ export function* list(next) {
   const repoList = yield Repo.findAll({
     attributes: ['id'],
   });
-  const len = repoList;
+
+  const len = repoList.length;
   const result = [];
 
   for (let i = 0; i < len; i++) {
     const repo = yield getRepoByVersion({
-      repoId: repoList[i], limit: 44,
+      repoId: repoList[i].id, limit: 44,
     });
     result.push(repo);
   }
