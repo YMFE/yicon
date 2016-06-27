@@ -1,14 +1,19 @@
 import React from 'react';
-import styles from './ToolUserName.scss';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 
 const ToolUserName = () => (
-  <FlatButton
-    children={<FontIcon className={styles['p-icon']} hoverColor={'#00bcd4'} />}
-    icon={<FontIcon className={styles['name-icon']} hoverColor={'#00bcd4'} />}
-    hoverColor={'#fff'}
-  />
+  <div style={{ float: 'left' }}>
+    <FlatButton
+      label="张文杰"
+      labelStyle={{
+        color: '#212121',
+        fontSize: '16px',
+        fontWeight: 'bold',
+      }}
+      icon={<FontIcon className="iconfont" color={'#00bcd4'}>&#xf024;</FontIcon>}
+    />
+  </div>
 );
 
 export default ToolUserName;
