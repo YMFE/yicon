@@ -30,7 +30,8 @@ const UserLog = seq.define('userLog', {
 });
 
 // 两边都写一下对应关系，以便添加 dao 方法
-Icon.hasOne(Icon, { as: 'Replacer', foreignKey: 'replaceId' });
+Icon.hasOne(Icon, { as: 'oldIcon', foreignKey: 'oldId', constraints: false });
+Icon.hasOne(Icon, { as: 'newIcon', foreignKey: 'newId', constraints: false });
 Icon.belongsToMany(Repo, { through: RepoVersion });
 Icon.belongsToMany(Project, { through: ProjectVersion });
 
@@ -45,8 +46,16 @@ User.hasMany(Log, { foreignKey: 'operator' });
 User.hasMany(Project, { foreignKey: 'owner' });
 User.belongsToMany(Project, { through: UserProject });
 
-Log.belongsTo(Repo, { foreignKey: 'rpId' });
-Log.belongsTo(Project, { foreignKey: 'rpId' });
 Log.belongsToMany(User, { through: UserLog });
 
 export { seq, Seq, User, Icon, Log, Project, Repo, RepoVersion };
+
+// 处理与数据库的连接情况
+const force = { SYNC_FORCE: true, SYNC: false }[process.env.SEQUELIZE_SYNC];
+
+if (typeof force === 'boolean') {
+  seq
+    .query('SET FOREIGN_KEY_CHECKS = 0')
+    .then(() => seq.sync({ force }))
+    .then(() => seq.query('SET FOREIGN_KEY_CHECKS = 1'));
+}

@@ -18,7 +18,7 @@ export default seq.define('icons', {
   code: Seq.INTEGER,
   // 路径信息
   path: {
-    type: Seq.STRING,
+    type: Seq.STRING(5000),
     allowNull: false,
   },
   // 图标创建时间

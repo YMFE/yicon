@@ -7,9 +7,12 @@
   "parser": "babel-eslint",
   "rules": {
     "no-underscore-dangle": ["off"],
-    "react/prefer-stateless-function": ["warn"]
+    "react/prefer-stateless-function": ["off"]
   },
   "globals": {
+    "expect": true,
+    "describe": true,
+    "it": true,
     "webpackIsomorphicTools": true,
     "__CLIENT__": true,
     "__SERVER__": true,

@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Header.scss';
-import Logo from './Logo/Logo';
 import Nav from './Nav/Nav';
 import ToolUserName from './ToolUserName/ToolUserName.jsx';
 import LogOut from './LogOut/LogOut.jsx';
-import Cart from './Cart/Cart.jsx';
 import Search from './Search/Search';
+import Logo from './Logo/Logo';
+import Cart from './Cart/Cart';
 
 const Header = () => (
   <header className={styles.header}>
@@ -18,7 +18,6 @@ const Header = () => (
         <Cart />
         <Search />
       </div>
-
     </div>
   </header>
 );

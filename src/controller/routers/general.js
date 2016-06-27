@@ -1,8 +1,9 @@
 import Router from 'koa-router';
-import { getOne } from '../modules/repository';
+import { getOne, list } from '../modules/repository';
 
 const general = new Router();
 
-general.get('/repository/:repoId', getOne);
+general.get('/repositories', list);
+general.get('/repositories/:repoId', getOne);
 
 export default general;

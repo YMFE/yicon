@@ -35,3 +35,6 @@ Thumbs.db
 # *.zip
 # *.tar
 # *.tar.gz
+
+# ignore sensitive
+sensitive/

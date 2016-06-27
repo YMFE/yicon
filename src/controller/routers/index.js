@@ -14,6 +14,24 @@ import admin from './admin';
  */
 const router = new Router({ prefix: '/api' });
 
+router.use(function* respond(next) {
+  try {
+    yield next;
+    this.body = {
+      res: true,
+      data: this.state.respond,
+    };
+  } catch (e) {
+    this.body = {
+      ret: false,
+      status: e.status || 500,
+      message: e.message || '服务器错误',
+    };
+    // this.app.emit('error', e, this);
+    return;
+  }
+});
+
 router.use('/user', user.routes());
 router.use('/owner', owner.routes());
 router.use('/admin', admin.routes());
