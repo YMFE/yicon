@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import bodyParser from 'koa-bodyparser';
 import general from './general';
 import user from './user';
 import owner from './owner';
@@ -13,6 +14,22 @@ import admin from './admin';
  * 超管用户可以访问的，加 '/admin' 前缀
  */
 const router = new Router({ prefix: '/api' });
+
+router.use(bodyParser());
+
+router.use(function* mergeParams(next) {
+  this.param = {
+    ...this.query,
+    ...this.params,
+    ...this.request.body,
+  };
+  yield next;
+});
+
+router.use('/user', user.routes());
+router.use('/owner', owner.routes());
+router.use('/admin', admin.routes());
+router.use(general.routes());
 
 router.use(function* respond(next) {
   try {
@@ -31,10 +48,5 @@ router.use(function* respond(next) {
     return;
   }
 });
-
-router.use('/user', user.routes());
-router.use('/owner', owner.routes());
-router.use('/admin', admin.routes());
-router.use(general.routes());
 
 export default router;
