@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import routes from './routes';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import createStore from './reducer';
 
 import DevTools from './containers/DevTools/DevTools';
@@ -13,31 +13,35 @@ const initialState = window.__INITIAL_STATE__;
 const store = createStore(initialState);
 const container = document.getElementById('app');
 
-const component = (
-  <Router history={history}>
-    {routes()}
-  </Router>
-);
+@connect(
+  state => ({ devTools: state.setting.devTools })
+)
+class DevToolsContainer extends Component {
+  render() {
+    return (
+      <div>
+        {this.props.devTools && <DevTools />}
+      </div>
+    );
+  }
+}
 
-ReactDOM.render(
-  <Provider store={store} key="provider">
-    {component}
-  </Provider>,
-  container
-);
+DevToolsContainer.propTypes = {
+  devTools: PropTypes.bool,
+};
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
 }
 
-if (__DEVTOOLS__ && !window.devToolsExtension) {
-  ReactDOM.render(
-    <Provider store={store} key="provider">
-      <div>
-        {component}
-        <DevTools />
-      </div>
-    </Provider>,
-    container
-  );
-}
+ReactDOM.render(
+  <Provider store={store} key="provider">
+    <div>
+      <Router history={history}>
+        {routes()}
+      </Router>
+      <DevToolsContainer />
+    </div>
+  </Provider>,
+  container
+);

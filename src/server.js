@@ -38,23 +38,28 @@ const getRouteContext = (ctx) =>
       } else if (renderProps) {
         const fetch = isomFetch.use(ctx, router);
         const store = createStore();
+        // 使用 div 包裹是为了前端的 devTools 的渲染
         const component = (
           <Provider store={store} key="provider">
-            <RouterContext {...renderProps} />
+            <div>
+              <RouterContext {...renderProps} />
+              <div />
+            </div>
           </Provider>
         );
 
-        const render = () => `<!DOCTYPE html>\n${
+        const render = (fetchedURLs) => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
             <Html
               assets={webpackIsomorphicTools.assets()}
               component={component}
               store={store}
+              urls={fetchedURLs}
             />
         )}`;
 
         render();
-        fetch.all(() => resolve(render()));
+        fetch.all(() => resolve(render(fetch.urlCollection)));
       } else {
         resolve('NOT_MATCH');
       }

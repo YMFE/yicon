@@ -3,7 +3,10 @@ import {
   FETCH_HOME_DATA,
 } from '../constants/actionTypes';
 
-const fetch = isonFetch.create({ baseURL: '/api' });
+const fetch = isonFetch.create({
+  baseURL: '/api',
+  thunk: true,
+});
 
 export function fetchHomeData() {
   return {

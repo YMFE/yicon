@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxPromise from 'redux-promise';
 import reduxThunk from 'redux-thunk';
+import { reduxIsomFetch } from 'isom-fetch';
 import { persistState } from 'redux-devtools';
 import DevTools from '../containers/DevTools/DevTools';
 import reducer from './modules';
 
 export default (initialState) => {
-  const middleware = [reduxPromise, reduxThunk];
+  const middleware = [reduxPromise, reduxThunk, reduxIsomFetch];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
