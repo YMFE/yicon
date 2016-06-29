@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Paper from 'material-ui/Paper';
-import RepoSection from '../../RepoSection/RepoSection';
+import Icon from '../../common/Icon/Icon.jsx';
 import {
   initCart,
 } from '../../../actions/initCart';
@@ -11,12 +11,17 @@ import {
   getCartDes,
 } from '../../../actions/getCartDes';
 
+const itemStyle = {
+  float: 'left',
+  width: '25px',
+  height: '25px',
+};
+
 @connect(
-  state => ({ cartIcons: state.cartIcons }),
-  state => ({ cartDes: state.cartDes })
+  state => ({ cartIcons: state.cartIcons, cartDes: state.cartDes }),
+  { initCart, getCartDes }
 )
 class Cart extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +33,7 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(initCart());
+    this.props.initCart();
   }
 
   handleTouchTap(event) {
@@ -38,10 +43,10 @@ class Cart extends Component {
       anchorEl: event.currentTarget,
     });
     // 待优化：可以判断 cartIcons 是否改变，选择是否更新 cartDes
-    const cartIcons = this.props.cartIcons || [{ iconId: 1 }, { iconId: 3 }];
-    this.props.dispatch(getCartDes({
-      icons: cartIcons.map(icon => icon.iconId),
-    }));
+    const cartIcons = this.props.cartIcons || [];
+    this.props.getCartDes({
+      icons: cartIcons,
+    });
   }
 
   handleRequestClose() {
@@ -73,12 +78,10 @@ class Cart extends Component {
         >
           <Paper style={{ width: '346px', height: '150px' }}>
             {
-              cartDes.map(repo => (
-                <RepoSection
-                  key={repo.id}
-                  id={repo.id}
-                  icons={repo.icons}
-                />
+              cartDes.map((icon) => (
+                <div key={icon.id} style={itemStyle}>
+                  <Icon size={20} d={icon.path} />
+                </div>
               ))
             }
           </Paper>
@@ -92,6 +95,8 @@ Cart.propTypes = {
   dispatch: PropTypes.func,
   cartIcons: PropTypes.array,
   cartDes: PropTypes.array,
+  initCart: PropTypes.func,
+  getCartDes: PropTypes.func,
 };
 
 export default Cart;
