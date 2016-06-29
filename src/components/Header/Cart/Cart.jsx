@@ -3,11 +3,18 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Paper from 'material-ui/Paper';
+import RepoSection from '../../RepoSection/RepoSection';
 import {
   initCart,
 } from '../../../actions/initCart';
+import {
+  getCartDes,
+} from '../../../actions/getCartDes';
 
-@connect(state => ({ cartIcons: state.cartIcons }))
+@connect(
+  state => ({ cartIcons: state.cartIcons }),
+  state => ({ cartDes: state.cartDes })
+)
 class Cart extends Component {
 
   constructor(props) {
@@ -15,6 +22,7 @@ class Cart extends Component {
     this.state = {
       isShow: false,
     };
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
   }
@@ -29,6 +37,11 @@ class Cart extends Component {
       isShow: true,
       anchorEl: event.currentTarget,
     });
+    // 待优化：可以判断 cartIcons 是否改变，选择是否更新 cartDes
+    const cartIcons = this.props.cartIcons || [{ iconId: 1 }, { iconId: 3 }];
+    this.props.dispatch(getCartDes({
+      icons: cartIcons.map(icon => icon.iconId),
+    }));
   }
 
   handleRequestClose() {
@@ -38,7 +51,7 @@ class Cart extends Component {
   }
 
   render() {
-    const cartIcons = this.props.cartIcons || [];
+    const cartDes = this.props.cartDes || [];
 
     return (
       <div style={{ float: 'left' }}>
@@ -60,8 +73,12 @@ class Cart extends Component {
         >
           <Paper style={{ width: '346px', height: '150px' }}>
             {
-              cartIcons.map((icon) => (
-                <p><span>{icon.iconId}</span></p>
+              cartDes.map(repo => (
+                <RepoSection
+                  key={repo.id}
+                  id={repo.id}
+                  icons={repo.icons}
+                />
               ))
             }
           </Paper>
@@ -74,6 +91,7 @@ class Cart extends Component {
 Cart.propTypes = {
   dispatch: PropTypes.func,
   cartIcons: PropTypes.array,
+  cartDes: PropTypes.array,
 };
 
 export default Cart;
