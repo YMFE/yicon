@@ -63,7 +63,7 @@
     "redux"
   ],
   "author": "malcolmyu <minghao_yu@163.com>",
-  "license": "MIT",
+  "license": "WTFPL",
   "bugs": {
     "url": "https://github.com/YMFE/yicon/issues"
   },
@@ -81,9 +81,9 @@
     "debug": "~2.2.0",
     "file-loader": "^0.9.0",
     "history": "^2.1.1",
-    "isom-fetch": "^1.0.4",
+    "isom-fetch": "^1.1.0",
     "koa": "^1.2.0",
-    "koa-body": "^1.4.0",
+    "koa-bodyparser": "^2.2.0",
     "koa-compress": "^1.0.9",
     "koa-favicon": "^1.2.1",
     "koa-logger": "^1.3.0",

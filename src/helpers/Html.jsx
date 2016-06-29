@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
+import { getURLStateName } from 'isom-fetch';
 
 const Html = (props) => {
-  const { assets, component, store } = props;
+  const { assets, component, store, urls } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
 
   return (
@@ -34,9 +35,14 @@ const Html = (props) => {
           dangerouslySetInnerHTML={{
             __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`,
           }}
-        >
-        </script>
-        <script src={assets.javascript.main} charSet="utf-8"></script>
+        />
+        <script
+          charSet="utf-8"
+          dangerouslySetInnerHTML={{
+            __html: `window.${getURLStateName()}=${serialize(urls)};`,
+          }}
+        />
+        <script src={assets.javascript.main} charSet="utf-8" />
       </body>
     </html>
   );
@@ -46,6 +52,7 @@ Html.propTypes = {
   assets: PropTypes.object,
   component: PropTypes.node,
   store: PropTypes.object,
+  urls: PropTypes.object,
 };
 
 export default Html;

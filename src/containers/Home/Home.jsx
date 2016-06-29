@@ -13,9 +13,9 @@ import RepoSection from '../../components/RepoSection/RepoSection';
 class Home extends Component {
   componentWillMount() {
     // hack
-    if (typeof document !== 'object') {
-      this.props.fetchHomeData();
-    }
+    // if (typeof document !== 'object') {
+    this.props.fetchHomeData();
+    // }
   }
 
   render() {

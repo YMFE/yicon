@@ -66,7 +66,7 @@ export function* list(next) {
 }
 
 export function* getOne(next) {
-  const { repoId, version } = this.params;
+  const { repoId, version } = this.param;
 
   // 这里统一不写在 this.body，最后一个中间件再挂，需要制定一下 this.state 的书写规范
   this.state.respond = yield getRepoByVersion({
