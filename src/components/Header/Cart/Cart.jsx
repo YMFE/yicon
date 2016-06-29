@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import CartBox from './CartBox.jsx';
+import Paper from 'material-ui/Paper';
+import {
+  initCart,
+} from '../../../actions/initCart';
 
+@connect(state => ({ cartIcons: state.cartIcons }))
 class Cart extends Component {
 
   constructor(props) {
@@ -12,6 +17,10 @@ class Cart extends Component {
     };
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(initCart());
   }
 
   handleTouchTap(event) {
@@ -29,6 +38,8 @@ class Cart extends Component {
   }
 
   render() {
+    const cartIcons = this.props.cartIcons || [];
+
     return (
       <div style={{ float: 'left' }}>
         <FlatButton
@@ -47,11 +58,22 @@ class Cart extends Component {
           targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}
         >
-          <CartBox />
+          <Paper style={{ width: '346px', height: '150px' }}>
+            {
+              cartIcons.map((icon) => (
+                <p><span>{icon.iconId}</span></p>
+              ))
+            }
+          </Paper>
         </Popover>
       </div>
     );
   }
 }
+
+Cart.propTypes = {
+  dispatch: PropTypes.func,
+  cartIcons: PropTypes.array,
+};
 
 export default Cart;
