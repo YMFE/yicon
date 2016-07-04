@@ -4,7 +4,7 @@ export function* getById(next) {
   const { icons } = this.param;
 
   this.state.respond = yield Icon.findAll({
-    attributes: ['id', 'name', 'path'],
+    attributes: ['id', 'name', 'path', 'oldId', 'newId'],
     where: { id: { $in: icons } },
   });
 

@@ -29,7 +29,7 @@ module.exports = function (config) {
         loaders: [
           { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: {limit: 10240} },
           { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel']},
-          { test: /\.scss$/, loaders: [
+          { test: /\.scss$/, loader: [
             'style',
             'css' +
               '?modules' +
