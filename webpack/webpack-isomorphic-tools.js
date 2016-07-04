@@ -7,6 +7,9 @@ module.exports = {
       extensions: ['jpeg', 'jpg', 'png', 'gif'],
       parser: WebpackIsomorphicToolsPlugin.url_loader_parser
     },
+    fonts: {
+      extensions: ['woff', 'ttf', 'eot', 'svg']
+    },
     style_modules: {
       extensions: ['less','scss'],
       filter: function(module, regex, options, log) {

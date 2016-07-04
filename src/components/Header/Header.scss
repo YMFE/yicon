@@ -1,0 +1,33 @@
+/* 定义混合宏 */
+@mixin add-agent($select, $value) {
+  -webkit-border-#{$select}: $value;
+     -moz-border-#{$select}: $value;
+      -ms-border-#{$select}: $value;
+          border-#{$select}: $value;
+}
+
+.header {
+  @include add-agent(select, none);
+  user-select: none;
+  zoom: 1;
+  background-color: #fff;
+  height: 64px;
+  line-height: 64px;
+  &:after{
+    clear: both;
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+  .container {
+    width: 1200px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tools {
+    float: right;
+    margin-right: 10px;
+  }
+}

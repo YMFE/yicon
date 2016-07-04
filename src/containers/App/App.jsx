@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
@@ -11,7 +12,9 @@ import {
 
 import './App.scss';
 
-@connect()
+@connect(
+  state => ({ list: state.repository.list })
+)
 class App extends Component {
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
@@ -20,10 +23,12 @@ class App extends Component {
   }
 
   render() {
+    const { list } = this.props;
+
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
-          <Header />
+          <Header list={list} />
           <section>
             {this.props.children}
           </section>
@@ -34,6 +39,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+  list: PropTypes.array,
   children: PropTypes.element,
   dispatch: PropTypes.func,
 };
