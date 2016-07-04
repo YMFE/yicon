@@ -116,6 +116,7 @@
     "lint"
   ],
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
     "babel": "^6.5.2",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
