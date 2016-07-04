@@ -30,6 +30,7 @@ class Home extends Component {
             <RepoSection
               key={repo.id}
               id={repo.id}
+              name={repo.name}
               icons={repo.icons}
             />
           ))
