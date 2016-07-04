@@ -5,9 +5,9 @@ import {
 
 const fetch = isonFetch.create({ baseURL: '/api' });
 
-export function getCartDes(icons) {
+export function getCartIcons(iconIds) {
   return {
     type: GET_CART_DES,
-    payload: fetch.post('/icons', icons),
+    payload: fetch.post('/icons', iconIds),
   };
 }

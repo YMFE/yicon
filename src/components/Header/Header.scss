@@ -1,7 +1,13 @@
+/* 定义混合宏 */
+@mixin add-agent($select, $value) {
+  -webkit-border-#{$select}: $value;
+     -moz-border-#{$select}: $value;
+      -ms-border-#{$select}: $value;
+          border-#{$select}: $value;
+}
+
 .header {
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
+  @include add-agent(select, none);
   user-select: none;
   zoom: 1;
   background-color: #fff;

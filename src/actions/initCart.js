@@ -5,6 +5,6 @@ import {
 export function initCart() {
   return {
     type: INIT_CART,
-    cartIcons: JSON.parse(window.localStorage.cartIcons),
+    cartIconIds: JSON.parse(window.localStorage.cartIconIds),
   };
 }

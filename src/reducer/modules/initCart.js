@@ -2,12 +2,12 @@ import {
   INIT_CART,
 } from '../../constants/actionTypes';
 
-const cartIcons = [];
+const cartIconIds = [];
 
-export default (state = cartIcons, action) => {
+export default (state = cartIconIds, action) => {
   switch (action.type) {
     case INIT_CART: {
-      return action.cartIcons;
+      return action.cartIconIds;
     }
     default:
       return state;

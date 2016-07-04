@@ -2,9 +2,9 @@ import {
   GET_CART_DES,
 } from '../../constants/actionTypes';
 
-const cartDes = [];
+const cartIcons = [];
 
-export default (state = cartDes, action) => {
+export default (state = cartIcons, action) => {
   switch (action.type) {
     case GET_CART_DES: {
       return action.payload.data;
