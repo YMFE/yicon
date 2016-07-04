@@ -111,13 +111,14 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
-    "webpack-hot-middleware": "^2.11.0",
+    "webpack-hot-middleware": "^2.12.0",
     "webpack-isomorphic-tools": "^2.3.0"
   },
   "pre-commit": [
     "lint"
   ],
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
     "babel": "^6.5.2",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
