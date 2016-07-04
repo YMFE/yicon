@@ -31,7 +31,9 @@ class Home extends Component {
               key={repo.id}
               id={repo.id}
               name={repo.name}
+              iconCount={repo.iconCount}
               icons={repo.icons}
+              user={repo.user}
             />
           ))
         }

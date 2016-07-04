@@ -38,9 +38,9 @@ function* getRepoByVersion({ repoId, version, limit }) {
 
   const rawRepo = repo.get({ plain: true });
 
+  rawRepo.iconCount = rawRepo.icons.length;
   // TODO: hard-code，但是 dao 似乎没有更好的解决方案
   if (limit > 0 && rawRepo.icons.length > limit) {
-    rawRepo.iconCount = rawRepo.icons.length;
     rawRepo.icons.length = limit;
   }
 
