@@ -7,13 +7,11 @@ import Icon from '../../common/Icon/Icon.jsx';
 import styles from './Cart.scss';
 import {
   initCart,
-} from '../../../actions/initCart';
-import {
   getCartIcons,
-} from '../../../actions/getCartIcons';
+} from '../../../actions/cart';
 
 @connect(
-  state => ({ cartIconIds: state.cartIconIds, cartIcons: state.cartIcons }),
+  state => ({ cartIconIds: state.cart.iconsInLocalStorage, cartIcons: state.cart.iconsInCart }),
   { initCart, getCartIcons }
 )
 class Cart extends Component {
