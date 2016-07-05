@@ -15,7 +15,7 @@ export function getCartIcons(iconIds) {
 
 export function initCart() {
   if (!localStorage.cartIconIds) {
-    localStorage.cartIconIds = [];
+    localStorage.cartIconIds = '[]';
   }
   return {
     type: INIT_CART,
