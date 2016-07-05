@@ -19,3 +19,25 @@ button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}
 mark{background-color:transparent}
 a,ins,s,u,del{text-decoration:none}
 sup,sub{vertical-align:baseline}
+/*系统图标*/
+@font-face {
+  font-family: "iconfont";
+  src: asset-url('/fonts/iconfont.eot');
+  src: asset-url('/fonts/iconfont.eot?#iefix') format('eot'),
+    asset-url('/fonts/iconfont.woff') format('woff'),
+    asset-url('/fonts/iconfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:global {
+  [class*="iconfont"], [class*="iconfont"]:before {
+    display: inline-block;
+    font-family: "iconfont";
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

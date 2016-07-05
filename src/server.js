@@ -38,6 +38,10 @@ const getRouteContext = (ctx) =>
       } else if (renderProps) {
         const fetch = isomFetch.use(ctx, router);
         const store = createStore();
+        // 支持 material-ui 的 server-render
+        global.navigator = {
+          userAgent: ctx.req.headers['user-agent'],
+        };
         // 使用 div 包裹是为了前端的 devTools 的渲染
         const component = (
           <Provider store={store} key="provider">

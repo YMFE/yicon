@@ -17,6 +17,7 @@ target/
 
 # temp ignore
 *.log
+*.log.*
 *.cache
 *.diff
 *.patch

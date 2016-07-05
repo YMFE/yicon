@@ -23,6 +23,23 @@ router.use(function* mergeParams(next) {
     ...this.params,
     ...this.request.body,
   };
+  this.state.page = {};
+
+  if (!isNaN(+this.param.currentPage)) {
+    this.param.currentPage = +this.param.currentPage;
+    this.param.pageSize = +this.param.pageSize || 10;
+
+    const { currentPage, pageSize } = this.param;
+    this.state.page = {
+      currentPage,
+      pageSize,
+      totalCount: 0,
+    };
+    this.state.pageMixin = {
+      offset: (currentPage - 1) * pageSize,
+      limit: pageSize,
+    };
+  }
   yield next;
 });
 
@@ -31,12 +48,14 @@ router.use('/owner', owner.routes());
 router.use('/admin', admin.routes());
 router.use(general.routes());
 
-router.use(function* respond(next) {
+router.use(function* respondMiddleware(next) {
   try {
     yield next;
+    const { respond, page } = this.state;
+    const body = { data: respond, page };
     this.body = {
       res: true,
-      data: this.state.respond,
+      ...body,
     };
   } catch (e) {
     this.body = {

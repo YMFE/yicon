@@ -37,8 +37,22 @@ Icon.belongsToMany(Project, { through: ProjectVersion });
 
 Repo.belongsToMany(Icon, { through: RepoVersion });
 Repo.belongsTo(User, { foreignKey: 'admin' });
+Repo.hasMany(Log, {
+  foreignKey: 'loggerId',
+  constraints: false,
+  scope: {
+    scope: 'repo',
+  },
+});
 
 Project.belongsToMany(Icon, { through: ProjectVersion });
+Project.hasMany(Log, {
+  foreignKey: 'loggerId',
+  constraints: false,
+  scope: {
+    scope: 'project',
+  },
+});
 
 User.hasMany(Icon, { foreignKey: 'uploader' });
 User.hasMany(Repo, { foreignKey: 'admin' });
@@ -46,7 +60,21 @@ User.hasMany(Log, { foreignKey: 'operator' });
 User.hasMany(Project, { foreignKey: 'owner' });
 User.belongsToMany(Project, { through: UserProject });
 
+Log.belongsTo(User, {
+  foreignKey: 'operator',
+  as: 'logCreator',
+});
 Log.belongsToMany(User, { through: UserLog });
+Log.belongsTo(Repo, {
+  foreignKey: 'loggerId',
+  constraints: false,
+  as: 'repo',
+});
+Log.belongsTo(Project, {
+  foreignKey: 'loggerId',
+  constraints: false,
+  as: 'project',
+});
 
 export { seq, Seq, User, Icon, Log, Project, Repo, RepoVersion };
 

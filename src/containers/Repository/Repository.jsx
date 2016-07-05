@@ -13,7 +13,7 @@ export default class Repository extends Component {
 }
 
 Repository.propTypes = {
-  params: {
-    id: PropTypes.number.isRequired,
-  },
+  params: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }),
 };
