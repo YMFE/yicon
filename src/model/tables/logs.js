@@ -26,6 +26,12 @@ export default seq.define('logs', {
       isIn: Object.keys(descriptionMap),
     },
   },
+  scope: {
+    type: Seq.STRING,
+  },
+  loggerId: {
+    type: Seq.INTEGER,
+  },
   operation: {
     type: Seq.STRING(1000),
     allowNull: false,

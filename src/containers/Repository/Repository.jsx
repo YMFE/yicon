@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getCurrRepository } from '../../actions/getCurrRepository';
+import { fetchRepositoryData } from '../../actions/repository';
 
 @connect(
-  state => ({ cartIconIds: state.cartIconIds, list: state.currRepository.list }),
-  { getCurrRepository }
+  state => ({ list: state.repository.currRepository.icons }),
+  { fetchRepositoryData }
 )
 export default class Repository extends Component {
   componentDidMount() {
-    this.props.getCurrRepository(this.props.params.id);
+    this.props.fetchRepositoryData(this.props.params.id);
   }
   render() {
     const { id } = this.props.params;
@@ -17,7 +17,7 @@ export default class Repository extends Component {
         <h1>Repository</h1>
         <p>This is repository page. Id: {id}.</p>
         {
-          this.props.list.map((icon) => (icon.id))
+          this.props.list.map((icon) => (` ${icon.id} `))
         }
       </div>
     );
@@ -28,6 +28,6 @@ Repository.propTypes = {
   params: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }),
-  getCurrRepository: PropTypes.func,
+  fetchRepositoryData: PropTypes.func,
   list: PropTypes.array,
 };

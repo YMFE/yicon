@@ -37,7 +37,7 @@ module.exports = function (config) {
             'postcss',
             'sass' +
               '?outputStyle=expanded',
-          ] },
+          ] }
         ]
       },
       resolve: {

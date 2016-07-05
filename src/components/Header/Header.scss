@@ -8,7 +8,6 @@
 
 .header {
   @include add-agent(select, none);
-  user-select: none;
   zoom: 1;
   background-color: #fff;
   height: 64px;

@@ -1,27 +1,25 @@
 import {
-  FETCH_HOME_DATA,
-  FETCH_REPOSITORY_DATA,
+  INIT_CART,
+  FETCH_CART_DETAIL,
 } from '../../constants/actionTypes';
 
 const initialState = {
-  homeRepository: [],
-  currRepository: {
-    icons: [],
-  },
+  iconsInLocalStorage: [],
+  iconsInCart: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_HOME_DATA: {
+    case FETCH_CART_DETAIL: {
       return {
         ...state,
-        homeRepository: action.payload.data,
+        iconsInCart: action.payload.data,
       };
     }
-    case FETCH_REPOSITORY_DATA: {
+    case INIT_CART: {
       return {
         ...state,
-        currRepository: action.payload.data,
+        iconsInLocalStorage: action.payload,
       };
     }
     default:
