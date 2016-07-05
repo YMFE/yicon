@@ -1,6 +1,7 @@
 import {
   FETCH_HOME_DATA,
   FETCH_REPOSITORY_DATA,
+  CLEAR_REPOSITORY_DATA,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -22,6 +23,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currRepository: action.payload.data,
+      };
+    }
+    case CLEAR_REPOSITORY_DATA: {
+      return {
+        ...state,
+        currRepository: action.payload,
       };
     }
     default:

@@ -71,7 +71,7 @@ class Cart extends Component {
           <Paper style={{ width: '346px', height: '150px' }}>
             {
               cartIcons.map((icon) => (
-                <div key={icon.id} className={styles.item}>
+                <div key={icon.id} className={styles.icon}>
                   <Icon size={20} d={icon.path} />
                 </div>
               ))

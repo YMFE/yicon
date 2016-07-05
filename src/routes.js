@@ -1,5 +1,6 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
+import { clearRepositoryData } from './actions/repository';
 import {
   App,
   Home,
@@ -7,9 +8,16 @@ import {
   Repository,
 } from './containers';
 
-export default () => {
+export default (store) => {
   // 处理权限校验
   const requireLogin = () => {};
+  const clearState = (type) => (
+    (
+      (action) => (
+        () => { store.dispatch(action); }
+      )
+    )(type)
+  );
 
   return (
     <Route path="/" component={App}>
@@ -22,7 +30,11 @@ export default () => {
       </Route>
 
       {/* Routes */}
-      <Route path="repositories/:id" component={Repository} />
+      <Route
+        path="repositories/:id"
+        component={Repository}
+        onLeave={clearState(clearRepositoryData())}
+      />
 
       {/* Catch all route */}
     </Route>
