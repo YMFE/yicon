@@ -8,7 +8,7 @@ const convert = (transform) =>
 
 class Icon extends Component {
   render() {
-    const { size, d } = this.props;
+    const { size, d, fill } = this.props;
 
     const scale = size / 1024;
 
@@ -33,7 +33,7 @@ class Icon extends Component {
         >
           <g className="transform-group">
             <g transform={convert(transform)}>
-              <path d={d}></path>
+              <path fill={fill} d={d}></path>
             </g>
           </g>
         </svg>
@@ -45,6 +45,7 @@ class Icon extends Component {
 Icon.propTypes = {
   size: PropTypes.number,
   d: PropTypes.string.isRequired,
+  fill: PropTypes.string,
 };
 
 Icon.defaultProps = { size: 32 };

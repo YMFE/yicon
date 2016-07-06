@@ -17,6 +17,13 @@ export default class Repository extends Component {
     this.props.fetchRepositoryData(this.props.params.id);
   }
 
+  getColor(id) {
+    if (this.props.cartIconIds.indexOf(id) !== -1) {
+      return '#00bcd4';
+    }
+    return '';
+  }
+
   selectIcon(iconId) {
     return (
       (Id) => (
@@ -40,7 +47,7 @@ export default class Repository extends Component {
         {
           this.props.list.map((icon) => (
             <div key={icon.id} className={styles.icon} onClick={this.selectIcon(icon.id)}>
-              <Icon size={20} d={icon.path} />
+              <Icon size={20} fill={this.getColor(icon.id)} d={icon.path} />
             </div>
           ))
         }
