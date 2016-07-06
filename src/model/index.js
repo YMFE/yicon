@@ -60,6 +60,10 @@ User.hasMany(Log, { foreignKey: 'operator' });
 User.hasMany(Project, { foreignKey: 'owner' });
 User.belongsToMany(Project, { through: UserProject });
 
+Log.belongsTo(User, {
+  foreignKey: 'operator',
+  as: 'logCreator',
+});
 Log.belongsToMany(User, { through: UserLog });
 Log.belongsTo(Repo, {
   foreignKey: 'loggerId',

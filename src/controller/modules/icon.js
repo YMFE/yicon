@@ -10,3 +10,22 @@ export function* getById(next) {
 
   yield next;
 }
+
+export function* getByCondition(next) {
+  const { iconId } = this.param;
+  let { q } = this.param;
+  q = ['%', decodeURI(q), '%'].join('');
+  const where = iconId ? {
+    where: { id: iconId },
+  } : {
+    where: {
+      $or: {
+        name: { $like: q },
+        tags: { $like: q },
+      },
+    },
+  };
+  this.state.respond = yield Icon.findAll(where);
+
+  yield next;
+}
