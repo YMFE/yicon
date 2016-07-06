@@ -61,6 +61,7 @@ class Cart extends Component {
             fontWeight: 'bold',
           }}
         />
+        {this.props.cartIconIds.length}
         <Popover
           open={this.state.isShow}
           anchorEl={this.state.anchorEl}
