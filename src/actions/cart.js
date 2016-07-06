@@ -11,8 +11,7 @@ function addToLocalStorage(id) {
   if (!localStorage.cartIconIds) {
     localStorage.cartIconIds = JSON.stringify([]);
   }
-  const str = localStorage.cartIconIds.slice(0, -1);
-  localStorage.cartIconIds = `${str}, ${id}]`;
+  localStorage.cartIconIds = JSON.stringify(JSON.parse(localStorage.cartIconIds).concat([id]));
   return id;
 }
 function deleteInLocalStorage(id) {
