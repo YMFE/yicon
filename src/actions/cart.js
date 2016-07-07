@@ -20,14 +20,14 @@ function deleteInLocalStorage(id) {
   return id;
 }
 
-export function getCartIcons(iconIds) {
+export function getIconsInCart(iconIds) {
   return {
     type: FETCH_CART_DETAIL,
     payload: fetch.post('/icons', iconIds),
   };
 }
 
-export function initCart() {
+export function getIconsInLocalStorage() {
   if (!localStorage.cartIconIds) {
     localStorage.cartIconIds = JSON.stringify([]);
   }

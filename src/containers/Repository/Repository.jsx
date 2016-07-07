@@ -8,7 +8,7 @@ import Icon from '../../components/common/Icon/Icon.jsx';
 @connect(
   state => ({
     list: state.repository.currRepository.icons,
-    cartIconIds: state.cart.iconsInLocalStorage,
+    iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
   { fetchRepositoryData, addIconToCart, deleteIconInCart }
 )
@@ -18,7 +18,7 @@ export default class Repository extends Component {
   }
 
   getColor(id) {
-    if (this.props.cartIconIds.indexOf(id) !== -1) {
+    if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
       return '#00bcd4';
     }
     return '';
@@ -28,7 +28,7 @@ export default class Repository extends Component {
     return (
       (Id) => (
         () => {
-          if (this.props.cartIconIds.indexOf(Id) !== -1) {
+          if (this.props.iconsInLocalStorage.indexOf(Id) !== -1) {
             this.props.deleteIconInCart(Id);
           } else {
             this.props.addIconToCart(Id);
@@ -64,5 +64,5 @@ Repository.propTypes = {
   addIconToCart: PropTypes.func,
   deleteIconInCart: PropTypes.func,
   list: PropTypes.array,
-  cartIconIds: PropTypes.array,
+  iconsInLocalStorage: PropTypes.array,
 };

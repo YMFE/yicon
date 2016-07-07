@@ -9,5 +9,8 @@ export const FETCH_CART_DETAIL = 'FETCH_CART_DETAIL';
 export const ADD_ICON_TO_CART = 'ADD_ICON_TO_CART';
 export const DELETE_ICON_IN_CART = 'DELETE_ICON_IN_CART';
 
+//  search
+export const FETCH_SEARCH_RESULT = 'FETCH_SEARCH_RESULT';
+
 // setting
 export const LAUNCH_REDUX_DEVTOOLS = 'LAUNCH_REDUX_DEVTOOLS';
