@@ -1,4 +1,6 @@
 import { Icon } from '../../model';
+import { isPlainObject } from '../../helpers/utils';
+import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
   const { icons } = this.param;
@@ -12,20 +14,21 @@ export function* getById(next) {
 }
 
 export function* getByCondition(next) {
-  const { iconId } = this.param;
-  let { q } = this.param;
-  q = ['%', decodeURI(q), '%'].join('');
-  const where = iconId ? {
-    where: { id: iconId },
-  } : {
+  const { q } = this.param;
+
+  if (isPlainObject(this.query)) throw new Error('必须传入查询条件');
+  if (q === '') throw new Error('不支持传入空参数');
+
+  const query = `%${decodeURI(q)}%`;
+  this.state.respond = yield Icon.findAll({
     where: {
+      status: { $gte: iconStatus.RESOLVED },
       $or: {
-        name: { $like: q },
-        tags: { $like: q },
+        name: { $like: query },
+        tags: { $like: query },
       },
     },
-  };
-  this.state.respond = yield Icon.findAll(where);
+  });
 
   yield next;
 }
