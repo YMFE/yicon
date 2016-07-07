@@ -4,6 +4,7 @@ import general from './general';
 import user from './user';
 import owner from './owner';
 import admin from './admin';
+import { mergeParams, responder } from './middlewares';
 
 /**
  * 这里进行区分
@@ -16,56 +17,14 @@ import admin from './admin';
 const router = new Router({ prefix: '/api' });
 
 router.use(bodyParser());
-
-router.use(function* mergeParams(next) {
-  this.param = {
-    ...this.query,
-    ...this.params,
-    ...this.request.body,
-  };
-  this.state.page = {};
-
-  if (!isNaN(+this.param.currentPage)) {
-    this.param.currentPage = +this.param.currentPage;
-    this.param.pageSize = +this.param.pageSize || 10;
-
-    const { currentPage, pageSize } = this.param;
-    this.state.page = {
-      currentPage,
-      pageSize,
-      totalCount: 0,
-    };
-    this.state.pageMixin = {
-      offset: (currentPage - 1) * pageSize,
-      limit: pageSize,
-    };
-  }
-  yield next;
-});
+router.use(mergeParams);
+router.use(responder);
 
 router.use('/user', user.routes());
 router.use('/owner', owner.routes());
 router.use('/admin', admin.routes());
 router.use(general.routes());
 
-router.use(function* respondMiddleware(next) {
-  try {
-    yield next;
-    const { respond, page } = this.state;
-    const body = { data: respond, page };
-    this.body = {
-      res: true,
-      ...body,
-    };
-  } catch (e) {
-    this.body = {
-      ret: false,
-      status: e.status || 500,
-      message: e.message || '服务器错误',
-    };
-    // this.app.emit('error', e, this);
-    return;
-  }
-});
+router.use();
 
 export default router;

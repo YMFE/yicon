@@ -9,3 +9,11 @@ export const versionTools = {
       .join('.');
   },
 };
+
+export const isPlainObject = obj => {
+  try {
+    return JSON.stringify(obj) === '{}';
+  } catch (e) {
+    return false;
+  }
+};
