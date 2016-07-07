@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchRepositoryData } from '../../actions/repository';
-import { addIconToCart, deleteIconInCart } from '../../actions/cart';
+import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 import styles from './Repository.scss';
 import Icon from '../../components/common/Icon/Icon.jsx';
 
@@ -10,7 +10,7 @@ import Icon from '../../components/common/Icon/Icon.jsx';
     list: state.repository.currRepository.icons,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
-  { fetchRepositoryData, addIconToCart, deleteIconInCart }
+  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
 )
 export default class Repository extends Component {
   componentDidMount() {
@@ -29,9 +29,9 @@ export default class Repository extends Component {
       (Id) => (
         () => {
           if (this.props.iconsInLocalStorage.indexOf(Id) !== -1) {
-            this.props.deleteIconInCart(Id);
+            this.props.deleteIconInLocalStorage(Id);
           } else {
-            this.props.addIconToCart(Id);
+            this.props.addIconToLocalStorage(Id);
           }
         }
       )
@@ -61,8 +61,8 @@ Repository.propTypes = {
     id: PropTypes.string.isRequired,
   }),
   fetchRepositoryData: PropTypes.func,
-  addIconToCart: PropTypes.func,
-  deleteIconInCart: PropTypes.func,
+  addIconToLocalStorage: PropTypes.func,
+  deleteIconInLocalStorage: PropTypes.func,
   list: PropTypes.array,
   iconsInLocalStorage: PropTypes.array,
 };

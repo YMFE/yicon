@@ -8,14 +8,14 @@ import styles from './Cart.scss';
 import {
   getIconsInLocalStorage,
   getIconsInCart,
-  deleteIconInCart,
+  deleteIconInLocalStorage,
 } from '../../../actions/cart';
 
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
     iconsInCart: state.cart.iconsInCart }),
-  { getIconsInLocalStorage, getIconsInCart, deleteIconInCart }
+  { getIconsInLocalStorage, getIconsInCart, deleteIconInLocalStorage }
 )
 class Cart extends Component {
   constructor(props) {
@@ -50,11 +50,11 @@ class Cart extends Component {
     });
   }
 
-  remove(iconId) {
+  removeFromCart(iconId) {
     return (
       (id) => (
         () => {
-          this.props.deleteIconInCart(id);
+          this.props.deleteIconInLocalStorage(id);
           setTimeout(() => {
             this.props.getIconsInCart({
               icons: this.props.iconsInLocalStorage,
@@ -90,7 +90,7 @@ class Cart extends Component {
           <Paper style={{ width: '346px', height: '150px' }}>
             {
               iconsInCart.map((icon) => (
-                <div key={icon.id} className={styles.icon} onClick={this.remove(icon.id)}>
+                <div key={icon.id} className={styles.icon} onClick={this.removeFromCart(icon.id)}>
                   <Icon size={20} d={icon.path} />
                 </div>
               ))
@@ -107,7 +107,7 @@ Cart.propTypes = {
   iconsInCart: PropTypes.array,
   getIconsInLocalStorage: PropTypes.func,
   getIconsInCart: PropTypes.func,
-  deleteIconInCart: PropTypes.func,
+  deleteIconInLocalStorage: PropTypes.func,
 };
 
 export default Cart;

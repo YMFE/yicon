@@ -37,14 +37,14 @@ export function getIconsInLocalStorage() {
   };
 }
 
-export function addIconToCart(id) {
+export function addIconToLocalStorage(id) {
   return {
     type: ADD_ICON_TO_CART,
     payload: addToLocalStorage(id),
   };
 }
 
-export function deleteIconInCart(id) {
+export function deleteIconInLocalStorage(id) {
   return {
     type: DELETE_ICON_IN_CART,
     payload: deleteInLocalStorage(id),
