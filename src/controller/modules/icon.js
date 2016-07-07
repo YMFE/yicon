@@ -1,5 +1,6 @@
 import { Icon } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
+import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
   const { icons } = this.param;
@@ -21,6 +22,7 @@ export function* getByCondition(next) {
   const query = `%${decodeURI(q)}%`;
   this.state.respond = yield Icon.findAll({
     where: {
+      status: { $gte: iconStatus.RESOLVED },
       $or: {
         name: { $like: query },
         tags: { $like: query },
