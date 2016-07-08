@@ -53,6 +53,7 @@ Project.hasMany(Log, {
     scope: 'project',
   },
 });
+Project.belongsToMany(User, { through: UserProject });
 
 User.hasMany(Icon, { foreignKey: 'uploader' });
 User.hasMany(Repo, { foreignKey: 'admin' });
