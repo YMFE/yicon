@@ -10,4 +10,8 @@ export default seq.define('projects', {
     type: Seq.STRING,
     allowNull: false,
   },
+  public: {
+    type: Seq.BOOLEAN,
+    defaultValue: false,
+  },
 });
