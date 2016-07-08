@@ -15,5 +15,6 @@ general.get('/icons', getByCondition);
 general.get('/logs/repositories/:repoId', pagination, getRepoLogs);
 general.get('/projects', getAllProjects);
 general.get('/projects/:projectId', getOneProject);
+general.get('/projects/:projectId/version/:version', getOneProject);
 
 export default general;

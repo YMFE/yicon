@@ -54,6 +54,7 @@ Project.hasMany(Log, {
   },
 });
 Project.belongsToMany(User, { through: UserProject });
+Project.belongsTo(User, { foreignKey: 'owner', as: 'projectOwner' });
 
 User.hasMany(Icon, { foreignKey: 'uploader' });
 User.hasMany(Repo, { foreignKey: 'admin' });
