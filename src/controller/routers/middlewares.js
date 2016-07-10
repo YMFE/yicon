@@ -1,3 +1,4 @@
+import { Project } from '../../model';
 export function* mergeParams(next) {
   this.param = {
     ...this.query,
@@ -46,5 +47,21 @@ export function* pagination(next) {
     offset: (currentPage - 1) * pageSize,
     limit: pageSize,
   };
+  yield next;
+}
+
+export function* getCurrentUser(next) {
+  this.state.user = {
+    userId: 22,
+  };
+  const { projectId } = this.param;
+  const project = yield Project.findOne({ where: { id: projectId } });
+  if (project && !project.dataValues.public) {
+    const members = yield project.getUsers();
+    const isBelongToMembers = members.some(
+      (value) => value.dataValues.id === this.state.user.userId
+    );
+    if (!isBelongToMembers) throw new Error('没有权限');
+  }
   yield next;
 }

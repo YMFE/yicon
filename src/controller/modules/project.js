@@ -1,7 +1,7 @@
 import { User, Project } from '../../model';
 
 export function* getAllProjects(next) {
-  const userId = 380;
+  const { userId } = this.state.user;
 
   const user = yield User.findOne({ where: { id: userId } });
   const projects = yield user.getProjects();
@@ -19,6 +19,7 @@ export function* getAllProjects(next) {
 
 export function* getOneProject(next) {
   const { projectId, version = '0.0.0' } = this.param;
+  const { userId } = this.state.user;
   let result = {};
 
   if (projectId === '') throw new Error('不支持传入空参数');
@@ -34,7 +35,7 @@ export function* getOneProject(next) {
   result.version = version;
   result.icons = yield project.getIcons();
   result.members = yield project.getUsers();
-  result.isOwner = true; // 加入用户系统后再修改
+  result.isOwner = userId === result.projectOwner.dataValues.id;
 
   this.state.respond = result;
   yield next;
