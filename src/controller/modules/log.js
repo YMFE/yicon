@@ -1,4 +1,24 @@
-import { User, Repo, Log } from '../../model';
+import { User, Repo, Log, Project } from '../../model';
+
+
+function* getLog(id, model, scope, pageMixin) {
+  const data = yield model.findOne({ where: { id } });
+  const logs = yield data.getLogs({
+    attributes: { exclude: ['operator'] },
+    include: [
+      { model, as: scope },
+      { model: User, as: 'logCreator' },
+    ],
+    ...pageMixin,
+  });
+  const totalCount = yield Log.count({
+    where: {
+      loggerId: id,
+      scope,
+    },
+  });
+  return { logs, totalCount };
+}
 
 export function* getRepoLogs(next) {
   const { repoId } = this.param;
@@ -19,5 +39,20 @@ export function* getRepoLogs(next) {
       scope: 'repo',
     },
   });
+  yield next;
+}
+
+export function* getLogList(next) {
+  const { repoId, projectId } = this.param;
+  const pageMixin = this.state.pageMixin;
+  let result = {};
+  if (repoId) {
+    result = yield getLog(repoId, Repo, 'repo', pageMixin);
+  } else if (projectId) {
+    result = yield getLog(projectId, Project, 'project', pageMixin);
+  }
+
+  this.state.respond = result.logs;
+  this.state.page.totalCount = result.totalCount;
   yield next;
 }
