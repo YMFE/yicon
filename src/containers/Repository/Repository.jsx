@@ -13,7 +13,7 @@ import Icon from '../../components/common/Icon/Icon.jsx';
   { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
 )
 export default class Repository extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchRepositoryData(parseInt(this.props.params.id, 10));
   }
 
