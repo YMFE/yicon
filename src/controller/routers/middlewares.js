@@ -1,4 +1,4 @@
-import { Project } from '../../model';
+import { UserProject } from '../../model';
 export function* mergeParams(next) {
   this.param = {
     ...this.query,
@@ -55,13 +55,12 @@ export function* getCurrentUser(next) {
     userId: 22,
   };
   const { projectId } = this.param;
-  const project = yield Project.findOne({ where: { id: projectId } });
-  if (project && !project.dataValues.public) {
-    const members = yield project.getUsers();
-    const isBelongToMembers = members.some(
-      (value) => value.dataValues.id === this.state.user.userId
-    );
-    if (!isBelongToMembers) throw new Error('没有权限');
-  }
+  const isBelongToMembers = yield UserProject.findOne({
+    where: {
+      userId: this.state.user.userId,
+      projectId,
+    },
+  });
+  if (projectId && !isBelongToMembers) throw new Error('没有权限');
   yield next;
 }
