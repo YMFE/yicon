@@ -38,7 +38,7 @@ ReactDOM.render(
   <Provider store={store} key="provider">
     <div>
       <Router history={history}>
-        {routes(store)}
+        {routes()}
       </Router>
       <DevToolsContainer />
     </div>

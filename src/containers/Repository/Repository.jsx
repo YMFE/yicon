@@ -14,7 +14,7 @@ import Icon from '../../components/common/Icon/Icon.jsx';
 )
 export default class Repository extends Component {
   componentDidMount() {
-    this.props.fetchRepositoryData(this.props.params.id);
+    this.props.fetchRepositoryData(parseInt(this.props.params.id, 10));
   }
 
   getColor(id) {
@@ -24,18 +24,16 @@ export default class Repository extends Component {
     return '';
   }
 
-  selectIcon(iconId) {
+  selectIcon(id) {
     return (
-      (Id) => (
-        () => {
-          if (this.props.iconsInLocalStorage.indexOf(Id) !== -1) {
-            this.props.deleteIconInLocalStorage(Id);
-          } else {
-            this.props.addIconToLocalStorage(Id);
-          }
+      () => {
+        if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
+          this.props.deleteIconInLocalStorage(id);
+        } else {
+          this.props.addIconToLocalStorage(id);
         }
-      )
-    )(iconId);
+      }
+    );
   }
 
   render() {

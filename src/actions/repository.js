@@ -17,7 +17,7 @@ export function fetchHomeData() {
   };
 }
 
-export function fetchRepositoryData(id) {
+function fetchRepository(id) {
   return {
     type: FETCH_REPOSITORY_DATA,
     payload: fetch.get(`/repositories/${id}`),
@@ -30,5 +30,18 @@ export function clearRepositoryData() {
     payload: {
       icons: [],
     },
+  };
+}
+
+export function fetchRepositoryData(id) {
+  return (dispatch, getState) => {
+    const { currRepository } = getState().repository;
+
+    if (id === currRepository.id) {
+      return;
+    }
+
+    dispatch(clearRepositoryData());
+    dispatch(fetchRepository(id));
   };
 }

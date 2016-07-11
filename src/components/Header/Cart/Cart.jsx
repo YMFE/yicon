@@ -50,19 +50,17 @@ class Cart extends Component {
     });
   }
 
-  removeFromCart(iconId) {
+  removeFromCart(id) {
     return (
-      (id) => (
-        () => {
-          this.props.deleteIconInLocalStorage(id);
-          setTimeout(() => {
-            this.props.getIconsInCart({
-              icons: this.props.iconsInLocalStorage,
-            });
-          }, 0);
-        }
-      )
-    )(iconId);
+      () => {
+        this.props.deleteIconInLocalStorage(id);
+        setTimeout(() => {
+          this.props.getIconsInCart({
+            icons: this.props.iconsInLocalStorage,
+          });
+        }, 0);
+      }
+    );
   }
 
   render() {
