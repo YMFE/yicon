@@ -5,7 +5,6 @@ import { getRepoLogs } from '../modules/log';
 
 import { pagination } from './middlewares';
 
-
 const general = new Router();
 
 general.get('/repositories', list);
