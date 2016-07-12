@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchRepositoryData, resetIconSize } from '../../actions/repository';
+import { fetchRepositoryData } from '../../actions/repository';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 import styles from './Repository.scss';
 import Icon from '../../components/common/Icon/Icon.jsx';
@@ -10,12 +10,11 @@ import Icon from '../../components/common/Icon/Icon.jsx';
     list: state.repository.currRepository.icons,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
-  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage, resetIconSize }
+  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
 )
 export default class Repository extends Component {
   componentWillMount() {
     this.props.fetchRepositoryData(this.props.params.id);
-    this.props.resetIconSize();
   }
 
   getColor(id) {
@@ -62,7 +61,6 @@ Repository.propTypes = {
   fetchRepositoryData: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
-  resetIconSize: PropTypes.func,
   list: PropTypes.array,
   iconsInLocalStorage: PropTypes.array,
 };
