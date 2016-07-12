@@ -44,11 +44,11 @@ export function* getRepoLogs(next) {
 
 export function* getLogList(next) {
   const { repoId, projectId } = this.param;
-  const pageMixin = this.state.pageMixin;
+  const { pageMixin } = this.state;
   let result = {};
-  if (repoId) {
+  if (!isNaN(repoId)) {
     result = yield getLog(repoId, Repo, 'repo', pageMixin);
-  } else if (projectId) {
+  } else if (!isNaN(projectId)) {
     result = yield getLog(projectId, Project, 'project', pageMixin);
   }
 
