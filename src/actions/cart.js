@@ -11,13 +11,18 @@ function addToLocalStorage(id) {
   if (!localStorage.cartIconIds) {
     localStorage.cartIconIds = JSON.stringify([]);
   }
-  localStorage.cartIconIds = JSON.stringify(JSON.parse(localStorage.cartIconIds).concat([id]));
-  return id;
+  const icons = JSON.parse(localStorage.cartIconIds);
+  if (icons.indexOf(id) === -1) {
+    localStorage.cartIconIds = JSON.stringify(icons.concat([id]));
+  }
 }
 function deleteInLocalStorage(id) {
-  const icons = JSON.parse(localStorage.cartIconIds);
-  localStorage.cartIconIds = JSON.stringify(icons.filter((iconId) => (iconId !== id)));
-  return id;
+  if (!localStorage.cartIconIds) {
+    localStorage.cartIconIds = JSON.stringify([]);
+  }
+  const icons = JSON.parse(localStorage.cartIconIds).filter((iconId) => (iconId !== id));
+  localStorage.cartIconIds = JSON.stringify(icons);
+  return icons;
 }
 
 export function getIconsInCart(iconIds) {
@@ -38,15 +43,27 @@ export function getIconsInLocalStorage() {
 }
 
 export function addIconToLocalStorage(id) {
-  return {
-    type: ADD_ICON_TO_CART,
-    payload: addToLocalStorage(id),
+  return (dispatch, getState) => {
+    addToLocalStorage(id);
+    const { iconsInLocalStorage } = getState().cart;
+    if (iconsInLocalStorage.indexOf(id) === -1) {
+      dispatch({
+        type: ADD_ICON_TO_CART,
+        payload: id,
+      });
+    }
   };
 }
 
-export function deleteIconInLocalStorage(id) {
-  return {
-    type: DELETE_ICON_IN_CART,
-    payload: deleteInLocalStorage(id),
+export function deleteIconInLocalStorage(id, isFetchIcons) {
+  return (dispatch) => {
+    const icons = deleteInLocalStorage(id);
+    if (isFetchIcons) {
+      dispatch(getIconsInCart({ icons }));
+    }
+    dispatch({
+      type: DELETE_ICON_IN_CART,
+      payload: id,
+    });
   };
 }

@@ -48,6 +48,6 @@ Icon.propTypes = {
   fill: PropTypes.string,
 };
 
-Icon.defaultProps = { size: 32 };
+Icon.defaultProps = { size: 32, fill: '#000' };
 
 export default Icon;

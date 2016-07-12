@@ -28,7 +28,9 @@ export default (state = initialState, action) => {
     case CLEAR_REPOSITORY_DATA: {
       return {
         ...state,
-        currRepository: action.payload,
+        currRepository: {
+          icons: [],
+        },
       };
     }
     default:

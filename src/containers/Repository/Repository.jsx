@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchRepositoryData } from '../../actions/repository';
+import { fetchRepositoryData, resetIconSize } from '../../actions/repository';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 import styles from './Repository.scss';
 import Icon from '../../components/common/Icon/Icon.jsx';
@@ -10,18 +10,19 @@ import Icon from '../../components/common/Icon/Icon.jsx';
     list: state.repository.currRepository.icons,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
-  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
+  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage, resetIconSize }
 )
 export default class Repository extends Component {
   componentWillMount() {
-    this.props.fetchRepositoryData(parseInt(this.props.params.id, 10));
+    this.props.fetchRepositoryData(this.props.params.id);
+    this.props.resetIconSize();
   }
 
   getColor(id) {
     if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
       return '#00bcd4';
     }
-    return '';
+    return '#000';
   }
 
   selectIcon(id) {
@@ -61,6 +62,7 @@ Repository.propTypes = {
   fetchRepositoryData: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
+  resetIconSize: PropTypes.func,
   list: PropTypes.array,
   iconsInLocalStorage: PropTypes.array,
 };

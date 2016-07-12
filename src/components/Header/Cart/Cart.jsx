@@ -14,7 +14,8 @@ import {
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
-    iconsInCart: state.cart.iconsInCart }),
+    iconsInCart: state.cart.iconsInCart,
+  }),
   { getIconsInLocalStorage, getIconsInCart, deleteIconInLocalStorage }
 )
 class Cart extends Component {
@@ -53,12 +54,7 @@ class Cart extends Component {
   removeFromCart(id) {
     return (
       () => {
-        this.props.deleteIconInLocalStorage(id);
-        setTimeout(() => {
-          this.props.getIconsInCart({
-            icons: this.props.iconsInLocalStorage,
-          });
-        }, 0);
+        this.props.deleteIconInLocalStorage(id, true);
       }
     );
   }

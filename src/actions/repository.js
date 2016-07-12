@@ -27,9 +27,6 @@ function fetchRepository(id) {
 export function clearRepositoryData() {
   return {
     type: CLEAR_REPOSITORY_DATA,
-    payload: {
-      icons: [],
-    },
   };
 }
 
@@ -37,7 +34,7 @@ export function fetchRepositoryData(id) {
   return (dispatch, getState) => {
     const { currRepository } = getState().repository;
 
-    if (id !== currRepository.id) {
+    if (String(id) !== String(currRepository.id)) {
       dispatch(clearRepositoryData());
     }
 
