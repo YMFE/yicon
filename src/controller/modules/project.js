@@ -1,4 +1,5 @@
-import { User, Project } from '../../model';
+import { User, Project, ProjectVersion } from '../../model';
+import { versionTools } from '../../helpers/utils';
 
 export function* getAllProjects(next) {
   const { userId } = this.state.user;
@@ -33,10 +34,25 @@ export function* getOneProject(next) {
   result = project.dataValues;
 
   result.version = version;
-  result.icons = yield project.getIcons();
+  result.icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: { version: versionTools.v2n(version) },
+    },
+  });
   result.members = yield project.getUsers();
   result.isOwner = userId === result.projectOwner.dataValues.id;
 
   this.state.respond = result;
+  yield next;
+}
+
+export function* addProjectIcon(next) {
+  const { projectId, icons } = this.param;
+  yield ProjectVersion.create({ version: '2', iconId: icons[0], projectId });
+  // {
+  //   const data = { version: 0, iconId: icons[i], projectId };
+  //   yield ProjectVersion.creare(data);
+  // }
   yield next;
 }
