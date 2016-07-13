@@ -19,29 +19,44 @@ export function* getAllProjects(next) {
 }
 
 export function* getOneProject(next) {
-  const { projectId, version = '0.0.0' } = this.param;
-  const { userId } = this.state.user;
-  let result = {};
+  const { projectId } = this.param;
+  let { version = '0.0.0' } = this.param;
+  const isPublic = !this.state.user;
 
-  if (projectId === '') throw new Error('不支持传入空参数');
+  version = versionTools.v2n(version);
+
+  if (isNaN(projectId)) throw new Error('不支持传入空参数');
+
+  // 公开项目需要按照最大版本号获取
+  if (isPublic) {
+    const getVersion = version
+      ? Promise.resolve(version)
+      : ProjectVersion.max('version', { where: { projectId } });
+    version = yield getVersion;
+    if (!version) throw new Error('公开项目未打版本');
+  }
 
   const project = yield Project.findOne({
-    where: { id: projectId },
+    where: { id: projectId, public: isPublic },
     attributes: { exclude: ['owner'] },
     include: [{ model: User, as: 'projectOwner' }],
   });
   if (!project) throw new Error('暂无数据');
-  result = project.dataValues;
+
+  const result = project.dataValues;
 
   result.version = version;
   result.icons = yield project.getIcons({
     through: {
       model: ProjectVersion,
-      where: { version: versionTools.v2n(version) },
+      where: { version },
     },
   });
   result.members = yield project.getUsers();
-  result.isOwner = userId === result.projectOwner.id;
+
+  if (!isPublic) {
+    result.isOwner = this.state.user.userId === result.projectOwner.id;
+  }
 
   this.state.respond = result;
   yield next;
