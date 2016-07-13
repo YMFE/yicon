@@ -61,3 +61,10 @@ export function* addProjectIcon(next) {
   }
   yield next;
 }
+
+export function* getAllPublicProjects(next) {
+  this.state.respond = yield Project.findAll({
+    where: { public: true },
+  });
+  yield next;
+}

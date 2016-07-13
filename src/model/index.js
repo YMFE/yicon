@@ -6,20 +6,56 @@ import Repo from './tables/repositories';
 import { seq, Seq } from './tables/_db';
 import { versionTools } from '../helpers/utils';
 
-const versionAttribute = {
-  version: {
-    type: Seq.INTEGER,
-    get() {
-      return versionTools.n2v(this.getDataValue('version'));
-    },
-    set(val) {
-      this.setDataValue('version', versionTools.v2n(val));
-    },
+const version = {
+  type: Seq.INTEGER,
+  allowNull: false,
+  primaryKey: true,
+  get() {
+    return versionTools.n2v(this.getDataValue('version'));
+  },
+  set(val) {
+    this.setDataValue('version', versionTools.v2n(val));
   },
 };
 
-const ProjectVersion = seq.define('projectVersions', versionAttribute);
-const RepoVersion = seq.define('repoVersion', versionAttribute);
+const ProjectVersion = seq.define('projectVersions', {
+  version,
+  projectId: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    references: {
+      model: Project,
+      key: 'id',
+    },
+  },
+  iconId: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    references: {
+      model: Icon,
+      key: 'id',
+    },
+  },
+});
+const RepoVersion = seq.define('repoVersion', {
+  version,
+  iconId: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    references: {
+      model: Icon,
+      key: 'id',
+    },
+  },
+  repositoryId: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    references: {
+      model: Repo,
+      key: 'id',
+    },
+  },
+});
 
 const UserProject = seq.define('userProject');
 const UserLog = seq.define('userLog', {
@@ -32,10 +68,28 @@ const UserLog = seq.define('userLog', {
 // 两边都写一下对应关系，以便添加 dao 方法
 Icon.hasOne(Icon, { as: 'oldIcon', foreignKey: 'oldId', constraints: false });
 Icon.hasOne(Icon, { as: 'newIcon', foreignKey: 'newId', constraints: false });
-Icon.belongsToMany(Repo, { through: RepoVersion });
-Icon.belongsToMany(Project, { through: ProjectVersion });
+Icon.belongsToMany(Repo, {
+  through: {
+    model: RepoVersion,
+    unique: false,
+  },
+  constraints: false,
+});
+Icon.belongsToMany(Project, {
+  through: {
+    model: ProjectVersion,
+    unique: false,
+  },
+  constraints: false,
+});
 
-Repo.belongsToMany(Icon, { through: RepoVersion });
+Repo.belongsToMany(Icon, {
+  through: {
+    model: RepoVersion,
+    unique: false,
+  },
+  constraints: false,
+});
 Repo.belongsTo(User, { foreignKey: 'admin' });
 Repo.hasMany(Log, {
   foreignKey: 'loggerId',
@@ -45,7 +99,13 @@ Repo.hasMany(Log, {
   },
 });
 
-Project.belongsToMany(Icon, { through: ProjectVersion });
+Project.belongsToMany(Icon, {
+  through: {
+    model: ProjectVersion,
+    unique: false,
+  },
+  constraints: false,
+});
 Project.hasMany(Log, {
   foreignKey: 'loggerId',
   constraints: false,
