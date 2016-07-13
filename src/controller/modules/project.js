@@ -8,8 +8,8 @@ export function* getAllProjects(next) {
   const projects = yield user.getProjects();
   const result = {
     id: userId,
-    name: user.dataValues.name,
-    actor: user.dataValues.actor,
+    name: user.name,
+    actor: user.actor,
     organization: projects,
   };
 
@@ -41,8 +41,15 @@ export function* getOneProject(next) {
     },
   });
   result.members = yield project.getUsers();
-  result.isOwner = userId === result.projectOwner.dataValues.id;
+  result.isOwner = userId === result.projectOwner.id;
 
   this.state.respond = result;
+  yield next;
+}
+
+export function* getAllPublicProjects(next) {
+  this.state.respond = yield Project.findAll({
+    where: { public: true },
+  });
   yield next;
 }

@@ -52,7 +52,7 @@ export function* pagination(next) {
 
 export function* getCurrentUser(next) {
   this.state.user = {
-    userId: 22,
+    userId: 2,
   };
   const { projectId } = this.param;
   const isBelongToMembers = yield UserProject.findOne({

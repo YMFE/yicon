@@ -1,38 +1,15 @@
-import { Repo, Icon, User, RepoVersion } from '../../model';
-import { versionTools } from '../../helpers/utils';
+import { Repo, Icon, User } from '../../model';
+import { iconStatus } from '../../constants/utils';
 
-function* getRepoByVersion({ repoId, version, limit }) {
-  const getVersion = version
-    ? Promise.resolve(versionTools.v2n(version))
-    : RepoVersion.max('version', { where: { repositoryId: repoId } });
-
-  const finalVersion = yield getVersion;
-  let replacedIcons = yield Icon.findAll({
-    attributes: ['oldId'],
-    include: [{
-      model: Repo,
-      where: { id: repoId },
-      on: { version: { $lte: finalVersion } },
-    }],
-  });
-
-  replacedIcons = replacedIcons
-    .filter(i => i.oldId)
-    .map(i => i.oldId);
-
-  const whereClause = {
-    status: { $gte: 20 },
-  };
-  if (replacedIcons.length) {
-    whereClause.id = { $notIn: replacedIcons };
-  }
-
+// 为了提高查询效率，我们设置默认版本为 0.0.0
+function* getRepoByVersion({ repoId, version = '0.0.0', limit }) {
   const repo = yield Repo.findOne({
     where: { id: repoId },
     include: [{
       model: Icon,
-      where: whereClause,
-      on: { version: { $lte: finalVersion } },
+      attributes: ['id', 'name', 'code', 'path'],
+      where: { status: iconStatus.RESOLVED },
+      on: { version },
     }, User],
   });
 
@@ -71,7 +48,6 @@ export function* list(next) {
 export function* getOne(next) {
   const { repoId, version } = this.param;
 
-  // 这里统一不写在 this.body，最后一个中间件再挂，需要制定一下 this.state 的书写规范
   this.state.respond = yield getRepoByVersion({
     repoId, version,
   });
