@@ -1,4 +1,4 @@
-import { UserProject } from '../../model';
+import { Project, UserProject } from '../../model';
 export function* mergeParams(next) {
   this.param = {
     ...this.query,
@@ -62,5 +62,18 @@ export function* getCurrentUser(next) {
     },
   });
   if (projectId && !isBelongToMembers) throw new Error('没有权限');
+  yield next;
+}
+
+export function* isProjectOwner(next) {
+  const { projectId } = this.param;
+  this.state.user.isOwner = false;
+  if (projectId) {
+    const ownerId = yield Project.findOne({
+      attributes: ['owner'],
+      where: { id: projectId },
+    });
+    this.state.user.isOwner = this.state.user.userId === ownerId.owner;
+  }
   yield next;
 }

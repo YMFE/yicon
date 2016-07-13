@@ -49,16 +49,56 @@ export function* getOneProject(next) {
 
 export function* addProjectIcon(next) {
   const { projectId, icons } = this.param;
-  for (let i = 0, len = icons.length; i < len; i++) {
-    const isExist = yield ProjectVersion.findOne({
-      where: {
-        version: '0',
-        iconId: icons[i],
-        projectId,
-      },
-    });
-    if (!isExist) yield ProjectVersion.create({ version: '0.0.0', iconId: icons[i], projectId });
+  const data = icons.map(
+    (value) => ({ version: '0.0.0', iconId: value, projectId })
+  );
+  const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
+  if (result) {
+    this.state.respond = '添加项目图标成功';
+  } else {
+    this.state.respond = '添加项目图标失败';
   }
+  yield next;
+}
+
+export function* deleteProjectIcon(next) {
+  const { projectId, icons } = this.param;
+  let result = 0;
+  for (let i = 0, len = icons.length; i < len; i++) {
+    result += yield ProjectVersion.destroy({
+      where: { version: '0.0.0', iconId: icons[i], projectId },
+    });
+  }
+  if (result) {
+    this.state.respond = '删除项目图标成功';
+  } else {
+    this.state.respond = '删除项目图标失败';
+  }
+  yield next;
+}
+
+export function* updateProjectInfo(next) {
+  if (this.state.user.isOwner) {
+    const { projectId, info, name, owner, publicProject } = this.param;
+    const data = { info, name, owner, publicProject };
+    let projectResult = null;
+    const key = Object.keys(data);
+    key.forEach((v) => {
+      if (data[v] === undefined) delete data[v];
+    });
+    if (Object.keys(data).length) {
+      projectResult = yield Project.update(data, { where: { id: projectId } });
+    }
+    if (projectResult) {
+      this.state.respond = '项目信息更新成功';
+    } else {
+      this.state.respond = '项目信息更新失败';
+    }
+  }
+  yield next;
+}
+
+export function* updateProjectMember(next) {
   yield next;
 }
 
