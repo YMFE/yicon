@@ -62,6 +62,39 @@ export function* getOneProject(next) {
   yield next;
 }
 
+export function* generatorNewVersion(next) {
+  const { versionType = 'build', projectId } = this.param;
+  const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
+  const versionTo = versionTools.update(versionFrom, versionType);
+
+  const versions = yield ProjectVersion.findAll({
+    where: { projectId, version: '0.0.0' },
+  });
+  const rawData = versions.map(v => ({
+    ...v.get({ plain: true }), version: versionTo,
+  }));
+
+  this.state.respond = yield ProjectVersion.bulkCreate(rawData);
+
+  const affectedProject = yield Project.findOne({
+    where: { id: projectId },
+    include: [User],
+  });
+  const affectedUsers = affectedProject.get({ plain: true }).members.map(v => v.id);
+
+  // 配置项目 log
+  this.state.log = {
+    params: {
+      versionFrom,
+      versionTo,
+    },
+    loggerId: projectId,
+    subscribers: affectedUsers,
+  };
+
+  yield next;
+}
+
 export function* getAllPublicProjects(next) {
   this.state.respond = yield Project.findAll({
     where: { public: true },

@@ -149,6 +149,7 @@ export {
   RepoVersion,
   ProjectVersion,
   UserProject,
+  UserLog as Notification,
 };
 
 // 处理与数据库的连接情况

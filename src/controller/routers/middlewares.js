@@ -55,12 +55,16 @@ export function* getCurrentUser(next) {
     userId: 2,
   };
   const { projectId } = this.param;
-  const isBelongToMembers = yield UserProject.findOne({
-    where: {
-      userId: this.state.user.userId,
-      projectId,
-    },
-  });
-  if (projectId && !isBelongToMembers) throw new Error('没有权限');
+
+  if (projectId) {
+    const isBelongToMembers = yield UserProject.findOne({
+      where: {
+        userId: this.state.user.userId,
+        projectId,
+      },
+    });
+    if (!isBelongToMembers) throw new Error('没有权限');
+  }
+
   yield next;
 }
