@@ -14,7 +14,7 @@ user.use(getCurrentUser);
 user.get('/projects', getAllProjects);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
-user.post('/projects/:projectId/update', generatorNewVersion, recordLog);
+user.post('/projects/:projectId/update', generatorNewVersion, recordLog('PROJECT_VERSION'));
 
 user.get('/log/projects/:projectId', pagination, getLogList);
 

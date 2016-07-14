@@ -61,7 +61,7 @@ const UserProject = seq.define('userProject');
 const UserLog = seq.define('userLog', {
   unread: {
     type: Seq.BOOLEAN,
-    default: true,
+    defaultValue: true,
   },
 });
 

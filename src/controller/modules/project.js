@@ -65,6 +65,9 @@ export function* getOneProject(next) {
 export function* generatorNewVersion(next) {
   const { versionType = 'build', projectId } = this.param;
   const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
+
+  if (isNaN(versionFrom)) throw new Error('空项目不可进行版本升级');
+
   const versionTo = versionTools.update(versionFrom, versionType);
 
   const versions = yield ProjectVersion.findAll({
@@ -80,12 +83,12 @@ export function* generatorNewVersion(next) {
     where: { id: projectId },
     include: [User],
   });
-  const affectedUsers = affectedProject.get({ plain: true }).members.map(v => v.id);
+  const affectedUsers = affectedProject.get({ plain: true }).users.map(v => v.id);
 
   // 配置项目 log
   this.state.log = {
     params: {
-      versionFrom,
+      versionFrom: versionTools.n2v(versionFrom),
       versionTo,
     },
     loggerId: projectId,

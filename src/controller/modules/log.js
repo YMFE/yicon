@@ -1,4 +1,4 @@
-import { User, Repo, Log, Project } from '../../model';
+import { User, Repo, Log, Project, Notification } from '../../model';
 import { Logger } from '../../helpers/utils';
 
 function* getLog(id, model, scope, pageMixin) {
@@ -41,17 +41,20 @@ export function* getLogList(next) {
  */
 export function recordLog(type) {
   return function* recordLogByType(next) {
-    const { params, loggerId } = this.state.log;
+    const { params, loggerId, subscribers } = this.state.log;
     const log = new Logger(type, params);
     const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
-    const logId = yield Log.create({
+    const logModel = yield Log.create({
       type,
       loggerId,
       scope,
       operation: log.text,
     });
-    console.log(logId);
 
+    yield Notification.bulkCreate(subscribers.map(v => ({
+      userId: v,
+      logId: logModel.id,
+    })));
     yield next;
   };
 }

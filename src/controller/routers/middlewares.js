@@ -22,7 +22,7 @@ export function* responder(next) {
     this.body = {
       ret: false,
       status: e.status || 500,
-      message: e.message || '服务器错误',
+      message: e.stack || '服务器错误',
     };
     // this.app.emit('error', e, this);
     return;
