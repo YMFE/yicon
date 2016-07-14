@@ -78,7 +78,7 @@ export function* deleteProjectIcon(next) {
 }
 
 export function* updateProjectInfo(next) {
-  if (this.state.user.isOwner) {
+  if (this.state.user.isProjectOwner) {
     const { projectId, info, name, owner, publicProject } = this.param;
     const data = { info, name, owner, public: publicProject };
     let projectResult = null;
@@ -105,7 +105,7 @@ export function* updateProjectMember(next) {
   let flag = true; // 标志位，当是owner且删除数据成功时flag才会重置为true
 
   if (projectId && members.length) {
-    if (this.state.user.isOwner && members.indexOf(this.state.user.ownerId) > -1) {
+    if (this.state.user.isProjectOwner && members.indexOf(this.state.user.ownerId) > -1) {
       flag = false;
       let oldMember = yield UserProject.findAll({ where: { projectId }, raw: true });
       oldMember = oldMember.map((v) => v.userId);
@@ -125,6 +125,7 @@ export function* updateProjectMember(next) {
   }
   this.state.log = {
     params: { user: deleteMember },
+    loggerId: projectId,
     subscribers: members.concat(deleteMember),
   };
   yield next;

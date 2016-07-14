@@ -54,3 +54,27 @@ export function* getOne(next) {
 
   yield next;
 }
+
+export function* updateRepoNotice(next) {
+  const { repoId, notice } = this.param;
+  let repoResult = 0;
+  if (notice !== undefined) repoResult = yield Repo.update({ notice }, { where: { id: repoId } });
+  if (repoResult) {
+    this.state.respond = '大库通知更新成功';
+  } else {
+    this.state.respond = '大库通知更新失败';
+  }
+  yield next;
+}
+
+export function* updateRepoOwner(next) {
+  const { repoId, admin } = this.param;
+  let repoResult = 0;
+  if (admin !== undefined) repoResult = yield Repo.update({ admin }, { where: { id: repoId } });
+  if (repoResult) {
+    this.state.respond = '大库所有者更改成功';
+  } else {
+    this.state.respond = '大库所有者更改失败';
+  }
+  yield next;
+}
