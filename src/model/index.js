@@ -61,7 +61,7 @@ const UserProject = seq.define('userProject');
 const UserLog = seq.define('userLog', {
   unread: {
     type: Seq.BOOLEAN,
-    default: true,
+    defaultValue: true,
   },
 });
 
@@ -138,7 +138,19 @@ Log.belongsTo(Project, {
   as: 'project',
 });
 
-export { seq, Seq, User, Icon, Log, Project, Repo, RepoVersion, UserProject, ProjectVersion };
+export {
+  seq,
+  Seq,
+  User,
+  Icon,
+  Log,
+  Project,
+  Repo,
+  RepoVersion,
+  ProjectVersion,
+  UserProject,
+  UserLog as Notification,
+};
 
 // 处理与数据库的连接情况
 const force = { SYNC_FORCE: true, SYNC: false }[process.env.SEQUELIZE_SYNC];

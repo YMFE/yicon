@@ -19,31 +19,81 @@ export function* getAllProjects(next) {
 }
 
 export function* getOneProject(next) {
-  const { projectId, version = '0.0.0' } = this.param;
-  const { userId } = this.state.user;
-  let result = {};
+  const { projectId } = this.param;
+  let { version = '0.0.0' } = this.param;
+  const isPublic = !this.state.user;
 
-  if (projectId === '') throw new Error('不支持传入空参数');
+  version = versionTools.v2n(version);
+
+  if (isNaN(projectId)) throw new Error('不支持传入空参数');
+
+  // 公开项目需要按照最大版本号获取
+  if (isPublic) {
+    const getVersion = version
+      ? Promise.resolve(version)
+      : ProjectVersion.max('version', { where: { projectId } });
+    version = yield getVersion;
+    if (!version) throw new Error('公开项目未打版本');
+  }
 
   const project = yield Project.findOne({
-    where: { id: projectId },
+    where: { id: projectId, public: isPublic },
     attributes: { exclude: ['owner'] },
     include: [{ model: User, as: 'projectOwner' }],
   });
   if (!project) throw new Error('暂无数据');
-  result = project.dataValues;
+
+  const result = project.dataValues;
 
   result.version = version;
   result.icons = yield project.getIcons({
     through: {
       model: ProjectVersion,
-      where: { version: versionTools.v2n(version) },
+      where: { version },
     },
   });
   result.members = yield project.getUsers();
-  result.isOwner = userId === result.projectOwner.id;
+
+  if (!isPublic) {
+    result.isOwner = this.state.user.userId === result.projectOwner.id;
+  }
 
   this.state.respond = result;
+  yield next;
+}
+
+export function* generatorNewVersion(next) {
+  const { versionType = 'build', projectId } = this.param;
+  const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
+
+  if (isNaN(versionFrom)) throw new Error('空项目不可进行版本升级');
+
+  const versionTo = versionTools.update(versionFrom, versionType);
+
+  const versions = yield ProjectVersion.findAll({
+    where: { projectId, version: '0.0.0' },
+  });
+  const rawData = versions.map(v => ({
+    ...v.get({ plain: true }), version: versionTo,
+  }));
+
+  this.state.respond = yield ProjectVersion.bulkCreate(rawData);
+
+  const affectedProject = yield Project.findOne({
+    where: { id: projectId },
+    include: [User],
+  });
+  const affectedUsers = affectedProject.get({ plain: true }).users.map(v => v.id);
+
+  // 配置项目 log
+  this.state.log = {
+    params: {
+      versionFrom: versionTools.n2v(versionFrom),
+      versionTo,
+    },
+    loggerId: projectId,
+    subscribers: affectedUsers,
+  };
   yield next;
 }
 
@@ -53,7 +103,7 @@ export function* addProjectIcon(next) {
     (value) => ({ version: '0.0.0', iconId: value, projectId })
   );
   const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
-  if (result) {
+  if (result.length) {
     this.state.respond = '添加项目图标成功';
   } else {
     this.state.respond = '添加项目图标失败';
@@ -78,22 +128,29 @@ export function* deleteProjectIcon(next) {
 }
 
 export function* updateProjectInfo(next) {
-  if (this.state.user.isProjectOwner) {
-    const { projectId, info, name, owner, publicProject } = this.param;
-    const data = { info, name, owner, public: publicProject };
-    let projectResult = null;
-    const key = Object.keys(data);
-    key.forEach((v) => {
-      if (data[v] === undefined) delete data[v];
-    });
-    if (Object.keys(data).length) {
-      projectResult = yield Project.update(data, { where: { id: projectId } });
+  if (!this.state.user.isProjectOwner) throw new Error('普通成员无权限修改项目信息');
+
+  const { projectId, info, name, owner, publicProject } = this.param;
+  const data = { info, name, owner, public: publicProject };
+  let projectResult = null;
+  if (name) {
+    const existProject = yield Project.findOne({ where: { name }, raw: true });
+    if (existProject) {
+      const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
+      throw new Error(`项目名已被使用，请更改，如有需要请联系${ownerName.name}`);
     }
-    if (projectResult) {
-      this.state.respond = '项目信息更新成功';
-    } else {
-      this.state.respond = '项目信息更新失败';
-    }
+  }
+  const key = Object.keys(data);
+  key.forEach((v) => {
+    if (data[v] === undefined) delete data[v];
+  });
+  if (Object.keys(data).length) {
+    projectResult = yield Project.update(data, { where: { id: projectId } });
+  }
+  if (projectResult) {
+    this.state.respond = '项目信息更新成功';
+  } else {
+    this.state.respond = '项目信息更新失败';
   }
   yield next;
 }

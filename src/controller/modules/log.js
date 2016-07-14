@@ -1,5 +1,5 @@
-import { User, Repo, Log, Project } from '../../model';
-
+import { User, Repo, Log, Project, Notification } from '../../model';
+import { Logger } from '../../helpers/utils';
 
 function* getLog(id, model, scope, pageMixin) {
   const data = yield model.findOne({ where: { id } });
@@ -20,28 +20,6 @@ function* getLog(id, model, scope, pageMixin) {
   return { logs, totalCount };
 }
 
-export function* getRepoLogs(next) {
-  const { repoId } = this.param;
-
-  const repo = yield Repo.findOne({ where: { id: repoId } });
-  this.state.respond = yield repo.getLogs({
-    attributes: { exclude: ['operator'] },
-    include: [
-      { model: Repo, as: 'repo' },
-      { model: User, as: 'logCreator' },
-    ],
-    ...this.state.pageMixin,
-  });
-
-  this.state.page.totalCount = yield Log.count({
-    where: {
-      loggerId: repo.id,
-      scope: 'repo',
-    },
-  });
-  yield next;
-}
-
 export function* getLogList(next) {
   const { repoId, projectId } = this.param;
   const { pageMixin } = this.state;
@@ -55,4 +33,28 @@ export function* getLogList(next) {
   this.state.respond = result.logs;
   this.state.page.totalCount = result.totalCount;
   yield next;
+}
+
+/**
+ * 记录日志中间件，需要分析 state.log
+ * 同时确定日志（通知）的发送对象
+ */
+export function recordLog(type) {
+  return function* recordLogByType(next) {
+    const { params, loggerId, subscribers } = this.state.log;
+    const log = new Logger(type, params);
+    const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
+    const logModel = yield Log.create({
+      type,
+      loggerId,
+      scope,
+      operation: log.text,
+    });
+
+    yield Notification.bulkCreate(subscribers.map(v => ({
+      userId: v,
+      logId: logModel.id,
+    })));
+    yield next;
+  };
 }

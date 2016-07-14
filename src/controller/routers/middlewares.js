@@ -22,7 +22,7 @@ export function* responder(next) {
     this.body = {
       ret: false,
       status: e.status || 500,
-      message: e.message || '服务器错误',
+      message: e.stack || '服务器错误',
     };
     // this.app.emit('error', e, this);
     return;
@@ -55,13 +55,17 @@ export function* getCurrentUser(next) {
     userId: 2,
   };
   const { projectId } = this.param;
-  const isBelongToMembers = yield UserProject.findOne({
-    where: {
-      userId: this.state.user.userId,
-      projectId,
-    },
-  });
-  if (projectId && !isBelongToMembers) throw new Error('没有权限');
+
+  if (projectId) {
+    const isBelongToMembers = yield UserProject.findOne({
+      where: {
+        userId: this.state.user.userId,
+        projectId,
+      },
+    });
+    if (!isBelongToMembers) throw new Error('没有权限');
+  }
+
   yield next;
 }
 
@@ -89,7 +93,7 @@ export function* isRepoOwner(next) {
     });
     repoOwner = this.state.user.userId === ownerId.admin;
   }
-  if (!repoOwner) throw new Error('没有权限');
+  if (!repoOwner) throw new Error('非大库管理员，没有权限');
   yield next;
 }
 
@@ -103,6 +107,6 @@ export function* isAdmin(next) {
     });
     admin = actor.actor === 2;
   }
-  if (!admin) throw new Error('没有权限');
+  if (!admin) throw new Error('非超管，没有权限');
   yield next;
 }
