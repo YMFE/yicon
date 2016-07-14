@@ -25,15 +25,13 @@ export default class Repository extends Component {
   }
 
   selectIcon(id) {
-    return (
-      () => {
-        if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
-          this.props.deleteIconInLocalStorage(id);
-        } else {
-          this.props.addIconToLocalStorage(id);
-        }
+    return () => {
+      if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
+        this.props.deleteIconInLocalStorage(id);
+      } else {
+        this.props.addIconToLocalStorage(id);
       }
-    );
+    };
   }
 
   render() {

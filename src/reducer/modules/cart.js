@@ -21,18 +21,13 @@ export default (state = initialState, action) => {
     case ADD_ICON_TO_CART: {
       return {
         ...state,
-        iconsInLocalStorage: [
-          ...state.iconsInLocalStorage,
-          action.payload,
-        ],
+        iconsInLocalStorage: action.payload,
       };
     }
     case DELETE_ICON_IN_CART: {
       return {
         ...state,
-        iconsInLocalStorage: state.iconsInLocalStorage.filter(
-          (iconId) => (iconId !== action.payload)
-        ),
+        iconsInLocalStorage: action.payload,
       };
     }
     case FETCH_CART_DETAIL: {

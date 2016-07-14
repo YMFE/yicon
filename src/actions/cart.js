@@ -7,22 +7,28 @@ import {
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
+
+// ls.cartIconIds为Set类型
+const ls = {
+  get cartIconIds() {
+    localStorage.cartIconIds = localStorage.cartIconIds || JSON.stringify([]);
+    return new Set(JSON.parse(localStorage.cartIconIds));
+  },
+  set cartIconIds(value) {
+    localStorage.cartIconIds = JSON.stringify(Array.from(value));
+  },
+};
+
 function addToLocalStorage(id) {
-  if (!localStorage.cartIconIds) {
-    localStorage.cartIconIds = JSON.stringify([]);
-  }
-  const icons = JSON.parse(localStorage.cartIconIds);
-  if (icons.indexOf(id) === -1) {
-    localStorage.cartIconIds = JSON.stringify(icons.concat([id]));
-  }
+  const iconIds = ls.cartIconIds;
+  ls.cartIconIds = iconIds.add(id);
+  return Array.from(ls.cartIconIds);
 }
 function deleteInLocalStorage(id) {
-  if (!localStorage.cartIconIds) {
-    localStorage.cartIconIds = JSON.stringify([]);
-  }
-  const icons = JSON.parse(localStorage.cartIconIds).filter((iconId) => (iconId !== id));
-  localStorage.cartIconIds = JSON.stringify(icons);
-  return icons;
+  const iconIds = ls.cartIconIds;
+  iconIds.delete(id);
+  ls.cartIconIds = iconIds;
+  return Array.from(ls.cartIconIds);
 }
 
 export function getIconsInCart(iconIds) {
@@ -33,25 +39,16 @@ export function getIconsInCart(iconIds) {
 }
 
 export function getIconsInLocalStorage() {
-  if (!localStorage.cartIconIds) {
-    localStorage.cartIconIds = JSON.stringify([]);
-  }
   return {
     type: INIT_CART,
-    payload: JSON.parse(localStorage.cartIconIds),
+    payload: Array.from(ls.cartIconIds),
   };
 }
 
 export function addIconToLocalStorage(id) {
-  return (dispatch, getState) => {
-    addToLocalStorage(id);
-    const { iconsInLocalStorage } = getState().cart;
-    if (iconsInLocalStorage.indexOf(id) === -1) {
-      dispatch({
-        type: ADD_ICON_TO_CART,
-        payload: id,
-      });
-    }
+  return {
+    type: ADD_ICON_TO_CART,
+    payload: addToLocalStorage(id),
   };
 }
 
@@ -63,7 +60,7 @@ export function deleteIconInLocalStorage(id, isFetchIcons) {
     }
     dispatch({
       type: DELETE_ICON_IN_CART,
-      payload: id,
+      payload: icons,
     });
   };
 }

@@ -5,6 +5,7 @@ import Popover from 'material-ui/Popover';
 import Paper from 'material-ui/Paper';
 import Icon from '../../common/Icon/Icon.jsx';
 import styles from './Cart.scss';
+import { autobind } from 'core-decorators';
 import {
   getIconsInLocalStorage,
   getIconsInCart,
@@ -24,14 +25,13 @@ class Cart extends Component {
     this.state = {
       isShow: false,
     };
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
   componentDidMount() {
     this.props.getIconsInLocalStorage();
   }
 
+  @autobind
   handleTouchTap(event) {
     event.preventDefault();
     this.setState({
@@ -45,6 +45,7 @@ class Cart extends Component {
     });
   }
 
+  @autobind
   handleRequestClose() {
     this.setState({
       isShow: false,
@@ -52,11 +53,7 @@ class Cart extends Component {
   }
 
   removeFromCart(id) {
-    return (
-      () => {
-        this.props.deleteIconInLocalStorage(id, true);
-      }
-    );
+    return () => { this.props.deleteIconInLocalStorage(id, true); };
   }
 
   render() {

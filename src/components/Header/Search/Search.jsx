@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Popover from 'material-ui/Popover';
 import Icon from '../../common/Icon/Icon.jsx';
 import styles from './Search.scss';
+import { autobind } from 'core-decorators';
 import {
   fetchSearchResult,
 } from '../../../actions/search';
@@ -17,10 +18,9 @@ class Search extends Component {
     this.state = {
       open: false,
     };
-    this.searchIcon = this.searchIcon.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
+  @autobind
   searchIcon(e) {
     this.props.fetchSearchResult(e.currentTarget.value);
     this.setState({
@@ -29,6 +29,7 @@ class Search extends Component {
     });
   }
 
+  @autobind
   handleRequestClose() {
     this.setState({
       open: false,

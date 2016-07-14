@@ -34,7 +34,7 @@ export function fetchRepositoryData(id) {
   return (dispatch, getState) => {
     const { currRepository } = getState().repository;
 
-    if (String(id) !== String(currRepository.id)) {
+    if (+id !== +currRepository.id) {
       dispatch(clearRepositoryData());
     }
 
