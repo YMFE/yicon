@@ -53,7 +53,7 @@ export function* addProjectIcon(next) {
     (value) => ({ version: '0.0.0', iconId: value, projectId })
   );
   const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
-  if (result) {
+  if (result.length) {
     this.state.respond = '添加项目图标成功';
   } else {
     this.state.respond = '添加项目图标失败';
@@ -78,22 +78,29 @@ export function* deleteProjectIcon(next) {
 }
 
 export function* updateProjectInfo(next) {
-  if (this.state.user.isOwner) {
-    const { projectId, info, name, owner, publicProject } = this.param;
-    const data = { info, name, owner, public: publicProject };
-    let projectResult = null;
-    const key = Object.keys(data);
-    key.forEach((v) => {
-      if (data[v] === undefined) delete data[v];
-    });
-    if (Object.keys(data).length) {
-      projectResult = yield Project.update(data, { where: { id: projectId } });
+  if (!this.state.user.isOwner) throw new Error('没有权限');
+
+  const { projectId, info, name, owner, publicProject } = this.param;
+  const data = { info, name, owner, public: publicProject };
+  let projectResult = null;
+  if (name) {
+    const existProject = yield Project.findOne({ where: { name }, raw: true });
+    if (existProject) {
+      const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
+      throw new Error(`项目名已被使用，请更改，如有需要请联系${ownerName.name}`);
     }
-    if (projectResult) {
-      this.state.respond = '项目信息更新成功';
-    } else {
-      this.state.respond = '项目信息更新失败';
-    }
+  }
+  const key = Object.keys(data);
+  key.forEach((v) => {
+    if (data[v] === undefined) delete data[v];
+  });
+  if (Object.keys(data).length) {
+    projectResult = yield Project.update(data, { where: { id: projectId } });
+  }
+  if (projectResult) {
+    this.state.respond = '项目信息更新成功';
+  } else {
+    this.state.respond = '项目信息更新失败';
   }
   yield next;
 }
