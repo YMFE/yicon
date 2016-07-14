@@ -1,4 +1,17 @@
+// repository
 export const FETCH_HOME_DATA = 'FETCH_HOME_DATA';
+export const FETCH_REPOSITORY_DATA = 'FETCH_REPOSITORY_DATA';
+export const CLEAR_REPOSITORY_DATA = 'CLEAR_REPOSITORY_DATA';
+export const CHANGE_ICON_SIZE = 'CHANGE_ICON_SIZE';
+
+// cart
 export const INIT_CART = 'INIT_CART';
 export const FETCH_CART_DETAIL = 'FETCH_CART_DETAIL';
+export const ADD_ICON_TO_CART = 'ADD_ICON_TO_CART';
+export const DELETE_ICON_IN_CART = 'DELETE_ICON_IN_CART';
+
+//  search
+export const FETCH_SEARCH_RESULT = 'FETCH_SEARCH_RESULT';
+
+// setting
 export const LAUNCH_REDUX_DEVTOOLS = 'LAUNCH_REDUX_DEVTOOLS';

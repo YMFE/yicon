@@ -5,14 +5,19 @@ import Popover from 'material-ui/Popover';
 import Paper from 'material-ui/Paper';
 import Icon from '../../common/Icon/Icon.jsx';
 import styles from './Cart.scss';
+import { autobind } from 'core-decorators';
 import {
-  initCart,
-  getCartIcons,
+  getIconsInLocalStorage,
+  getIconsInCart,
+  deleteIconInLocalStorage,
 } from '../../../actions/cart';
 
 @connect(
-  state => ({ cartIconIds: state.cart.iconsInLocalStorage, cartIcons: state.cart.iconsInCart }),
-  { initCart, getCartIcons }
+  state => ({
+    iconsInLocalStorage: state.cart.iconsInLocalStorage,
+    iconsInCart: state.cart.iconsInCart,
+  }),
+  { getIconsInLocalStorage, getIconsInCart, deleteIconInLocalStorage }
 )
 class Cart extends Component {
   constructor(props) {
@@ -20,36 +25,39 @@ class Cart extends Component {
     this.state = {
       isShow: false,
     };
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
   componentDidMount() {
-    this.props.initCart();
+    this.props.getIconsInLocalStorage();
   }
 
+  @autobind
   handleTouchTap(event) {
     event.preventDefault();
     this.setState({
       isShow: true,
       anchorEl: event.currentTarget,
     });
-    // 待优化：可以判断 cartIconIds 是否改变，选择是否更新 cartIcons
-    const cartIconIds = this.props.cartIconIds || [];
-    this.props.getCartIcons({
-      icons: cartIconIds,
+    // 待优化：可以判断 iconsInLocalStorage 是否改变，选择是否更新 iconsInCart
+    const iconsInLocalStorage = this.props.iconsInLocalStorage || [];
+    this.props.getIconsInCart({
+      icons: iconsInLocalStorage,
     });
   }
 
+  @autobind
   handleRequestClose() {
     this.setState({
       isShow: false,
     });
   }
 
+  removeFromCart(id) {
+    return () => { this.props.deleteIconInLocalStorage(id, true); };
+  }
+
   render() {
-    const cartIcons = this.props.cartIcons || [];
+    const iconsInCart = this.props.iconsInCart || [];
 
     return (
       <div style={{ float: 'left' }}>
@@ -62,6 +70,7 @@ class Cart extends Component {
             fontWeight: 'bold',
           }}
         />
+        {this.props.iconsInLocalStorage.length}
         <Popover
           open={this.state.isShow}
           anchorEl={this.state.anchorEl}
@@ -71,8 +80,8 @@ class Cart extends Component {
         >
           <Paper style={{ width: '346px', height: '150px' }}>
             {
-              cartIcons.map((icon) => (
-                <div key={icon.id} className={styles.item}>
+              iconsInCart.map((icon) => (
+                <div key={icon.id} className={styles.icon} onClick={this.removeFromCart(icon.id)}>
                   <Icon size={20} d={icon.path} />
                 </div>
               ))
@@ -85,11 +94,11 @@ class Cart extends Component {
 }
 
 Cart.propTypes = {
-  dispatch: PropTypes.func,
-  cartIconIds: PropTypes.array,
-  cartIcons: PropTypes.array,
-  initCart: PropTypes.func,
-  getCartIcons: PropTypes.func,
+  iconsInLocalStorage: PropTypes.array,
+  iconsInCart: PropTypes.array,
+  getIconsInLocalStorage: PropTypes.func,
+  getIconsInCart: PropTypes.func,
+  deleteIconInLocalStorage: PropTypes.func,
 };
 
 export default Cart;
