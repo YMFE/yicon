@@ -74,6 +74,7 @@ export function* isProjectOwner(next) {
       where: { id: projectId },
     });
     this.state.user.isOwner = this.state.user.userId === ownerId.owner;
+    this.state.user.ownerId = ownerId.owner;
   }
   yield next;
 }

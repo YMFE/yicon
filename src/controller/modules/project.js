@@ -1,4 +1,4 @@
-import { User, Project, ProjectVersion } from '../../model';
+import { User, Project, UserProject, ProjectVersion } from '../../model';
 import { versionTools } from '../../helpers/utils';
 
 export function* getAllProjects(next) {
@@ -80,7 +80,7 @@ export function* deleteProjectIcon(next) {
 export function* updateProjectInfo(next) {
   if (this.state.user.isOwner) {
     const { projectId, info, name, owner, publicProject } = this.param;
-    const data = { info, name, owner, publicProject };
+    const data = { info, name, owner, public: publicProject };
     let projectResult = null;
     const key = Object.keys(data);
     key.forEach((v) => {
@@ -99,6 +99,28 @@ export function* updateProjectInfo(next) {
 }
 
 export function* updateProjectMember(next) {
+  const { projectId, members } = this.param;
+  let result = null;
+  let flag = true; // 标志位，当是owner且删除数据成功时flag才会重置为true
+
+  if (projectId && members.length) {
+    if (this.state.user.isOwner && members.indexOf(this.state.user.ownerId) > -1) {
+      flag = false;
+      let oldMember = yield UserProject.findAll({ where: { projectId }, raw: true });
+      oldMember = oldMember.map((v) => v.userId);
+      const deleteCount = yield UserProject.destroy({ where: { projectId } });
+      if (deleteCount) flag = true;
+    }
+    const data = members.map(
+      (value) => ({ projectId, userId: value })
+    );
+    result = yield UserProject.bulkCreate(data, { ignoreDuplicates: true });
+  }
+  if (result && flag) {
+    this.state.respond = '项目成员更新成功';
+  } else {
+    this.state.respond = '项目成员更新失败';
+  }
   yield next;
 }
 
