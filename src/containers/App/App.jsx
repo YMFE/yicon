@@ -13,7 +13,7 @@ import {
 import './App.scss';
 
 @connect(
-  state => ({ list: state.repository.list })
+  state => ({ list: state.repository.homeRepository })
 )
 class App extends Component {
   componentDidMount() {

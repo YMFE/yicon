@@ -1,13 +1,69 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Popover from 'material-ui/Popover';
+import Icon from '../../common/Icon/Icon.jsx';
+import styles from './Search.scss';
+import { autobind } from 'core-decorators';
+import {
+  fetchSearchResult,
+} from '../../../actions/search';
 
-const floatStyle = {
-  float: 'left',
+@connect(
+  state => ({ searchResult: state.search }),
+  { fetchSearchResult }
+)
+class Search extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
+
+  @autobind
+  searchIcon(e) {
+    this.props.fetchSearchResult(e.currentTarget.value);
+    this.setState({
+      open: true,
+      anchorEl: e.currentTarget,
+    });
+  }
+
+  @autobind
+  handleRequestClose() {
+    this.setState({
+      open: false,
+    });
+  }
+
+  render() {
+    return (
+      <div className={styles.floatStyle}>
+        <input type="input" placeholder="请输入查询关键字" ref="input" onChange={this.searchIcon} />
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onRequestClose={this.handleRequestClose}
+        >
+          {
+            this.props.searchResult.map(icon => (
+              <div key={icon.id} className={styles.icon} >
+                <span>{icon.name}</span>
+                <Icon size={20} d={icon.path} /><br />
+              </div>
+            ))
+          }
+        </Popover>
+      </div>
+    );
+  }
+}
+
+Search.propTypes = {
+  searchResult: PropTypes.array,
+  fetchSearchResult: PropTypes.func,
 };
-
-const Search = () => (
-  <div style={floatStyle}>
-    <input type="input" placeholder="请输入查询关键字" />
-  </div>
-);
 
 export default Search;
