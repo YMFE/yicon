@@ -100,6 +100,7 @@ export function* updateProjectInfo(next) {
 
 export function* updateProjectMember(next) {
   const { projectId, members } = this.param;
+  let deleteMember = null;
   let result = null;
   let flag = true; // 标志位，当是owner且删除数据成功时flag才会重置为true
 
@@ -108,6 +109,7 @@ export function* updateProjectMember(next) {
       flag = false;
       let oldMember = yield UserProject.findAll({ where: { projectId }, raw: true });
       oldMember = oldMember.map((v) => v.userId);
+      deleteMember = oldMember.filter((value) => members.indexOf(value) === -1);
       const deleteCount = yield UserProject.destroy({ where: { projectId } });
       if (deleteCount) flag = true;
     }
@@ -121,6 +123,10 @@ export function* updateProjectMember(next) {
   } else {
     this.state.respond = '项目成员更新失败';
   }
+  this.state.log = {
+    params: { user: deleteMember },
+    subscribers: members.concat(deleteMember),
+  };
   yield next;
 }
 
