@@ -7,7 +7,7 @@ import {
 import RepoSection from '../../components/RepoSection/RepoSection';
 
 @connect(
-  state => ({ list: state.repository.list }),
+  state => ({ list: state.repository.homeRepository }),
   { fetchHomeData }
 )
 class Home extends Component {

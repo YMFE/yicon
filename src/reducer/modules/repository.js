@@ -1,16 +1,36 @@
 import {
   FETCH_HOME_DATA,
+  FETCH_REPOSITORY_DATA,
+  CLEAR_REPOSITORY_DATA,
 } from '../../constants/actionTypes';
 
 const initialState = {
-  list: [],
+  homeRepository: [],
+  currRepository: {
+    icons: [],
+  },
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_HOME_DATA: {
       return {
-        list: action.payload.data,
+        ...state,
+        homeRepository: action.payload.data,
+      };
+    }
+    case FETCH_REPOSITORY_DATA: {
+      return {
+        ...state,
+        currRepository: action.payload.data,
+      };
+    }
+    case CLEAR_REPOSITORY_DATA: {
+      return {
+        ...state,
+        currRepository: {
+          icons: [],
+        },
       };
     }
     default:
