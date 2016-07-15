@@ -91,6 +91,7 @@ export function* generatorNewVersion(next) {
       versionFrom: versionTools.n2v(versionFrom),
       versionTo,
     },
+    type: 'PROJECT_VERSION',
     loggerId: projectId,
     subscribers: affectedUsers,
   };

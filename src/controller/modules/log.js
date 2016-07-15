@@ -36,25 +36,51 @@ export function* getLogList(next) {
 }
 
 /**
+ * 记录单条日志信息
+ */
+function* recordSingleLog(oneLog) {
+  const { params, loggerId, subscribers, type } = oneLog;
+  // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
+  const log = new Logger(type, params);
+  const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
+  const logModel = yield Log.create({
+    type,
+    loggerId,
+    scope,
+    operation: log.text,
+  });
+
+  const bulkData = subscribers.map(v => {
+    let userId;
+
+    if (!isNaN(v)) userId = v;
+    else if (!isNaN(v.id)) userId = v.id;
+    else throw new Error('未能获取用户 ID');
+
+    return {
+      userId,
+      logId: logModel.id,
+    };
+  });
+
+  return Notification.bulkCreate(bulkData);
+}
+
+/**
  * 记录日志中间件，需要分析 state.log
  * 同时确定日志（通知）的发送对象
  */
-export function recordLog(type) {
-  return function* recordLogByType(next) {
-    const { params, loggerId, subscribers } = this.state.log;
-    const log = new Logger(type, params);
-    const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
-    const logModel = yield Log.create({
-      type,
-      loggerId,
-      scope,
-      operation: log.text,
-    });
+export function* recordLog(next) {
+  const { log } = this.state;
+  if (Array.isArray(log)) {
+    const len = log.length;
+    let i = 0;
+    for (; i < len; i++) {
+      yield recordSingleLog(log[i]);
+    }
+  } else if (typeof log === 'object') {
+    yield recordSingleLog(log);
+  }
 
-    yield Notification.bulkCreate(subscribers.map(v => ({
-      userId: v,
-      logId: logModel.id,
-    })));
-    yield next;
-  };
+  yield next;
 }

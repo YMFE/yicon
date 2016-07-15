@@ -22,7 +22,7 @@ export const versionTools = {
         return [major + 1, 0, 0].join('.');
       case 'minor':
         return [major, minor + 1, 0].join('.');
-      case 'build':
+      case 'revision':
         return [major, minor, build + 1].join('.');
       default:
         return null;

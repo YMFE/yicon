@@ -29,7 +29,7 @@ module.exports = function (config) {
         loaders: [
           { test: /\.(jpe?g|png|gif|svg)$/, loader: 'url', query: {limit: 10240} },
           { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel']},
-          { test: /\.scss$/, loader: [
+          { test: /\.scss$/, loaders: [
             'style',
             'css' +
               '?modules' +
@@ -46,6 +46,11 @@ module.exports = function (config) {
           'node_modules'
         ],
         extensions: ['', '.jsx', '.js']
+      },
+      node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
       },
       plugins: [
         new webpack.IgnorePlugin(/\.json$/),
