@@ -50,10 +50,20 @@ function* recordSingleLog(oneLog) {
     operation: log.text,
   });
 
-  return Notification.bulkCreate(subscribers.map(v => ({
-    userId: v,
-    logId: logModel.id,
-  })));
+  const bulkData = subscribers.map(v => {
+    let userId;
+
+    if (!isNaN(v)) userId = v;
+    else if (!isNaN(v.id)) userId = v.id;
+    else throw new Error('未能获取用户 ID');
+
+    return {
+      userId,
+      logId: logModel.id,
+    };
+  });
+
+  return Notification.bulkCreate(bulkData);
 }
 
 /**
