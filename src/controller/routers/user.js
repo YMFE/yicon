@@ -18,7 +18,7 @@ user.use(getCurrentUser);
 user.get('/projects', getAllProjects);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
-user.post('/projects/:projectId/update', generatorNewVersion, recordLog('PROJECT_VERSION'));
+user.post('/projects/:projectId/update', generatorNewVersion, recordLog);
 user.post('/projects/:projectId/icons', addProjectIcon);
 user.delete('/projects/:projectId/icons', deleteProjectIcon);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);

@@ -2,8 +2,8 @@ import { Repo, Icon, User } from '../../model';
 import { iconStatus } from '../../constants/utils';
 
 // 为了提高查询效率，我们设置默认版本为 0.0.0
-function* getRepoByVersion({ repoId, version = '0.0.0', limit }) {
-  const repo = yield Repo.findOne({
+function getRepoByVersion({ repoId, version = '0.0.0', limit }) {
+  return Repo.findOne({
     where: { id: repoId },
     include: [{
       model: Icon,
@@ -11,17 +11,19 @@ function* getRepoByVersion({ repoId, version = '0.0.0', limit }) {
       where: { status: iconStatus.RESOLVED },
       on: { version },
     }, User],
-  });
-
-  const rawRepo = repo.get({ plain: true });
-
-  rawRepo.iconCount = rawRepo.icons.length;
-  // TODO: hard-code，但是 dao 似乎没有更好的解决方案
-  if (limit > 0 && rawRepo.icons.length > limit) {
-    rawRepo.icons.length = limit;
-  }
-
-  return rawRepo;
+  })
+  .then(repo => {
+    if (!repo) throw new Error(`id 为 ${repoId} 的大库不存在`);
+    return repo.get({ plain: true });
+  })
+  .then(res => {
+    const repo = res;
+    if (limit && limit < repo.icons.length) {
+      repo.icons.length = limit;
+    }
+    return repo;
+  })
+  .catch(e => { throw new Error(e); });
 }
 
 
@@ -30,17 +32,11 @@ export function* list(next) {
     attributes: ['id'],
   });
 
-  const len = repoList.length;
-  const result = [];
+  const queue = repoList.map(repo => getRepoByVersion({
+    repoId: repo.id, limit: 15,
+  }));
 
-  for (let i = 0; i < len; i++) {
-    const repo = yield getRepoByVersion({
-      repoId: repoList[i].id, limit: 44,
-    });
-    result.push(repo);
-  }
-
-  this.state.respond = result;
+  this.state.respond = yield Promise.all(queue);
 
   yield next;
 }
