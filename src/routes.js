@@ -6,6 +6,7 @@ import {
   NoMatch,
   Project,
   Repository,
+  Notification,
 } from './containers';
 
 export default () => {
@@ -28,8 +29,8 @@ export default () => {
       <Route onEnter={requireLogin}>
         <Route path="upload" /> {/* 上传图标 */}
         <Route path="workbench" /> {/* 工作台 */}
-        <Route path="notifications(/projects)" /> {/* 项目通知页面 */}
-        <Route path="notifications/repositories" /> {/* 大库通知页面 */}
+        <Route path="user/notifications/projects" /> {/* 项目通知页面 */}
+        <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
         <Route path="user/projects" component={Project} />
         <Route path="user/projects/:id(/version/:version)" />
         <Route path="user/projects/:id/logs" component={Project} />
