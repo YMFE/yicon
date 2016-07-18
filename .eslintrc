@@ -6,8 +6,8 @@
   },
   "parser": "babel-eslint",
   "rules": {
-    "no-underscore-dangle": ["off"],
-    "react/prefer-stateless-function": ["off"]
+    "no-underscore-dangle": 0,
+    "react/prefer-stateless-function": 0
   },
   "globals": {
     "expect": true,
