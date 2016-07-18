@@ -10,10 +10,7 @@ export default seq.define('icons', {
   // 图标类名
   fontClass: Seq.STRING,
   // 图标标签
-  tags: {
-    type: Seq.STRING(2000),
-    allowNull: false,
-  },
+  tags: Seq.STRING(2000),
   // 图标编码
   code: Seq.INTEGER,
   // 路径信息
