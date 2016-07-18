@@ -1,5 +1,6 @@
 import { User, Project, UserProject, ProjectVersion } from '../../model';
-import { versionTools } from '../../helpers/utils';
+import { versionTools, has, diffArray } from '../../helpers/utils';
+import { seq } from '../../model/tables/_db';
 
 export function* getAllProjects(next) {
   const { userId } = this.state.user;
@@ -100,7 +101,8 @@ export function* generatorNewVersion(next) {
 
 export function* addProjectIcon(next) {
   const { projectId, icons } = this.param;
-  const data = icons.map(
+  const icon = icons.map(v => v.id);
+  const data = icon.map(
     (value) => ({ version: '0.0.0', iconId: value, projectId })
   );
   const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
@@ -109,15 +111,28 @@ export function* addProjectIcon(next) {
   } else {
     this.state.respond = '添加项目图标失败';
   }
+
+  const affectedUsers = yield UserProject.findAll({
+    where: { projectId },
+    raw: true,
+  }).map(v => v.userId);
+
+  this.state.log = {
+    params: { icon: icons },
+    type: 'PROJECT_ADD',
+    loggerId: projectId,
+    subscribers: affectedUsers,
+  };
   yield next;
 }
 
 export function* deleteProjectIcon(next) {
   const { projectId, icons } = this.param;
+  const icon = icons.map(v => v.id);
   let result = 0;
-  for (let i = 0, len = icons.length; i < len; i++) {
+  for (let i = 0, len = icon.length; i < len; i++) {
     result += yield ProjectVersion.destroy({
-      where: { version: '0.0.0', iconId: icons[i], projectId },
+      where: { version: '0.0.0', iconId: icon[i], projectId },
     });
   }
   if (result) {
@@ -125,6 +140,18 @@ export function* deleteProjectIcon(next) {
   } else {
     this.state.respond = '删除项目图标失败';
   }
+
+  const affectedUsers = yield UserProject.findAll({
+    where: { projectId },
+    raw: true,
+  }).map(v => v.userId);
+
+  this.state.log = {
+    params: { icon: icons },
+    type: 'PROJECT_DEL',
+    loggerId: projectId,
+    subscribers: affectedUsers,
+  };
   yield next;
 }
 
@@ -158,34 +185,52 @@ export function* updateProjectInfo(next) {
 
 export function* updateProjectMember(next) {
   const { projectId, members } = this.param;
-  let deleteMember = null;
-  let result = null;
-  let flag = true; // 标志位，当是owner且删除数据成功时flag才会重置为true
+  this.state.log = [];
+  if (isNaN(projectId) || members.length < 1) throw new Error('必须传入项目编号和具体成员信息');
+  if (!this.state.user.isProjectOwner) throw new Error('普通成员没有权限');
+  if (!has(members, { id: this.state.user.ownerId })) throw new Error('参数错误');
+  members.forEach(v => {
+    if (isNaN(v.id)) throw new Error('参数缺少id');
+  });
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const oldMembers = yield project.getUsers({ attributes: ['id', 'name'], raw: true });
+  for (let i = 0, len = oldMembers.length; i < len; i++) {
+    delete oldMembers[i]['userProject.projectId'];
+    delete oldMembers[i]['userProject.userId'];
+  }
+  const { deleted, added } = diffArray(oldMembers, members);
+  const data = added.map(v => ({ projectId, userId: v.id }));
 
-  if (projectId && members.length) {
-    if (this.state.user.isProjectOwner && members.indexOf(this.state.user.ownerId) > -1) {
-      flag = false;
-      let oldMember = yield UserProject.findAll({ where: { projectId }, raw: true });
-      oldMember = oldMember.map((v) => v.userId);
-      deleteMember = oldMember.filter((value) => members.indexOf(value) === -1);
-      const deleteCount = yield UserProject.destroy({ where: { projectId } });
-      if (deleteCount) flag = true;
+  yield seq.transaction(t => UserProject.destroy({ where: {
+    userId: { $in: deleted.map(v => v.id) },
+  } }, { transaction: t }).then(
+    () => UserProject.bulkCreate(data, { transaction: t })
+  )).then(() => {
+    if (deleted.length) {
+      this.state.log.push({
+        params: { user: deleted },
+        type: 'PROJECT_MEMBER_DEL',
+        loggerId: projectId,
+        subscribers: members.concat(deleted),
+      });
     }
-    const data = members.map(
-      (value) => ({ projectId, userId: value })
-    );
-    result = yield UserProject.bulkCreate(data, { ignoreDuplicates: true });
-  }
-  if (result && flag) {
-    this.state.respond = '项目成员更新成功';
-  } else {
-    this.state.respond = '项目成员更新失败';
-  }
-  this.state.log = {
-    params: { user: deleteMember },
-    loggerId: projectId,
-    subscribers: members.concat(deleteMember),
-  };
+    if (added.length) {
+      this.state.log.push({
+        params: { user: added },
+        type: 'PROJECT_MEMBER_ADD',
+        loggerId: projectId,
+        subscribers: members,
+      });
+    }
+    if (deleted.length || added.length) {
+      this.state.respond = '项目成员更新成功';
+    } else {
+      this.state.respond = '项目成员更新失败';
+    }
+  }).catch(err => {
+    const error = err.errors[0] ? err.errors[0].message : '删除或插入数据错误';
+    throw new Error(error);
+  });
   yield next;
 }
 

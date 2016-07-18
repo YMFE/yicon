@@ -42,7 +42,7 @@ export class Logger {
   constructor(type, data = {}) {
     this.text = null;
     this.param = {};
-    if (!~Object.keys(logTypes).indexOf(type)) {
+    if (Object.keys(logTypes).indexOf(type) === -1) {
       return;
     }
     this.text = logTypes[type];
@@ -51,6 +51,7 @@ export class Logger {
       if (!value) throw new Error('日志缺少参数');
       this.param[key] = value;
       if (Array.isArray(value)) {
+        if (!value.length) throw new Error('日志缺少参数');
         return value.map(v => JSON.stringify({
           [key]: v,
         })).join('、');
@@ -58,4 +59,20 @@ export class Logger {
       return JSON.stringify({ [key]: value });
     });
   }
+}
+
+export function has(Arr, o) {
+  let result = false;
+  if (typeof o === 'object') {
+    result = Arr.some(v => typeof v === 'object' && v.id === o.id);
+  } else {
+    result = Arr.some(v => v === o);
+  }
+  return result;
+}
+
+export function diffArray(oldArr, newArr) {
+  const deleted = oldArr.filter(v => !has(newArr, v));
+  const added = newArr.filter(v => !has(oldArr, v));
+  return { deleted, added };
 }

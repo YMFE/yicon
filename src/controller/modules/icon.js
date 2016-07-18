@@ -1,4 +1,4 @@
-import { Icon } from '../../model';
+import { Icon, Repo, RepoVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -30,5 +30,22 @@ export function* getByCondition(next) {
     },
   });
 
+  yield next;
+}
+
+export function* getIconInfo(next) {
+  const { iconId } = this.param;
+  if (isNaN(iconId)) throw new Error('不支持传入空参数');
+
+  const iconInfo = yield Icon.findOne({ where: { id: iconId }, raw: true });
+  const { repositoryId } = yield RepoVersion.findOne({ where: { iconId } });
+  const repoInfo = yield Repo.findOne({
+    attributes: ['id', 'name', 'alias'],
+    where: { id: repositoryId },
+    raw: true,
+  });
+  const result = { repository: repoInfo };
+  Object.assign(result, iconInfo);
+  this.state.respond = result;
   yield next;
 }
