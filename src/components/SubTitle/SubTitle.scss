@@ -1,28 +1,28 @@
 @charset "utf-8";
 
 .global{
-    &-subtitle {
-        background-color: #fff;
-        border-bottom: 1px solid #dadcde;
-        box-shadow: 0 0 5px #dadcde;
-        .container {
-            width: 1100px;
-            margin: 0 auto;
-            padding: 20px 0;
-        }
-        .options {
-          overflow: hidden;
-            .title{
-                overflow: hidden;
-                margin:0 10px;
-                float: left;
-                display: inline-block;
-                >h2 {
-                    font-size: 24px;
-                    color: #344562;
-                    float: left;
-                }
-            }
-        }
+  &-subtitle {
+    background-color: #fff;
+    border-bottom: 1px solid #dadcde;
+    box-shadow: 0 0 5px #dadcde;
+    .container {
+      width: 1100px;
+      margin: 0 auto;
+      padding: 20px 0;
     }
+    .options {
+      overflow: hidden;
+      .title{
+        overflow: hidden;
+        margin:0 10px;
+        float: left;
+        display: inline-block;
+        >h2 {
+          font-size: 24px;
+          color: #344562;
+          float: left;
+        }
+      }
+    }
+  }
 }

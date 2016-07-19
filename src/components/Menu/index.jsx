@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 
 const Menu = props => {
   let classList = props.extraClass ?
-   `global-content-menu ${props.extraClass}` :
+    `global-content-menu ${props.extraClass}` :
     'global-content-menu';
   return (
     <div className={classList}>
