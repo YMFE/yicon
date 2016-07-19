@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import config from '../../../sensitive/config';
+import config from '../../config';
 import debugTool from 'debug';
 
 const debug = debugTool('database');
