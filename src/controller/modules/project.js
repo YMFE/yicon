@@ -109,7 +109,7 @@ export function* addProjectIcon(next) {
   if (result.length) {
     this.state.respond = '添加项目图标成功';
   } else {
-    this.state.respond = '添加项目图标失败';
+    this.state.respond = '未添加项目图标';
   }
 
   const affectedUsers = yield UserProject.findAll({
@@ -138,7 +138,7 @@ export function* deleteProjectIcon(next) {
   if (result) {
     this.state.respond = '删除项目图标成功';
   } else {
-    this.state.respond = '删除项目图标失败';
+    this.state.respond = '未删除项目图标';
   }
 
   const affectedUsers = yield UserProject.findAll({
@@ -178,7 +178,7 @@ export function* updateProjectInfo(next) {
   if (projectResult) {
     this.state.respond = '项目信息更新成功';
   } else {
-    this.state.respond = '项目信息更新失败';
+    this.state.respond = '项目信息没有变动';
   }
   yield next;
 }
@@ -201,36 +201,38 @@ export function* updateProjectMember(next) {
   const { deleted, added } = diffArray(oldMembers, members);
   const data = added.map(v => ({ projectId, userId: v.id }));
 
-  yield seq.transaction(t => UserProject.destroy({ where: {
-    userId: { $in: deleted.map(v => v.id) },
-  } }, { transaction: t }).then(
+  yield seq.transaction(t => UserProject.destroy(
+    {
+      where: {
+        userId: { $in: deleted.map(v => v.id) },
+      },
+    },
+    { transaction: t }
+  ).then(
     () => UserProject.bulkCreate(data, { transaction: t })
-  )).then(() => {
-    if (deleted.length) {
-      this.state.log.push({
-        params: { user: deleted },
-        type: 'PROJECT_MEMBER_DEL',
-        loggerId: projectId,
-        subscribers: members.concat(deleted),
-      });
-    }
-    if (added.length) {
-      this.state.log.push({
-        params: { user: added },
-        type: 'PROJECT_MEMBER_ADD',
-        loggerId: projectId,
-        subscribers: members,
-      });
-    }
-    if (deleted.length || added.length) {
-      this.state.respond = '项目成员更新成功';
-    } else {
-      this.state.respond = '项目成员更新失败';
-    }
-  }).catch(err => {
-    const error = err.errors[0] ? err.errors[0].message : '删除或插入数据错误';
-    throw new Error(error);
-  });
+  ));
+
+  if (deleted.length) {
+    this.state.log.push({
+      params: { user: deleted },
+      type: 'PROJECT_MEMBER_DEL',
+      loggerId: projectId,
+      subscribers: members.concat(deleted),
+    });
+  }
+  if (added.length) {
+    this.state.log.push({
+      params: { user: added },
+      type: 'PROJECT_MEMBER_ADD',
+      loggerId: projectId,
+      subscribers: members,
+    });
+  }
+  if (deleted.length || added.length) {
+    this.state.respond = '项目成员更新成功';
+  } else {
+    this.state.respond = '项目成员没有变动';
+  }
   yield next;
 }
 

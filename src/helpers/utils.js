@@ -62,13 +62,10 @@ export class Logger {
 }
 
 export function has(Arr, o) {
-  let result = false;
   if (typeof o === 'object') {
-    result = Arr.some(v => typeof v === 'object' && v.id === o.id);
-  } else {
-    result = Arr.some(v => v === o);
+    return Arr.some(v => typeof v === 'object' && v.id === o.id);
   }
-  return result;
+  return Arr.some(v => v === o);
 }
 
 export function diffArray(oldArr, newArr) {
