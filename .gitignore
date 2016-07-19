@@ -46,6 +46,3 @@ public/
 
 # webpack-assets
 webpack-assets.json
-
-# ignore sensitive
-sensitive/
