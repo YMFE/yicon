@@ -49,7 +49,7 @@ class Search extends Component {
         >
           {
             this.props.searchResult.map(icon => (
-              <div key={icon.id} className={"icon"} >
+              <div key={icon.id} className="icon" >
                 <span>{icon.name}</span>
                 <Icon size={20} d={icon.path} /><br />
               </div>

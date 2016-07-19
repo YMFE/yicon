@@ -81,7 +81,11 @@ class Cart extends Component {
           <Paper style={{ width: '346px', height: '150px' }}>
             {
               iconsInCart.map((icon) => (
-                <div key={icon.id} className={"icon"} onClick={this.removeFromCart(icon.id)}>
+                <div
+                  key={icon.id}
+                  className="icon"
+                  onClick={this.removeFromCart(icon.id)}
+                >
                   <Icon size={20} d={icon.path} />
                 </div>
               ))
