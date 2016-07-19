@@ -37,6 +37,10 @@ export function* getByCondition(next) {
   yield next;
 }
 
+/**
+ * 上传图标至图标库，插入 Icon 表中，但不建立表与图标的关联
+ * 这里不记录日志，提交到库里再记录
+ */
 export function* uploadIcons(next) {
   const { userId } = this.state.user;
   invariant(
