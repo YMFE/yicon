@@ -9,7 +9,11 @@ import {
   updateProjectInfo,
   updateProjectMember,
 } from '../modules/project';
-import { uploadIcons } from '../modules/icon';
+import {
+  uploadIcons,
+  getUploadIcons,
+  submitIcons,
+} from '../modules/icon';
 import { getLogList, recordLog } from '../modules/log';
 import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
 
@@ -20,6 +24,9 @@ const uploader = multer({ storage });
 user.use(getCurrentUser);
 
 user.post('/icons', uploader.array('icon', 20), uploadIcons);
+user.get('/icons', getUploadIcons);
+user.patch('/icons', submitIcons);
+
 user.get('/projects', getAllProjects);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
