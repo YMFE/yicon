@@ -4,8 +4,18 @@ import Home from './Home/Home';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
+import Notification from './Notification/Notification';
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-export { App, DevTools, Home, NoMatch, Project, Repository };
+export {
+  App,
+  DevTools,
+  Home,
+  NoMatch,
+  Project,
+  Repository,
+  Notification,
+};

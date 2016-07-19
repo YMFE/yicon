@@ -1,8 +1,8 @@
+import './Search.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Popover from 'material-ui/Popover';
 import Icon from '../../common/Icon/Icon.jsx';
-import styles from './Search.scss';
 import { autobind } from 'core-decorators';
 import {
   fetchSearchResult,
@@ -38,7 +38,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div className={styles.floatStyle}>
+      <div className={"global-header-search"}>
         <input type="input" placeholder="请输入查询关键字" ref="input" onChange={this.searchIcon} />
         <Popover
           open={this.state.open}
@@ -49,7 +49,7 @@ class Search extends Component {
         >
           {
             this.props.searchResult.map(icon => (
-              <div key={icon.id} className={styles.icon} >
+              <div key={icon.id} className="icon" >
                 <span>{icon.name}</span>
                 <Icon size={20} d={icon.path} /><br />
               </div>
