@@ -1,0 +1,15 @@
+.notification{
+  $dark_grey:#657289;
+  .info-cont{
+    height: 14px;
+    width: 14px;
+    display: inline-block;
+    background-color:$dark_grey;
+  }
+  li:hover{
+    .info-cont{
+      background-color: #fff;
+      color:$dark_grey;
+    }
+  }
+}

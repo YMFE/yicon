@@ -8,6 +8,10 @@ import {
   updateProjectInfo,
   updateProjectMember,
 } from '../modules/project';
+// import {
+//     getSystemInfo,
+//     getProjectInfo
+// } from '../modules/notifications';
 import { getLogList, recordLog } from '../modules/log';
 import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
 
@@ -23,7 +27,7 @@ user.post('/projects/:projectId/icons', addProjectIcon);
 user.delete('/projects/:projectId/icons', deleteProjectIcon);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember);
-
 user.get('/log/projects/:projectId', pagination, getLogList);
-
+// user.get('/notifications(/system)',getSystemInfo);
+// user.get('/notifications/projects',getProjectInfo);
 export default user;

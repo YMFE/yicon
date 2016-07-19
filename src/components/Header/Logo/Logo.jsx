@@ -1,9 +1,9 @@
+import './Logo.scss';
 import React from 'react';
-import styles from './Logo.scss';
 import { Link } from 'react-router';
 
 const Logo = () => (
-  <Link to="/" className={styles.logo}>&nbsp;</Link>
+  <Link to="/" className={"global-header-logo"}>&nbsp;</Link>
 );
 
 export default Logo;

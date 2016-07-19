@@ -1,6 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var assetsPath = path.resolve(__dirname, '../static/dist');
 var host = (process.env.HOST || 'localhost');
@@ -25,28 +27,35 @@ module.exports = {
     publicPath: 'http://' + host + ':' + port + '/dist/'
   },
   module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' },
-      { test: /\.scss$/, loaders: [
-        'style',
-        'css' +
-          '?modules' +
-          '&localIdentName=[path][name]-[local]',
-        'postcss',
-        'sass' +
-          '?outputStyle=expanded',
-      ] },
+    loaders: [{
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel'
+      },
+      // { test: /\.scss$/, loaders: [
+      //   'style',
+      //   'css' +
+      //     '?modules' +
+      //     '&localIdentName=[path][name]-[local]',
+      //   'postcss',
+      //   'sass' +
+      //     '?outputStyle=expanded',
+      // ] },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css?minimize!postcss!sass?sourceMap')
+      },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
-      },
-      {
+      }, {
         test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
         loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
       }
     ]
   },
   progress: true,
+  postcss: [autoprefixer],
   resolve: {
     modulesDirectories: [
       'src',
@@ -64,6 +73,10 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
-    webpackIsomorphicToolsPlugin.development()
+    new ExtractTextPlugin(
+      'style@[contenthash:8].css',
+      { allChunks: false }
+    ),
+    webpackIsomorphicToolsPlugin.development(),
   ]
 };

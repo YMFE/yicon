@@ -1,10 +1,10 @@
+import './Cart.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Paper from 'material-ui/Paper';
 import Icon from '../../common/Icon/Icon.jsx';
-import styles from './Cart.scss';
 import { autobind } from 'core-decorators';
 import {
   getIconsInLocalStorage,
@@ -60,7 +60,7 @@ class Cart extends Component {
     const iconsInCart = this.props.iconsInCart || [];
 
     return (
-      <div style={{ float: 'left' }}>
+      <div style={{ float: 'left' }} className={"global-header-cart"}>
         <FlatButton
           onTouchTap={this.handleTouchTap}
           label="待选图标"
@@ -81,7 +81,11 @@ class Cart extends Component {
           <Paper style={{ width: '346px', height: '150px' }}>
             {
               iconsInCart.map((icon) => (
-                <div key={icon.id} className={styles.icon} onClick={this.removeFromCart(icon.id)}>
+                <div
+                  key={icon.id}
+                  className="icon"
+                  onClick={this.removeFromCart(icon.id)}
+                >
                   <Icon size={20} d={icon.path} />
                 </div>
               ))
