@@ -14,6 +14,7 @@ import {
   getUploadIcons,
   submitIcons,
 } from '../modules/icon';
+
 import { getLogList, recordLog } from '../modules/log';
 import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
 
@@ -35,7 +36,6 @@ user.post('/projects/:projectId/icons', addProjectIcon);
 user.delete('/projects/:projectId/icons', deleteProjectIcon);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember);
-
 user.get('/log/projects/:projectId', pagination, getLogList);
 
 export default user;
