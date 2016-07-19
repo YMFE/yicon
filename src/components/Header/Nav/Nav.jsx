@@ -1,5 +1,5 @@
+import './Nav.scss';
 import React, { Component, PropTypes } from 'react';
-import styles from './Nav.scss';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -10,7 +10,7 @@ class Nav extends Component {
     const { list, name } = this.props;
 
     return (
-      <div className={styles.nav}>
+      <div className={"global-header-Nav"}>
         <IconMenu
           iconButtonElement={
             <FlatButton

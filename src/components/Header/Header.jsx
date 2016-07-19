@@ -1,5 +1,5 @@
+import './Header.scss';
 import React, { PropTypes } from 'react';
-import styles from './Header.scss';
 import Nav from './Nav/Nav';
 import ToolUserName from './ToolUserName/ToolUserName.jsx';
 import LogOut from './LogOut/LogOut.jsx';
@@ -14,12 +14,12 @@ const list = [
 ];
 
 const Header = (props) => (
-  <header className={styles.header}>
-    <div className={styles.container}>
+  <header className={"global-header"}>
+    <div className={"container"}>
       <Logo />
       <Nav name="图标库" list={props.list} />
       <Nav name="图标管理" list={list} />
-      <div className={styles.tools}>
+      <div className={"tools"}>
         <ToolUserName />
         <LogOut />
         <Cart />
