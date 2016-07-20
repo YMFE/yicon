@@ -86,7 +86,8 @@ export function* recordLog(next) {
   yield next;
 }
 
-function singleLogRecorder(oneLog, transaction) {
+// 以下方法使用事务来记录日志
+function singleLogRecorder(oneLog, transaction, operator) {
   const { params, loggerId, subscribers, type } = oneLog;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
   const log = new Logger(type, params);
@@ -96,6 +97,7 @@ function singleLogRecorder(oneLog, transaction) {
     loggerId,
     scope,
     operation: log.text,
+    operator,
   }, { transaction })
     .then(logModel => {
       const bulkData = subscribers.map(v => {
@@ -116,9 +118,9 @@ function singleLogRecorder(oneLog, transaction) {
 }
 
 // 搞一个可以被事务的日志方法
-export function logRecorder(log, transaction) {
+export function logRecorder(log, transaction, operator) {
   if (Array.isArray(log)) {
-    return Promise.all(log.map(l => singleLogRecorder(l, transaction)));
+    return Promise.all(log.map(l => singleLogRecorder(l, transaction, operator)));
   }
-  return singleLogRecorder(log, transaction);
+  return singleLogRecorder(log, transaction, operator);
 }

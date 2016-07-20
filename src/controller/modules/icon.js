@@ -4,7 +4,7 @@ import invariant from 'invariant';
 
 import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion } from '../../model';
-import { isPlainObject } from '../../helpers/utils';
+import { isPlainObject, unique } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
@@ -89,6 +89,7 @@ export function* getUploadIcons(next) {
 
 export function* submitIcons(next) {
   const { repoId, icons } = this.param;
+  const { userId } = this.state.user;
   // 预处理，防止有不传 id、repoId 的情况
   invariant(
     !isNaN(repoId),
@@ -141,7 +142,7 @@ export function* submitIcons(next) {
           loggerId: repoId,
           subscribers: [repo.admin],
         };
-        return logRecorder(log, transaction);
+        return logRecorder(log, transaction, userId);
       });
   });
   yield t;
@@ -151,9 +152,28 @@ export function* submitIcons(next) {
   yield next;
 }
 
+// 获取审核列表
+export function* getAuditList(next) {
+  const { repoList } = this.state.user;
+
+  const auditData = yield Promise.all(repoList.map(id =>
+    Icon.findAll({
+      where: { status: iconStatus.PENDING },
+      through: {
+        model: RepoVersion,
+        where: { repositoryId: id },
+      },
+    })
+  ));
+
+  this.state.respond = auditData;
+  yield next;
+}
+
 // 审核某图标入库
 export function* auditIcons(next) {
   const { icons } = this.param;
+  const { userId } = this.state.user;
   // 预处理，防止有不传 id 的情况
   icons.forEach(icon => {
     invariant(
@@ -167,6 +187,10 @@ export function* auditIcons(next) {
     invariant(
       !isNaN(icon.repoId),
       `icons 数组期望传入合法大库 id，目前传入的是 ${icon.repoId}`
+    );
+    invariant(
+      !isNaN(icon.uploader),
+      `icons 数组期望传入合法大库上传者，目前传入的是 ${icon.uploader}`
     );
   });
 
@@ -184,7 +208,6 @@ export function* auditIcons(next) {
     return Promise
       .all(iconInfo)
       .then(() => {
-        // 处理一下日志问题：需要按库拆分数据，并区分成功失败
         const iconData = icons.reduce((p, n) => {
           const prev = p;
           if (Array.isArray(p[n.repoId])) {
@@ -196,17 +219,26 @@ export function* auditIcons(next) {
         }, {});
         const log = [];
         Object.keys(iconData).forEach(repoId => {
+          const auditOk = iconData[repoId].filter(i => i.passed);
+          const auditFailed = iconData[repoId].filter(i => !i.passed);
           log.push({
             params: {
-              icon: iconData[repoId].filter(i => i.passed).map(i => ({
-                id: i.id, name: i.name,
-              })),
+              icon: auditOk.map(i => ({ id: i.id, name: i.name })),
             },
             type: 'AUDIT_OK',
             loggerId: repoId,
-            subscribers: [],
+            subscribers: unique(auditOk.map(i => i.uploader)),
+          });
+          log.push({
+            params: {
+              icon: auditFailed.map(i => ({ id: i.id, name: i.name })),
+            },
+            type: 'AUDIT_FAILED',
+            loggerId: repoId,
+            subscribers: unique(auditFailed.map(i => i.uploader)),
           });
         });
+        return logRecorder(log, transaction, userId);
       });
   });
 

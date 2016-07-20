@@ -52,11 +52,9 @@ export class Logger {
       this.param[key] = value;
       if (Array.isArray(value)) {
         if (!value.length) throw new Error('日志缺少参数');
-        return value.map(v => JSON.stringify({
-          [key]: v,
-        })).join('、');
+        return value.map(v => `@${JSON.stringify({ [key]: v })}@`).join('、');
       }
-      return JSON.stringify({ [key]: value });
+      return `@${JSON.stringify({ [key]: value })}@`;
     });
   }
 }
@@ -72,4 +70,11 @@ export function diffArray(oldArr, newArr) {
   const deleted = oldArr.filter(v => !has(newArr, v));
   const added = newArr.filter(v => !has(oldArr, v));
   return { deleted, added };
+}
+
+export function unique(arr) {
+  const uniqueSet = new Set(arr);
+  const result = [];
+  uniqueSet.forEach(v => result.push(v));
+  return result;
 }
