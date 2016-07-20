@@ -1,6 +1,6 @@
 import Header from './Header/Header';
 import SubTitle from './SubTitle/';
-import Content from './Content';
-import Menu from './Menu';
-import Main from './Main';
-export { Header, SubTitle, Content, Menu, Main };
+import { Content, Menu, Main } from './Content';
+import Timeline from './Timeline';
+import Icon from './Icon';
+export { Header, SubTitle, Content, Menu, Main, Timeline, Icon };
