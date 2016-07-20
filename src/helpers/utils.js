@@ -52,11 +52,11 @@ export class Logger {
       this.param[key] = value;
       if (Array.isArray(value)) {
         if (!value.length) throw new Error('日志缺少参数');
-        return value.map(v => JSON.stringify({
+        return value.map(v => `@${JSON.stringify({
           [key]: v,
-        })).join('、');
+        })}@`).join('、');
       }
-      return JSON.stringify({ [key]: value });
+      return `@${JSON.stringify({ [key]: value })}@`;
     });
   }
 }
@@ -75,4 +75,19 @@ export function diffArray(oldArr, newArr) {
   const deleted = oldArr.filter(v => !has(newArr, v));
   const added = newArr.filter(v => !has(oldArr, v));
   return { deleted, added };
+}
+
+export function analyzeLog(type, logString) {
+  const regExp = /@[^@]+@/g;
+  const logType = logTypes[type].match(/\w+[^\s]/g);
+  const logArr = logString.match(regExp).map(v => v.replace(/@/g, ''));
+  const logs = {};
+  if (logType.length > 1) {
+    logType.forEach((v, i) => Object.assign(logs, JSON.parse(logArr[i])));
+    return logs;
+  }
+
+  const key = logType[0];
+  logs[key] = logArr.map(v => JSON.parse(v)[key]);
+  return logs;
 }
