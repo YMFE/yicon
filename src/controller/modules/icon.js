@@ -2,7 +2,8 @@ import fontBuilder from 'iconfont-builder';
 import invariant from 'invariant';
 // import py from 'pinyin';
 
-import { seq, Icon, RepoVersion } from '../../model';
+import { logRecorder } from './log';
+import { seq, Repo, Icon, RepoVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -101,19 +102,23 @@ export function* submitIcons(next) {
     );
   });
 
+  const repo = yield Repo.findOne({ where: { id: repoId } });
+
   // 这里需要一个事务，修改图标数据，然后建立库间关联
-  const transaction = yield seq.transaction(t => {
+  const t = yield seq.transaction(transaction => {
     const iconInfo = icons.map(icon => {
       const data = {
         name: icon.name,
         tags: icon.tags,
         fontClass: icon.style,
         status: iconStatus.PENDING,
+        applyTime: new Date,
       };
 
-      return Icon.update(data, {
-        where: { id: icon.id },
-      }, { transaction: t });
+      return Icon.update(
+        data,
+        { where: { id: icon.id }, transaction }
+      );
     });
 
     return Promise
@@ -124,12 +129,88 @@ export function* submitIcons(next) {
           iconId: i.id,
           repositoryId: repoId,
         }));
-        return RepoVersion.bulkCreate(iconData, { transaction: t });
+        return RepoVersion.bulkCreate(iconData, { transaction });
+      })
+      .then(() => {
+        // 配置项目 log
+        const log = {
+          params: {
+            icon: icons.map(i => ({ id: i.id, name: i.name })),
+          },
+          type: 'UPLOAD',
+          loggerId: repoId,
+          subscribers: [repo.admin],
+        };
+        return logRecorder(log, transaction);
       });
   });
-  yield transaction;
+  yield t;
 
   this.state.respond = '图标提交成功';
+
+  yield next;
+}
+
+// 审核某图标入库
+export function* auditIcons(next) {
+  const { icons } = this.param;
+  // 预处理，防止有不传 id 的情况
+  icons.forEach(icon => {
+    invariant(
+      !isNaN(icon.id),
+      `icons 数组期望传入合法 id，目前传入的是 ${icon.id}`
+    );
+    invariant(
+      typeof icon.passed === 'boolean',
+      `icon.passed 期望传入布尔值，目前传入的是 ${typeof icon.passed}`
+    );
+    invariant(
+      !isNaN(icon.repoId),
+      `icons 数组期望传入合法大库 id，目前传入的是 ${icon.repoId}`
+    );
+  });
+
+  const t = yield seq.transaction(transaction => {
+    const iconInfo = icons.map(icon => {
+      const data = {
+        status: icon.passed ? iconStatus.RESOLVED : iconStatus.REJECTED,
+      };
+      return Icon.update(
+        data,
+        { where: { id: icon.id }, transaction }
+      );
+    });
+
+    return Promise
+      .all(iconInfo)
+      .then(() => {
+        // 处理一下日志问题：需要按库拆分数据，并区分成功失败
+        const iconData = icons.reduce((p, n) => {
+          const prev = p;
+          if (Array.isArray(p[n.repoId])) {
+            prev[n.repoId].push(n);
+          } else {
+            prev[n.repoId] = [n];
+          }
+          return p;
+        }, {});
+        const log = [];
+        Object.keys(iconData).forEach(repoId => {
+          log.push({
+            params: {
+              icon: iconData[repoId].filter(i => i.passed).map(i => ({
+                id: i.id, name: i.name,
+              })),
+            },
+            type: 'AUDIT_OK',
+            loggerId: repoId,
+            subscribers: [],
+          });
+        });
+      });
+  });
+
+  yield t;
 
   yield next;
 }

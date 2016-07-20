@@ -84,3 +84,40 @@ export function* recordLog(next) {
 
   yield next;
 }
+
+function singleLogRecorder(oneLog, transaction) {
+  const { params, loggerId, subscribers, type } = oneLog;
+  // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
+  const log = new Logger(type, params);
+  const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
+  return Log.create({
+    type,
+    loggerId,
+    scope,
+    operation: log.text,
+  }, { transaction })
+    .then(logModel => {
+      const bulkData = subscribers.map(v => {
+        let userId;
+
+        if (!isNaN(v)) userId = v;
+        else if (!isNaN(v.id)) userId = v.id;
+        else throw new Error('未能获取用户 ID');
+
+        return {
+          userId,
+          logId: logModel.id,
+        };
+      });
+
+      return Notification.bulkCreate(bulkData, { transaction });
+    });
+}
+
+// 搞一个可以被事务的日志方法
+export function logRecorder(log, transaction) {
+  if (Array.isArray(log)) {
+    return Promise.all(log.map(l => singleLogRecorder(l, transaction)));
+  }
+  return singleLogRecorder(log, transaction);
+}
