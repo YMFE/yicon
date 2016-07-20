@@ -78,3 +78,18 @@ export function unique(arr) {
   uniqueSet.forEach(v => result.push(v));
   return result;
 }
+
+export function analyzeLog(type, logString) {
+  const regExp = /@[^@]+@/g;
+  const logType = logTypes[type].match(/\w+[^\s]/g);
+  const logArr = logString.match(regExp).map(v => v.replace(/@/g, ''));
+  const logs = {};
+  if (logType.length > 1) {
+    logType.forEach((v, i) => Object.assign(logs, JSON.parse(logArr[i])));
+    return logs;
+  }
+
+  const key = logType[0];
+  logs[key] = logArr.map(v => JSON.parse(v)[key]);
+  return logs;
+}

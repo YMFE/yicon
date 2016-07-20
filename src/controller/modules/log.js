@@ -38,8 +38,9 @@ export function* getLogList(next) {
 /**
  * 记录单条日志信息
  */
-function* recordSingleLog(oneLog) {
+function* recordSingleLog(oneLog, currentUser) {
   const { params, loggerId, subscribers, type } = oneLog;
+  const operator = currentUser;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
   const log = new Logger(type, params);
   if (!log.text) throw new Error('日志内容错误');
@@ -49,6 +50,7 @@ function* recordSingleLog(oneLog) {
     loggerId,
     scope,
     operation: log.text,
+    operator,
   });
 
   const bulkData = subscribers.map(v => {
@@ -73,14 +75,15 @@ function* recordSingleLog(oneLog) {
  */
 export function* recordLog(next) {
   const { log } = this.state;
+  const { userId } = this.state.user;
   if (Array.isArray(log)) {
     const len = log.length;
     let i = 0;
     for (; i < len; i++) {
-      yield recordSingleLog(log[i]);
+      yield recordSingleLog(log[i], userId);
     }
   } else if (typeof log === 'object') {
-    yield recordSingleLog(log);
+    yield recordSingleLog(log, userId);
   }
 
   yield next;
