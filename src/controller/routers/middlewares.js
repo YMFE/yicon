@@ -1,4 +1,4 @@
-import { User, Project } from '../../model';
+import { User, Repo, Project } from '../../model';
 
 export function* mergeParams(next) {
   this.param = {
@@ -81,14 +81,42 @@ export function* getCurrentUser(next) {
 
 export function* isProjectOwner(next) {
   const { projectId } = this.param;
-  this.state.user.isOwner = false;
-  if (projectId) {
+  this.state.user.isProjectOwner = false;
+  if (!isNaN(projectId)) {
     const ownerId = yield Project.findOne({
       attributes: ['owner'],
       where: { id: projectId },
     });
-    this.state.user.isOwner = this.state.user.userId === ownerId.owner;
+    this.state.user.isProjectOwner = this.state.user.userId === ownerId.owner;
     this.state.user.ownerId = ownerId.owner;
   }
+  yield next;
+}
+
+export function* isRepoOwner(next) {
+  const { repoId } = this.param;
+  let repoOwner = false;
+  if (!isNaN(repoId)) {
+    const ownerId = yield Repo.findOne({
+      attributes: ['admin'],
+      where: { id: repoId },
+    });
+    repoOwner = this.state.user.userId === ownerId.admin;
+  }
+  if (!repoOwner) throw new Error('非大库管理员，没有权限');
+  yield next;
+}
+
+export function* isAdmin(next) {
+  const { userId } = this.state.user;
+  let admin = false;
+  if (!isNaN(userId)) {
+    const actor = yield User.findOne({
+      attributes: ['actor'],
+      where: { id: userId },
+    });
+    admin = actor.actor === 2;
+  }
+  if (!admin) throw new Error('非超管，没有权限');
   yield next;
 }

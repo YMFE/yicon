@@ -1,15 +1,110 @@
+@import "../../components/Icon/Icon";
+
 .notification{
   $dark_grey:#657289;
+  $shallow_grey: #f1f3f6;
+  $text-grey: #9e9e9e;
+  $text-time: #919191;
+  $text-tag: #212121;
+  $text-key: #008ed6;
+  // $imgUrl: 'file:///Users/eva/work/yicon/static/images/';
+  $imgUrl: '../../../static/images/';
+  background-color: $shallow_grey;
+  $state-green: #4bb052;
+  $state-blue: #008ed6;
+  $state-grey: #e3e1e1;
+  $text-color: #616161;
   .info-cont{
-    height: 14px;
-    width: 14px;
-    display: inline-block;
+    display: inline;
     background-color:$dark_grey;
+    padding: 0 5px;
+    margin-left: 5px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 14px;
+    border-radius: 2px 2px 2px 0;
   }
-  li:hover{
+  li:hover, .selected{
     .info-cont{
       background-color: #fff;
       color:$dark_grey;
+    }
+  }
+  .empty-container{
+    &::after{
+      content: '您暂时没有消息哦';
+      height: 40px;
+      width: 191px;
+      display: block;
+      margin: 196px auto 0;
+      background: url(#{$imgUrl}notification_empty_container.png) no-repeat ;
+      padding-top: 200px;
+      font-size: 16px;
+      color: $text-grey;
+    }
+  }
+  .check{
+    display: inline-block;
+    overflow: hidden;
+  }
+  .detail{
+    padding: 30px 0 20px;
+    &-item{
+      @include global-icon(
+        $icon-size: 59px,
+        $icon-width: 59px
+      );
+      margin-right: 75px;
+      position: relative;
+      .state{
+        color: #fff;
+        font-size: 12px;
+        line-height: 20px;
+        padding: 0 5px;
+        border-radius: 2px;
+        margin-top: 10px;
+        &.fault{
+          background-color: $state-grey;
+          color: $text-color;
+        }
+        &.passed{
+          background-color: $state-green;
+        }
+        &.checking{
+          background-color: $state-blue;
+        }
+      }
+      .tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: $state-grey;
+        color: $text-color;
+        height: 20px;
+        width: 20px;
+        font-size: 10px;
+        line-height:20px;
+        text-align: center;
+        transform: translateX(5%);
+      }
+      &.new{
+        .tag{
+          color: #fff;
+          background-color: $state-green;
+        }
+      }
+      &.old{
+        &::before{
+          content: ' ';
+          width: 32px;
+          height: 24px;
+          background: url(#{$imgUrl}info_change.png) no-repeat;
+          display: block;
+          position: absolute;
+          top: 35%;
+          transform: translate3d(-170%,-50%,0);
+        }
+      }
     }
   }
 }

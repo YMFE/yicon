@@ -1,8 +1,5 @@
 import './Nav.scss';
 import React, { Component, PropTypes } from 'react';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
 
 class Nav extends Component {
 
@@ -11,9 +8,9 @@ class Nav extends Component {
 
     return (
       <div className={"global-header-Nav"}>
-        <IconMenu
+        <div
           iconButtonElement={
-            <FlatButton
+            <div
               label={name}
               labelStyle={{
                 color: '#212121',
@@ -28,11 +25,11 @@ class Nav extends Component {
           <div>
             {
               list.map((menuItem, index) => (
-                <MenuItem primaryText={menuItem.name} key={index} />)
+                <div primaryText={menuItem.name} key={index} />)
               )
             }
           </div>
-        </IconMenu>
+        </div>
       </div>
     );
   }

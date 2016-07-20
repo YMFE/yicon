@@ -1,7 +1,6 @@
 import './Search.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Popover from 'material-ui/Popover';
 import Icon from '../../common/Icon/Icon.jsx';
 import { autobind } from 'core-decorators';
 import {
@@ -40,7 +39,7 @@ class Search extends Component {
     return (
       <div className={"global-header-search"}>
         <input type="input" placeholder="请输入查询关键字" ref="input" onChange={this.searchIcon} />
-        <Popover
+        <div
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -55,7 +54,7 @@ class Search extends Component {
               </div>
             ))
           }
-        </Popover>
+        </div>
       </div>
     );
   }
