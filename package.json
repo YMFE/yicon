@@ -8,8 +8,8 @@
     "start:dev": "better-npm-run start:dev",
     "client": "better-npm-run client",
     "dev": "concurrently --kill-others \"npm run client\" \"npm run start:dev\"",
-    "database:sync": "better-npm-run database:sync",
-    "database:force": "better-npm-run database:force",
+    "db:sync": "better-npm-run database:sync",
+    "db:force": "better-npm-run database:force",
     "test": "karma start"
   },
   "betterScripts": {
