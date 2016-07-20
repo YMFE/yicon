@@ -43,8 +43,9 @@ module.exports = {
             //   ] },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css?minimize!postcss!resolve-url!sass?sourceMap')
-            }, {
+                loader: ExtractTextPlugin.extract('style', 'css?minimize!postcss!sass?sourceMap')
+            }
+            , {
                 test: webpackIsomorphicToolsPlugin.regular_expression('images'),
                 loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
             }, {
@@ -79,5 +80,5 @@ module.exports = {
           }
         ),
         webpackIsomorphicToolsPlugin.development(),
-    ]
+    ],
 };
