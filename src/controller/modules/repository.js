@@ -18,6 +18,7 @@ function getRepoByVersion({ repoId, version = '0.0.0', limit }) {
   })
   .then(res => {
     const repo = res;
+    repo.iconCount = repo.icons.length;
     if (limit && limit < repo.icons.length) {
       repo.icons.length = limit;
     }
