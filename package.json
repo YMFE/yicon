@@ -8,8 +8,8 @@
     "start:dev": "better-npm-run start:dev",
     "client": "better-npm-run client",
     "dev": "concurrently --kill-others \"npm run client\" \"npm run start:dev\"",
-    "database:sync": "better-npm-run database:sync",
-    "database:force": "better-npm-run database:force",
+    "db:sync": "better-npm-run database:sync",
+    "db:force": "better-npm-run database:force",
     "test": "karma start"
   },
   "betterScripts": {
@@ -92,7 +92,6 @@
     "koa-router": "^5.4.0",
     "koa-session-store": "^2.0.0",
     "koa-static": "^2.0.0",
-    "material-ui": "^0.15.0",
     "mysql": "^2.10.2",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
