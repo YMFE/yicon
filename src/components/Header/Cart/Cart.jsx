@@ -1,9 +1,6 @@
 import './Cart.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
-import Popover from 'material-ui/Popover';
-import Paper from 'material-ui/Paper';
 import Icon from '../../common/Icon/Icon.jsx';
 import { autobind } from 'core-decorators';
 import {
@@ -61,7 +58,7 @@ class Cart extends Component {
 
     return (
       <div style={{ float: 'left' }} className={"global-header-cart"}>
-        <FlatButton
+        <div
           onTouchTap={this.handleTouchTap}
           label="待选图标"
           labelStyle={{
@@ -71,23 +68,27 @@ class Cart extends Component {
           }}
         />
         {this.props.iconsInLocalStorage.length}
-        <Popover
+        <div
           open={this.state.isShow}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}
         >
-          <Paper style={{ width: '346px', height: '150px' }}>
+          <div style={{ width: '346px', height: '150px' }}>
             {
               iconsInCart.map((icon) => (
-                <div key={icon.id} className={"icon"} onClick={this.removeFromCart(icon.id)}>
+                <div
+                  key={icon.id}
+                  className="icon"
+                  onClick={this.removeFromCart(icon.id)}
+                >
                   <Icon size={20} d={icon.path} />
                 </div>
               ))
             }
-          </Paper>
-        </Popover>
+          </div>
+        </div>
       </div>
     );
   }

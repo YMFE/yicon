@@ -1,10 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
 import { Header } from '../../components';
 import {
   launchDevTools,
@@ -26,14 +22,12 @@ class App extends Component {
     const { list } = this.props;
 
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
-        <div>
-          <Header list={list} />
-          <section>
-            {this.props.children}
-          </section>
-        </div>
-      </MuiThemeProvider>
+      <div>
+        <Header list={list} />
+        <section>
+          {this.props.children}
+        </section>
+      </div>
     );
   }
 }

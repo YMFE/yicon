@@ -15,11 +15,11 @@ const list = [
 
 const Header = (props) => (
   <header className={"global-header"}>
-    <div className={"container"}>
+    <div className="container">
       <Logo />
       <Nav name="图标库" list={props.list} />
       <Nav name="图标管理" list={list} />
-      <div className={"tools"}>
+      <div className="tools">
         <ToolUserName />
         <LogOut />
         <Cart />

@@ -92,7 +92,6 @@
     "koa-router": "^5.4.0",
     "koa-session-store": "^2.0.0",
     "koa-static": "^2.0.0",
-    "material-ui": "^0.15.0",
     "mysql": "^2.10.2",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
