@@ -71,7 +71,6 @@ const getRouteContext = (ctx) =>
   });
 
 app.use(function* s() {
-  console.log('app use test test test ');
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }
