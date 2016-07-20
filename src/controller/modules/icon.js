@@ -163,10 +163,14 @@ export function* getAuditList(next) {
         model: RepoVersion,
         where: { repositoryId: id },
       },
-    })
+    }).then(icons => icons.map(i => {
+      const icon = i.dataValues;
+      icon.repoId = id;
+      return icon;
+    }))
   ));
 
-  this.state.respond = auditData;
+  this.state.respond = auditData.reduce((p, n) => p.concat(n), []);
   yield next;
 }
 
