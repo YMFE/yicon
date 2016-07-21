@@ -4,9 +4,9 @@ import React, { PropTypes } from 'react';
 const Timeline = (props) => {
   let classList = props.extraClass ? `global-timeline ${props.extraClass}` : 'global-timeline';
   return (
-    <dl className={classList}>
+    <div className={classList}>
       {props.children}
-    </dl>
+    </div>
   );
 };
 Timeline.propTypes = {

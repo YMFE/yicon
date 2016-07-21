@@ -64,3 +64,10 @@ export function deleteIconInLocalStorage(id, isFetchIcons) {
     });
   };
 }
+
+export function dumpIconLocalStorage() {
+  return {
+    type: 'DUMP_ICON_LOCALSTORGAGE',
+    payload: [],
+  };
+}

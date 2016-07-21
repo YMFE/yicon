@@ -23,7 +23,7 @@ class App extends Component {
 
     return (
       <div>
-        <Header list={list} />
+        <Header list={list} extraClass="main" login name={"李欣悦"} />
         <section>
           {this.props.children}
         </section>

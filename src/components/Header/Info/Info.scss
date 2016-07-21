@@ -1,0 +1,18 @@
+.nav-message {
+  position: relative;
+
+  .nav-message-count {
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    font-size: 11px;
+    height: 12px;
+    line-height: 12px;
+    background-color: #ff5555;
+    padding: 0 3px;
+    color: #001c4c;
+    font-style: normal;
+    border-radius: 3px;
+  }
+
+}
