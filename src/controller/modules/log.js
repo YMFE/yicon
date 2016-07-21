@@ -1,5 +1,5 @@
 import { User, Repo, Log, Project, Notification } from '../../model';
-import { Logger } from '../../helpers/utils';
+import { generateLog } from '../../helpers/utils';
 
 function* getLog(id, model, scope, pageMixin) {
   const data = yield model.findOne({ where: { id } });
@@ -42,14 +42,14 @@ function* recordSingleLog(oneLog, currentUser) {
   const { params, loggerId, subscribers, type } = oneLog;
   const operator = currentUser;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
-  const log = new Logger(type, params);
-  if (!log.text) throw new Error('日志内容错误');
+  const log = generateLog(type, params);
+  if (!log) throw new Error('日志内容错误');
   const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
   const logModel = yield Log.create({
     type,
     loggerId,
     scope,
-    operation: log.text,
+    operation: log,
     operator,
   });
 
@@ -87,4 +87,44 @@ export function* recordLog(next) {
   }
 
   yield next;
+}
+
+// 以下方法使用事务来记录日志
+function singleLogRecorder(oneLog, transaction, operator) {
+  const { params, loggerId, subscribers, type } = oneLog;
+  // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
+  const log = generateLog(type, params);
+  if (!log) throw new Error('日志内容错误');
+  const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
+  return Log.create({
+    type,
+    loggerId,
+    scope,
+    operation: log,
+    operator,
+  }, { transaction })
+    .then(logModel => {
+      const bulkData = subscribers.map(v => {
+        let userId;
+
+        if (!isNaN(v)) userId = v;
+        else if (!isNaN(v.id)) userId = v.id;
+        else throw new Error('未能获取用户 ID');
+
+        return {
+          userId,
+          logId: logModel.id,
+        };
+      });
+
+      return Notification.bulkCreate(bulkData, { transaction });
+    });
+}
+
+// 搞一个可以被事务的日志方法
+export function logRecorder(log, transaction, operator) {
+  if (Array.isArray(log)) {
+    return Promise.all(log.map(l => singleLogRecorder(l, transaction, operator)));
+  }
+  return singleLogRecorder(log, transaction, operator);
 }
