@@ -35,6 +35,7 @@ class Slider extends Component {
     props.onChange(value);
   }
 
+  @autobind
   onMouseMove(e) {
     const position = getMousePosition(e);
     this.onMove(e, position);
@@ -120,10 +121,8 @@ class Slider extends Component {
   }
 
   addDocumentEvents() {
-    this.onMouseMoveListener = this.onMouseMove.bind(this);
-    this.onMouseUpListener = this.end.bind(this);
-    document.addEventListener('mousemove', this.onMouseMoveListener);
-    document.addEventListener('mouseup', this.onMouseUpListener);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.end);
   }
 
   calcValue(offset) {
@@ -134,10 +133,11 @@ class Slider extends Component {
   }
 
   removeEvents() {
-    document.removeEventListener('mousemove', this.onMouseMoveListener);
-    document.removeEventListener('mouseup', this.onMouseUpListener);
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.end);
   }
 
+  @autobind
   end() {
     this.removeEvents();
     this.props.onAfterChange(this.getValue());
