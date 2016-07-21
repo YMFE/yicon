@@ -1,5 +1,5 @@
 // import './Dropdown.scss';
-// import { Component, PropTypes } from 'react';
+// import React, { Component, PropTypes } from 'react';
 //
 // const defaultProps = { /**
 //      * visible 菜单是否显示
@@ -21,12 +21,12 @@
 //     console.log(evt);
 //   },
 // };
-// // const propTypes = {
-// // 	visible: PropTypes.bool,
-// // 	extraClass: PropTypes.string,
-// //     onVisibleChange: PropTypes.func,
-// //     getPopupContainer: PropTypes.func
-// // };
+// const propTypes = {
+// 	 visible: PropTypes.bool,
+// 	extraClass: PropTypes.string,
+//     onVisibleChange: PropTypes.func,
+//     getPopupContainer: PropTypes.func
+// };
 //
 // // class Dropdown extends  Component {
 // // 	constructor(props) {

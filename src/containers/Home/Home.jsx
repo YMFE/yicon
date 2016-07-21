@@ -5,6 +5,8 @@ import {
 } from '../../actions/repository';
 
 import RepoSection from '../../components/RepoSection/RepoSection';
+import { Select } from '../../components/';
+const Option = Select.Option;
 
 @connect(
   state => ({ list: state.repository.homeRepository }),
@@ -17,7 +19,9 @@ class Home extends Component {
     this.props.fetchHomeData();
     // }
   }
-
+  handleChange(evt) {
+    console.log(evt);
+  }
   render() {
     const { list } = this.props;
 
@@ -37,6 +41,11 @@ class Home extends Component {
             />
           ))
         }
+        <Select defaultValue="lucy" style={{ width: 120 }} allowClear disabled>
+          <Option value="lucy">Lucy</Option>
+        </Select>
+
+
       </div>
     );
   }
