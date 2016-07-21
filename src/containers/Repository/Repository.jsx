@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchRepositoryData } from '../../actions/repository';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
-import styles from './Repository.scss';
-import Icon from '../../components/common/Icon/Icon.jsx';
+// import styles from './Repository.scss';
+import IconButton from '../../components/IconButton/IconButton.jsx';
 
 @connect(
   state => ({
@@ -42,13 +42,11 @@ export default class Repository extends Component {
         <p>This is repository page. Id: {id}.</p>
         {
           this.props.list.map((icon) => (
-            <div
-              key={icon.id}
-              className={styles.icon}
+            <IconButton
+              icon={icon}
+              fill={this.getColor(icon.id)}
               onClick={this.selectIcon(icon.id)}
-            >
-              <Icon size={40} fill={this.getColor(icon.id)} d={icon.path} />
-            </div>
+            />
           ))
         }
       </div>
