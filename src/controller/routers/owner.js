@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { updateRepoNotice } from '../modules/repository';
 import { getLogList } from '../modules/log';
-import { getAuditList, auditIcons } from '../modules/icon';
+import { getAuditList, auditIcons } from '../modules/audit';
 import { pagination, getCurrentUser, isRepoOwner } from './middlewares';
 
 const owner = new Router();

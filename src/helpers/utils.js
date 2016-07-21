@@ -1,4 +1,5 @@
 import { logTypes } from '../constants/utils';
+import invariant from 'invariant';
 
 export const versionTools = {
   v2n(version) {
@@ -38,27 +39,6 @@ export const isPlainObject = obj => {
   }
 };
 
-export class Logger {
-  constructor(type, data = {}) {
-    this.text = null;
-    this.param = {};
-    if (Object.keys(logTypes).indexOf(type) === -1) {
-      return;
-    }
-    this.text = logTypes[type];
-    this.text = this.text.replace(/@(\w+)/g, (matched, key) => {
-      const value = data[key];
-      if (!value) throw new Error('日志缺少参数');
-      this.param[key] = value;
-      if (Array.isArray(value)) {
-        if (!value.length) throw new Error('日志缺少参数');
-        return value.map(v => `@${JSON.stringify({ [key]: v })}@`).join('、');
-      }
-      return `@${JSON.stringify({ [key]: value })}@`;
-    });
-  }
-}
-
 export function has(Arr, o) {
   if (typeof o === 'object') {
     return Arr.some(v => typeof v === 'object' && v.id === o.id);
@@ -77,6 +57,25 @@ export function unique(arr) {
   const result = [];
   uniqueSet.forEach(v => result.push(v));
   return result;
+}
+
+// ============ 日志处理方法 ============ //
+export function generateLog(type, data = {}) {
+  const param = {};
+  if (Object.keys(logTypes).indexOf(type) === -1) {
+    return '';
+  }
+  const text = logTypes[type];
+  return text.replace(/@(\w+)/g, (matched, key) => {
+    const value = data[key];
+    invariant(value, `日志缺少参数，期望存在 ${key}`);
+    param[key] = value;
+    if (Array.isArray(value)) {
+      invariant(value, `日志缺少参数，期望存在 ${key}`);
+      return value.map(v => `@${JSON.stringify({ [key]: v })}@`).join('、');
+    }
+    return `@${JSON.stringify({ [key]: value })}@`;
+  });
 }
 
 export function analyzeLog(type, logString) {

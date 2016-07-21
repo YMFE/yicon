@@ -4,7 +4,7 @@ import invariant from 'invariant';
 
 import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion } from '../../model';
-import { isPlainObject, unique } from '../../helpers/utils';
+import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
@@ -137,104 +137,6 @@ export function* submitIcons(next) {
 
   this.state.respond = '图标提交成功';
 
-  yield next;
-}
-
-// 获取审核列表
-export function* getAuditList(next) {
-  const { repoList } = this.state.user;
-
-  const auditData = yield Promise.all(repoList.map(id =>
-    Icon.findAll({
-      where: { status: iconStatus.PENDING },
-      through: {
-        model: RepoVersion,
-        where: { repositoryId: id },
-      },
-    }).then(icons => icons.map(i => {
-      const icon = i.dataValues;
-      icon.repoId = id;
-      return icon;
-    }))
-  ));
-
-  this.state.respond = auditData.reduce((p, n) => p.concat(n), []);
-  yield next;
-}
-
-// 审核某图标入库
-export function* auditIcons(next) {
-  const { icons } = this.param;
-  const { userId } = this.state.user;
-  // 预处理，防止有不传 id 的情况
-  icons.forEach(icon => {
-    invariant(
-      !isNaN(icon.id),
-      `icons 数组期望传入合法 id，目前传入的是 ${icon.id}`
-    );
-    invariant(
-      typeof icon.passed === 'boolean',
-      `icon.passed 期望传入布尔值，目前传入的是 ${typeof icon.passed}`
-    );
-    invariant(
-      !isNaN(icon.repoId),
-      `icons 数组期望传入合法大库 id，目前传入的是 ${icon.repoId}`
-    );
-    invariant(
-      !isNaN(icon.uploader),
-      `icons 数组期望传入合法大库上传者，目前传入的是 ${icon.uploader}`
-    );
-  });
-
-  const t = yield seq.transaction(transaction => {
-    const iconInfo = icons.map(icon => {
-      const data = {
-        status: icon.passed ? iconStatus.RESOLVED : iconStatus.REJECTED,
-      };
-      return Icon.update(
-        data,
-        { where: { id: icon.id }, transaction }
-      );
-    });
-
-    return Promise
-      .all(iconInfo)
-      .then(() => {
-        const iconData = icons.reduce((p, n) => {
-          const prev = p;
-          if (Array.isArray(p[n.repoId])) {
-            prev[n.repoId].push(n);
-          } else {
-            prev[n.repoId] = [n];
-          }
-          return p;
-        }, {});
-        const log = [];
-        Object.keys(iconData).forEach(repoId => {
-          const auditOk = iconData[repoId].filter(i => i.passed);
-          const auditFailed = iconData[repoId].filter(i => !i.passed);
-          log.push({
-            params: {
-              icon: auditOk.map(i => ({ id: i.id, name: i.name })),
-            },
-            type: 'AUDIT_OK',
-            loggerId: repoId,
-            subscribers: unique(auditOk.map(i => i.uploader)),
-          });
-          log.push({
-            params: {
-              icon: auditFailed.map(i => ({ id: i.id, name: i.name })),
-            },
-            type: 'AUDIT_FAILED',
-            loggerId: repoId,
-            subscribers: unique(auditFailed.map(i => i.uploader)),
-          });
-        });
-        return logRecorder(log, transaction, userId);
-      });
-  });
-
-  yield t;
   yield next;
 }
 

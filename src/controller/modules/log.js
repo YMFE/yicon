@@ -1,5 +1,5 @@
 import { User, Repo, Log, Project, Notification } from '../../model';
-import { Logger } from '../../helpers/utils';
+import { generateLog } from '../../helpers/utils';
 
 function* getLog(id, model, scope, pageMixin) {
   const data = yield model.findOne({ where: { id } });
@@ -42,14 +42,14 @@ function* recordSingleLog(oneLog, currentUser) {
   const { params, loggerId, subscribers, type } = oneLog;
   const operator = currentUser;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
-  const log = new Logger(type, params);
-  if (!log.text) throw new Error('日志内容错误');
+  const log = generateLog(type, params);
+  if (!log) throw new Error('日志内容错误');
   const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
   const logModel = yield Log.create({
     type,
     loggerId,
     scope,
-    operation: log.text,
+    operation: log,
     operator,
   });
 
@@ -93,13 +93,14 @@ export function* recordLog(next) {
 function singleLogRecorder(oneLog, transaction, operator) {
   const { params, loggerId, subscribers, type } = oneLog;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
-  const log = new Logger(type, params);
+  const log = generateLog(type, params);
+  if (!log) throw new Error('日志内容错误');
   const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
   return Log.create({
     type,
     loggerId,
     scope,
-    operation: log.text,
+    operation: log,
     operator,
   }, { transaction })
     .then(logModel => {
