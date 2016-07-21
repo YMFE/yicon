@@ -42,8 +42,12 @@ export default class Repository extends Component {
         <p>This is repository page. Id: {id}.</p>
         {
           this.props.list.map((icon) => (
-            <div key={icon.id} className={styles.icon} onClick={this.selectIcon(icon.id)}>
-              <Icon size={20} fill={this.getColor(icon.id)} d={icon.path} />
+            <div
+              key={icon.id}
+              className={styles.icon}
+              onClick={this.selectIcon(icon.id)}
+            >
+              <Icon size={40} fill={this.getColor(icon.id)} d={icon.path} />
             </div>
           ))
         }

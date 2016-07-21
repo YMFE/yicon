@@ -1,4 +1,5 @@
-import { User, Repo, Project, UserProject } from '../../model';
+import { User, Repo, Project } from '../../model';
+
 export function* mergeParams(next) {
   this.param = {
     ...this.query,
@@ -50,20 +51,29 @@ export function* pagination(next) {
   yield next;
 }
 
+// TODO: 将业务型的 middleware 移至对应的 controller 中
 export function* getCurrentUser(next) {
+  // TODO: 改为从 session 获取
   this.state.user = {
-    userId: 2,
+    userId: 9,
   };
   const { projectId } = this.param;
+  const user = yield User.findOne({
+    where: { id: this.state.user.userId },
+  });
 
-  if (projectId) {
-    const isBelongToMembers = yield UserProject.findOne({
-      where: {
-        userId: this.state.user.userId,
-        projectId,
-      },
+  if (!user) throw new Error('获取用户信息失败，请重新登录');
+  this.state.user.model = user;
+
+  if (!isNaN(projectId)) {
+    const project = yield Project.findOne({
+      where: { id: projectId },
     });
-    if (!isBelongToMembers) throw new Error('没有权限');
+    if (!project) throw new Error(`id 为 ${projectId} 的项目不存在`);
+    const hasUser = yield project.hasUser(user);
+    if (!hasUser) {
+      throw new Error('当前用户不是该项目的项目成员');
+    }
   }
 
   yield next;
@@ -85,13 +95,21 @@ export function* isProjectOwner(next) {
 
 export function* isRepoOwner(next) {
   const { repoId } = this.param;
+  const { userId } = this.state.user;
   let repoOwner = false;
   if (!isNaN(repoId)) {
-    const ownerId = yield Repo.findOne({
-      attributes: ['admin'],
-      where: { id: repoId },
+    const result = yield Repo.findOne({
+      where: { id: repoId, admin: userId },
     });
-    repoOwner = this.state.user.userId === ownerId.admin;
+    repoOwner = !!result;
+  } else {
+    const result = yield Repo.findAll({
+      where: { admin: userId },
+    });
+    repoOwner = !!result.length;
+    if (repoOwner) {
+      this.state.user.repoList = result.map(r => r.id);
+    }
   }
   if (!repoOwner) throw new Error('非大库管理员，没有权限');
   yield next;
