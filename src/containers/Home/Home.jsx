@@ -6,7 +6,7 @@ import {
 
 import RepoSection from '../../components/RepoSection/RepoSection';
 import { Select } from '../../components/';
-const Option = Select.Option;
+
 
 @connect(
   state => ({ list: state.repository.homeRepository }),
@@ -24,7 +24,7 @@ class Home extends Component {
   }
   render() {
     const { list } = this.props;
-
+    const Option = Select.Option;
     return (
       <div>
         <h1>Home</h1>
@@ -42,7 +42,10 @@ class Home extends Component {
           ))
         }
         <Select defaultValue="lucy" style={{ width: 120 }} allowClear disabled>
+          <Option value="jack">Jack</Option>
           <Option value="lucy">Lucy</Option>
+          <Option value="disabled" disabled>Disabled</Option>
+          <Option value="yiminghe">yiminghe</Option>
         </Select>
 
 
