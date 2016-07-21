@@ -59,6 +59,11 @@ const RepoVersion = seq.define('repoVersion', {
 
 const UserProject = seq.define('userProject');
 const UserLog = seq.define('userLog', {
+  id: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   unread: {
     type: Seq.BOOLEAN,
     defaultValue: true,
@@ -121,6 +126,7 @@ User.hasMany(Repo, { foreignKey: 'admin' });
 User.hasMany(Log, { foreignKey: 'operator' });
 User.hasMany(Project, { foreignKey: 'owner' });
 User.belongsToMany(Project, { through: UserProject });
+User.belongsToMany(Log, { through: UserLog });
 
 Log.belongsTo(User, {
   foreignKey: 'operator',

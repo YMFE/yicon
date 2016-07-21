@@ -1,9 +1,8 @@
 import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
 
 const LogOut = () => (
   <div style={{ float: 'left' }}>
-    <FlatButton
+    <div
       label="退出"
       labelStyle={{
         fontSize: '12.8px',

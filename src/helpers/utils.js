@@ -1,4 +1,5 @@
 import { logTypes } from '../constants/utils';
+import invariant from 'invariant';
 
 export const versionTools = {
   v2n(version) {
@@ -38,24 +39,56 @@ export const isPlainObject = obj => {
   }
 };
 
-export class Logger {
-  constructor(type, data = {}) {
-    this.text = null;
-    this.param = {};
-    if (!~Object.keys(logTypes).indexOf(type)) {
-      return;
-    }
-    this.text = logTypes[type];
-    this.text = this.text.replace(/@(\w+)/g, (matched, key) => {
-      const value = data[key];
-      if (!value) throw new Error('日志缺少参数');
-      this.param[key] = value;
-      if (Array.isArray(value)) {
-        return value.map(v => JSON.stringify({
-          [key]: v,
-        })).join('、');
-      }
-      return JSON.stringify({ [key]: value });
-    });
+export function has(Arr, o) {
+  if (typeof o === 'object') {
+    return Arr.some(v => typeof v === 'object' && v.id === o.id);
   }
+  return Arr.some(v => v === o);
+}
+
+export function diffArray(oldArr, newArr) {
+  const deleted = oldArr.filter(v => !has(newArr, v));
+  const added = newArr.filter(v => !has(oldArr, v));
+  return { deleted, added };
+}
+
+export function unique(arr) {
+  const uniqueSet = new Set(arr);
+  const result = [];
+  uniqueSet.forEach(v => result.push(v));
+  return result;
+}
+
+// ============ 日志处理方法 ============ //
+export function generateLog(type, data = {}) {
+  const param = {};
+  if (Object.keys(logTypes).indexOf(type) === -1) {
+    return '';
+  }
+  const text = logTypes[type];
+  return text.replace(/@(\w+)/g, (matched, key) => {
+    const value = data[key];
+    invariant(value, `日志缺少参数，期望存在 ${key}`);
+    param[key] = value;
+    if (Array.isArray(value)) {
+      invariant(value, `日志缺少参数，期望存在 ${key}`);
+      return value.map(v => `@${JSON.stringify({ [key]: v })}@`).join('、');
+    }
+    return `@${JSON.stringify({ [key]: value })}@`;
+  });
+}
+
+export function analyzeLog(type, logString) {
+  const regExp = /@[^@]+@/g;
+  const logType = logTypes[type].match(/\w+[^\s]/g);
+  const logArr = logString.match(regExp).map(v => v.replace(/@/g, ''));
+  const logs = {};
+  if (logType.length > 1) {
+    logType.forEach((v, i) => Object.assign(logs, JSON.parse(logArr[i])));
+    return logs;
+  }
+
+  const key = logType[0];
+  logs[key] = logArr.map(v => JSON.parse(v)[key]);
+  return logs;
 }
