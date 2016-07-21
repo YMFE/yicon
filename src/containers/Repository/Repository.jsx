@@ -4,6 +4,7 @@ import { fetchRepositoryData } from '../../actions/repository';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 import styles from './Repository.scss';
 import Icon from '../../components/common/Icon/Icon.jsx';
+import Slider from '../../components/common/Slider/Slider.jsx';
 
 @connect(
   state => ({
@@ -38,12 +39,19 @@ export default class Repository extends Component {
     const { id } = this.props.params;
     return (
       <div>
+        <div style={{ width: 200, padding: 10 }}>
+          <Slider />
+        </div>
         <h1>Repository</h1>
         <p>This is repository page. Id: {id}.</p>
         {
           this.props.list.map((icon) => (
-            <div key={icon.id} className={styles.icon} onClick={this.selectIcon(icon.id)}>
-              <Icon size={20} fill={this.getColor(icon.id)} d={icon.path} />
+            <div
+              key={icon.id}
+              className={styles.icon}
+              onClick={this.selectIcon(icon.id)}
+            >
+              <Icon size={40} fill={this.getColor(icon.id)} d={icon.path} />
             </div>
           ))
         }
