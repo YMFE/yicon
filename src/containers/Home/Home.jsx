@@ -5,8 +5,8 @@ import {
 } from '../../actions/repository';
 
 import RepoSection from '../../components/RepoSection/RepoSection';
-import { Select } from '../../components/';
-
+// import { Select } from '../../components/';
+// const Option = Select.Option;
 
 @connect(
   state => ({ list: state.repository.homeRepository }),
@@ -19,12 +19,8 @@ class Home extends Component {
     this.props.fetchHomeData();
     // }
   }
-  handleChange(evt) {
-    console.log(evt);
-  }
   render() {
     const { list } = this.props;
-    const Option = Select.Option;
     return (
       <div>
         <h1>Home</h1>
@@ -41,14 +37,20 @@ class Home extends Component {
             />
           ))
         }
-        <Select defaultValue="lucy" style={{ width: 120 }} allowClear disabled>
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="disabled" disabled>Disabled</Option>
-          <Option value="yiminghe">yiminghe</Option>
-        </Select>
-
-
+        {/*
+          <Select placeholder="请选择项目" style={{ width: 250 }}>
+            <Option value="去哪儿网3W">去哪儿网3W</Option>
+            <Option value="系统应用">系统应用</Option>
+            <Option value="无线大客户端">无线大客户端无线大客户端</Option>
+            <Option value="disabled" disabled>Disabled</Option>
+          </Select>
+          <Select defaultValue="lucy" style={{ width: 120 }} allowClear disabled>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          <Select placeholder="请输入项目名称" style={{ width: 210 }} allowClear >
+            <Option value="lucy">Lucy</Option>
+          </Select>
+          */}
       </div>
     );
   }
