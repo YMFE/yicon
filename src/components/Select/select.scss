@@ -1,3 +1,8 @@
+@charset "utf-8";
+@import "../../../style/usage/core/reset";
+html{
+	background: #fff;
+}
 /* 父元素 */
 .rc-select {
  /* box-sizing: border-box;
@@ -106,4 +111,10 @@ li.rc-select-dropdown-menu-item-divider {
 
 .rc-select-dropdown-hidden {
   display: none;
+}
+
+.rc-select-selection__placeholder {
+  position: absolute;
+  top: 0;
+  color: #aaa;
 }
