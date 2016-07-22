@@ -1,37 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchRepositoryData } from '../../actions/repository';
-import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 // import styles from './Repository.scss';
 import IconButton from '../../components/IconButton/IconButton.jsx';
 
 @connect(
   state => ({
     list: state.repository.currRepository.icons,
-    iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
-  { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
+  { fetchRepositoryData }
 )
 export default class Repository extends Component {
   componentWillMount() {
     this.props.fetchRepositoryData(this.props.params.id);
-  }
-
-  getColor(id) {
-    if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
-      return '#00bcd4';
-    }
-    return '#000';
-  }
-
-  selectIcon(id) {
-    return () => {
-      if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
-        this.props.deleteIconInLocalStorage(id);
-      } else {
-        this.props.addIconToLocalStorage(id);
-      }
-    };
   }
 
   render() {
@@ -44,8 +25,7 @@ export default class Repository extends Component {
           this.props.list.map((icon) => (
             <IconButton
               icon={icon}
-              fill={this.getColor(icon.id)}
-              onClick={this.selectIcon(icon.id)}
+              key={icon.id}
             />
           ))
         }

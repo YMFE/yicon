@@ -5,7 +5,6 @@
   float: left;
   text-align: center;
   >.info{
-    border: 1px solid #f1f3f6;
     padding:12px;
     width: 72px;
     margin: 0 auto;
@@ -32,6 +31,7 @@
     height: 30px;
     position: relative;
     .copytip{
+      display: none;
       position: absolute;
       background-color: #fff8e5;
       border:1px solid #ffe8a6;
