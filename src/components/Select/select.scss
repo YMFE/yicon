@@ -1,8 +1,4 @@
 @charset "utf-8";
-@import "../../../style/usage/core/reset";
-html{
-	background: #fff;
-}
 /* 父元素 */
 .rc-select {
  /* box-sizing: border-box;
@@ -52,6 +48,7 @@ html{
   z-index: 201;
   width: 250px;
   border: 1px solid #dfdfdf;
+	background-color: #fff;
   border-top: none;
   border-radius: 3px;
   border-top-left-radius: 0px;

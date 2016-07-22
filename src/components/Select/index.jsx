@@ -12,7 +12,7 @@ import './Select.scss';
  * @autor leila.wang
  */
 
-export default class Selectfield extends Component {
+export default class Select extends Component {
     //  es7  写法
   static Option = Option;
   static OptGroup = OptGroup;
