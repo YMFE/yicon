@@ -32,7 +32,7 @@ class IconButton extends Component {
     const { icon } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
-    const status = 3;
+    const status = 2;
     let tool = '';
     if (+status === +1) {
       tool = (

@@ -5,7 +5,8 @@
   float: left;
   text-align: center;
   >.info{
-    padding:12px;
+    /*border: 1px solid #f1f3f6;*/
+    padding:13px;
     width: 72px;
     margin: 0 auto;
     /*background-color: #fff;*/
@@ -16,6 +17,10 @@
       line-height: 72px;
       text-align: center;
       color:#555f6e;
+      .iconfont {
+        font-size: 64px;
+        vertical-align: top;
+      }
     }
     .name{
       color:#616161;
@@ -30,8 +35,8 @@
     margin-top: 3px;
     height: 30px;
     position: relative;
+    font-size: 0;
     .copytip{
-      display: none;
       position: absolute;
       background-color: #fff8e5;
       border:1px solid #ffe8a6;
@@ -49,6 +54,7 @@
     .tool-item{
       /*margin:0 1px;*/
       display: none;
+      margin: 0 1px;
       /*float: left;*/
       width: 30px;
       height: 30px;
@@ -67,11 +73,10 @@
   }
 
 }
-.icon-detail-item:hover{
+.icon-detail-item:hover,.icon-detail-item.hover{
   .tool{
     .tool-item{
       display: inline-block;
-      margin-left: -3px;
     }
   }
 }
@@ -79,6 +84,7 @@
   .info{
     border: 1px solid #ccc;
     background-color: #fff;
+    padding:12px;
     .icon{
       color:#008ed6;
     }
