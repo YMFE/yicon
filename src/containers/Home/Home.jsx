@@ -5,7 +5,7 @@ import {
 } from '../../actions/repository';
 
 import RepoSection from '../../components/RepoSection/RepoSection';
-import Select from '../../components/Select/index';
+import Select from '../../components/common/Select/index';
 const Option = Select.Option;
 
 @connect(
