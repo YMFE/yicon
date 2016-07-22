@@ -23,6 +23,10 @@ class Home extends Component {
 
     return (
       <div>
+        {/* 暂时用作登录测试 start */}
+        <button id={"qsso-login"} style={{ width: '50px', height: '24px', background: '#00bcd4' }}>
+        登录</button>
+        {/* end */}
         <h1>Home</h1>
         <p>This is home page.</p>
         {

@@ -18,6 +18,7 @@ import { router } from './controller';
 const app = new Koa();
 const { PORT } = process.env;
 
+app.keys = ['secret', 'key'];
 app.use(compress());
 app.use(favicon(path.join(__dirname, '../static/favicon.ico')));
 app.use(session());

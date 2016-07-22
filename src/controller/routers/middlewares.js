@@ -55,7 +55,7 @@ export function* pagination(next) {
 export function* getCurrentUser(next) {
   // TODO: 改为从 session 获取
   this.state.user = {
-    userId: 9,
+    userId: this.session.userId,
   };
   const { projectId } = this.param;
   const user = yield User.findOne({

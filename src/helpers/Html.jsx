@@ -30,6 +30,13 @@ const Html = (props) => {
           dangerouslySetInnerHTML={{ __html: content }}
         >
         </div>
+        <script src="https://qsso.corp.qunar.com/lib/qsso-auth.js" charSet="utf-8"></script>
+        <script
+          charSet="utf-8"
+          dangerouslySetInnerHTML={{
+            __html: 'QSSO.attach("qsso-login", "/api/login")',
+          }}
+        />
         <script
           charSet="utf-8"
           dangerouslySetInnerHTML={{
