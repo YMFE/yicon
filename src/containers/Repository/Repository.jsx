@@ -4,7 +4,7 @@ import { fetchRepositoryData } from '../../actions/repository';
 import Slider from '../../components/common/Slider/Slider.jsx';
 
 // import styles from './Repository.scss';
-import IconButton from '../../components/IconButton/IconButton.jsx';
+import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
 @connect(
   state => ({

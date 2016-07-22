@@ -1,8 +1,8 @@
 import './IconButton.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
-import Icon from '../common/Icon/Icon.jsx';
+import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
+import Icon from '../Icon/Icon.jsx';
 
 @connect(
   state => ({
@@ -77,7 +77,7 @@ class IconButton extends Component {
             <Icon size={64} fill={fill} d={icon.path} />
           </div>
           <div className={"name"}>{icon.name}</div>
-          <div className={"code"}>&amp;{icon.code}</div>
+          <div className={"code"}>{`&#${icon.code.toString(16)};`}</div>
         </div>
         {tool}
       </div>

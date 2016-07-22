@@ -82,9 +82,10 @@
 }
 .icon-detail-item:hover,.icon-detail-item.active{
   .info{
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
+    border-radius: 2px;
     background-color: #fff;
-    padding:12px;
+    padding:11px;
     .icon{
       color:#008ed6;
     }
