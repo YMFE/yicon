@@ -40,7 +40,12 @@
 .m-dialog{
 	position:absolute;
 	left: 50%;
-	top:10%;
+	top:50%;
+	-webkit-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 	width:auto;
 	border:1px solid #cacacb;
 	box-shadow: 5px 5px 5px #ccc;
@@ -72,6 +77,11 @@
 	}
 	&-content{
 		padding:0 24px;
+		max-width: 540px;
+		word-wrap:break-word;
+		word-break: break-all;
+		max-height: 200px;
+		overflow-y: auto;
 	}
 	&-foot{
 		padding: 16px 24px;

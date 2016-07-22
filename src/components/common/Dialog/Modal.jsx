@@ -13,7 +13,11 @@ const propTypes = {
   zindex: PropTypes.number,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
 
 export default class Modal extends Component {

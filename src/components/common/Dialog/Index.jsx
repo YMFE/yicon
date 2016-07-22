@@ -4,8 +4,11 @@ import Modal from './Modal';
 import './style.scss';
 
 const propTypes = {
-  children: PropTypes.element,
-};
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.element),
+  ]) };
 
 export default class Dialog extends Component {
   componentDidMount() {
