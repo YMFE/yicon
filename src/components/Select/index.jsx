@@ -1,6 +1,5 @@
-import './select.scss';
+import './Select.scss';
 import React, { Component, PropTypes } from 'react';
-// import React from 'react';
 import RcSelect, { Option, OptGroup } from 'rc-select';
 import classNames from 'classnames';
 export default class Select extends Component {
@@ -23,7 +22,7 @@ export default class Select extends Component {
 
   render() {
     const {
-      className, optionLabelProp,
+      className,
     } = this.props;
 
     const cls = classNames({
@@ -31,6 +30,9 @@ export default class Select extends Component {
       // [`${prefixCls}-sm`]: size === 'small',
       [className]: !!className,
     });
+    return (
+      <RcSelect className={cls} />
+    );
     /*
       // const { antLocale } = this.context;
       // if (antLocale && antLocale.Select) {
@@ -43,12 +45,12 @@ export default class Select extends Component {
       //   optionLabelProp = optionLabelProp || 'value';
       // }
     */
-    return (
-      <RcSelect
-        {...this.props}
-        className={cls}
-        optionLabelProp={optionLabelProp || 'children'}
-      />
-    );
+    // return (
+    //   <RcSelect
+    //     {...this.props}
+    //     className={cls}
+    //     optionLabelProp={optionLabelProp || 'children'}
+    //   />
+    // );
   }
 }

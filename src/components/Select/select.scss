@@ -1,499 +1,109 @@
-.yiconselect {
-    box-sizing: border-box;
-    display: inline-block;
-    background-color: red;
-    position: relative;
-    vertical-align: middle;
-    color: #666;
-    font-size: 12px
+/* 父元素 */
+.rc-select {
+ /* box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  color: #666;
+  line-height: 28px;*/
+  width: 250px;
+  height: 28px;
+  line-height: 28px;
+  float: left;
+  border: 1px solid #dfdfdf;
+  background-color: #fff;
+  position: relative;
+  text-indent: 10px;
 }
-.yiconselect>ul>li>a {
-    padding: 0;
-    background-color: #fff
+/* 下拉小标 */
+.rc-select-arrow {
+  height: 26px;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 20px;
+  outline: none;
 }
-.yiconselect-arrow {
-    font-style: normal;
-    vertical-align: baseline;
-    text-align: center;
-    text-transform: none;
-    text-rendering: auto;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    line-height: 1;
-    margin-top: -6px;
-    display: inline-block;
-    font-size: 12px;
-    font-size: 8px\9;
-    -webkit-transform: scale(.66666667) rotate(0deg);
-    transform: scale(.66666667) rotate(0deg);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
-    zoom:1}
-.yiconselect-arrow:before {
-    display: block;
-    font-family: anticon!important
-}
-
-:root.yiconselect-arrow {
-    -webkit-filter: none;
-    filter: none;
-    font-size: 12px
-}
-.yiconselect-arrow * {
-    display: none
-}
-.yiconselect-arrow:before {
-    content: '\E603';
-    -webkit-transition: -webkit-transform .2s ease;
-    transition: -webkit-transform .2s ease;
-    transition: transform .2s ease;
-    transition: transform .2s ease,-webkit-transform .2s ease
-}
-.yiconselect-selection {
-    outline: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    box-sizing: border-box;
-    display: block;
-    background-color: #fff;
-    border-radius: 6px;
-    border: 1px solid #d9d9d9;
-    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
-    transition: all .3s cubic-bezier(.645,.045,.355,1)
-}
-.yiconselect-selection:hover {
-    border-color: #57c5f7
-}
-.yiconselect-focused.yiconselect-selection.yiconselect-selection:active.yiconselect-selection:focus {
-    border-color: #57c5f7;
-    outline: 0;
-    box-shadow: 0 0 0 2px rgba(45,183,245,.2)
-}
-.yiconselect-selection__clear {
-    display: inline-block;
-    font-style: normal;
-    vertical-align: baseline;
-    text-align: center;
-    text-transform: none;
-    text-rendering: auto;
-    opacity: 0;
-    position: absolute;
-    right: 8px;
-    z-index: 1;
-    background: #fff;
-    top: 50%;
-    font-size: 12px;
-    color: #ccc;
-    width: 12px;
-    height: 12px;
-    margin-top: -6px;
-    line-height: 12px;
-    cursor: pointer;
-    -webkit-transition: color .3s ease,opacity .15s ease;
-    transition: color .3s ease,opacity .15s ease
-}
-.yiconselect-selection__clear:before {
-    display: block;
-    font-family: anticon!important;
-    content: "\E631"
-}
-.yiconselect-selection__clear:hover {
-    color: #999
-}
-.yiconselect-selection:hover.yiconselect-selection__clear {
-    opacity: 1
-}
-.yiconselect-disabled {
-    color: #ccc
-}
-.yiconselect-disabled.yiconselect-selection {
-    background: #f7f7f7;
-    cursor: not-allowed
-}
-.yiconselect-disabled.yiconselect-selection:active.yiconselect-disabled.yiconselect-selection:focus.yiconselect-disabled.yiconselect-selection:hover {
-    border-color: #d9d9d9;
-    box-shadow: none
-}
-.yiconselect-disabled.yiconselect-selection__clear {
-    display: none;
-    visibility: hidden;
-    pointer-events: none
-}
-.yiconselect-disabled.yiconselect-selection--multiple.yiconselect-selection__choice {
-    background: #e9e9e9;
-    color: #aaa;
-    padding-right: 10px
-}
-.yiconselect-disabled.yiconselect-selection--multiple.yiconselect-selection__choice__remove {
-    display: none
-}
-.yiconselect-selection--single {
-    height: 28px;
-    position: relative;
-    cursor: pointer
-}
-.yiconselect-selection--single.yiconselect-selection__rendered {
-    height: 26px;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding-left: 8px;
-    padding-right: 24px;
-    line-height: 26px
-}
-.yiconselect-ope.yiconselect-show-search.yiconselect-selection--single.yiconselect-selection-selected-value {
-    position: absolute;
-    left: 8px;
-    top: 0
-}
-.yiconselect-lg.yiconselect-selection--single {
-    height: 32px
-}
-.yiconselect-lg.yiconselect-selection--single.yiconselect-selection__rendered {
-    line-height: 30px
-}
-.yiconselect-lg.yiconselect-selection--multiple {
-    min-height: 32px
-}
-.yiconselect-lg.yiconselect-selection--multiple.yiconselect-selection__rendered li {
-    height: 24px;
-    line-height: 24px
-}
-.yiconselect-sm.yiconselect-selection {
-    border-radius: 4px
-}
-.yiconselect-sm.yiconselect-selection--single {
-    height: 22px
-}
-.yiconselect-sm.yiconselect-selection--single.yiconselect-selection__rendered {
-    line-height: 20px
-}
-.yiconselect-sm.yiconselect-selection--multiple {
-    min-height: 22px
-}
-.yiconselect-sm.yiconselect-selection--multiple.yiconselect-selection__rendered li {
-    height: 14px;
-    line-height: 14px
-}
-.yiconselect-disabled.yiconselect-selection__choice__remove {
-    color: #ccc;
-    cursor: default
-}
-.yiconselect-disabled.yiconselect-selection__choice__remove:hover {
-    color: #ccc
-}
-.yiconselect-search__field__wrap {
-    display: inline-block;
-    position: relative
-}
-.yiconselect-search__field__placeholder.yiconselect-selection__placeholder {
-    position: absolute;
-    top: 50%;
-    left: 9px;
-    color: #ccc;
-    line-height: 20px;
-    height: 20px;
-    margin-top: -10px;
-    cursor: text
-}
-.yiconselect-search--inline {
-    float: left;
-    width: 100%
-}
-.yiconselect-search--inline.yiconselect-search__field__wrap {
-    width: 100%
-}
-.yiconselect-search--inline.yiconselect-search__field {
-    border: 0;
-    font-size: 100%;
-    background: transparent;
-    outline: 0;
-    border-radius: 6px
-}
-.yiconselect-search--inline.yiconselect-search__field__mirror {
-    position: absolute;
-    top: 0;
-    left: 9999px;
-    white-space: pre;
-    pointer-events: none
-}
-.yiconselect-search--inline>i {
-    float: right
-}
-.yiconselect-selection--multiple {
-    min-height: 28px;
-    cursor: text
-}
-.yiconselect-selection--multiple.yiconselect-search--inline {
-    width: auto
-}
-.yiconselect-selection--multiple.yiconselect-search--inline.yiconselect-search__field {
-    width: .75em
-}
-.yiconselect-selection--multiple.yiconselect-selection__rendered {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-left: 6px;
-    padding-bottom: 4px
-}
-.yiconselect-selection--multiple.yiconselect-selection__rendered>ul>li.yiconselect-selection--multiple>ul>li {
-    margin-top: 4px;
-    height: 20px;
-    line-height: 20px
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice {
-    background-color: #f3f3f3;
-    border-radius: 4px;
-    cursor: default;
-    float: left;
-    padding: 0 15px;
-    margin-right: 4px;
-    max-width: 99%;
-    position: relative;
-    overflow: hidden;
-    -webkit-transition: padding .3s cubic-bezier(.645,.045,.355,1);
-    transition: padding .3s cubic-bezier(.645,.045,.355,1);
-    padding: 0 20px 0 10px
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__disabled {
-    padding: 0 10px
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__content {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    -webkit-transition: margin .3s cubic-bezier(.645,.045,.355,1);
-    transition: margin .3s cubic-bezier(.645,.045,.355,1)
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__remove {
-    font-style: normal;
-    vertical-align: baseline;
-    text-align: center;
-    text-transform: none;
-    text-rendering: auto;
-    line-height: 1;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #999;
-    line-height: inherit;
-    cursor: pointer;
-    font-weight: 700;
-    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
-    transition: all .3s cubic-bezier(.645,.045,.355,1);
-    display: inline-block;
-    font-size: 12px;
-    font-size: 8px\9;
-    -webkit-transform: scale(.66666667) rotate(0deg);
-    transform: scale(.66666667) rotate(0deg);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
-    zoom:1;position: absolute;
-    right: 4px;
-    padding: 0 0 0 8px
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__remove:before {
-    display: block;
-    font-family: anticon!important
+.rc-select-arrow b {
+  border-color: #929aac transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  height: 0;
+  width: 0;
+  margin-left: -4px;
+  margin-top: -2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+/*  background-color: red;*/
 }
 
-:root.yiconselect-selection--multiple.yiconselect-selection__choice__remove {
-    -webkit-filter: none;
-    filter: none;
-    font-size: 12px
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__remove:hover {
-    color: #404040
-}
-.yiconselect-selection--multiple.yiconselect-selection__choice__remove:before {
-    content: "\E62D"
-}
-.yiconselect-open.yiconselect-arrow {
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
-    -ms-transform: rotate(180deg)
-}
-.yiconselect-open.yiconselect-arrow:before {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg)
-}
-.yiconselect-open.yiconselect-selection {
-    border-color: #57c5f7;
-    outline: 0;
-    box-shadow: 0 0 0 2px rgba(45,183,245,.2)
-}
-.yiconselect-combobox.yiconselect-arrow {
-    display: none
-}
-.yiconselect-combobox.yiconselect-search--inline {
-    height: 100%;
-    float: none
-}
-.yiconselect-combobox.yiconselect-search__field__wrap {
-    width: 100%;
-    height: 100%
-}
-.yiconselect-combobox.yiconselect-search__field {
-    padding: 0 10px;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    z-index: 1;
-    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
-    transition: all .3s cubic-bezier(.645,.045,.355,1);
-    box-shadow: none
-}
-.yiconselect-combobox.yiconselect-selection__rendered {
-    padding: 0;
-    height: 100%
-}
-.yiconselect-dropdown {
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    box-shadow: 0 1px 6px hsla(0,0%,39%,.2);
-    border-radius: 6px;
-    box-sizing: border-box;
-    z-index: 1050;
-    left: -9999px;
-    top: -9999px;
-    position: absolute;
-    outline: none;
-    overflow: hidden;
-    font-size: 12px
-}
-.yiconselect-dropdown.slide-up-appear.slide-up-appear-activ.yiconselect-dropdown-placement-bottomLeft.yiconselect-dropdown.slide-up-enter.slide-up-enter-activ.yiconselect-dropdown-placement-bottomLeft {
-    -webkit-animation-name: antSlideUpIn;
-    animation-name: antSlideUpIn
-}
-.yiconselect-dropdown.slide-up-appear.slide-up-appear-activ.yiconselect-dropdown-placement-topLeft.yiconselect-dropdown.slide-up-enter.slide-up-enter-activ.yiconselect-dropdown-placement-topLeft {
-    -webkit-animation-name: antSlideDownIn;
-    animation-name: antSlideDownIn
-}
-.yiconselect-dropdown.slide-up-leave.slide-up-leave-activ.yiconselect-dropdown-placement-bottomLeft {
-    -webkit-animation-name: antSlideUpOut;
-    animation-name: antSlideUpOut
-}
-.yiconselect-dropdown.slide-up-leave.slide-up-leave-activ.yiconselect-dropdown-placement-topLeft {
-    -webkit-animation-name: antSlideDownOut;
-    animation-name: antSlideDownOut
-}
-.yiconselect-dropdown-hidden {
-    display: none
-}
-.yiconselect-dropdown-menu {
-    outline: none;
-    margin-bottom: 0;
-    padding-left: 0;
-    list-style: none;
-    max-height: 250px;
-    overflow: auto
-}
-.yiconselect-dropdown-menu-item-group-list {
-    margin: 0;
-    padding: 0
-}
-.yiconselect-dropdown-menu-item-group-list.yiconselect-dropdown-menu-item {
-    padding-left: 24px
-}
-.yiconselect-dropdown-menu-item-group-title {
-    color: #999;
-    line-height: 1.5;
-    padding: 8px 15px
-}
-.yiconselect-dropdown-menu-item {
-    position: relative;
-    display: block;
-    padding: 7px 15px;
-    font-weight: 400;
-    color: #666;
-    cursor: pointer;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    -webkit-transition: background .3s ease;
-    transition: background .3s ease
-}
-.yiconselect-dropdown-menu-item-active.yiconselect-dropdown-menu-item:hover {
-    background-color: #eaf8fe
-}
-.yiconselect-dropdown-menu-item-disabled {
-    color: #ccc;
-    cursor: not-allowed
-}
-.yiconselect-dropdown-menu-item-disabled:hover {
-    color: #ccc;
-    background-color: #fff;
-    cursor: not-allowed
-}
-.yiconselect-dropdown-menu-item-selected.yiconselect-dropdown-menu-item-selected:hover {
-    background-color: #f7f7f7;
-    font-weight: 700;
-    color: #666
-}
-.yiconselect-dropdown-menu-item-divider {
-    height: 1px;
-    margin: 1px 0;
-    overflow: hidden;
-    background-color: #e5e5e5;
-    line-height: 0
-}
-.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item:after {
-    content: '\E62E';
-    font-family: anticon;
-    color: transparent;
-    display: inline-block;
-    font-size: 12px;
-    font-size: 10px\9;
-    -webkit-transform: scale(.83333333) rotate(0deg);
-    transform: scale(.83333333) rotate(0deg);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
-    zoom:1;-webkit-transition: all .2s ease;
-    transition: all .2s ease;
-    position: absolute;
-    right: 15px;
-    font-weight: 700;
-    text-shadow: 0 .1px 0,.1px 0 0,0 -.1px 0,-.1px 0
+/*  触发的浮层 */
+.rc-select-dropdown {
+  display: block;
+  position: absolute;
+  top: 28px;
+  left: -1px;
+  z-index: 201;
+  width: 250px;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  border-radius: 3px;
+  border-top-left-radius: 0px;
+  box-shadow: 0 0 5px #dfdfdf;
+  z-index: 9999
 }
 
-:root.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item:after {
-    -webkit-filter: none;
-    filter: none;
-    font-size: 12px
+li.rc-select-dropdown-menu-item {
+ /* margin: 0;
+  position: relative;
+  display: block;
+  padding: 7px 10px;
+  font-weight: normal;
+  color: #666;*/
+  white-space: nowrap;
+  list-style: none;
+	line-height: 25px;
+	padding: 0 11px;
+	border: 0;
+	border-radius: 0;
+	text-align: left;
+	cursor: pointer;
+	position: static;
+	float: none;
+	width: inherit;
+	height: inherit;
+	color: #344562;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
 }
-.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item:hover:after {
-    color: #ddd
+li.rc-select-dropdown-menu-item-disabled {
+  color: #ccc;
+  cursor: not-allowed;
 }
-.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item-disabled:after {
-    display: none
+li.rc-select-dropdown-menu-item-selected {
+  color: #666;
+  background-color: #ddd;
 }
-.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item-selected:after.yiconselect-dropdow.yiconselect-dropdown--multiple.yiconselect-dropdown-menu-item-selected:hover:after {
-    color: #2db7f5;
-    display: inline-block
+li.rc-select-dropdown-menu-item-active {
+ background-color: #f8f8f8;
+
 }
-.yiconselect-dropdown-container-open.yiconselect-dropdown.yiconselect-dropdown-open.yiconselect-dropdown {
-    display: block
+li.rc-select-dropdown-menu-item-divider {
+  height: 1px;
+  margin: 1px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+  line-height: 0;
 }
-.yiconselect-dropdown.yiconselect-dropdown-search {
-    display: block;
-    padding: 4px
+
+.rc-select-open .rc-select-arrow b {
+  border-color: transparent transparent #888 transparent;
+  border-width: 0 4px 5px 4px;
 }
-.yiconselect-dropdown.yiconselect-dropdown-search.yiconselect-search__field__wrap {
-    width: 100%
-}
-.yiconselect-dropdown.yiconselect-dropdown-search.yiconselect-search__field {
-    padding: 4px 7px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    outline: none
-}
-.yiconselect-dropdown.yiconselect-dropdown-searc.yiconselect-search--hide {
-    display: none
+
+.rc-select-dropdown-hidden {
+  display: none;
 }
