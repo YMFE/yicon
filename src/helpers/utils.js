@@ -71,7 +71,7 @@ export function generateLog(type, data = {}) {
     invariant(value, `日志缺少参数，期望存在 ${key}`);
     param[key] = value;
     if (Array.isArray(value)) {
-      invariant(value, `日志缺少参数，期望存在 ${key}`);
+      invariant(value.length, `日志参数 ${key} 为空数组`);
       return value.map(v => `@${JSON.stringify({ [key]: v })}@`).join('、');
     }
     return `@${JSON.stringify({ [key]: value })}@`;
