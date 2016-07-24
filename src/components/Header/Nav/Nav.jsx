@@ -6,7 +6,7 @@ class Nav extends Component {
     const { list, name, href } = this.props;
     let List = () => (
       <ul className="quick-menu-sub">
-        {list.forEach((item, index) => (
+        {list.map((item, index) => (
           <li key={index}><a>{item.name}</a></li>
         ))}
       </ul>
@@ -14,7 +14,7 @@ class Nav extends Component {
     return (
       <li className="global-header-Nav">
         <a href={href}>{name}</a>
-          {list.length > 0 ? <List /> : null}
+          {(list && list.length) > 0 ? <List /> : null}
       </li>
     );
   }

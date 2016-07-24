@@ -4,11 +4,19 @@ import {
   FETCH_CART_DETAIL,
   ADD_ICON_TO_CART,
   DELETE_ICON_IN_CART,
+  DUMP_ICON_LOCALSTORGAGE,
+  CHANGE_CART_SAVE_TYPE,
+  TOGGLE_CART_LIST_DISPLAY,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
-
+const localStorage = {};
 // ls.cartIconIds为Set类型
+// const saveType = {
+//   SAVE_TO_PROJECT: 'SAVE_TO_PROJECT',
+//   SAVE_TO_NEW_PROJECT: 'SAVE_TO_NEW_PROJECT',
+//   DEFAULT: 'DEFAULT',
+// };
 const ls = {
   get cartIconIds() {
     localStorage.cartIconIds = localStorage.cartIconIds || JSON.stringify([]);
@@ -18,6 +26,7 @@ const ls = {
     localStorage.cartIconIds = JSON.stringify(Array.from(value));
   },
 };
+
 
 function addToLocalStorage(id) {
   const iconIds = ls.cartIconIds;
@@ -66,8 +75,33 @@ export function deleteIconInLocalStorage(id, isFetchIcons) {
 }
 
 export function dumpIconLocalStorage() {
+  ls.cartIconIds = '';
   return {
-    type: 'DUMP_ICON_LOCALSTORGAGE',
+    type: DUMP_ICON_LOCALSTORGAGE,
     payload: [],
+  };
+}
+
+export function toggleCartListDisplay(isShowCartList) {
+  return (dispatch) => {
+    const iconIds = Array.from(ls.cartIconIds);
+    if (isShowCartList) {
+      dispatch(getIconsInCart({ icons: iconIds }));
+    }
+    dispatch({
+      type: TOGGLE_CART_LIST_DISPLAY,
+      payload: {
+        isShowCartList,
+      },
+    });
+  };
+}
+
+export function changeCartSaveType(type) {
+  return {
+    type: CHANGE_CART_SAVE_TYPE,
+    payload: {
+      saveType: type,
+    },
   };
 }

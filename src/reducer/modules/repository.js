@@ -5,6 +5,7 @@ import {
 } from '../../constants/actionTypes';
 
 const initialState = {
+  allReposotoryList: [],
   homeRepository: [],
   currRepository: {
     icons: [],
@@ -17,6 +18,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         homeRepository: action.payload.data,
+        allReposotoryList: action.payload.data.map((item) => ({ id: item.id, name: item.name })),
       };
     }
     case FETCH_REPOSITORY_DATA: {

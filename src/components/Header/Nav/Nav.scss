@@ -11,6 +11,33 @@ $mainColor:#3bbaff;
     color: #fff;
   }
 
+
+  .quick-menu-sub {
+      background-color: #000c15;
+      width: 140px;
+      font-size: 14px;
+      position: absolute;
+      left: -5px;
+      top: 64px;
+      padding: 10px 0;
+      border-radius: 0 0 3px 3px;
+      overflow: hidden;
+      display: none;
+      li {
+          padding: 0 20px;
+          line-height: 36px;
+      }
+      li:hover {
+          a {
+              color: $mainColor;
+          }
+      }
+      .current {
+          a {
+              color: $mainColor;
+          }
+      }
+  }
   &:hover {
     border-bottom: 3px solid $mainColor;
 
@@ -28,31 +55,4 @@ $mainColor:#3bbaff;
       color: $mainColor;
     }
   }
-  .quick-menu-sub {
-      background-color: #000c15;
-      width: 140px;
-      font-size: 14px;
-      position: absolute;
-      left: -5px;
-      top: 64px;
-      padding: 10px 0;
-      border-radius: 0 0 3px 3px;
-      overflow: hidden;
-      display: block;
-      li {
-          padding: 0 20px;
-          line-height: 36px;
-      }
-      li:hover {
-          a {
-              color: $mainColor;
-          }
-      }
-      .current {
-          a {
-              color: $mainColor;
-          }
-      }
-  }
-
 }

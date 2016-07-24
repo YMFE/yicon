@@ -8,19 +8,38 @@ import {
   getIconsInLocalStorage,
   getIconsInCart,
   deleteIconInLocalStorage,
+  toggleCartListDisplay,
+  dumpIconLocalStorage,
+  changeCartSaveType,
 } from '../../../actions/cart';
+import {
+  getUsersProjectInfo,
+  saveToProject,
+  saveToNewProject,
+  choseProjectForSave,
+} from '../../../actions/project';
 
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
     iconsInCart: state.cart.iconsInCart,
-    type: state.cart.type,
+    isShowCart: state.cart.isShowCartList,
+    saveType: state.cart.saveType,
+    projectList: state.project.usersProject,
+    projectForSave: state.project.projectForSave,
   }),
-  dispatch => ({
-    getIconsInLocalStorage: dispatch(getIconsInLocalStorage),
-    getIconsInCart: dispatch(getIconsInCart),
-    deleteIconInLocalStorage: dispatch(deleteIconInLocalStorage),
-  })
+  {
+    getIconsInLocalStorage,
+    getIconsInCart,
+    deleteIconInLocalStorage,
+    toggleCartListDisplay,
+    dumpIconLocalStorage,
+    choseProjectForSave,
+    getUsersProjectInfo,
+    changeCartSaveType,
+    saveToProject,
+    saveToNewProject,
+  }
 )
 
 class Cart extends Component {
@@ -31,57 +50,67 @@ class Cart extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getIconsInLocalStorage();
-  }
-
-  @autobind
-  handleTouchTap(event) {
-    event.preventDefault();
-    this.setState({
-      isShow: true,
-      anchorEl: event.currentTarget,
-    });
-    // 待优化：可以判断 iconsInLocalStorage 是否改变，选择是否更新 iconsInCart
+  componentWillMount() {
     const iconsInLocalStorage = this.props.iconsInLocalStorage || [];
     this.props.getIconsInCart({
       icons: iconsInLocalStorage,
     });
+    this.props.getUsersProjectInfo();
   }
+
+  componentDidMount() {
+    this.props.getIconsInLocalStorage();
+  }
+  //
+  // @autobind
+  // handleRequestClose() {
+  //   this.setState({
+  //     isShow: false,
+  //   });
+  // }
 
   @autobind
-  handleRequestClose() {
-    this.setState({
-      isShow: false,
-    });
-  }
-
-  removeFromCart(id) {
-    return () => { this.props.deleteIconInLocalStorage(id, true); };
+  shiftCartList(e, isOpen) {
+    let isShow;
+    if (isOpen !== undefined) {
+      isShow = isOpen;
+    } else {
+      isShow = e.type === 'mouseenter';
+    }
+    this.props.toggleCartListDisplay(isShow);
   }
 
   render() {
-    const iconsInCart = this.props.iconsInCart || [];
-    const { count } = this.props;
+    const {
+      count,
+      iconsInCart,
+    } = this.props;
+    const style = {
+      display: this.props.isShowCart ? 'block' : 'none',
+    };
     return (
-      <li className="lists global-header-cart">
+      <li
+        className="lists global-header-cart"
+        onMouseEnter={this.shiftCartList}
+        onMouseLeave={this.shiftCartList}
+      >
 
         <a className="nav-car" href="#">
           <i className="iconfont">&#xf50f;</i>
           <span className="nav-car-count">{count}</span>
         </a>
 
-        <div className="user-car" id="J_user_car" style="display: block;">
+        <div className="user-car" id="J_user_car" style={style}>
           <span className="arrow"></span>
 
-          {iconsInCart ?
+          {iconsInCart.length > 0 ?
             <div className="car_bd">
               <ul className="clearfix fonts-selected-list">
               {
                 iconsInCart.map((icon) => (
                   <li key={icon.id} className="icon" onClick={this.removeFromCart(icon.id)}>
-                    <span className="iconfont src_iconfont">&#xf50f;
-                      <Icon size={20} d={icon.path} />
+                    <span className="iconfont src_iconfont">
+                      <Icon size={20} d={icon.path} fill="#555f6e" />
                       <i className="iconfont delete">&#xf077;</i>
                     </span>
                   </li>
@@ -91,8 +120,25 @@ class Cart extends Component {
             </div> :
             <p className="car_info">您的暂存架为空，请添加图标。</p>
           }
-
-          {<Tool {...this.props} />}
+          {
+            iconsInCart.length > 0 ?
+              <div className="clearfix user-car-opt">
+              {
+                <Tool
+                  saveType={this.props.saveType}
+                  onDumpIcon={this.props.dumpIconLocalStorage}
+                  onChangeSaveType={this.props.changeCartSaveType}
+                  onSaveToProject={this.props.saveToProject}
+                  onSaveToNewProject={this.props.saveToNewProject}
+                  onChoseProjectForSave={this.props.choseProjectForSave}
+                  projectForSave={this.props.projectForSave}
+                  projectList={this.props.usersProject}
+                  onCancelSave={this.shiftCartList}
+                />
+              }
+              </div> :
+            null
+          }
         </div>
       </li>
     );
@@ -106,10 +152,26 @@ Cart.propTypes = {
   getIconsInCart: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
   count: PropTypes.number,
-  type: PropTypes.oneOf([
+  isShowCart: PropTypes.bool,
+  saveType: PropTypes.oneOf([
     'SAVE_TO_PROJECT',
     'SAVE_TO_NEW_PROJECT',
     'DEFAULT',
+  ]),
+  toggleCartListDisplay: PropTypes.func,
+  dumpIconLocalStorage: PropTypes.func,
+  changeCartSaveType: PropTypes.func,
+  usersProject: PropTypes.array,
+  saveToProject: PropTypes.func,
+  saveToNewProject: PropTypes.func,
+  choseProjectForSave: PropTypes.func,
+  getUsersProjectInfo: PropTypes.func,
+  projectForSave: PropTypes.oneOf([
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+    PropTypes.Object,
   ]),
 };
 

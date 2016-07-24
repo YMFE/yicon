@@ -3,11 +3,16 @@ import {
   ADD_ICON_TO_CART,
   DELETE_ICON_IN_CART,
   FETCH_CART_DETAIL,
+  TOGGLE_CART_LIST_DISPLAY,
+  DUMP_ICON_LOCALSTORGAGE,
+  CHANGE_CART_SAVE_TYPE,
 } from '../../constants/actionTypes';
 
 const initialState = {
   iconsInLocalStorage: [],
   iconsInCart: [],
+  isShowCartList: false,
+  saveType: 'DEFAULT',
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +39,26 @@ export default (state = initialState, action) => {
       return {
         ...state,
         iconsInCart: action.payload.data,
+      };
+    }
+    case TOGGLE_CART_LIST_DISPLAY: {
+      return {
+        ...state,
+        isShowCartList: action.payload.isShowCartList,
+      };
+    }
+    case DUMP_ICON_LOCALSTORGAGE: {
+      return {
+        ...state,
+        iconsInCart: [],
+        iconsInLocalStorage: [],
+      };
+    }
+    case CHANGE_CART_SAVE_TYPE: {
+      //  TODO 判断登陆的逻辑
+      return {
+        ...state,
+        saveType: action.payload.saveType,
       };
     }
     default:
