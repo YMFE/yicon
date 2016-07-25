@@ -6,6 +6,7 @@ import {
 } from '../../actions/repository';
 import RepoSection from '../../components/RepoSection/RepoSection';
 import { Content } from '../../components/';
+
 @connect(
   state => ({ list: state.repository.homeRepository }),
   { fetchHomeData }
