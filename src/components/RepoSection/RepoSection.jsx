@@ -21,7 +21,7 @@ class RepoSection extends Component {
             <ul className="prj-item-icon">
               {
                 icons.map((icon) => (
-                  <li>
+                  <li key={icon.id}>
                     <Icon size={20} d={icon.path} />
                   </li>
                 ))
