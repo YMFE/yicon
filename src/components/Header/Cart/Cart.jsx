@@ -79,11 +79,14 @@ class Cart extends Component {
     }
     this.props.toggleCartListDisplay(isShow);
   }
-
+  @autobind
+  removeFromCart(icon) {
+    this.props.deleteIconInLocalStorage(icon.id, true);
+  }
   render() {
     const {
-      count,
       iconsInCart,
+      iconsInLocalStorage,
     } = this.props;
     const style = {
       display: this.props.isShowCart ? 'block' : 'none',
@@ -97,7 +100,11 @@ class Cart extends Component {
 
         <a className="nav-car" href="#">
           <i className="iconfont">&#xf50f;</i>
-          <span className="nav-car-count">{count}</span>
+          {
+            iconsInLocalStorage.length > 0 ?
+              <span className="nav-car-count">{iconsInLocalStorage.length}</span> :
+              null
+          }
         </a>
 
         <div className="user-car" id="J_user_car" style={style}>
@@ -108,7 +115,7 @@ class Cart extends Component {
               <ul className="clearfix fonts-selected-list">
               {
                 iconsInCart.map((icon) => (
-                  <li key={icon.id} className="icon" onClick={this.removeFromCart(icon.id)}>
+                  <li key={icon.id} className="icon" onClick={this.removeFromCart}>
                     <span className="iconfont src_iconfont">
                       <Icon size={20} d={icon.path} fill="#555f6e" />
                       <i className="iconfont delete">&#xf077;</i>

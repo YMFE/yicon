@@ -9,6 +9,7 @@ const initialState = {
   homeRepository: [],
   currRepository: {
     icons: [],
+    id: 0,
   },
 };
 

@@ -17,10 +17,8 @@ class Home extends Component {
     this.props.fetchHomeData();
     // }
   }
-
   render() {
     const { list } = this.props;
-
     return (
       <div className="home">
         <Content className="home-container">
