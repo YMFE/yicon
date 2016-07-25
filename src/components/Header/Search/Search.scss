@@ -4,4 +4,49 @@
     width: 130px;
     height: 25px;
   }
+  .search-panel {
+      width: 220px;
+      height: 34px;
+      overflow: hidden;
+      margin-top: 14px;
+
+      &-fields {
+        background-color: #fff;
+        border-radius: 19px;
+        height: 34px;
+        position: relative;
+        padding: 0 6px 0 26px;
+
+        .search-q {
+          height: 35px;
+          color: #9f9fb1;
+          border: 0;
+          outline: none;
+          display: block;
+          font-family: "Microsoft YaHei";
+          width: 180px;
+          text-indent: 8px;
+        }
+
+      }
+
+
+      .search-icon {
+        font-size:20px;
+        line-height: 20px;
+        display: inline-block;
+        position: absolute;
+        left: 7px;
+        top: 22px;
+        color:#000;
+      }
+
+      .placeholder label {
+        text-indent: 60px;
+        font-size: 16px;
+        font-family: "Microsoft YaHei";
+        *left: 0;
+      }
+
+    }
 }

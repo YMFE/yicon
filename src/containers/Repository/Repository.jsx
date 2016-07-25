@@ -4,14 +4,18 @@ import { fetchRepositoryData } from '../../actions/repository';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../actions/cart';
 import styles from './Repository.scss';
 import Icon from '../../components/common/Icon/Icon.jsx';
+import Slider from '../../components/common/Slider/Slider.jsx';
+import { SubTitle } from '../../components/';
 
 @connect(
   state => ({
-    list: state.repository.currRepository.icons,
+    currRepository: state.repository.currRepository,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
   }),
   { fetchRepositoryData, addIconToLocalStorage, deleteIconInLocalStorage }
 )
+
+
 export default class Repository extends Component {
   componentWillMount() {
     this.props.fetchRepositoryData(this.props.params.id);
@@ -35,13 +39,29 @@ export default class Repository extends Component {
   }
 
   render() {
-    const { id } = this.props.params;
+    // const { name, icons, user, id } = this.props.currRepository;
+    const { name, icons } = this.props.currRepository;
     return (
-      <div>
-        <h1>Repository</h1>
-        <p>This is repository page. Id: {id}.</p>
+      <div className="repository">
+        <SubTitle tit={name}>
+          <div className="options">
+            <div className="tools">
+              <a href="#" className="options-btns btns-blue">
+                <i className="iconfont">&#xf50a;</i>上传新图标
+              </a>
+              <a href="#" className="options-btns btns-blue">
+                <i className="iconfont">&#xf50b;</i>下载全部图标
+              </a>
+              <a href="#" className="options-btns btns-default ml10">添加公告</a>
+              <a href="#" className="options-btns btns-default">查看日志</a>
+            </div>
+            <div style={{ width: 200, padding: 10 }}>
+              <Slider />
+            </div>
+          </div>
+        </SubTitle>
         {
-          this.props.list.map((icon) => (
+          icons.map((icon) => (
             <div
               key={icon.id}
               className={styles.icon}
@@ -57,12 +77,10 @@ export default class Repository extends Component {
 }
 
 Repository.propTypes = {
-  params: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }),
   fetchRepositoryData: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
-  list: PropTypes.array,
+  currRepository: PropTypes.object,
   iconsInLocalStorage: PropTypes.array,
+  params: PropTypes.object,
 };

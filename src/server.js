@@ -12,7 +12,7 @@ import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
-import { router } from './controller';
+import { router, down } from './controller';
 // import isomFetch from 'isom-fetch';
 
 const app = new Koa();
@@ -25,6 +25,7 @@ app.use(session());
 app.use(serve(path.join(__dirname, '../static')));
 
 app.use(router.routes());
+app.use(down.routes());
 
 const getRouteContext = (ctx) =>
   new Promise((resolve, reject) => {
@@ -72,7 +73,7 @@ const getRouteContext = (ctx) =>
     });
   });
 
-app.use(function* serverRender() {
+app.use(function* s() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }

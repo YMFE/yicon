@@ -1,4 +1,4 @@
-import { Icon, Log, User, Notification } from '../../model';
+import { Icon, Repo, Project, Log, User, Notification } from '../../model';
 import { analyzeLog } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
 
@@ -12,15 +12,29 @@ export function* getAllNotices(next) {
   const user = yield User.findOne({ where: { id: userId } });
   if (type === 'all') {
     notice = yield user.getLogs({
+      include: [{
+        model: Repo,
+        as: 'repo',
+      }, {
+        model: Project,
+        as: 'project',
+      }],
       through: {
         model: Notification,
         where: { userId },
       },
       ...pageMixin,
     });
-    this.state.page.totalCount = yield Log.count({ where: { operator: userId } });
+    this.state.page.totalCount = yield user.countLogs();
   } else {
     notice = yield user.getLogs({
+      include: [{
+        model: Repo,
+        as: 'repo',
+      }, {
+        model: Project,
+        as: 'project',
+      }],
       where: { scope: type },
       through: {
         model: Notification,
@@ -28,7 +42,7 @@ export function* getAllNotices(next) {
       },
       ...pageMixin,
     });
-    this.state.page.totalCount = yield Log.count({ where: { operator: userId, scope: type } });
+    this.state.page.totalCount = yield user.countLogs({ where: { scope: type } });
   }
   this.state.respond = notice;
   // 将日志设置为已读
