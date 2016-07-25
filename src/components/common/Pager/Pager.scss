@@ -1,0 +1,33 @@
+.pager{
+  text-align: right;
+  >li{
+    height: 24px;
+    border:1px solid #ccc;
+    border-radius: 3px;
+    padding: 0 10px;
+    display: inline-block;
+    margin-left: 5px;
+    line-height: 24px;
+    cursor: pointer;
+  }
+  .pager-prev{
+
+  }
+  .pager-next{
+
+  }
+  .disabled{
+    color:#ccc;
+    cursor: default;
+  }
+  .pager-item{
+
+  }
+  .actived{
+    color:red;
+    border:none;
+    line-height: 26px;
+    padding:1px 11px;
+  }
+
+}

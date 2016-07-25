@@ -6,6 +6,7 @@ import {
 
 import RepoSection from '../../components/RepoSection/RepoSection';
 import Select from '../../components/common/Select/index';
+import Pager from '../../components/common/Pager/index';
 const Option = Select.Option;
 
 @connect(
@@ -33,6 +34,9 @@ class Home extends Component {
             <Option value="无线大客户端">无线大客户端无线大客户端</Option>
             <Option value="disabled" disabled>Disabled</Option>
           </Select>
+        </div>
+        <div style={{ width: 600 }}>
+          <Pager defaultCurrent={1} onClick={(index) => { alert(index); }} totalPage={50} />
         </div>
         {
           list.map(repo => (
