@@ -2,32 +2,48 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchRepositoryData } from '../../actions/repository';
 import Slider from '../../components/common/Slider/Slider.jsx';
+import { SubTitle } from '../../components/';
 
 // import styles from './Repository.scss';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
 @connect(
   state => ({
-    list: state.repository.currRepository.icons,
+    currRepository: state.repository.currRepository,
   }),
   { fetchRepositoryData }
 )
+
+
 export default class Repository extends Component {
   componentWillMount() {
     this.props.fetchRepositoryData(this.props.params.id);
   }
 
   render() {
-    const { id } = this.props.params;
+    // const { name, icons, user, id } = this.props.currRepository;
+    const { name, icons } = this.props.currRepository;
     return (
-      <div>
-        <div style={{ width: 200, padding: 10 }}>
-          <Slider />
-        </div>
-        <h1>Repository</h1>
-        <p>This is repository page. Id: {id}.</p>
+      <div className="repository">
+        <SubTitle tit={name}>
+          <div className="options">
+            <div className="tools">
+              <a href="#" className="options-btns btns-blue">
+                <i className="iconfont">&#xf50a;</i>上传新图标
+              </a>
+              <a href="#" className="options-btns btns-blue">
+                <i className="iconfont">&#xf50b;</i>下载全部图标
+              </a>
+              <a href="#" className="options-btns btns-default ml10">添加公告</a>
+              <a href="#" className="options-btns btns-default">查看日志</a>
+            </div>
+            <div style={{ width: 200, padding: 10 }}>
+              <Slider />
+            </div>
+          </div>
+        </SubTitle>
         {
-          this.props.list.map((icon) => (
+          icons.map((icon) => (
             <IconButton
               icon={icon}
               key={icon.id}
@@ -40,12 +56,9 @@ export default class Repository extends Component {
 }
 
 Repository.propTypes = {
-  params: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }),
   fetchRepositoryData: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
-  list: PropTypes.array,
-  iconsInLocalStorage: PropTypes.array,
+  currRepository: PropTypes.object,
+  params: PropTypes.object,
 };

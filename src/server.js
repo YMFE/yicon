@@ -71,7 +71,7 @@ const getRouteContext = (ctx) =>
     });
   });
 
-app.use(function* serverRender() {
+app.use(function* s() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }

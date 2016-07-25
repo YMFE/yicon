@@ -1,0 +1,117 @@
+@charset "utf-8";
+/* 父元素 */
+.rc-select {
+ /* box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  color: #666;
+  line-height: 28px;*/
+  width: 250px;
+  height: 28px;
+  line-height: 28px;
+  float: left;
+  border: 1px solid #dfdfdf;
+  background-color: #fff;
+  position: relative;
+  text-indent: 10px;
+}
+/* 下拉小标 */
+.rc-select-arrow {
+  height: 26px;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 20px;
+  outline: none;
+}
+.rc-select-arrow b {
+  border-color: #929aac transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  height: 0;
+  width: 0;
+  margin-left: -4px;
+  margin-top: -2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+/*  background-color: red;*/
+}
+
+/*  触发的浮层 */
+.rc-select-dropdown {
+  display: block;
+  position: absolute;
+  top: 28px;
+  left: -1px;
+  z-index: 201;
+  width: 250px;
+  border: 1px solid #dfdfdf;
+	background-color: #fff;
+  border-top: none;
+  border-radius: 3px;
+  border-top-left-radius: 0px;
+  box-shadow: 0 0 5px #dfdfdf;
+  z-index: 9999
+}
+
+li.rc-select-dropdown-menu-item {
+ /* margin: 0;
+  position: relative;
+  display: block;
+  padding: 7px 10px;
+  font-weight: normal;
+  color: #666;*/
+  white-space: nowrap;
+  list-style: none;
+	line-height: 25px;
+	padding: 0 11px;
+	border: 0;
+	border-radius: 0;
+	text-align: left;
+	cursor: pointer;
+	position: static;
+	float: none;
+	width: inherit;
+	height: inherit;
+	color: #344562;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+}
+li.rc-select-dropdown-menu-item-disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+li.rc-select-dropdown-menu-item-selected {
+  color: #666;
+  background-color: #ddd;
+}
+li.rc-select-dropdown-menu-item-active {
+ background-color: #f8f8f8;
+
+}
+li.rc-select-dropdown-menu-item-divider {
+  height: 1px;
+  margin: 1px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+  line-height: 0;
+}
+
+.rc-select-open .rc-select-arrow b {
+  border-color: transparent transparent #888 transparent;
+  border-width: 0 4px 5px 4px;
+}
+
+.rc-select-dropdown-hidden {
+  display: none;
+}
+
+.rc-select-selection__placeholder {
+  position: absolute;
+  top: 0;
+  color: #aaa;
+}
