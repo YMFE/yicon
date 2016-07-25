@@ -18,7 +18,7 @@ export function* getAllNotices(next) {
       },
       ...pageMixin,
     });
-    this.state.page.totalCount = yield Log.count({ where: { operator: userId } });
+    this.state.page.totalCount = yield user.countLogs();
   } else {
     notice = yield user.getLogs({
       where: { scope: type },
@@ -28,7 +28,7 @@ export function* getAllNotices(next) {
       },
       ...pageMixin,
     });
-    this.state.page.totalCount = yield Log.count({ where: { operator: userId, scope: type } });
+    this.state.page.totalCount = yield user.countLogs({ where: { scope: type } });
   }
   this.state.respond = notice;
   // 将日志设置为已读
