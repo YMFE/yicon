@@ -1,9 +1,422 @@
-.global-header{
-  &-Cart{    
+.global-header {
+  &-cart {
+    $fontTitleColor:#344562;$fontContentColor:#616161;$fontTipColor:#9e9e9e;$mainColor:#3bbaff;$btnColor:#008ed6;$btnHoverColor:#00b7ee;$iconColor:#555f6e;
     .icon {
       float: left;
       width: 25px;
       height: 25px;
     }
+    .car_info{
+      margin: 12px;
+      text-align: center;
+    }
+    .user-car {
+      width: 400px;
+      position: absolute;
+      border: 1px solid #e2e4e7;
+      box-shadow: 0 0 5px #e2e4e7;
+      border-top: none;
+      left: -30px;
+      top: 55px;
+      background-color: #fff;
+      display: none;
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border: 6px solid;
+        border-color: transparent transparent #fff transparent;
+        border-style: dashed dashed solid dashed;
+        position: absolute;
+        top: -12px;
+        left: 34px;
+      }
+
+      .car_bd {
+        padding: 8px 0 0 12px;
+      }
+
+      .fonts-selected-list {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 185px;
+        padding: 10px 0 0;
+
+        li {
+          float: left;
+          text-align: center;
+          line-height: 54px;
+          color: #262533;
+          width: 54px;
+          height: 54px;
+          /*border: 1px solid red;*/
+          border-radius: 5px;
+          margin: 4px 0 0;
+
+          .src_iconfont {
+            position: relative;
+            display: block;
+            color: $iconColor;
+            height: 54px;
+            line-height: 54px;
+
+            .delete {
+              font-size: 10px;
+              line-height: 12px;
+              position: absolute;
+              right: 0;
+              top: 0;
+              display: none;
+              cursor: pointer;
+              color: $iconColor;
+              /*    background-color: red;*/
+            }
+
+          }
+
+          .src_iconfont:hover {
+            background-color: #eff0f4;
+
+            .delete {
+              display: block;
+            }
+
+          }
+
+        }
+
+        .src_iconfont {
+          display: block;
+          font-size: 26px;
+          position: relative;
+          margin: 0 auto;
+          color: $iconColor;
+        }
+
+        .code {
+          font-size: 9px;
+        }
+
+      }
+
+      .font-cdn {
+        line-height: 28px;
+
+        .font-project-name {
+          width: 250px;
+          height: 28px;
+          line-height: 28px;
+          float: left;
+          border: 1px solid #dfdfdf;
+          background-color: #fff;
+          position: relative;
+
+          input {
+            width: 230px;
+            float: left;
+            line-height: 26px;
+            text-indent: 10px;
+            border: none;
+          }
+
+          .iconfont {
+            font-size: 14px;
+            color: #929aac;
+          }
+        }
+
+        .button-icon {
+          float: left;
+          margin-left: 6px;
+          padding: 0 16px;
+          line-height: 28px;
+        }
+
+        .button-cancel {
+          border: 1px solid #ccc;
+          color: $btnColor;
+          line-height: 26px;
+          margin-left: 6px;
+          background-color: #fff;
+        }
+
+        .font-project-icons {
+          color: #ccc;
+          overflow-x: hidden;
+          overflow-y: auto;
+          max-height: 200px;
+        }
+
+        .font-project-more {
+          position: relative;
+        }
+
+        .dot-down {
+          display: none;
+        }
+
+        .font-porject-lists {
+          display: none;
+          position: absolute;
+          max-height: 180px;
+          right: -1px;
+          top: 25px;
+          color: #505050;
+          width: 223px;
+          border: 1px solid #d9d9d9;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          background-color: #fff;
+          overflow-y: scroll;
+          padding: 2px 0;
+          overflow-x: hidden;
+
+          li {
+            overflow: hidden;
+            padding: 2px 10px;
+            width: 184px;
+            height: 26px;
+            text-align: left;
+            cursor: pointer;
+          }
+
+          li:hover {
+            background: #ccc;
+          }
+
+        }
+
+        .font-project-more-down {
+          border: 1px solid #d9d9d9;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          background-color: #fff;
+          width: 19px;
+          height: 31px;
+          vertical-align: bottom;
+          top: -9px;
+        }
+
+      }
+
+      .readonly {
+        color: #ccc;
+      }
+
+      .button-icon {
+        line-height: 26px;
+        color: #fff;
+        background-color: $btnColor;
+        border-radius: 2px;
+        padding: 0 6px;
+        display: inline-block;
+        cursor: pointer;
+
+        .iconfont {
+          color: #fff;
+          display: inline-block;
+          line-height: 24px;
+        }
+
+      }
+
+      .font-project-icons {
+        color: #ccc;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 200px;
+      }
+
+      &-opt {
+        background: #f5f6f9;
+        padding: 12px 11px;
+        line-height: auto;
+
+        .save_ct {
+          .clear-car {
+            float: left;
+            height: 28px;
+            line-height: 28px;
+            margin-left: 10px;
+
+            a {
+              color: $fontTitleColor;
+            }
+
+          }
+
+          .btn-download {
+            float: right;
+            height: 28px;
+
+            .ibtn {
+              width: 106px;
+              display: block;
+              color: #fff;
+              height: 28px;
+              line-height: 28px;
+              text-decoration: none;
+              text-align: center;
+              vertical-align: top;
+              border-radius: 3px;
+            }
+
+            .ibtn:hover {}
+
+            .ibtn-download {
+              width: 54px;
+              border: 1px solid #ccc;
+              color: $btnColor;
+              line-height: 26px;
+              float: right;
+              margin-left: 6 px;
+              background-color: #fff;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    .save_selection {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+  line-height: 28px;
+  vertical-align: top;
+  background:$btnColor;
+  width: 106px;
+  text-align: center;
+  .ibtn {
+    -webkit-transition: all 0s;
+    -moz-transition: all 0s;
+    -ms-transition: all 0s;
+    -o-transition: all 0s;
+    transition: all 0s;
+  }
+
+  .save_selection_btns {
+    display: none;
+    position: absolute;
+    z-index: 300;
+    width: 100%;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    .save-history:hover{
+      a {
+        position: relative;
+        color: $btnColor;
+        margin-right: 0px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        z-index: 300;
+      }
+      .save_to_pjc {
+        display: block;
+
+      }
+    }
+  }
+
+  .iconfont {
+    display: inline;
+    font-size: inherit;
+    line-height: inherit;
+    vertical-align: top;
+  }
+
+
+
+}
+
+.save_selection:hover {
+  .save_selection_btns {
+    display: block;
+    background-color: $btnColor;
+    border-radius: 2px;
+  }
+
+}
+
+
+
+.save-to-old-pjc{
+  position: relative;
+}
+.save_to_pjc {
+    display: block;
+    position: absolute;
+    top: 28px;
+    left: -1px;
+    z-index: 201;
+    width: 250px;
+    border:1px solid #dfdfdf;
+    border-top: none;
+    border-radius: 3px;
+    border-top-left-radius: 0px;
+    box-shadow:0 0 5px #dfdfdf;
+    ul {
+      background-color: #fff;
+      padding:5px 0;
+      color: $btnColor;
+      max-height: 300px;
+      overflow-y: auto;
+
+      .pjc-item {
+        list-style: none;
+        line-height: 25px;
+        padding: 0 11px;
+        border:0;
+        border-radius: 0;
+        text-align: left;
+        cursor: pointer;
+        position: static;
+        float: none;
+        width: inherit;
+        height: inherit;
+        color: $fontTitleColor;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .J_arrow_down {
+          visibility: hidden;
+        }
+
+      }
+      .pjc-item:hover {
+        background-color: #f8f8f8;
+        .J_arrow_down {
+          visibility: visible;
+        }
+
+      }
+
+    }
+
+  }
+
+.yicon-nav-main {
+  padding-top: 36px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }
