@@ -55,13 +55,11 @@ export default class Option extends Component {
 
     this.handleMouseDown(event);
   }
-  handleTouchMove(event) {
+  handleTouchMove() {
     // Set a flag that the view is being dragged
-    console.log(event);
     this.dragging = true;
   }
-  handleTouchStart(event) {
-    console.log(event);
+  handleTouchStart() {
     // Set a flag that the view is not being dragged
     this.dragging = false;
   }
