@@ -1,9 +1,11 @@
 import fontBuilder from 'iconfont-builder';
 import invariant from 'invariant';
+import zip from 'zip-dir';
+import Q from 'q';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion } from '../../model';
+import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -288,5 +290,58 @@ export function* getUploadedIcons(next) {
   } else {
     this.state.respond = '没有上传过图标';
   }
+  yield next;
+}
+
+/**
+ * 下载图标接口，参数 icons 的优先级最高
+ * TODO: 这里注意下优化，下载时检测图标库的最晚更新时间
+ * 如果在此之前没有发生更新，怎直接使用最新的资源包
+ */
+export function* downloadIcons(next) {
+  const { type, id, version = '0.0.0', icons } = this.param;
+  let { fontName } = this.param;
+  let iconData;
+  let foldName;
+  const stamp = +new Date;
+  if (Array.isArray(icons) && icons.length) {
+    iconData = yield Icon.findAll({
+      where: { id: { $in: icons } },
+      attributes: [['fontClass', 'name'], ['code', 'codepoint'], ['path', 'd']],
+    });
+    foldName = `${stamp}`;
+    fontName = fontName || 'iconfont';
+  } else {
+    const isRepo = type === 'repo';
+    const model = isRepo ? Repo : Project;
+    const throughModel = isRepo ? RepoVersion : ProjectVersion;
+    const instance = yield model.findOne({ where: { id } });
+    iconData = yield instance.getIcons({
+      attributes: [
+        ['fontClass', 'name'],
+        ['code', 'codepoint'],
+        ['path', 'd'],
+      ],
+      through: {
+        model: throughModel,
+        where: { version },
+      },
+      raw: true,
+    });
+    foldName = `${type}-${instance.id}-${version}-${stamp}`;
+    fontName = fontName || (isRepo ? instance.alias : instance.name);
+  }
+  //  TODO: 这里注意检测文件夹是否被新建，或者写到配置文件里去
+  const fontDest = `../caches/download/${foldName}`;
+  const zipDest = `${fontDest}.zip`;
+  yield fontBuilder({
+    icons: iconData,
+    readFiles: false,
+    dest: fontDest,
+    fontName,
+  });
+  yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
+  this.state.respond = zipDest;
+  // 之后先创建字体文件夹，然后把它压缩成 zip 包
   yield next;
 }
