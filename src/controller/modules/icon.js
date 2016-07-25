@@ -347,7 +347,7 @@ export function* downloadIcons(next) {
     foldName = `${type}-${instance.id}-${version}-${stamp}`;
     fontName = fontName || (isRepo ? instance.alias : instance.name);
   }
-  // TODO: 这里注意检测文件夹是否被新建，或者写到配置文件里去
+
   const fontDest = yield ensureCachesExist(foldName);
   const zipDest = `${fontDest}.zip`;
   yield fontBuilder({

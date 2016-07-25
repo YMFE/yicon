@@ -13,7 +13,7 @@ export const logTypes = {
   AUDIT_OK: '图标 @icon 通过了审核',
   AUDIT_FAILED: '图标 @icon 未通过审核',
   REPLACE: '图标 @iconFrom 被替换为 @iconTo',
-  PROJECT_CREATE: 'hello world',
+  PROJECT_CREATE: '创建了项目',
   PROJECT_RENAME: '项目名称从 @nameFrom 修改为 @nameTo',
   PROJECT_DEL: '从项目中删除了图标 @icon',
   PROJECT_ADD: '项目新增了图标 @icon',
