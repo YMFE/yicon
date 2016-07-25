@@ -6,7 +6,7 @@ import Q from 'q';
 
 import { logRecorder } from './log';
 import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
-import { isPlainObject } from '../../helpers/utils';
+import { isPlainObject, ensureCachesExist } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
@@ -302,8 +302,12 @@ export function* getUploadedIcons(next) {
 
 /**
  * 下载图标接口，参数 icons 的优先级最高
- * TODO: 这里注意下优化，下载时检测图标库的最晚更新时间
- * 如果在此之前没有发生更新，怎直接使用最新的资源包
+ * 这里，当下载项为大库时，我们会查看大库的最后更改日期
+ * 如果存在的文件的时间戳比最后更改日期晚，就直接用对应的文件好了
+ *
+ * 这里 tmd 有个坑：图标替换的时候是直接替换的 svg 路径
+ * 因此所有的项目目前不太容易感知是否发生了变化
+ *
  */
 export function* downloadIcons(next) {
   const { type, id, version = '0.0.0', icons } = this.param;
@@ -313,7 +317,7 @@ export function* downloadIcons(next) {
   const stamp = +new Date;
   if (Array.isArray(icons) && icons.length) {
     iconData = yield Icon.findAll({
-      where: { id: { $in: icons } },
+      where: { id: { $in: icons }, status: iconStatus.RESOLVED },
       attributes: [
         ['fontClass', 'name'],
         ['code', 'codepoint'],
@@ -337,13 +341,14 @@ export function* downloadIcons(next) {
         model: throughModel,
         where: { version },
       },
+      where: { status: iconStatus.RESOLVED },
       raw: true,
     });
     foldName = `${type}-${instance.id}-${version}-${stamp}`;
     fontName = fontName || (isRepo ? instance.alias : instance.name);
   }
-  //  TODO: 这里注意检测文件夹是否被新建，或者写到配置文件里去
-  const fontDest = `../caches/download/${foldName}`;
+  // TODO: 这里注意检测文件夹是否被新建，或者写到配置文件里去
+  const fontDest = yield ensureCachesExist(foldName);
   const zipDest = `${fontDest}.zip`;
   yield fontBuilder({
     icons: iconData,

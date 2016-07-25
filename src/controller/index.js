@@ -1,3 +1,3 @@
-import router from './routers';
+import router, { down } from './routers';
 
-export { router };
+export { router, down };

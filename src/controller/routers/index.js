@@ -4,6 +4,9 @@ import general from './general';
 import user from './user';
 import owner from './owner';
 import admin from './admin';
+import config from '../../config';
+import fs from 'fs';
+import path from 'path';
 import { mergeParams, responder } from './middlewares';
 
 /**
@@ -15,6 +18,18 @@ import { mergeParams, responder } from './middlewares';
  * 超管用户可以访问的，加 '/admin' 前缀
  */
 const router = new Router({ prefix: '/api' });
+const down = new Router();
+
+// 下载比较特殊，单独写吧
+down.get('/download/:filename', function* loadFile(next) {
+  const { caches, download } = config.path;
+  const { filename } = this.params;
+  const downloadPath = path.join(caches, download, filename);
+  this.set('Content-disposition', `attachment; filename=${filename}`);
+  this.set('Content-type', 'application/zip');
+  this.body = fs.createReadStream(downloadPath);
+  yield next;
+});
 
 router.use(bodyParser());
 router.use(mergeParams);
@@ -28,3 +43,4 @@ router.use(general.routes());
 router.use();
 
 export default router;
+export { down };
