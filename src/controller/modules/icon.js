@@ -126,6 +126,7 @@ export function* replaceIcon(next) {
   // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOVLED 状态
   const from = yield Icon.findOne({ where: { id: fromId } });
   const to = yield Icon.findOne({ where: { id: toId } });
+  const repos = yield from.getRepositories();
 
   invariant(
     from.status === iconStatus.RESOLVED,
@@ -135,6 +136,11 @@ export function* replaceIcon(next) {
     to.status === iconStatus.REPLACING,
     `替换的新图标 ${to.name} 并非待替换状态的图标`
   );
+  invariant(
+    repos.length,
+    `被替换的图标 ${from.name} 竟然不属于任何一个大库`
+  );
+
   const newPath = to.path;
   const fromName = from.name;
   const toName = to.name;
@@ -145,9 +151,10 @@ export function* replaceIcon(next) {
     to.update(
       { name, fontClass, tags, path, createTime, applyTime, newId: fromId },
       { transaction }
-    ).then(() =>
-      from.update({ path: newPath, oldId: toId }, { transaction })
-    ).then(() => {
+    )
+    .then(() => from.update({ path: newPath, oldId: toId }, { transaction }))
+    .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
+    .then(() => {
       const log = {
         // 注意，替换完之后 id 就换位了
         params: {
@@ -307,7 +314,11 @@ export function* downloadIcons(next) {
   if (Array.isArray(icons) && icons.length) {
     iconData = yield Icon.findAll({
       where: { id: { $in: icons } },
-      attributes: [['fontClass', 'name'], ['code', 'codepoint'], ['path', 'd']],
+      attributes: [
+        ['fontClass', 'name'],
+        ['code', 'codepoint'],
+        ['path', 'd'],
+      ],
     });
     foldName = `${stamp}`;
     fontName = fontName || 'iconfont';
