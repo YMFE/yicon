@@ -1,8 +1,28 @@
-.global-header-logo{
+.global-header-logo {
+  $imgUrl:'../../../../static/images/';
+  cursor: pointer;
+  color: #fff;
   float: left;
-  width: 136px;
-  height: 40px;
-  background: url('/images/iconfont.png') no-repeat;
-  margin-top: 12px;
+  width: 180px;
   margin-left: 10px;
+  height: 64px;
+  line-height: 64px;
+  text-align: center;
+  .small-img {
+    background: url("#{$imgUrl}qiconbg.png") 0 0 no-repeat;
+    display: inline-block;
+    float: left;
+    width: 140px;
+    height: 32px;
+    margin: 15px 0 0;
+  }
+  p {
+    display: none;
+  }
+  i {
+    top: 1px;
+  }
+  .iconfont {
+    font-size: 40px;
+  }
 }

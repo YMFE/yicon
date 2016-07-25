@@ -9,10 +9,10 @@
   flex: 1;
   background-image: linear-gradient(to right, transparent, transparent $description-width,$split-grey,$split-grey $description-width + 1px, transparent, transparent $description-width + 1px);
   background-position: $description-width left;
-  padding-top: 26px;
   overflow: hidden;
+  padding-top: 10px;
   dl{
-    margin: 24px 0 0;
+    margin: 30px 0 0;
     display: flex;
     .description{
       width: $description-width;

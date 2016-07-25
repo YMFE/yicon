@@ -1,6 +1,6 @@
+import './RepoSection.scss';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import styles from './RepoSection.scss';
 import Icon from '../common/Icon/Icon';
 
 class RepoSection extends Component {
@@ -8,28 +8,28 @@ class RepoSection extends Component {
     const { id, name, iconCount, icons, user } = this.props;
 
     return (
-      <div>
+      <dl className="global-list-prj-item">
         <Link to={`/repositories/${id}`}>
-          <div>
-            <h3>{name}图标库</h3>
-            <span className="totalNum">{iconCount}个图标</span>
-          </div>
-          <div className={styles.box}>
-            {
-              icons.map((icon) => (
-                <div key={icon.id} className={styles.item}>
-                  <Icon size={20} d={icon.path} />
-                </div>
-              ))
-            }
-          </div>
-          <div>
-            <ul>
-              <li>管理人：{user.name}</li>
+          <dt>
+            <h2>{name}</h2>
+            <p>
+              <i>{iconCount} icons</i>
+              <span>{user.name}</span>
+            </p>
+          </dt>
+          <dd>
+            <ul className="prj-item-icon">
+              {
+                icons.map((icon) => (
+                  <li key={icon.id}>
+                    <Icon size={20} d={icon.path} />
+                  </li>
+                ))
+              }
             </ul>
-          </div>
+          </dd>
         </Link>
-      </div>
+      </dl>
     );
   }
 }
