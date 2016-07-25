@@ -27,7 +27,6 @@ function getRepoByVersion({ repoId, version = '0.0.0', limit }) {
   .catch(e => { throw new Error(e); });
 }
 
-
 export function* list(next) {
   const repoList = yield Repo.findAll({
     attributes: ['id'],

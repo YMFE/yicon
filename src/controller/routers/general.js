@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { getOne, list } from '../modules/repository';
-import { getById, getByCondition } from '../modules/icon';
+import { getById, getByCondition, downloadIcons } from '../modules/icon';
 import { getOneProject, getAllPublicProjects } from '../modules/project';
 
 const general = new Router();
@@ -11,5 +11,6 @@ general.post('/icons', getById);
 general.get('/icons', getByCondition);
 general.get('/projects', getAllPublicProjects);
 general.get('/projects/:projectId', getOneProject);
+general.post('/download', downloadIcons);
 
 export default general;
