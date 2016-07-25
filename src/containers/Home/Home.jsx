@@ -36,7 +36,7 @@ class Home extends Component {
           </Select>
         </div>
         <div style={{ width: 600 }}>
-          <Pager defaultCurrent={1} onClick={(index) => { alert(index); }} totalPage={50} />
+          <Pager defaultCurrent={1} onClick={(index) => { console.log(index); }} totalPage={50} />
         </div>
         {
           list.map(repo => (
