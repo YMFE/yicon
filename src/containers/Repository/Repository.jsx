@@ -18,7 +18,7 @@ import { SubTitle } from '../../components/';
 
 export default class Repository extends Component {
   componentWillMount() {
-    this.props.fetchRepositoryData(this.props.currRepository.id);
+    this.props.fetchRepositoryData(this.props.params.id);
   }
 
   getColor(id) {
@@ -82,4 +82,5 @@ Repository.propTypes = {
   deleteIconInLocalStorage: PropTypes.func,
   currRepository: PropTypes.object,
   iconsInLocalStorage: PropTypes.array,
+  params: PropTypes.object,
 };
