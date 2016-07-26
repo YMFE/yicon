@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Select from '../../components/common/Select/index';
 import Pager from '../../components/common/Pager/index';
 const Option = Select.Option;
+/* eslint-disable no-console */
 
 export default class Demo extends Component {
   render() {
