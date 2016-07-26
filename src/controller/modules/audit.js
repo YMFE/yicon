@@ -66,19 +66,26 @@ function getBaseClassName(icons, transaction) {
 export function* getAuditList(next) {
   const { repoList } = this.state.user;
 
-  const auditData = yield Promise.all(repoList.map(id =>
-    Icon.findAll({
-      where: { status: iconStatus.PENDING },
+  const auditData = yield Icon.findAll({
+    where: { status: iconStatus.PENDING },
+    include: [{
+      model: Repo,
       through: {
         model: RepoVersion,
-        where: { repositoryId: id },
+        where: { repositoryId: { $in: repoList } },
       },
-    }).then(icons => icons.map(i => {
-      const icon = i.dataValues;
-      icon.repoId = id;
-      return icon;
-    }))
-  ));
+    }],
+  }).then(icons => icons.map(i => {
+    const icon = i.get({ plain: true });
+    if (icon.repositories && icon.repositories.length) {
+      icon.repo = icon.repositories[0];
+      delete icon.repo.repoVersion;
+      delete icon.repositories;
+    } else {
+      throw new Error(`图标 ${i.name} 未找到所属的大库`);
+    }
+    return icon;
+  }));
 
   this.state.respond = auditData.reduce((p, n) => p.concat(n), []);
   yield next;
