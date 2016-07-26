@@ -5,6 +5,7 @@ import Select from '../../components/common/Select/index';
 const Option = Select.Option;
 // 分页
 import Pager from '../../components/common/Pager/index';
+import Dialog from '../../components/common/Dialog/Index';
 // dropdown  依赖menu
 import Dropdown from '../../components/common/Dropdown/index';
 import Menu, { Item as MenuItem, Divider } from 'rc-menu';
@@ -36,7 +37,13 @@ const menu2 = (
   </Menu>
 );
 export default class Demo extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = { visible: false };
+  }
+  show() {
+    this.setState({ visible: true });
+  }
   render() {
     return (
       <div>
@@ -49,6 +56,10 @@ export default class Demo extends Component {
             <Option value="disabled" disabled>Disabled</Option>
           </Select>
         </div>
+        <input type="button" value="dialog demo" onClick={() => this.show()} />
+        <Dialog visible={this.state.visible} empty>
+          看我随手一打就是标准十五字
+        </Dialog>
         <div style={{ width: 600 }}>
           <Pager
             defaultCurrent={1}
