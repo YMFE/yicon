@@ -1,6 +1,7 @@
 import App from './App/App';
 import DevTools from './DevTools/DevTools';
 import Home from './Home/Home';
+import Demo from './Demo/Demo';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
@@ -13,6 +14,7 @@ injectTapEventPlugin();
 export {
   App,
   DevTools,
+  Demo,
   Home,
   NoMatch,
   Project,
