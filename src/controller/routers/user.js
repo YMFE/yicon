@@ -16,6 +16,8 @@ import {
   getUploadedIcons,
   submitIcons,
   getIconInfo,
+  deleteIcons,
+  updateIconInfo,
 } from '../modules/icon';
 
 import { getLogList, recordLog } from '../modules/log';
@@ -32,6 +34,8 @@ user.post('/icons', uploader.array('icon', 20), uploadIcons);
 user.patch('/icons', submitIcons);
 user.get('/icons/:iconId', getIconInfo);
 user.get('/icons', pagination, getUploadedIcons);
+user.delete('/icons/:iconId', deleteIcons);
+user.patch('/icons/:iconId', updateIconInfo);
 
 user.get('/projects', getAllProjects);
 user.post('/projects', createProject);
