@@ -26,7 +26,7 @@ export default class Demo extends Component {
           </Select>
         </div>
         <input type="button" value="dialog demo" onClick={() => this.show()} />
-        <Dialog visible={this.state.visible} empty={true}>
+        <Dialog visible={this.state.visible} empty>
           看我随手一打就是标准十五字
         </Dialog>
         <div style={{ width: 600 }}>
