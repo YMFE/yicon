@@ -27,3 +27,7 @@ export const SAVE_TO_PROJECT = 'SAVE_TO_PROJECT';
 export const FETCH_ALL_INFO = 'FETCH_ALL_INFO';
 export const FETCH_SYSTEM_INFO = 'FETCH_SYSTEM_INFO';
 export const FETCH_PROJECT_INFO = 'FETCH_PROJECT_INFO';
+
+// uploaded
+export const FETCH_MY_LOADED = 'FETCH_MY_LOADED';
+export const DELETE_ICON = 'DELETE_ICON';

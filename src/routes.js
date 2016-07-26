@@ -7,6 +7,7 @@ import {
   Project,
   Repository,
   Notification,
+  Uploaded,
 } from './containers';
 
 export default () => {
@@ -34,7 +35,7 @@ export default () => {
         <Route path="user/projects" component={Project} />
         <Route path="user/projects/:id(/version/:version)" />
         <Route path="user/projects/:id/logs" component={Project} />
-
+        <Route path="user/icons" component={Uploaded} />
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
           <Route path="auditing" /> {/* 审核页面 */}

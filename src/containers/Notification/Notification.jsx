@@ -1,8 +1,7 @@
 import './Notification.scss';
 import React, { Component, PropTypes } from 'react';
-import InfoItem from './InfoItem.jsx';
 import { connect } from 'react-redux';
-import { SubTitle, Content, Menu, Main, Timeline } from '../../components/';
+import { SubTitle, Content, Menu, Main, Timeline, InfoItem } from '../../components/';
 import { autobind } from 'core-decorators';
 import {
   getInfo,
@@ -65,25 +64,6 @@ export default class Notification extends Component {
 
     }
     return description;
-  }
-  createInfoTimeString(t) {
-    const time = new Date(t);
-    const now = new Date();
-    const diff = now.getTime() - time.getTime();
-    const str = [];
-    if (diff < 86400000) {
-      str.push('昨天');
-      if (diff < 43200000) {
-        str.push('上午');
-      } else {
-        str.push('下午');
-      }
-      str.push(` ${time.getHours()}:${time.getMinutes()}`);
-    } else {
-      str.push(`${time.getYears()}.${time.getMonth() + 1}.${time.getDate()}`);
-      str.push(` ${time.getHours()}:${time.getMinutes()})`);
-    }
-    return str.join('');
   }
   @autobind
   changeTag(e) {
@@ -148,7 +128,7 @@ export default class Notification extends Component {
                     <InfoItem
                       key={item.id}
                       tag={scope[item.scope]}
-                      timeStr={this.createInfoTimeString(item.createdAt)}
+                      timeStr={item.createdAt}
                       titleHtml={this.getDescribeForInfo(item)}
                       isNew={item.userLog.unread}
                     />

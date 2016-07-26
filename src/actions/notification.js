@@ -1,11 +1,11 @@
-import isomFetch from 'isom-fetch';
+import isonFetch from 'isom-fetch';
 import {
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
 } from '../constants/actionTypes';
 
-const fetch = isomFetch.create({ baseURL: '/api' });
+const fetch = isonFetch.create({ baseURL: '/api' });
 
 export function fetchAllInfo(currentPage) {
   return {

@@ -6,6 +6,7 @@ import project from './project';
 import search from './search';
 import setting from './setting';
 import notification from './notification';
+import uploaded from './uploaded';
 
 export default combineReducers({
   routing: routerReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   search,
   setting,
   notification,
+  uploaded,
 });
