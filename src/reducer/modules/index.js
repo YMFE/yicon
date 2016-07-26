@@ -5,6 +5,7 @@ import cart from './cart';
 import project from './project';
 import search from './search';
 import setting from './setting';
+import notification from './notification';
 
 export default combineReducers({
   routing: routerReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   project,
   search,
   setting,
+  notification,
 });

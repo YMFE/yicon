@@ -256,9 +256,21 @@ export function* getIconInfo(next) {
 export function* getUploadedIcons(next) {
   const { userId } = this.state.user;
   const { pageMixin } = this.state;
+  const statusIn = {
+    status: { $in: [
+      iconStatus.RESOLVED,
+      iconStatus.UPLOADED,
+      iconStatus.REJECTED,
+      iconStatus.PENDING,
+    ] },
+  };
+
   const timeGroup = yield Icon.findAll({
     attributes: ['applyTime'],
-    where: { uploader: userId },
+    where: {
+      uploader: userId,
+      ...statusIn,
+    },
     order: 'applyTime DESC',
     group: 'applyTime',
     ...pageMixin,
@@ -273,6 +285,7 @@ export function* getUploadedIcons(next) {
           $lte: timeGroup[0].applyTime,
           $gte: timeGroup[len - 1].applyTime,
         },
+        ...statusIn,
       },
       order: 'applyTime DESC',
       raw: true,
@@ -295,7 +308,7 @@ export function* getUploadedIcons(next) {
     });
     this.state.page.totalCount = total.length;
   } else {
-    this.state.respond = '没有上传过图标';
+    this.state.respond = [];
   }
   yield next;
 }
