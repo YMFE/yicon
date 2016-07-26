@@ -27,7 +27,7 @@ export function* getByCondition(next) {
   if (q === '') throw new Error('不支持传入空参数');
 
   const query = `%${decodeURI(q)}%`;
-  this.state.respond = yield Icon.findAll({
+  const icons = yield Icon.findAndCountAll({
     where: {
       status: { $gte: iconStatus.RESOLVED },
       $or: {
@@ -35,8 +35,17 @@ export function* getByCondition(next) {
         tags: { $like: query },
       },
     },
+    include: [{ model: Repo }],
   });
-
+  const data = [];
+  icons.rows.forEach(v => {
+    const id = v.repositories[0].id;
+    if (!data[id]) data[id] = Object.assign({}, { id, name: v.repositories[0].name, icons: [] });
+    data[id].icons.push(v);
+  });
+  this.state.respond = this.state.respond || {};
+  this.state.respond.data = data.filter(v => v);
+  this.state.respond.totalCount = icons.count;
   yield next;
 }
 

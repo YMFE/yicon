@@ -8,6 +8,12 @@ export function fetchSearchResult(key) {
   return {
     type: FETCH_SEARCH_RESULT,
     payload: fetch.get(`/icons?q=${key}`),
-    key,
+    // key,
+  };
+}
+
+export function fetchSearchData(query) {
+  return (dispatch) => {
+    if (query) dispatch(fetchSearchResult(query));
   };
 }

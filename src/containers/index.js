@@ -4,6 +4,7 @@ import Home from './Home/Home';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
+import Search from './Search/Search';
 import Notification from './Notification/Notification';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -17,5 +18,6 @@ export {
   NoMatch,
   Project,
   Repository,
+  Search,
   Notification,
 };

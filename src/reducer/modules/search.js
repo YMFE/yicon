@@ -2,20 +2,12 @@ import {
   FETCH_SEARCH_RESULT,
 } from '../../constants/actionTypes';
 
-const initialState = {
-  key: '',
-  result: [],
-};
+const initialState = { data: [], totalCount: 0 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_SEARCH_RESULT: {
-      window.location.pathname = `/search?key=${action.key}`;
-      return {
-        ...state,
-        result: action.payload.data.data || [],
-        key: action.key,
-      };
+      return action.payload.data || { data: [], totalCount: 0 };
     }
     default:
       return state;
