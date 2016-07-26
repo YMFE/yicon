@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import Select from '../../components/common/Select/index';
 import Pager from '../../components/common/Pager/index';
+import Dialog from '../../components/common/Dialog/Index';
 const Option = Select.Option;
 /* eslint-disable no-console */
 
 export default class Demo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { visible: false };
+  }
+  show() {
+    this.setState({ visible: true });
+  }
   render() {
     return (
       <div>
@@ -17,6 +25,10 @@ export default class Demo extends Component {
             <Option value="disabled" disabled>Disabled</Option>
           </Select>
         </div>
+        <input type="button" value="dialog demo" onClick={() => this.show()} />
+        <Dialog visible={this.state.visible} empty={true}>
+          看我随手一打就是标准十五字
+        </Dialog>
         <div style={{ width: 600 }}>
           <Pager
             defaultCurrent={1}

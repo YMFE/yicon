@@ -2,17 +2,19 @@ import React, { Component, PropTypes } from 'react';
 const defaultProps = {
   title: '',
   visible: false,
-  zindex: 1000,
+  zIndex: 1000,
   onOk: () => {},
   onCancel: () => {},
+  empty: false,
 };
 
 const propTypes = {
   title: PropTypes.string,
   visible: PropTypes.bool,
-  zindex: PropTypes.number,
+  zIndex: PropTypes.number,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
+  empty: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.string,
@@ -31,7 +33,7 @@ export default class Modal extends Component {
   }
 
   render() {
-    const { title, zindex, onOk, onCancel } = this.props;
+    const { title, zIndex, onOk, onCancel, empty } = this.props;
     document.body.style = this.state.show ? 'overflow: hidden' : '';
     return (
       <div
@@ -39,8 +41,8 @@ export default class Modal extends Component {
           display: this.state.show ? null : 'none',
         }}
       >
-        <div className="m-dialog-mask" style={{ zIndex: zindex - 1 }}></div>
-        <div className="m-dialog" style={{ zIndex: zindex }}>
+        <div className="m-dialog-mask" style={{ zIndex: zIndex - 1 }}></div>
+        <div className={empty ? 'm-dialog m-dialog-simple' : 'm-dialog'} style={{ zIndex }}>
           <div className="myicon-dialog">
             <div className="myicon-dialog-title">
               <h4>{title}</h4>

@@ -97,3 +97,18 @@
 		}
 	}
 }
+
+.m-dialog-simple{
+	.myicon-dialog-title{
+		 >h4{
+			 display: none;
+		 }
+		 border:none;
+	}
+	.myicon-dialog-content{
+		padding:0 24px 16px;
+	}
+	.myicon-dialog-foot{
+		display: none;
+	}
+}
