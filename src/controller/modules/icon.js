@@ -46,6 +46,7 @@ export function* getByCondition(next) {
   this.state.respond = this.state.respond || {};
   this.state.respond.data = data.filter(v => v);
   this.state.respond.totalCount = icons.count;
+  this.state.respond.queryKey = encodeURI(q);
   yield next;
 }
 

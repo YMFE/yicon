@@ -10,12 +10,17 @@ import './Search.scss';
   state => ({
     list: state.search.data,
     totalCount: state.search.totalCount,
+    queryKey: state.search.queryKey,
   }), { fetchSearchData }
 )
 
 export default class Search extends Component {
   componentWillMount() {
-    this.props.fetchSearchData(this.props.location.query.q);
+    if (this.props.queryKey !== encodeURI(this.props.location.query.q) ||
+      !this.props.list.length
+    ) {
+      this.props.fetchSearchData(this.props.location.query.q);
+    }
   }
 
   render() {
@@ -64,6 +69,7 @@ Search.propTypes = {
       q: PropTypes.string.isRequired,
     }),
   }),
+  queryKey: PropTypes.string,
   totalCount: PropTypes.number,
   list: PropTypes.array,
 };
