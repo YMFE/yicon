@@ -16,6 +16,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         list: action.payload.data,
+        totalPage: action.payload.page.totalCount,
+        currentPage: action.payload.page.currentPage,
       };
     }
     case DELETE_ICON: {
