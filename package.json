@@ -83,7 +83,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "history": "^2.1.1",
-    "iconfont-builder": "^2.1.0",
+    "iconfont-builder": "^2.1.1",
     "invariant": "^2.2.1",
     "isom-fetch": "^1.1.0",
     "koa": "^1.2.0",
@@ -101,6 +101,7 @@
     "pinyin": "^2.8.0",
     "postcss-loader": "^0.9.1",
     "process": "^0.11.3",
+    "q": "^1.4.1",
     "rc-select": "^6.4.7",
     "react": "^15.1.0",
     "react-clipboard.js": "^0.2.4",
@@ -120,7 +121,8 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
     "webpack-hot-middleware": "^2.12.0",
-    "webpack-isomorphic-tools": "^2.3.0"
+    "webpack-isomorphic-tools": "^2.3.0",
+    "zip-dir": "^1.0.2"
   },
   "pre-commit": [
     "lint"

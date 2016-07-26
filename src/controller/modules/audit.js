@@ -115,9 +115,19 @@ export function* auditIcons(next) {
    * 3. 生成唯一 code
    */
   const t = yield seq.transaction(transaction =>
-    // 后面是日志记录过程
     getBaseClassName(icons, transaction)
+      // 更新图标内容
       .then(iconInfo => Promise.all(iconInfo))
+      // 更新大库 updatedAt 字段
+      .then(() => {
+        const repoIds = unique(icons.map(i => i.repoId));
+        return Promise.all(repoIds.map(id =>
+          Repo.update(
+            { updatedAt: new Date },
+            { where: { id }, transaction }
+          )
+        ));
+      })
       .then(() => {
         const iconData = icons.reduce((p, n) => {
           const prev = p;

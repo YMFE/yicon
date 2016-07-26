@@ -37,6 +37,8 @@ export default () => {
 
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
+          <Route path="replacement/icon/:id" /> {/* 替换页面 */}
+          <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
           <Route path="auditing" /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" /> {/* 大库日志 */}
         </Route>
