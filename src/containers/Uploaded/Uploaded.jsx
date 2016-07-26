@@ -96,7 +96,7 @@ class Uploaded extends Component {
 const TimelineList = (props) => {
   const { list } = props;
   return (
-    <div>
+    <div className="context">
       <Timeline>
       {list.map((item, index) => (
         <InfoItem

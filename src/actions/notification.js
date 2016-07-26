@@ -25,10 +25,23 @@ export function fetchProjectInfo(currentPage) {
     payload: fetch.get(`/user/notifications/type/project?currentPage=${currentPage}`),
   };
 }
-export function getInfo() {
+export function getInfo(tag, page = 1) {
   return (dispatch) => {
-    dispatch(fetchAllInfo(1));
-    dispatch(fetchSystemInfo(1));
-    dispatch(fetchProjectInfo(1));
+    switch (tag) {
+      case 'all':
+        dispatch(fetchAllInfo(page));
+        break;
+      case 'system':
+        dispatch(fetchProjectInfo(page));
+        break;
+      case 'project':
+        dispatch(fetchProjectInfo(page));
+        break;
+      default:
+        dispatch(fetchAllInfo(1));
+        dispatch(fetchSystemInfo(1));
+        dispatch(fetchProjectInfo(1));
+        break;
+    }
   };
 }

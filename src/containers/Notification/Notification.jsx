@@ -6,6 +6,7 @@ import { autobind } from 'core-decorators';
 import {
   getInfo,
 } from '../../actions/notification';
+import Pager from '../../components/common/Pager/';
 const scope = {
   repo: '系统',
   project: '项目',
@@ -13,9 +14,9 @@ const scope = {
 
 @connect(
   state => ({
-    allInfo: state.notification.allInfo,
-    systemInfo: state.notification.systemInfo,
-    projectInfo: state.notification.projectInfo,
+    all: state.notification.allInfo,
+    system: state.notification.systemInfo,
+    project: state.notification.projectInfo,
   }),
   {
     getInfo,
@@ -24,9 +25,9 @@ const scope = {
 export default class Notification extends Component {
   static propTypes = {
     getInfo: PropTypes.func,
-    allInfo: PropTypes.object,
-    systemInfo: PropTypes.object,
-    projectInfo: PropTypes.object,
+    all: PropTypes.object,
+    system: PropTypes.object,
+    project: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -37,10 +38,11 @@ export default class Notification extends Component {
   componentWillMount() {
     this.props.getInfo();
   }
-  getDataBytag() {
-    const attrName = `${this.state.tag}Info`;
-    return (this.props[attrName] && this.props[attrName].list) || [];
+  @autobind
+  onChangePage(page) {
+    this.getInfo(this.state.tag, page);
   }
+
   getDescribeForInfo(item) {
     const regExp = /@[^@]+@/g;
     let description;
@@ -72,8 +74,12 @@ export default class Notification extends Component {
       tag: nextTag,
     });
   }
+
   render() {
-    const InfoList = this.getDataBytag();
+    const attrName = this.state.tag;
+    const InfoList = (this.props[attrName] && this.props[attrName].list) || [];
+    const currentPage = this.props[attrName].currentPage;
+    const totalPage = this.props[attrName].totalPage;
     let mainClassList = InfoList.length === 0 ? 'empty-container' : '';
     return (
       <div className="notification">
@@ -87,8 +93,8 @@ export default class Notification extends Component {
             >
               <a>全部消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.allInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.all.unReadCount}</i> :
                   null
               }
               </a>
@@ -100,8 +106,8 @@ export default class Notification extends Component {
             >
               <a>系统消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.systemInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.system.unReadCount}</i> :
                   null
               }
               </a>
@@ -113,8 +119,8 @@ export default class Notification extends Component {
             >
               <a>项目消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.projectInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.project.unReadCount}</i> :
                   null
               }
               </a>
@@ -136,6 +142,17 @@ export default class Notification extends Component {
                   }
                   </Timeline> :
                   null
+              }
+              {
+                InfoList.length > 0 ?
+                  <div className="pager-container">
+                    <Pager
+                      defaultCurrent={currentPage}
+                      totalPage={totalPage}
+                      onClick={this.onChangePage}
+                    />
+                  </div> :
+                null
               }
           </Main>
         </Content>
