@@ -4,6 +4,7 @@ import isomFetch from 'isom-fetch';
 import {
   App,
   Home,
+  Demo,
   NoMatch,
   Project,
   Repository,
@@ -48,6 +49,7 @@ export default () => {
       <Route path="projects/:id(/version/:version)" /> {/* 公开项目 */}
       <Route path="search" /> {/* 搜索结果 */}
       <Route path="transition/:type" component={Transition} /> {/* 跳转页面 */}
+      <Route path="demo" component={Demo} /> {/* demo */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>
