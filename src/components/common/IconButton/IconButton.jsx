@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
 import Icon from '../Icon/Icon.jsx';
+import { autobind } from 'core-decorators';
 import process from 'process';
 let ClipboardButton;
 
@@ -19,18 +20,34 @@ if (process.browser) {
   { addIconToLocalStorage, deleteIconInLocalStorage }
 )
 class IconButton extends Component {
-
-  // 暂时回调打印console.log 后期显示tips
-  copySuccess(e) {
-    console.info('Action:', e.action);
-    console.info('Text:', e.text);
-    console.info('Trigger:', e.trigger);
-
-    e.clearSelection();
+  constructor(props) {
+    super(props);
+    this.state = {
+      copytipShow: false,
+      copyError: false,
+    };
   }
-  copyError(e) {
-    console.error('Action:', e.action);
-    console.error('Trigger:', e.trigger);
+
+  @autobind
+  copySuccess() {
+    this.setState({
+      copytipShow: true,
+      copyError: false,
+    });
+  }
+  // 待完成：copy失败(safari下)，提示按 ⌘-C 完成复制
+  @autobind
+  copyError() {
+    this.setState({
+      copytipShow: false,
+      copyError: true,
+    });
+  }
+  @autobind
+  copyEnd() {
+    this.setState({
+      copytipShow: false,
+    });
   }
 
   isSelected(id) {
@@ -58,6 +75,13 @@ class IconButton extends Component {
     const status = 2;
 
     const toolList = {
+      copytip:
+        <span
+          className={`copytip ${this.state.copytipShow ? 'show' : ''}`}
+        >
+          <i className="iconfont">&#xf078;</i>
+          {this.state.copyError ? '再按 ⌘-C' : '复制成功！'}
+        </span>,
       download: <i className={"tool-item iconfont download"} title="下载图标">&#xf50b;</i>,
       edit: <i className={"tool-item iconfont edit"} title="图标替换">&#xf515;</i>,
       copy:
@@ -65,9 +89,10 @@ class IconButton extends Component {
           component="i"
           className={"tool-item iconfont copy"}
           title="复制code"
-          data-clipboard-text={`\\u${icon.code.toString(16)}`}
+          data-clipboard-text={String.fromCharCode(icon.code)}
           onSuccess={this.copySuccess}
           onError={this.copyError}
+          button-onMouseOut={this.copyEnd}
         >&#xf514;</ClipboardButton>,
       cart:
         <i
@@ -81,12 +106,14 @@ class IconButton extends Component {
     if (+status === +1) {
       tool = (
         <div className={"tool"}>
+          {toolList.copytip}
           {toolList.cart}
         </div>
       );
     } else if (+status === +2) {
       tool = (
         <div className={"tool"}>
+          {toolList.copytip}
           {toolList.download}
           {toolList.copy}
           {toolList.cart}
@@ -95,6 +122,7 @@ class IconButton extends Component {
     } else if (+status === +3) {
       tool = (
         <div className={"tool"}>
+          {toolList.copytip}
           {toolList.download}
           {toolList.edit}
           {toolList.copy}

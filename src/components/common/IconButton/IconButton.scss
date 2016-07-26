@@ -37,6 +37,7 @@
     position: relative;
     font-size: 0;
     .copytip{
+      display: none;
       position: absolute;
       background-color: #fff8e5;
       border:1px solid #ffe8a6;
@@ -50,6 +51,9 @@
       .iconfont{
         font-size: 18px;
       }
+    }
+    .copytip.show {
+      display: initial;
     }
     .tool-item{
       /*margin:0 1px;*/

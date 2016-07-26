@@ -10,6 +10,7 @@ caption,th{text-align:inherit}
 ul,ol,menu{list-style:none}
 fieldset,img{border:0}
 img,object,input,textarea,button,select{vertical-align:middle}
+html{background:#f1f3f6}
 article,aside,footer,header,section,nav,figure,figcaption,hgroup,details,menu{display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
 blockquote:before,blockquote:after,q:before,q:after{content:"\0020"}
@@ -48,6 +49,17 @@ sup,sub{vertical-align:baseline}
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   vertical-align: middle;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+.clearfix {
+  *zoom: 1;
 }
 .app-container{
   background-color: #f1f3f6;

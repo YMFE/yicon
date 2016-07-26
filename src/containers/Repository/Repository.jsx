@@ -4,7 +4,7 @@ import { fetchRepositoryData } from '../../actions/repository';
 import Slider from '../../components/common/Slider/Slider.jsx';
 import { SubTitle } from '../../components/';
 
-// import styles from './Repository.scss';
+import './Repository.scss';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
 @connect(
@@ -42,14 +42,18 @@ export default class Repository extends Component {
             </div>
           </div>
         </SubTitle>
-        {
-          icons.map((icon) => (
-            <IconButton
-              icon={icon}
-              key={icon.id}
-            />
-          ))
-        }
+        <div className="yicon-detail-main">
+          <div className="yicon-detail-list clearfix">
+            {
+              icons.map((icon) => (
+                <IconButton
+                  icon={icon}
+                  key={icon.id}
+                />
+              ))
+            }
+          </div>
+        </div>
       </div>
     );
   }
