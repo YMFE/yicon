@@ -26,19 +26,18 @@
 
 /* 弹层透明遮罩层样式 */
 .m-dialog-mask {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	height: 100%;
 	background-color: #f5f5f5;
 	opacity: .5;
 }
 
 /*	弹层通用样式	*/
 .m-dialog{
-	position:absolute;
+	position:fixed;
 	left: 50%;
 	top:50%;
 	-webkit-transform: translate(-50%, -50%);
@@ -51,9 +50,6 @@
 	box-shadow: 5px 5px 5px #ccc;
 	z-index: 99;
 }
-.pos1{left:0; top: 0;}
-.pos2{ top:240px; left: 0;}
-.pos3{ left:400px;}
 /*	弹层通用头尾样式	*/
 .myicon-dialog{
 	background-color: #fff;
@@ -77,10 +73,9 @@
 	}
 	&-content{
 		padding:0 24px;
-		max-width: 540px;
+		max-width: 650px;
 		word-wrap:break-word;
 		word-break: break-all;
-		max-height: 200px;
 		overflow-y: auto;
 	}
 	&-foot{
@@ -114,6 +109,9 @@
 		  right: 10px;
 		  color: #d8dbdd;
 		  cursor: pointer;
+		}
+		.iconfont:hover{
+		  color: #008ed6;
 		}
 	}
 	.myicon-dialog-content{
