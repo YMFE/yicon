@@ -2,6 +2,7 @@ import Router from 'koa-router';
 import multer from '../../helpers/multer';
 
 import {
+  createProject,
   getAllProjects,
   getOneProject,
   addProjectIcon,
@@ -33,6 +34,7 @@ user.get('/icons/:iconId', getIconInfo);
 user.get('/icons', pagination, getUploadedIcons);
 
 user.get('/projects', getAllProjects);
+user.post('/projects', createProject);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
 user.post('/projects/:projectId/update', generatorNewVersion, recordLog);

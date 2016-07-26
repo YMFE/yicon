@@ -1,4 +1,9 @@
-const common = {};
+const common = {
+  path: {
+    caches: '../caches',
+    download: 'download',
+  },
+};
 
 const development = {
   model: {
