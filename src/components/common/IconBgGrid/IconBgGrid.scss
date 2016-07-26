@@ -1,0 +1,24 @@
+.icon-big-img {
+  float: left;
+  position: relative;
+  .hline, .vline {
+    position: absolute;
+    background: #c2e7f5;
+  }
+  .hline {
+    width: 100%;
+    height: 1px;
+  }
+  .vline {
+    width: 1px;
+    height: 100%;
+  }
+  .big-icon {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+}

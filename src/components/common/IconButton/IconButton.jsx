@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
 import Icon from '../Icon/Icon.jsx';
+import DownloadDial from '../../DownloadDial/DownloadDial.jsx';
+import downloadDialConf from '../Dialog/Confirm.jsx';
 import { autobind } from 'core-decorators';
 import process from 'process';
 let ClipboardButton;
@@ -25,6 +27,7 @@ class IconButton extends Component {
     this.state = {
       copytipShow: false,
       copyError: false,
+      showDownLoadDial: false,
     };
   }
 
@@ -48,6 +51,18 @@ class IconButton extends Component {
     this.setState({
       copytipShow: false,
     });
+  }
+
+  @autobind
+  download(icon) {
+    return () => {
+      downloadDialConf({
+        empty: true,
+        content: <DownloadDial icon={icon} />,
+        onOk: () => {},
+        onCancel: () => {},
+      });
+    };
   }
 
   isSelected(id) {
@@ -82,7 +97,12 @@ class IconButton extends Component {
           <i className="iconfont">&#xf078;</i>
           {this.state.copyError ? '再按 ⌘-C' : '复制成功！'}
         </span>,
-      download: <i className={"tool-item iconfont download"} title="下载图标">&#xf50b;</i>,
+      download:
+        <i
+          className={"tool-item iconfont download"}
+          title="下载图标"
+          onClick={this.download(icon)}
+        >&#xf50b;</i>,
       edit: <i className={"tool-item iconfont edit"} title="图标替换">&#xf515;</i>,
       copy:
         <ClipboardButton
@@ -101,6 +121,7 @@ class IconButton extends Component {
           title="加入小车"
         >&#xf50f;</i>,
     };
+
 
     let tool = '';
     if (+status === +1) {
