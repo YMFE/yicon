@@ -3,6 +3,7 @@ import { IndexRoute, Route } from 'react-router';
 import {
   App,
   Home,
+  Demo,
   NoMatch,
   Project,
   Repository,
@@ -25,6 +26,7 @@ export default () => {
       <Route path="repositories/:id" component={Repository} />
       <Route path="projects/:id(/version/:version)" /> {/* 公开项目 */}
       <Route path="search" component={Search} /> {/* 搜索结果 */}
+      <Route path="demo" component={Demo} /> {/* demo */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>

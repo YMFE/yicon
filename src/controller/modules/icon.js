@@ -262,6 +262,69 @@ export function* getIconInfo(next) {
   yield next;
 }
 
+export function* deleteIcons(next) {
+  const { iconId } = this.param;
+  const { userId } = this.state.user;
+
+  if (isNaN(iconId)) throw new Error('缺少图标id');
+  const iconInfo = yield Icon.findOne({
+    attributes: ['status', 'uploader'],
+    where: { id: iconId },
+  });
+
+  invariant(
+    userId === iconInfo.uploader,
+    '没有权限删除他人上传的图标'
+  );
+  invariant(
+    iconInfo.status === iconStatus.REJECTED,
+    '只能删除审核未通过的图标'
+  );
+  const result = yield Icon.update({ status: iconStatus.DELETE }, { where: { id: iconId } });
+  if (result) {
+    this.state.respond = '删除图标成功';
+  } else {
+    throw new Error('删除图标失败');
+  }
+  yield next;
+}
+
+export function* updateIconInfo(next) {
+  const { iconId, tags, name } = this.param;
+  const { userId } = this.state.user;
+
+  if (isNaN(iconId)) throw new Error('缺少图标id');
+  const iconInfo = yield Icon.findOne({
+    where: { id: iconId },
+    include: [
+      {
+        model: Repo,
+        through: {
+          model: RepoVersion,
+          where: { iconId },
+        },
+      },
+    ],
+  });
+  const data = {};
+  if (typeof tags === 'string' && tags !== '') data.tags = tags;
+  // 大库管理员可以修改icon的name
+  if (iconInfo.repositories[0] &&
+    iconInfo.repositories[0].admin === userId &&
+    typeof name === 'string' &&
+    name !== '') {
+    data.name = name;
+  }
+  if (isPlainObject(data)) throw new Error('必须传入非空的数据参数');
+  const result = yield Icon.update(data, { where: { id: iconId } });
+  if (result) {
+    this.state.respond = '修改图标信息成功';
+  } else {
+    throw new Error('修改图标信息失败');
+  }
+  yield next;
+}
+
 export function* getUploadedIcons(next) {
   const { userId } = this.state.user;
   const { pageMixin } = this.state;

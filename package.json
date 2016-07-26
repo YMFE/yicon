@@ -101,6 +101,7 @@
     "pinyin": "^2.8.0",
     "postcss-loader": "^0.9.1",
     "process": "^0.11.3",
+    "rc-dropdown": "^1.4.9",
     "q": "^1.4.1",
     "rc-select": "^6.4.7",
     "react": "^15.1.0",
