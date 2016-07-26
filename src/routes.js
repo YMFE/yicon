@@ -8,6 +8,7 @@ import {
   Project,
   Repository,
   Notification,
+  Upload,
 } from './containers';
 
 export default () => {
@@ -29,7 +30,7 @@ export default () => {
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>
-        <Route path="upload" /> {/* 上传图标 */}
+        <Route path="upload" component={Upload} /> {/* 上传图标 */}
         <Route path="workbench" /> {/* 工作台 */}
         <Route path="user/notifications/projects" /> {/* 项目通知页面 */}
         <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
