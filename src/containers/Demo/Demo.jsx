@@ -1,10 +1,42 @@
+import './Demo.scss';
 import React, { Component } from 'react';
+// select
 import Select from '../../components/common/Select/index';
-import Pager from '../../components/common/Pager/index';
 const Option = Select.Option;
+// 分页
+import Pager from '../../components/common/Pager/index';
+// dropdown  依赖menu
+import Dropdown from '../../components/common/Dropdown/index';
+import Menu, { Item as MenuItem, Divider } from 'rc-menu';
+
 /* eslint-disable no-console */
 
+function onSelect({ key }) {
+  console.log(`${key} selected`);
+}
+
+function onVisibleChange(visible) {
+  console.log(visible);
+}
+const menu = (
+  <Menu className="rc-dropdown-menutest" onSelect={onSelect}>
+    <MenuItem disabled><a href="http://baidu.com">我上传的图标项目</a></MenuItem>
+    <MenuItem key="1"><a href="http://baidu.com">我上传的图标项目</a></MenuItem>
+    <Divider />
+    <MenuItem key="2"><span>已审核的图标项目</span></MenuItem>
+  </Menu>
+);
+
+const menu2 = (
+  <Menu className="menutest" onSelect={onSelect}>
+    <MenuItem key="1">test</MenuItem>
+    <MenuItem key="2"><span>test22222</span></MenuItem>
+    <MenuItem key="3">test</MenuItem>
+    <MenuItem key="4"><span>test22222</span></MenuItem>
+  </Menu>
+);
 export default class Demo extends Component {
+
   render() {
     return (
       <div>
@@ -23,6 +55,27 @@ export default class Demo extends Component {
             onClick={(index) => { console.log(index); }}
             totalPage={50}
           />
+        </div>
+        <div className={'testdropdown'}>
+          <h4>测试Dropdown</h4>
+          <ul>
+            <li>
+              <Dropdown
+                extraClass="demotest"
+                menu={menu}
+                curtext={'图标管理'}
+                onVisibleChange={onVisibleChange}
+              />
+            </li>
+            <li>
+              <Dropdown
+                extraClass="dropleft"
+                menu={menu2}
+                curtext={'权限设置'}
+                onVisibleChange={onVisibleChange}
+              />
+            </li>
+          </ul>
         </div>
       </div>
     );
