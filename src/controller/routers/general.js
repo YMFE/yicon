@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import { getOne, list } from '../modules/repository';
 import { getById, getByCondition, downloadIcons } from '../modules/icon';
 import { getOneProject, getAllPublicProjects } from '../modules/project';
-import { getUserInfo, clearUserInfo } from '../modules/auth';
+import { getUserInfo, clearUserInfo, validateAuth } from '../modules/auth';
 
 const general = new Router();
 
@@ -16,5 +16,6 @@ general.post('/download', downloadIcons);
 
 general.post('/login', getUserInfo);
 general.get('/logout', clearUserInfo);
+general.post('/validate/:type', validateAuth);
 
 export default general;

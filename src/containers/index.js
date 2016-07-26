@@ -5,6 +5,7 @@ import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
 import Notification from './Notification/Notification';
+import Transition from './Transition/Transition';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -17,5 +18,6 @@ export {
   NoMatch,
   Project,
   Repository,
+  Transition,
   Notification,
 };

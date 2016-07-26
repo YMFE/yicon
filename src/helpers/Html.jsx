@@ -4,7 +4,7 @@ import serialize from 'serialize-javascript';
 import { getURLStateName } from 'isom-fetch';
 
 const Html = (props) => {
-  const { assets, component, store, urls } = props;
+  const { assets, component, store, urls, authType } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
 
   return (
@@ -30,13 +30,6 @@ const Html = (props) => {
           dangerouslySetInnerHTML={{ __html: content }}
         >
         </div>
-        <script src="https://qsso.corp.qunar.com/lib/qsso-auth.js" charSet="utf-8"></script>
-        <script
-          charSet="utf-8"
-          dangerouslySetInnerHTML={{
-            __html: 'QSSO.attach("qsso-login", "/api/login")',
-          }}
-        />
         <script
           charSet="utf-8"
           dangerouslySetInnerHTML={{
@@ -50,6 +43,17 @@ const Html = (props) => {
           }}
         />
         <script src={assets.javascript.main} charSet="utf-8" />
+        {
+          authType === 'qsso' &&
+            <script
+              src="https://qsso.corp.qunar.com/lib/qsso-auth.js"
+              charSet="utf-8"
+              dangerouslySetInnerHTML={{
+                __html: 'QSSO.attach("qsso-login", "/api/login")',
+              }}
+            >
+            </script>
+        }
       </body>
     </html>
   );
@@ -60,6 +64,7 @@ Html.propTypes = {
   component: PropTypes.node,
   store: PropTypes.object,
   urls: PropTypes.object,
+  authType: PropTypes.string,
 };
 
 export default Html;

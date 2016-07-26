@@ -61,6 +61,7 @@ const getRouteContext = (ctx) =>
               component={component}
               store={store}
               urls={fetchedURLs}
+              authType="qsso"
             />
         )}`;
 

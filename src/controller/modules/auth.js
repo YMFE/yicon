@@ -49,3 +49,23 @@ export function* clearUserInfo(next) {
   this.redirect('/');
   yield next;
 }
+
+export function* validateAuth() {
+  const { type } = this.param;
+  const { userId } = this.session;
+  switch (type) {
+    case 'owner': {
+      const user = yield User.findOne({ where: { id: userId } });
+      if (!user || user.actor < 1) throw new Error('no-auth');
+      return;
+    }
+    case 'admin': {
+      const user = yield User.findOne({ where: { id: userId } });
+      if (!user || user.actor < 2) throw new Error('no-auth');
+      return;
+    }
+    default:
+      if (!userId) this.redirect('/transition/no-login');
+      return;
+  }
+}
