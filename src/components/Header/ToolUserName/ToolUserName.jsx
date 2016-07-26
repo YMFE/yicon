@@ -5,7 +5,7 @@ const ToolUserName = (props) => {
   let Name;
   let Tool;
   let UnLogin = () => (
-    <a className="nologin" href="#">
+    <a id="qsso-login" className="nologin">
       <i className="iconfont ">&#xf50e;</i>登录
     </a>
   );
@@ -35,12 +35,8 @@ const ToolUserName = (props) => {
 
   return (
     <li className="lists global-header-toolUserName" >
-      {
-        props.login ? <Name /> : <UnLogin />
-      }
-      {
-        props.login ? <Tool /> : null
-      }
+      {props.login ? <Name /> : <UnLogin />}
+      {props.login ? <Tool /> : null}
     </li>
   );
 };
