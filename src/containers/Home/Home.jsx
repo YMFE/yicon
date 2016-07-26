@@ -1,14 +1,16 @@
+import './Home.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   fetchHomeData,
 } from '../../actions/repository';
-
 import RepoSection from '../../components/RepoSection/RepoSection';
+
 import Select from '../../components/common/Select/index';
 import Pager from '../../components/common/Pager/index';
 const Option = Select.Option;
 
+import { Content } from '../../components/';
 @connect(
   state => ({ list: state.repository.homeRepository }),
   { fetchHomeData }
@@ -23,9 +25,7 @@ class Home extends Component {
   render() {
     const { list } = this.props;
     return (
-      <div>
-        <h1>Home</h1>
-        <p>This is home page.</p>
+      <div className="home">
         <div style={{ width: 600, height: 50 }}>
           select 组件测试
           <Select placeholder="请选择项目" style={{ width: 250 }}>
@@ -38,18 +38,20 @@ class Home extends Component {
         <div style={{ width: 600 }}>
           <Pager defaultCurrent={1} onClick={(index) => { console.log(index); }} totalPage={50} />
         </div>
-        {
-          list.map(repo => (
-            <RepoSection
-              key={repo.id}
-              id={repo.id}
-              name={repo.name}
-              iconCount={repo.iconCount}
-              icons={repo.icons}
-              user={repo.user}
-            />
-          ))
-        }
+        <Content className="home-container">
+          {
+            list.map(repo => (
+              <RepoSection
+                key={repo.id}
+                id={repo.id}
+                name={repo.name}
+                iconCount={repo.iconCount}
+                icons={repo.icons}
+                user={repo.user}
+              />
+            ))
+          }
+        </Content>
 
       </div>
     );

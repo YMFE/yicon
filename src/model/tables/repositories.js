@@ -14,4 +14,9 @@ export default seq.define('repositories', {
   notice: {
     type: Seq.STRING,
   },
+  updatedAt: {
+    type: Seq.DATE,
+    defaultValue: Seq.NOW,
+    allowNull: false,
+  },
 });

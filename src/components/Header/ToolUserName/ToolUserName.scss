@@ -1,7 +1,7 @@
-.p-iconfont:before {
-  content: '&#xf024;';
-}
-
-.name-icon:before {
-  content: '张文杰';
+.global-header-toolUserName {
+  &:hover{
+    .user-dropdown{
+      display: block;
+    }
+  }
 }

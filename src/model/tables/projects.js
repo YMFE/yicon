@@ -8,7 +8,6 @@ export default seq.define('projects', {
   },
   info: {
     type: Seq.STRING,
-    allowNull: false,
   },
   public: {
     type: Seq.BOOLEAN,

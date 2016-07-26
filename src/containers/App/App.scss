@@ -41,3 +41,14 @@ sup,sub{vertical-align:baseline}
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+.iconfont {
+  font-family: iconfont !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  vertical-align: middle;
+}
+.app-container{
+  background-color: #f1f3f6;
+}

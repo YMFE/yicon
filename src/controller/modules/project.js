@@ -1,6 +1,9 @@
+import invariant from 'invariant';
+
 import { User, Project, UserProject, ProjectVersion } from '../../model';
 import { versionTools, has, diffArray } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
+import { logRecorder } from './log';
 
 export function* getAllProjects(next) {
   const { userId } = this.state.user;
@@ -15,6 +18,64 @@ export function* getAllProjects(next) {
   };
 
   this.state.respond = result;
+
+  yield next;
+}
+
+export function* createProject(next) {
+  const { projectName, icons } = this.param;
+  const { userId } = this.state.user;
+  let projectId;
+
+  invariant(icons.length, '传入的图标数组不应为空');
+
+  icons.forEach(icon => {
+    invariant(
+      icon.id > 0,
+      `期望图标 id 为数字且大于 0，而你传入的是 ${icon.id}`
+    );
+    invariant(
+      typeof icon.name === 'string',
+      `期望传入字符串图标名称，而你传入的是 ${icon.name}`
+    );
+  });
+
+  yield seq.transaction(transaction =>
+    Project.findOrCreate({
+      where: { name: projectName },
+      include: [{
+        model: User,
+        as: 'projectOwner',
+      }],
+      defaults: { owner: userId },
+    })
+    .spread((project, created) => {
+      invariant(
+        created,
+        `图标项目名称 ${project.name} 已存在！您可以联系该项目的创建者 ${
+          project.projectOwner ? project.projectOwner.name : ''
+        }`
+      );
+      projectId = project.id;
+      const record = icons.map(i => ({
+        version: '0.0.0',
+        iconId: i.id,
+        projectId,
+      }));
+      return ProjectVersion.bulkCreate(record, { transaction });
+    })
+    .then(() => {
+      const log = [{
+        type: 'PROJECT_CREATE',
+        loggerId: projectId,
+      }, {
+        params: { icon: icons },
+        type: 'PROJECT_ADD',
+        loggerId: projectId,
+      }];
+      return logRecorder(log, transaction, userId);
+    })
+  );
 
   yield next;
 }
@@ -109,7 +170,7 @@ export function* addProjectIcon(next) {
   if (result.length) {
     this.state.respond = '添加项目图标成功';
   } else {
-    this.state.respond = '未添加项目图标';
+    this.state.respond = '添加的项目图标在项目中均已存在';
   }
 
   const affectedUsers = yield UserProject.findAll({
