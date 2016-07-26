@@ -10,6 +10,9 @@ import Dialog from '../../components/common/Dialog/Index';
 import Dropdown from '../../components/common/Dropdown/index';
 import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 
+// Slider
+import Slider from '../../components/common/Slider/Slider.jsx';
+
 /* eslint-disable no-console */
 
 function onSelect({ key }) {
@@ -55,6 +58,11 @@ export default class Demo extends Component {
             <Option value="无线大客户端">无线大客户端无线大客户端</Option>
             <Option value="disabled" disabled>Disabled</Option>
           </Select>
+        </div>
+        <div style={{ backgroundColor: '#fff' }}>
+          <div style={{ width: 200, padding: 10 }}>
+            <Slider />
+          </div>
         </div>
         <input type="button" value="dialog demo" onClick={() => this.show()} />
         <Dialog visible={this.state.visible} empty>
