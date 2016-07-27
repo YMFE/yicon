@@ -3,6 +3,7 @@ export const FETCH_HOME_DATA = 'FETCH_HOME_DATA';
 export const FETCH_REPOSITORY_DATA = 'FETCH_REPOSITORY_DATA';
 export const CLEAR_REPOSITORY_DATA = 'CLEAR_REPOSITORY_DATA';
 export const CHANGE_ICON_SIZE = 'CHANGE_ICON_SIZE';
+export const RESET_ICON_SIZE = 'RESET_ICON_SIZE';
 
 // cart
 export const INIT_CART = 'INIT_CART';
@@ -27,3 +28,11 @@ export const SAVE_TO_PROJECT = 'SAVE_TO_PROJECT';
 export const FETCH_ALL_INFO = 'FETCH_ALL_INFO';
 export const FETCH_SYSTEM_INFO = 'FETCH_SYSTEM_INFO';
 export const FETCH_PROJECT_INFO = 'FETCH_PROJECT_INFO';
+
+// uploaded
+export const FETCH_MY_LOADED = 'FETCH_MY_LOADED';
+export const DELETE_ICON = 'DELETE_ICON';
+
+// user
+export const FETCH_USER_INFO = 'FETCH_USER_INFO';
+export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';

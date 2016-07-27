@@ -5,7 +5,7 @@ import debug from 'debug';
 import routes from './routes';
 import ReactDOM from 'react-dom/server';
 import compress from 'koa-compress';
-import session from 'koa-session-store';
+import session from 'koa-session';
 import serve from 'koa-static';
 import favicon from 'koa-favicon';
 import { match, RouterContext } from 'react-router';
@@ -17,10 +17,15 @@ import { router, down } from './controller';
 
 const app = new Koa();
 const { PORT } = process.env;
+const store = createStore();
 
+app.keys = [
+  'WinterIsComing',
+  'TheNorthRemember',
+];
 app.use(compress());
 app.use(favicon(path.join(__dirname, '../static/favicon.ico')));
-app.use(session());
+app.use(session({ key: 'yicon:sess' }, app));
 app.use(serve(path.join(__dirname, '../static')));
 
 app.use(router.routes());
@@ -29,7 +34,7 @@ app.use(down.routes());
 const getRouteContext = (ctx) =>
   new Promise((resolve, reject) => {
     match({
-      routes: routes(),
+      routes: routes(store),
       location: ctx.originalUrl,
     }, (error, redirect, renderProps) => {
       if (error) {
@@ -38,7 +43,6 @@ const getRouteContext = (ctx) =>
         reject({ status: 302, redirect });
       } else if (renderProps) {
         // const fetch = isomFetch.use(ctx, router);
-        const store = createStore();
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
@@ -52,6 +56,19 @@ const getRouteContext = (ctx) =>
             </div>
           </Provider>
         );
+        const sess = ctx.session;
+        // 处理以下登录 reducer
+        store.dispatch({
+          type: 'FETCH_USER_INFO',
+          payload: {
+            userId: sess.userId,
+            name: sess.domain,
+            real: sess.name ? decodeURIComponent(sess.name) : undefined,
+            login: !!sess.userId,
+            repoAdmin: sess.repoAdmin,
+            admin: sess.actor === 2,
+          },
+        });
 
         const render = (fetchedURLs) => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
@@ -60,6 +77,7 @@ const getRouteContext = (ctx) =>
               component={component}
               store={store}
               urls={fetchedURLs}
+              authType="qsso"
             />
         )}`;
 

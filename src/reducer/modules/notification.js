@@ -9,14 +9,20 @@ const initialState = {
   allInfo: {
     unReadCount: 0,
     list: [],
+    totalPage: 1,
+    currentPage: 1,
   },
   systemInfo: {
     unReadCount: 0,
     list: [],
+    totalPage: 1,
+    currentPage: 1,
   },
   projectInfo: {
     unReadCount: 0,
     list: [],
+    totalPage: 1,
+    currentPage: 1,
   },
 };
 
@@ -42,6 +48,8 @@ export default (state = initialState, action) => {
           allInfo: {
             unReadCount: count,
             list: action.payload.data,
+            totalPage: action.payload.page.totalCount,
+            currentPage: action.payload.page.currentPage,
           },
         };
       }
@@ -59,6 +67,8 @@ export default (state = initialState, action) => {
           systemInfo: {
             unReadCount: count,
             list: action.payload.data,
+            totalPage: action.payload.page.totalCount,
+            currentPage: action.payload.page.currentPage,
           },
         };
       }
@@ -76,6 +86,8 @@ export default (state = initialState, action) => {
           projectInfo: {
             unReadCount: count,
             list: action.payload.data,
+            totalPage: action.payload.page.totalCount,
+            currentPage: action.payload.page.currentPage,
           },
         };
       }

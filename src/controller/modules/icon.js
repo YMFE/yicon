@@ -5,7 +5,7 @@ import Q from 'q';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
+import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion, User } from '../../model';
 import { isPlainObject, ensureCachesExist } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -27,7 +27,7 @@ export function* getByCondition(next) {
   if (q === '') throw new Error('不支持传入空参数');
 
   const query = `%${decodeURI(q)}%`;
-  this.state.respond = yield Icon.findAll({
+  const icons = yield Icon.findAndCountAll({
     where: {
       status: { $gte: iconStatus.RESOLVED },
       $or: {
@@ -35,8 +35,25 @@ export function* getByCondition(next) {
         tags: { $like: query },
       },
     },
+    include: [{ model: Repo }],
   });
-
+  let data = [];
+  icons.rows.forEach(v => {
+    const id = v.repositories[0].id;
+    if (!data[id]) data[id] = Object.assign({}, { id, name: v.repositories[0].name, icons: [] });
+    data[id].icons.push(v);
+  });
+  this.state.respond = this.state.respond || {};
+  data = data.filter(v => v);
+  let i = 0;
+  const len = data.length;
+  for (; i < len; i++) {
+    data[i].icons = data[i].icons.map(value =>
+      Object.assign({}, { id: value.id, name: value.name, code: value.code, path: value.path }));
+  }
+  this.state.respond.data = data;
+  this.state.respond.totalCount = icons.count;
+  this.state.respond.queryKey = encodeURI(q);
   yield next;
 }
 
@@ -240,16 +257,24 @@ export function* getIconInfo(next) {
   const { iconId } = this.param;
   if (isNaN(iconId)) throw new Error('不支持传入空参数');
 
-  const iconInfo = yield Icon.findOne({ where: { id: iconId }, raw: true });
-  const { repositoryId } = yield RepoVersion.findOne({ where: { iconId } });
-  const repoInfo = yield Repo.findOne({
-    attributes: ['id', 'name', 'alias'],
-    where: { id: repositoryId },
-    raw: true,
+  const data = yield Icon.findOne({
+    where: { id: iconId },
+    include: [{
+      model: Repo,
+      through: {
+        model: RepoVersion,
+        version: '0.0.0',
+      },
+    }, User],
   });
-  const result = { repository: repoInfo };
-  Object.assign(result, iconInfo);
-  this.state.respond = result;
+  const icon = data.get({ plain: true });
+  if (icon.repositories && icon.repositories.length) {
+    icon.repo = icon.repositories[0];
+    delete icon.repo.repoVersion;
+    delete icon.repositories;
+  }
+  this.state.respond = icon;
+
   yield next;
 }
 

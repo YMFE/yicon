@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, useRouterHistory } from 'react-router';
-import { createHistory } from 'history';
+import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import { Provider, connect } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
 import createStore from './reducer';
 
 import DevTools from './containers/DevTools/DevTools';
 
-const history = useRouterHistory(createHistory)({ queryKey: false });
 const initialState = window.__INITIAL_STATE__;
 const store = createStore(initialState);
 const container = document.getElementById('app');
+const history = syncHistoryWithStore(browserHistory, store);
 
 @connect(
   state => ({ devTools: state.setting.devTools })
@@ -38,7 +38,7 @@ ReactDOM.render(
   <Provider store={store} key="provider">
     <div>
       <Router history={history}>
-        {routes()}
+        {routes(store)}
       </Router>
       <DevToolsContainer />
     </div>

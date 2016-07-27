@@ -126,10 +126,10 @@ class Slider extends Component {
   }
 
   calcValue(offset) {
-    const { min, max } = this.props;
+    const { min, max, step } = this.props;
     const ratio = offset / this.getSliderLength();
     const value = ratio * (max - min) + min;
-    return value;
+    return Math.round(value / step) * step;
   }
 
   removeEvents() {
@@ -163,6 +163,7 @@ class Slider extends Component {
 Slider.propTypes = {
   min: PropTypes.number,
   max: PropTypes.number,
+  step: PropTypes.number,
   defaultValue: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.arrayOf(PropTypes.number),
@@ -181,6 +182,7 @@ Slider.defaultProps = {
   disabled: false,
   min: 0,
   max: 100,
+  step: 1,
   onBeforeChange: noop,
   onChange: noop,
   onAfterChange: noop,
