@@ -18,7 +18,6 @@ export default class Select extends Component {
   static OptGroup = OptGroup;
 
   static defaultProps = {
-    extraClass: '',
     transitionName: 'slide-up',
     choiceTransitionName: 'zoom',
     showSearch: false,
@@ -28,7 +27,6 @@ export default class Select extends Component {
     antLocale: React.PropTypes.object,
   }
   static propTypes = {
-    extraClass: PropTypes.string,
     prefixCls: PropTypes.string,
     showSearch: PropTypes.bool,
     optionLabelProp: PropTypes.string,
@@ -36,8 +34,6 @@ export default class Select extends Component {
     combobox: PropTypes.string,
   }
   render() {
-    const { extraClass } = this.props;
-    const selectClass = ['rc-select', extraClass].join(' ');
     // let {
     //   size, className, combobox, notFoundContent, prefixCls, showSearch, optionLabelProp,
     // } = this.props;
@@ -56,7 +52,7 @@ export default class Select extends Component {
 
     return (
       <RcSelect
-        {...this.props} className={selectClass}
+        {...this.props}
         optionLabelProp={optionLabelProp || 'children'}
         notFoundContent={notFoundContent}
       />

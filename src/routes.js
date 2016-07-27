@@ -12,6 +12,8 @@ import {
   Transition,
   Search,
   Notification,
+  Upload,
+  UploadEdit,
   Uploaded,
 } from './containers';
 
@@ -53,7 +55,8 @@ export default () => {
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>
-        <Route path="upload" component={NoMatch} /> {/* 上传图标 */}
+        <Route path="upload" component={Upload} /> {/* 上传图标 */}
+        <Route path="uploadedit" component={UploadEdit} /> {/* 上传图标 设置图标标签 */}
         <Route path="workbench" /> {/* 工作台 */}
         <Route path="user/notifications/projects" /> {/* 项目通知页面 */}
         <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
