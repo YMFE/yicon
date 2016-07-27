@@ -56,6 +56,19 @@ const getRouteContext = (ctx) =>
             </div>
           </Provider>
         );
+        const sess = ctx.session;
+        // 处理以下登录 reducer
+        store.dispatch({
+          type: 'FETCH_USER_INFO',
+          payload: {
+            userId: sess ? sess.userId : null,
+            name: sess ? sess.domain : null,
+            real: sess ? decodeURIComponent(sess.name) : null,
+            login: sess ? !!sess.userId : false,
+            repoAdmin: sess ? sess.repoAdmin : [],
+            admin: sess ? sess.actor === 2 : false,
+          },
+        });
 
         const render = (fetchedURLs) => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(

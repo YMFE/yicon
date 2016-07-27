@@ -19,8 +19,8 @@ import {
 } from '../../actions/search.js';
 
 const iconManageList = [
-  { name: '我上传的图标', href: '/' },
-  { name: '我的图标项目', href: 'user/projects' },
+  { name: '我上传的图标', href: '/user/icons' },
+  { name: '我的图标项目', href: '/user/projects' },
 ];
 
 @connect(
@@ -37,11 +37,6 @@ const iconManageList = [
 )
 
 class Header extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
-
   componentWillMount() {
     const {
       className,
@@ -57,11 +52,7 @@ class Header extends Component {
     }
   }
   render() {
-    const {
-      iconDatabase,
-      isLogin,
-      userName,
-    } = this.props;
+    const { iconDatabase } = this.props;
 
     return (
       <header className={this.classList}>
@@ -75,7 +66,7 @@ class Header extends Component {
           </nav>
           <div className="quick-menu nav-menu-info">
             <ul className="clearfix">
-              <ToolUserName login={isLogin} name={userName} />
+              <ToolUserName />
               <Info infoCont={2} />
               <Cart
                 isShowCart={this.props.isShowCartList}
@@ -104,8 +95,6 @@ Header.propTypes = {
   iconDatabase: PropTypes.array,
   className: PropTypes.string,
   extraClass: PropTypes.string,
-  isLogin: PropTypes.bool,
-  userName: PropTypes.string,
   searchValue: PropTypes.string,
   onSearch: PropTypes.func,
   isShowCartList: PropTypes.bool,

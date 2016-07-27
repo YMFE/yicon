@@ -53,7 +53,6 @@ export function* pagination(next) {
 
 // TODO: 将业务型的 middleware 移至对应的 controller 中
 export function* getCurrentUser(next) {
-  // TODO: 改为从 session 获取
   this.state.user = {
     userId: this.session.userId,
   };

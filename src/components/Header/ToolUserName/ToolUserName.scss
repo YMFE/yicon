@@ -1,7 +1,16 @@
-.global-header-toolUserName {
+.global-header-toolUserName-login {
+  .user-dropdown{
+    display: none;
+  }
   &:hover{
     .user-dropdown{
       display: block;
     }
+  }
+}
+
+.global-header-toolUserName-nologin {
+  .user-dropdown{
+    display: none;
   }
 }

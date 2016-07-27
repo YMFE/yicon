@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import { getOne, list } from '../modules/repository';
 import { getById, getByCondition, downloadIcons } from '../modules/icon';
 import { getOneProject, getAllPublicProjects } from '../modules/project';
-import { getUserInfo, clearUserInfo, validateAuth } from '../modules/auth';
+import { getUserInfo, clearUserInfo, validateAuth } from '../modules/user';
 
 const general = new Router();
 

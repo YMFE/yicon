@@ -7,6 +7,7 @@ import search from './search';
 import setting from './setting';
 import notification from './notification';
 import uploaded from './uploaded';
+import user from './user';
 
 export default combineReducers({
   routing: routerReducer,
@@ -15,6 +16,11 @@ export default combineReducers({
   project,
   search,
   setting,
-  notification,
-  uploaded,
+
+  // 登录用户才使用的信息放到 user 下面
+  user: combineReducers({
+    info: user,
+    notification,
+    uploaded,
+  }),
 });

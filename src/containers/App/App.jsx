@@ -12,9 +12,7 @@ import './App.scss';
     list: state.repository.homeRepository,
     searchValue: state.search.value,
   }),
-  {
-    launchDevTools,
-  }
+  { launchDevTools }
 )
 class App extends Component {
   componentDidMount() {
@@ -30,8 +28,6 @@ class App extends Component {
         <Header
           list={list}
           extraClass="main"
-          login
-          name={"李欣悦"}
           searchValue={searchValue}
         />
         <section>
