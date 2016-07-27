@@ -18,3 +18,5 @@ export default date => {
   }
   return format(d, template);
 };
+
+export { format as dateFormat };
