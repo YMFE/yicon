@@ -1,14 +1,100 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import './Upload.scss';
+const defaultProps = {
+  defaultClass: 'upload-area',
+  dragOnClass: 'drag-on',
+};
+const propTypes = {
+  defaultClass: PropTypes.string,
+  dragOnClass: PropTypes.string,
+};
 export default class Upload extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uploadAreaClass: this.props.defaultClass,
+    };
+  }
+  handlerDragenter = (event) => {
+    this.setState({ uploadAreaClass: 'upload-area drag-on' });
+    console.log(event);
+    // const uploadZone = document.querySelector('.upload-area');
+    // uploadZone.className = 'upload-area drag-on';
+  }
+  resetStyle = (event) => {
+    const uploadZone = document.querySelector('.upload-area');
+    if (!this.judgeInside(event, uploadZone)) {
+      this.toggleClass(event.target, 'drag-on');
+    }
+    // if(!util.judgeInside(event, uploadZone)) {
+    //    util.toggleClass(event.target, 'dragging');
+    //   	_uploadShow.isEntering = false;
+    // }
+  }
+  handlerDragover = (event) => {
+    event.preventDefault();
+  }
+  handlerDrop = (event) => {
+    let fileList = [];
+    event.preventDefault();
+    fileList = event.dataTransfer.files;
+    if (fileList.length === 0) {
+      return false;
+    }
+    console.log(fileList);
+    return false;
+  }
+  handlerFileChange = (event) => {
+    alert(event);
+    console.log(event.files);
+    // _sendFiles(event );
+  }
+  judgeInside = (event, ele) => {
+    const style = window.getComputedStyle(ele);
+    const current = event.target;
+    const uploadZone = document.querySelector('.yicon-upload-icon .upload-area');
+    if (uploadZone.contains(current) && current !== uploadZone) { // fix 内部的移动时文字改变
+      return true;
+    }
+    return event.offsetX > 0 &&
+    event.offsetX < parseInt(style.width, 10) &&
+    event.offsetY > 0 &&
+    event.offsetY < parseInt(style.height, 10);
+  }
+  toggleClass = (ele, className) => {
+    let eleClass = ele.className;
+    const index = eleClass.indexOf(className);
+    let arr = [];
+    if (index === -1) {
+      // classname  存入state中
+      eleClass = '`{$(eleClass) $(className)}`';
+      // top: '152px', background: '#ff8c8c'
+    } else {
+      arr = ele.className.split('');
+      arr.splice(index, className.length + 2);
+      eleClass = arr.join('');
+    }
+  }
   render() {
+    let { uploadAreaClass } = this.state;
+    console.log(uploadAreaClass);
     return (
       <div className={'yicon-upload-icon'}>
-        <div className={'upload-area'}>
+        <div
+          className={uploadAreaClass}
+          onDragEnter={evt => this.handlerDragenter(evt)}
+          onDragLeave={evt => this.resetStyle(evt)}
+          onDragOver={evt => this.handlerDragover(evt)}
+          onDrop={evt => this.handlerDrop(evt)}
+        >
           <div className={'upload-instruct'}>
             <i className={'iconfont upload-icon'}>&#xf50a;</i>
             <p>将SVG文件拖拽至此</p>
-            <p className={'click-upload'}>OR 点此上传</p>
+            <a className={'upload-input-area'}><input
+              type={'file'}
+              className={'click-upload'} multiple={'multiple'}
+              onChange={(evt) => this.handlerFileChange(evt)}
+            />OR 点此上传</a>
           </div>
         </div>
         <div className={'upload-notes'}>
@@ -58,3 +144,6 @@ export default class Upload extends Component {
     );
   }
 }
+
+Upload.defaultProps = defaultProps;
+Upload.propTypes = propTypes;

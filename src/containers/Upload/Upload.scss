@@ -17,9 +17,28 @@
         color: #eaeaea;
         font-size: 160px;
       }
-      .click-upload {
+      // .click-upload {
+      //   margin-top: 100px;
+      //   font-size: 16px;
+      // }
+      .upload-input-area{
+        position: relative;
+        cursor: pointer;
         margin-top: 100px;
         font-size: 16px;
+        display: inline-block;
+        .click-upload{
+          font-size: 16px;
+          position: absolute;
+          right: 0;
+          top: 0;
+          opacity: 0;
+          filter: alpha(opacity=0);
+          cursor: pointer;
+          align-items: baseline;
+          color: inherit;
+          text-align: start;
+        }
       }
     }
   }
@@ -28,9 +47,13 @@
     .upload-icon {
       color: #008ed6;
     }
-    .click-upload {
+    .upload-input-area{
       display: none;
+
     }
+    // .click-upload {
+    //   display: none;
+    // }
   }
   .upload-notes {
     .note-bar {
