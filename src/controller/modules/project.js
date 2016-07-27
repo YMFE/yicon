@@ -307,3 +307,38 @@ export function* getAllPublicProjects(next) {
   });
   yield next;
 }
+
+export function* diffVersion(next) {
+  const { projectId, highVersion, lowVersion } = this.param;
+  if (isNaN(projectId)) throw new Error('缺少项目id参数');
+
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const hVersion = versionTools.v2n(highVersion);
+  const lVersion = versionTools.v2n(lowVersion);
+  if (isNaN(hVersion) && isNaN(lVersion)) throw new Error('缺少对比项目版本号');
+
+  const icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: {
+        version: {
+          $in: [hVersion, lVersion],
+        },
+      },
+    },
+  });
+  const hvIcons = [];
+  const lvIcons = [];
+  icons.forEach(v => {
+    if (v.projectVersions && v.projectVersions.version === highVersion) {
+      hvIcons.push(v);
+    } else {
+      lvIcons.push(v);
+    }
+  });
+  const { deleted, added } = diffArray(lvIcons, hvIcons);
+  this.state.respond = this.state.respond || {};
+  this.state.respond.deleted = deleted;
+  this.state.respond.added = added;
+  yield next;
+}

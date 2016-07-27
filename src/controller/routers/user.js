@@ -10,6 +10,7 @@ import {
   deleteProjectIcon,
   updateProjectInfo,
   updateProjectMember,
+  diffVersion,
 } from '../modules/project';
 import {
   uploadIcons,
@@ -46,6 +47,8 @@ user.post('/projects/:projectId/icons', addProjectIcon, recordLog);
 user.delete('/projects/:projectId/icons', deleteProjectIcon, recordLog);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
+// user.get('/projects/:projectId/compareVersion/:highVersion...:lowVersion', diffVersion);
+user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:nId', getOneNotice);
