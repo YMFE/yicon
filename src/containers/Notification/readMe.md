@@ -1,6 +1,6 @@
 ### InfoItem detail 使用规范
 
-``` js
+``` html
 <dl>
   <dt className="description">
     <p className="time">昨天下午 17:45</p>

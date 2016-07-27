@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 // import { Icon } from '../../components/';
 
-
 class InfoItem extends Component {
   static propTypes = {
     tag: PropTypes.string,
@@ -22,6 +21,7 @@ class InfoItem extends Component {
     }
     return null;
   }
+
   createInfoTimeString(t) {
     const time = new Date(t);
     const now = new Date();
@@ -41,6 +41,7 @@ class InfoItem extends Component {
     }
     return str.join('');
   }
+
   render() {
     let classList = [];
     if (this.isNew) classList.push('new');

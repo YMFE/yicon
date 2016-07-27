@@ -15,7 +15,6 @@ import {
   uploadIcons,
   getUploadedIcons,
   submitIcons,
-  getIconInfo,
   deleteIcons,
   updateIconInfo,
 } from '../modules/icon';
@@ -32,7 +31,6 @@ user.use(getCurrentUser);
 
 user.post('/icons', uploader.array('icon', 20), uploadIcons);
 user.patch('/icons', submitIcons);
-user.get('/icons/:iconId', getIconInfo);
 user.get('/icons', pagination, getUploadedIcons);
 user.delete('/icons/:iconId', deleteIcons);
 user.patch('/icons/:iconId', updateIconInfo);

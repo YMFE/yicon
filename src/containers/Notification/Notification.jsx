@@ -29,44 +29,43 @@ export default class Notification extends Component {
     system: PropTypes.object,
     project: PropTypes.object,
   }
+
   constructor(props) {
     super(props);
     this.state = {
       tag: 'all',
     };
   }
+
   componentWillMount() {
     this.props.getInfo();
   }
+
   @autobind
   onChangePage(page) {
     this.getInfo(this.state.tag, page);
   }
 
   getDescribeForInfo(item) {
-    const regExp = /@[^@]+@/g;
-    let description;
-    switch (item.type) {
-      case 'UPLOAD':
-        description = item.operation.replace(regExp, v => {
-          let c = v.slice(1, -1);
-          c = JSON.parse(c);
-          return `<span class="key">${c.icon.name}</span>`;
-        });
-        break;
-      case 'PROJECT_MEMBER_ADD':
-      case 'PROJECT_MEMBER_DEL':
-        description = item.operation.replace(regExp, v => {
-          let c = v.slice(1, -1);
-          c = JSON.parse(c);
-          return `<span class="key">${c.user.name}</span>`;
-        });
-        break;
-      default:
+    // TODO: 这 tmd 对前端来说太不友好了
+    const regExp = /@([^@]+)@/g;
+    return item.operation.replace(regExp, (_, matched) => {
+      let text;
+      const data = JSON.parse(matched);
+      // 处理一下各种日志的情况
+      const keys = Object.keys(data);
+      // 我们一般只有一个 key
+      const firstKey = keys[0];
+      if (keys.indexOf('icon') || keys.indexOf('user')) {
+        text = data[firstKey].name;
+      } else {
+        text = data[firstKey];
+      }
 
-    }
-    return description;
+      return `<span class="key">${text}</span>`;
+    });
   }
+
   @autobind
   changeTag(e) {
     const nextTag = e.currentTarget.dataset.tag;
@@ -106,7 +105,7 @@ export default class Notification extends Component {
             >
               <a>系统消息
               {
-                this.props.all.unReadCount > 0 ?
+                this.props.system.unReadCount > 0 ?
                   <i className={"info-cont"}>{this.props.system.unReadCount}</i> :
                   null
               }
@@ -119,7 +118,7 @@ export default class Notification extends Component {
             >
               <a>项目消息
               {
-                this.props.all.unReadCount > 0 ?
+                this.props.project.unReadCount > 0 ?
                   <i className={"info-cont"}>{this.props.project.unReadCount}</i> :
                   null
               }
