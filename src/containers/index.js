@@ -3,6 +3,7 @@ import DevTools from './DevTools/DevTools';
 import Home from './Home/Home';
 import Demo from './Demo/Demo';
 import Upload from './Upload/Upload';
+import UploadEdit from './UploadEdit/UploadEdit';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
@@ -17,6 +18,7 @@ export {
   DevTools,
   Demo,
   Upload,
+  UploadEdit,
   Home,
   NoMatch,
   Project,

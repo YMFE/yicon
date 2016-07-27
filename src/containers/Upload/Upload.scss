@@ -1,0 +1,93 @@
+@charset "utf-8";
+.yicon-upload-icon {
+  margin: 0 auto;
+  padding-top: 20px;
+  width: 1080px;
+  .upload-area {
+    height: 435px;
+    border: 3px dashed #dcdcdc;
+    background: #fff;
+    .upload-instruct {
+      margin: 112px 460px 0 460px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      .upload-icon {
+        line-height: 160px;
+        color: #eaeaea;
+        font-size: 160px;
+      }
+      .click-upload {
+        margin-top: 100px;
+        font-size: 16px;
+      }
+    }
+  }
+  .upload-area.drag-on {
+    border: 3px dashed #008ed6;
+    .upload-icon {
+      color: #008ed6;
+    }
+    .click-upload {
+      display: none;
+    }
+  }
+  .upload-notes {
+    .note-bar {
+      margin: 27px 0;
+      line-height: 28px;
+      height: 28px;
+      .note-title {
+        float: left;
+        color: #344562;
+        font-size: 24px;
+      }
+      .download {
+        margin-left: 10px;
+        width: 91px;
+        height: 26px;
+        border: 1px solid #ccc;
+        border-radius: 1px;
+        font-size: 12px;
+        color: #212121;
+        background: #fff;
+      }
+      .to-detail {
+        float: right;
+        font-size: 14px;
+        .to-detail-link {
+          color: #008ed6;
+        }
+        .to-detail-arr {
+          font-size: 12px;
+        }
+      }
+      .to-detail-link:hover {
+        color: #00a1f3;
+      }
+    }
+    .note-list {
+      display: flex;
+      justify-content: space-around;
+      .note-item {
+        width: 236px;
+        .note-img-box {
+          height: 134px;
+          background: #89d6ff;
+        }
+        .note-item-title {
+          margin-top: 22px;
+          line-height: 16px;
+          color: #344562;
+          font-size: 16px;
+        }
+        .note-item-txt {
+          margin-top: 10px;
+          line-height: 12px;
+          font-size: 12px;
+          color: #616161;
+        }
+      }
+    }
+  }
+}
