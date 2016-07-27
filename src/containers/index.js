@@ -5,6 +5,7 @@ import Demo from './Demo/Demo';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
+import Search from './Search/Search';
 import Notification from './Notification/Notification';
 import Uploaded from './Uploaded/Uploaded';
 
@@ -20,6 +21,7 @@ export {
   NoMatch,
   Project,
   Repository,
+  Search,
   Notification,
   Uploaded,
 };

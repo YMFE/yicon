@@ -7,6 +7,7 @@ import {
   NoMatch,
   Project,
   Repository,
+  Search,
   Notification,
   Uploaded,
 } from './containers';
@@ -25,7 +26,7 @@ export default () => {
       {/* Routes */}
       <Route path="repositories/:id" component={Repository} />
       <Route path="projects/:id(/version/:version)" /> {/* 公开项目 */}
-      <Route path="search" /> {/* 搜索结果 */}
+      <Route path="search" component={Search} /> {/* 搜索结果 */}
       <Route path="demo" component={Demo} /> {/* demo */}
 
       {/* 登录用户路由 */}
