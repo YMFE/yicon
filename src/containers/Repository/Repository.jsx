@@ -65,10 +65,10 @@ export default class Repository extends Component {
                   fontSize: 16,
                   lineHeight: '38px',
                 }}
-              >{parseInt(this.props.iconSize, 10)}px</span>
+              >{this.props.iconSize}px</span>
               <div style={{ width: 216, padding: 11, float: 'right' }}>
                 <Slider
-                  min={20}
+                  min={16}
                   max={64}
                   step={1}
                   defaultValue={64}
