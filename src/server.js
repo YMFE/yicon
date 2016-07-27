@@ -13,7 +13,7 @@ import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
 import { router, down } from './controller';
-import isomFetch from 'isom-fetch';
+// import isomFetch from 'isom-fetch';
 
 const app = new Koa();
 const { PORT } = process.env;
@@ -42,7 +42,7 @@ const getRouteContext = (ctx) =>
       } else if (redirect) {
         reject({ status: 302, redirect });
       } else if (renderProps) {
-        isomFetch.use(ctx, router);
+        // const fetch = isomFetch.use(ctx, router);
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
