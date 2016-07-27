@@ -50,22 +50,25 @@ export function* clearUserInfo(next) {
   yield next;
 }
 
-export function* validateAuth() {
+export function* validateAuth(next) {
   const { type } = this.param;
   const { userId } = this.session;
   switch (type) {
     case 'owner': {
       const user = yield User.findOne({ where: { id: userId } });
       if (!user || user.actor < 1) throw new Error('no-auth');
+      yield next;
       return;
     }
     case 'admin': {
       const user = yield User.findOne({ where: { id: userId } });
       if (!user || user.actor < 2) throw new Error('no-auth');
+      yield next;
       return;
     }
     default:
-      if (!userId) this.redirect('/transition/no-login');
+      if (!userId) throw new Error('no-login');
+      yield next;
       return;
   }
 }
