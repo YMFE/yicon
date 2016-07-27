@@ -267,8 +267,8 @@ export function* updateProjectMember(next) {
       where: {
         userId: { $in: deleted.map(v => v.id) },
       },
-    },
-    { transaction: t }
+      transaction: t,
+    }
   ).then(
     () => UserProject.bulkCreate(data, { transaction: t })
   ));
