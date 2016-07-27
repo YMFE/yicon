@@ -17,6 +17,7 @@
       line-height: 72px;
       text-align: center;
       color:#555f6e;
+      cursor: pointer;
       .iconfont {
         font-size: 64px;
         vertical-align: top;
@@ -25,6 +26,10 @@
     .name{
       color:#616161;
       line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
     }
     .code{
       color:#616161;

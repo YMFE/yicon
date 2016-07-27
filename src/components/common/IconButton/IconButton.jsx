@@ -158,7 +158,7 @@ class IconButton extends Component {
           <div className={"icon"} onClick={this.selectIcon(icon.id)}>
             <Icon size={this.props.iconSize} fill={fill} d={icon.path} />
           </div>
-          <div className={"name"}>{icon.name}</div>
+          <div className={"name"} title={icon.name}>{icon.name}</div>
           <div className={"code"}>{`&#${icon.code.toString(16)};`}</div>
         </div>
         {tool}
