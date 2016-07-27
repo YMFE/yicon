@@ -18,6 +18,7 @@ if (process.browser) {
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
+    iconSize: state.repository.iconSize,
   }),
   { addIconToLocalStorage, deleteIconInLocalStorage }
 )
@@ -155,7 +156,7 @@ class IconButton extends Component {
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className={"info"}>
           <div className={"icon"} onClick={this.selectIcon(icon.id)}>
-            <Icon size={64} fill={fill} d={icon.path} />
+            <Icon size={this.props.iconSize} fill={fill} d={icon.path} />
           </div>
           <div className={"name"}>{icon.name}</div>
           <div className={"code"}>{`&#${icon.code.toString(16)};`}</div>
@@ -169,6 +170,7 @@ class IconButton extends Component {
 IconButton.propTypes = {
   icon: PropTypes.object,
   status: PropTypes.number,
+  iconSize: PropTypes.number,
   iconsInLocalStorage: PropTypes.array,
   deleteIconInLocalStorage: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
