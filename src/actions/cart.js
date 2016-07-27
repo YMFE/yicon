@@ -10,13 +10,16 @@ import {
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
-const localStorage = {};
-// ls.cartIconIds为Set类型
+let localStorage = {};
+if (process.browser) {
+  localStorage = window.localStorage;
+}
 // const saveType = {
 //   SAVE_TO_PROJECT: 'SAVE_TO_PROJECT',
 //   SAVE_TO_NEW_PROJECT: 'SAVE_TO_NEW_PROJECT',
 //   DEFAULT: 'DEFAULT',
 // };
+// ls.cartIconIds为Set类型
 const ls = {
   get cartIconIds() {
     localStorage.cartIconIds = localStorage.cartIconIds || JSON.stringify([]);

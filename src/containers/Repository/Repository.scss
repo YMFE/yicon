@@ -1,4 +1,4 @@
-.repository {
+.sub-title-chil {
   .count {
     font-size: 14px;
     color: #616161;
@@ -16,7 +16,7 @@
     color: #9e9e9e;
     padding-left: 8px;
   }
-  .content {
+  .tool-content {
     margin-top: 15px;
     overflow: hidden;
     width: 100%;
@@ -38,12 +38,12 @@
       }
     }
   }
-  .yicon-detail-main {
-    width: 1100px;
-    margin: 14px auto 0;
-    .yicon-detail-list{
-      width:1136px;
-      margin-left: -18px;
-    }
+}
+.yicon-detail-main {
+  width: 1100px;
+  margin: 14px auto 0;
+  .yicon-detail-list{
+    width:1136px;
+    margin-left: -18px;
   }
 }

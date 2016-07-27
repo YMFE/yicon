@@ -43,13 +43,11 @@ export default class Repository extends Component {
     return (
       <div className="repository">
         <SubTitle tit={name}>
-          <div>
-            <p>
-              <span className="count"><b className="num">{icons.length}</b>icons</span>
-              <span className="powerby">管理员:</span>
-              <span className="name">{admin}</span>
-            </p>
-            <div className="content">
+          <div className="sub-title-chil">
+            <span className="count"><b className="num">{icons.length}</b>icons</span>
+            <span className="powerby">管理员:</span>
+            <span className="name">{admin}</span>
+            <div className="tool-content">
               <div className="tools">
                 <a href="#" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
@@ -67,10 +65,10 @@ export default class Repository extends Component {
                   fontSize: 16,
                   lineHeight: '38px',
                 }}
-              >{parseInt(this.props.iconSize, 10)}px</span>
+              >{this.props.iconSize}px</span>
               <div style={{ width: 216, padding: 11, float: 'right' }}>
                 <Slider
-                  min={20}
+                  min={16}
                   max={64}
                   step={1}
                   defaultValue={64}
