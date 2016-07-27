@@ -124,34 +124,38 @@ class IconButton extends Component {
     };
 
 
-    let tool = '';
-    if (+status === +1) {
-      tool = (
-        <div className={"tool"}>
-          {toolList.copytip}
-          {toolList.cart}
-        </div>
-      );
-    } else if (+status === +2) {
-      tool = (
-        <div className={"tool"}>
-          {toolList.copytip}
-          {toolList.download}
-          {toolList.copy}
-          {toolList.cart}
-        </div>
-      );
-    } else if (+status === +3) {
-      tool = (
-        <div className={"tool"}>
-          {toolList.copytip}
-          {toolList.download}
-          {toolList.edit}
-          {toolList.copy}
-          {toolList.cart}
-        </div>
-      );
+    let tool = null;
+    switch (+status) {
+      case 1:
+        tool = (
+          <div className={"tool"}>
+            {toolList.copytip}
+            {toolList.cart}
+          </div>
+        );
+        break;
+      case 2:
+        tool = (
+          <div className={"tool"}>
+            {toolList.copytip}
+            {toolList.download}
+            {toolList.copy}
+            {toolList.cart}
+          </div>
+        );
+        break;
+      default:
+        tool = (
+          <div className={"tool"}>
+            {toolList.copytip}
+            {toolList.download}
+            {toolList.edit}
+            {toolList.copy}
+            {toolList.cart}
+          </div>
+        );
     }
+
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className={"info"}>

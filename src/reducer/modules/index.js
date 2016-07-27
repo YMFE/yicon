@@ -9,7 +9,11 @@ import notification from './notification';
 import uploaded from './uploaded';
 import user from './user';
 
-export default combineReducers({
+import {
+  LOGOUT_DESTORY,
+} from '../../constants/actionTypes';
+
+const reducers = combineReducers({
   routing: routerReducer,
   repository,
   cart,
@@ -24,3 +28,14 @@ export default combineReducers({
     uploaded,
   }),
 });
+
+export default (s, action) => {
+  const state = s;
+  switch (action.type) {
+    case LOGOUT_DESTORY:
+      delete state.user;
+      return state;
+    default:
+      return reducers(state, action);
+  }
+};

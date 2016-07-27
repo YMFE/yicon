@@ -61,12 +61,12 @@ const getRouteContext = (ctx) =>
         store.dispatch({
           type: 'FETCH_USER_INFO',
           payload: {
-            userId: sess ? sess.userId : null,
-            name: sess ? sess.domain : null,
-            real: sess ? decodeURIComponent(sess.name) : null,
-            login: sess ? !!sess.userId : false,
-            repoAdmin: sess ? sess.repoAdmin : [],
-            admin: sess ? sess.actor === 2 : false,
+            userId: sess.userId,
+            name: sess.domain,
+            real: sess.name ? decodeURIComponent(sess.name) : undefined,
+            login: !!sess.userId,
+            repoAdmin: sess.repoAdmin,
+            admin: sess.actor === 2,
           },
         });
 

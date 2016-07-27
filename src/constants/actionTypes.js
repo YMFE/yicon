@@ -35,3 +35,4 @@ export const DELETE_ICON = 'DELETE_ICON';
 
 // user
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
+export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';
