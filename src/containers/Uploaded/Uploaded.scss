@@ -32,9 +32,12 @@
       margin:-15px -80px 0 0;
       .icon-container{
         margin-bottom: 8px;
+        padding: 0;
+        height: auto;
       }
       &-icon{
         margin: 0 80px 40px 0;
+        width: 58px;
         .name{
           white-space: nowrap;
           overflow: hidden;

@@ -20,16 +20,18 @@ const DesIcon = (props) => {
           fill={props.iconFill}
           size={props.iconSize}
         />
+        {props.name
+          ? <a className="name" title={props.name} href="#">{props.name}</a>
+          : null
+        }
+        {props.showCode ?
+          <p
+            className="code"
+          >{props.code}
+          </p> :
+          null
+        }
       </div>
-      {props.name
-        ? <a className="name" title={props.name} href="#">{props.name}</a>
-        : null}
-      {props.showCode ?
-        <p
-          className="code"
-        >{props.code}
-        </p> :
-        null}
       {props.children}
     </div>
   );

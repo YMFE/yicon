@@ -1,5 +1,8 @@
 import {
   FETCH_USERS_PROJECT_INFO,
+  FETCH_USERS_PROJECT_LIST,
+  FETCH_PUBLIC_PROJECT_INFO,
+  FETCH_PUBLIC_PROJECT_LIST,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_NEW_PROJECT,
   SAVE_TO_PROJECT,
@@ -10,7 +13,10 @@ import {
 } from '../../actions/cart';
 
 const initialState = {
-  usersProject: [],
+  usersProjectList: [],
+  publicProjectList: [],
+  currentUserProjectInfo: {},
+  currentPublicProjectInfo: {},
   projectForSave: {
     id: 0,
     name: '',
@@ -19,14 +25,45 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case FETCH_USERS_PROJECT_LIST: {
+      if (action.payload.res) {
+        return {
+          ...state,
+          usersProjectList: action.payload.data.organization,
+        };
+      }
+      return state;
+    }
     case FETCH_USERS_PROJECT_INFO: {
-      return {
-        ...state,
-        usersProject: action.organization,
-      };
+      if (action.payload.res) {
+        return {
+          ...state,
+          currentUserProjectInfo: action.payload.data,
+        };
+      }
+      return state;
+    }
+    case FETCH_PUBLIC_PROJECT_LIST: {
+      console.log(action.payload);
+      if (action.payload.res) {
+        return {
+          ...state,
+          publicProjectList: action.payload.data,
+        };
+      }
+      return state;
+    }
+    case FETCH_PUBLIC_PROJECT_INFO: {
+      if (action.payload.res) {
+        return {
+          ...state,
+          currentPublicProjectInfo: action.payload.data,
+        };
+      }
+      return state;
     }
     case SAVE_TO_NEW_PROJECT: {
-      // if (action.ret) {
+      // if (action.res) {
       //
       // }
       return {
@@ -43,7 +80,7 @@ export default (state = initialState, action) => {
 
     case SAVE_TO_PROJECT: {
       return (dispatch) => {
-        if (action.ret) {
+        if (action.res) {
           // TODO
           // 处理存储成功的交互
           dispatch(dumpIconLocalStorage);
@@ -56,6 +93,6 @@ export default (state = initialState, action) => {
     }
 
     default:
-      return {};
+      return state;
   }
 };

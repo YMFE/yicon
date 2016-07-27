@@ -1,6 +1,9 @@
 import isonFetch from 'isom-fetch';
 import {
+  FETCH_USERS_PROJECT_LIST,
   FETCH_USERS_PROJECT_INFO,
+  FETCH_PUBLIC_PROJECT_LIST,
+  FETCH_PUBLIC_PROJECT_INFO,
   SAVE_TO_NEW_PROJECT,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_PROJECT,
@@ -15,10 +18,31 @@ function getIconList(icons) {
   }));
 }
 
-export function getUsersProjectInfo() {
+export function getUsersProjectList() {
+  return {
+    type: FETCH_USERS_PROJECT_LIST,
+    payload: fetch.get('/user/projects'),
+  };
+}
+
+export function getUserProjectInfo(id, version) {
+  const v = version ? `/version/${version}` : '';
   return {
     type: FETCH_USERS_PROJECT_INFO,
-    payload: fetch.get('/user/projects'),
+    payload: fetch.get(`/user/projects/${id}/${v}`),
+  };
+}
+export function getPublicProjectList() {
+  return {
+    type: FETCH_PUBLIC_PROJECT_LIST,
+    payload: fetch.get('/projects'),
+  };
+}
+export function getPublicProjectInfo(id, version) {
+  const v = version ? `/version/${version}` : '';
+  return {
+    type: FETCH_PUBLIC_PROJECT_INFO,
+    payload: fetch.get(`/projects/${id}${v}`),
   };
 }
 

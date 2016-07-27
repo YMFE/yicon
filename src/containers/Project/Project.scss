@@ -1,0 +1,64 @@
+.Project{
+  .global-subtitle{
+    .container{
+      width: 1080px;
+    }
+    .options{
+      display: flex;
+      .slider{
+        width: 220px;
+      }
+      .title{
+        flex: 1;
+      }
+    }
+  }
+  .global-content-Main{
+    flex-direction: column;
+    padding-bottom: 50px;
+  }
+  &-info{
+    padding: 20px 40px;
+    >header{
+      h3{
+        font-size: 30px;
+        color: #344562;
+        text-align: left;
+        line-height: 40px;
+      }
+    }
+    .tool{
+      padding: 15px 0 24px;
+      overflow: hidden;
+      border-bottom: 1px solid #d8d9d9;
+    }
+  }
+  .detail-icon{
+    width: 128px;
+    margin: 16px 7px 0;
+    display: inline-block;
+    text-align: center;
+    .icon-container{
+      height: auto;
+      margin: 0 15px;
+      border: 1px solid #fff;
+      .Icon{
+        margin: 4px auto;
+      }
+    }
+    .name,.code{
+      line-height: 16px;
+      font-size: 12px;
+    }
+    .tool-item{
+      margin: 0 1px;
+    }
+    &.active,&:hover{
+      .icon-container{
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 12px;
+      }
+    }
+  }
+}

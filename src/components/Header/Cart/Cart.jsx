@@ -13,7 +13,7 @@ import {
   changeCartSaveType,
 } from '../../../actions/cart';
 import {
-  getUsersProjectInfo,
+  getUsersProjectList,
   saveToProject,
   saveToNewProject,
   choseProjectForSave,
@@ -35,7 +35,7 @@ import {
     toggleCartListDisplay,
     dumpIconLocalStorage,
     choseProjectForSave,
-    getUsersProjectInfo,
+    getUsersProjectList,
     changeCartSaveType,
     saveToProject,
     saveToNewProject,
@@ -55,7 +55,7 @@ class Cart extends Component {
     this.props.getIconsInCart({
       icons: iconsInLocalStorage,
     });
-    this.props.getUsersProjectInfo();
+    this.props.getUsersProjectList();
   }
 
   componentDidMount() {
@@ -177,7 +177,7 @@ Cart.propTypes = {
   saveToProject: PropTypes.func,
   saveToNewProject: PropTypes.func,
   choseProjectForSave: PropTypes.func,
-  getUsersProjectInfo: PropTypes.func,
+  getUsersProjectList: PropTypes.func,
   projectForSave: PropTypes.oneOf([
     PropTypes.shape({
       id: PropTypes.number,

@@ -61,3 +61,17 @@ $staticUrl: '../../../static/';
 .app-container{
   background-color: #f1f3f6;
 }
+
+.btns-blue{
+	color: #fff;
+	background-color: #008ed6;
+    padding:0 16px;
+    .iconfont{
+    	margin-right: 12px;
+    	font-size: 23px;
+    }
+}
+.btns-blue:hover{
+    color:#fff;
+		background-color: #009be9;
+}

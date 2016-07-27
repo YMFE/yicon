@@ -4,10 +4,11 @@ $staticUrl: '../../../static/';
 @mixin global-icon( $icon-width: 72px, $icon-color: #555f6e, $icon-size: 64px, $text-color: #616161 ) {
   // overflow-y: hidden;
   display: inline-block;
-
   .icon-container {
-    width: 100%;
+    padding: 12px;
+    margin:0 auto;
     height: $icon-width;
+    overflow: hidden;
     text-align: center;
   }
 
@@ -32,7 +33,10 @@ $staticUrl: '../../../static/';
 
   .tag {
     }
-
+  .Icon{
+    display: block;
+    margin: 0 auto;
+  }
 }
 
 .global-icon {
@@ -45,13 +49,14 @@ $staticUrl: '../../../static/';
   $state-grey: #e3e1e1;
   $text-color: #616161;
   @include global-icon( $icon-size: 59px, $icon-width: 56px );
-  width: 58px;
+  // width: 58px;
   margin-right: 75px;
   position: relative;
 
   .name{
-    width: 100%;
-
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .state {
@@ -155,5 +160,10 @@ $staticUrl: '../../../static/';
     .tool{
       visibility: visible;
     }
+  }
+
+  .info{
+    width: 72px;
+    margin: 0 auto;
   }
 }

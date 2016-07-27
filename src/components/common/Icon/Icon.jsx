@@ -1,3 +1,4 @@
+import './Icon.scss';
 import React, { Component, PropTypes } from 'react';
 
 const convert = (transform) =>
@@ -20,12 +21,11 @@ class Icon extends Component {
     const style = {
       width: size,
       height: size,
-      display: 'inline-block',
-      overflow: 'hidden',
     };
-
+    const classList = ['Icon'];
+    classList.push(this.props.extraClass);
     return (
-      <div style={style}>
+      <div style={style} className={classList.join(' ')}>
         <svg
           width="1024"
           height="1024"
@@ -46,6 +46,7 @@ Icon.propTypes = {
   size: PropTypes.number,
   d: PropTypes.string.isRequired,
   fill: PropTypes.string,
+  extraClass: PropTypes.string,
 };
 
 Icon.defaultProps = { size: 32, fill: '#000' };
