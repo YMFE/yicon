@@ -15,9 +15,8 @@ export default class Upload extends Component {
       uploadAreaClass: this.props.defaultClass,
     };
   }
-  handlerDragenter = (event) => {
+  handlerDragenter = () => {
     this.setState({ uploadAreaClass: 'upload-area drag-on' });
-    console.log(event);
     // const uploadZone = document.querySelector('.upload-area');
     // uploadZone.className = 'upload-area drag-on';
   }
@@ -41,12 +40,9 @@ export default class Upload extends Component {
     if (fileList.length === 0) {
       return false;
     }
-    console.log(fileList);
     return false;
   }
-  handlerFileChange = (event) => {
-    alert(event);
-    console.log(event.files);
+  handlerFileChange = () => {
     // _sendFiles(event );
   }
   judgeInside = (event, ele) => {
@@ -77,7 +73,6 @@ export default class Upload extends Component {
   }
   render() {
     let { uploadAreaClass } = this.state;
-    console.log(uploadAreaClass);
     return (
       <div className={'yicon-upload-icon'}>
         <div
