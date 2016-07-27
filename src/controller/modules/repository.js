@@ -1,4 +1,4 @@
-import { Repo, Icon, User } from '../../model';
+import { Repo, Icon, User, RepoVersion } from '../../model';
 import { iconStatus } from '../../constants/utils';
 
 // 为了提高查询效率，我们设置默认版本为 0.0.0
@@ -9,25 +9,37 @@ function getRepoByVersion({
   pageMixin,
 }) {
   const mixIn = pageMixin || { offset: 0, limit };
+  let result;
 
-  return Repo.findOne({
+  return RepoVersion.findAll({
+    attributes: ['iconId'],
+    where: { repositoryId: repoId },
+    order: 'iconId',
+    ...mixIn,
+  })
+  .then(data => data.map(d => d.iconId))
+  .then(iconIds => Repo.findOne({
     where: { id: repoId },
     include: [{
       model: Icon,
       attributes: ['id', 'name', 'code', 'path'],
-      where: { status: iconStatus.RESOLVED },
+      where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
       on: { version },
     }, User],
-  })
+  }))
   .then(repo => {
     if (!repo) throw new Error(`id 为 ${repoId} 的大库不存在`);
     return repo.get({ plain: true });
   })
   .then(res => {
-    const repo = res;
-    repo.iconCount = repo.icons.length;
-    repo.icons = repo.icons.splice(mixIn.offset, mixIn.limit);
-    return repo;
+    result = res;
+    return RepoVersion.count({
+      where: { repositoryId: repoId },
+    });
+  })
+  .then(count => {
+    result.iconCount = count;
+    return result;
   })
   .catch(e => { throw new Error(e); });
 }
