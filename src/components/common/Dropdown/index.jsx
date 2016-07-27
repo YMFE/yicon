@@ -7,9 +7,7 @@ export default class Dropdown extends Component {
     extraClass: '',
     menu: {},
     curtext: '',
-    onVisibleChange: (visible) => {
-      console.log(visible);
-    },
+    onVisibleChange: () => {},
   }
   static propTypes = {
     extraClass: PropTypes.string,

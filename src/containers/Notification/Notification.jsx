@@ -14,9 +14,9 @@ const scope = {
 
 @connect(
   state => ({
-    all: state.notification.allInfo,
-    system: state.notification.systemInfo,
-    project: state.notification.projectInfo,
+    all: state.user.notification.allInfo,
+    system: state.user.notification.systemInfo,
+    project: state.user.notification.projectInfo,
   }),
   {
     getInfo,

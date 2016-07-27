@@ -32,3 +32,7 @@ export const FETCH_PROJECT_INFO = 'FETCH_PROJECT_INFO';
 // uploaded
 export const FETCH_MY_LOADED = 'FETCH_MY_LOADED';
 export const DELETE_ICON = 'DELETE_ICON';
+
+// user
+export const FETCH_USER_INFO = 'FETCH_USER_INFO';
+export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';

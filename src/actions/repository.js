@@ -9,7 +9,6 @@ import {
 
 const fetch = isonFetch.create({
   baseURL: '/api',
-  thunk: true,
 });
 
 export function fetchHomeData() {

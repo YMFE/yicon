@@ -107,7 +107,7 @@ export function* getOneProject(next) {
 
   const result = project.dataValues;
 
-  result.version = version;
+  result.version = versionTools.n2v(version);
   result.icons = yield project.getIcons({
     through: {
       model: ProjectVersion,
@@ -247,9 +247,13 @@ export function* updateProjectInfo(next) {
 export function* updateProjectMember(next) {
   const { projectId, members } = this.param;
   this.state.log = [];
-  if (isNaN(projectId) || members.length < 1) throw new Error('必须传入项目编号和具体成员信息');
+  if (isNaN(projectId) || members.length < 1) {
+    throw new Error('必须传入项目编号和具体成员信息');
+  }
   if (!this.state.user.isProjectOwner) throw new Error('普通成员没有权限');
-  if (!has(members, { id: this.state.user.ownerId })) throw new Error('参数错误');
+  if (!has(members, { id: this.state.user.ownerId })) {
+    throw new Error('项目管理员无法被删除');
+  }
   members.forEach(v => {
     if (isNaN(v.id)) throw new Error('参数缺少id');
   });
