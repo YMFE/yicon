@@ -55,6 +55,7 @@ export function* pagination(next) {
 export function* getCurrentUser(next) {
   this.state.user = {
     userId: this.session.userId,
+    // userId: 113,
   };
   const { projectId } = this.param;
   const user = yield User.findOne({
@@ -70,7 +71,7 @@ export function* getCurrentUser(next) {
     });
     if (!project) throw new Error(`id 为 ${projectId} 的项目不存在`);
     const hasUser = yield project.hasUser(user);
-    if (!hasUser) {
+    if (!hasUser && user.actor < 2) {
       throw new Error('当前用户不是该项目的项目成员');
     }
   }
@@ -82,12 +83,14 @@ export function* isProjectOwner(next) {
   const { projectId } = this.param;
   this.state.user.isProjectOwner = false;
   if (!isNaN(projectId)) {
-    const ownerId = yield Project.findOne({
+    const project = yield Project.findOne({
       attributes: ['owner'],
       where: { id: projectId },
     });
-    this.state.user.isProjectOwner = this.state.user.userId === ownerId.owner;
-    this.state.user.ownerId = ownerId.owner;
+    this.state.user.isProjectOwner =
+      // 强制让超管什么都能干
+      this.state.user.userId === project.owner || this.session.actor >= 2;
+    this.state.user.ownerId = project.owner;
   }
   yield next;
 }
@@ -110,6 +113,8 @@ export function* isRepoOwner(next) {
       this.state.user.repoList = result.map(r => r.id);
     }
   }
+  // 强制让超管什么都能干
+  repoOwner = repoOwner || this.session.actor >= 2;
   if (!repoOwner) throw new Error('非大库管理员，没有权限');
   yield next;
 }

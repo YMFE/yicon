@@ -47,7 +47,6 @@ export default () => {
       {/* Routes */}
       <Route path="repositories/:id" component={Repository} />
       <Route path="projects/:id(/version/:version)" /> {/* 公开项目 */}
-      <Route path="search" /> {/* 搜索结果 */}
       <Route path="transition/:type" component={Transition} /> {/* 跳转页面 */}
       <Route path="search" component={Search} /> {/* 搜索结果 */}
       <Route path="demo" component={Demo} /> {/* demo */}
