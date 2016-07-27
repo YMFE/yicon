@@ -3,11 +3,18 @@ import reduxPromise from 'redux-promise';
 import reduxThunk from 'redux-thunk';
 import { reduxIsomFetch } from 'isom-fetch';
 import { persistState } from 'redux-devtools';
+import { browserHistory } from 'react-router';
+import { routerMiddleware } from 'react-router-redux';
 import DevTools from '../containers/DevTools/DevTools';
 import reducer from './modules';
 
 export default (initialState) => {
-  const middleware = [reduxPromise, reduxThunk, reduxIsomFetch];
+  const middleware = [
+    routerMiddleware(browserHistory),
+    reduxPromise,
+    reduxThunk,
+    reduxIsomFetch,
+  ];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {

@@ -1,4 +1,5 @@
 import isonFetch from 'isom-fetch';
+import { push } from 'react-router-redux';
 import {
   FETCH_SEARCH_RESULT,
 } from '../constants/actionTypes';
@@ -15,5 +16,11 @@ export function fetchSearchResult(key) {
 export function fetchSearchData(query) {
   return (dispatch) => {
     if (query) dispatch(fetchSearchResult(query));
+  };
+}
+
+export function redirectTo(url) {
+  return (dispatch) => {
+    dispatch(push(url));
   };
 }

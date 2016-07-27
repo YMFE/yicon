@@ -37,15 +37,23 @@ export function* getByCondition(next) {
     },
     include: [{ model: Repo }],
   });
-  const data = [];
+  let data = [];
   icons.rows.forEach(v => {
     const id = v.repositories[0].id;
     if (!data[id]) data[id] = Object.assign({}, { id, name: v.repositories[0].name, icons: [] });
     data[id].icons.push(v);
   });
   this.state.respond = this.state.respond || {};
-  this.state.respond.data = data.filter(v => v);
+  data = data.filter(v => v);
+  let i = 0;
+  const len = data.length;
+  for (; i < len; i++) {
+    data[i].icons = data[i].icons.map(value =>
+      Object.assign({}, { id: value.id, name: value.name, code: value.code, path: value.path }));
+  }
+  this.state.respond.data = data;
   this.state.respond.totalCount = icons.count;
+  this.state.respond.queryKey = encodeURI(q);
   yield next;
 }
 

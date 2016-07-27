@@ -1,6 +1,13 @@
 import './Search.scss';
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
+import { push } from 'react-router-redux';
+import { fetchSearchData } from '../../../actions/search';
+
+@connect(
+  state => (state)
+)
 
 class Search extends Component {
   constructor(props) {
@@ -14,7 +21,8 @@ class Search extends Component {
   searchIcon(e) {
     const value = e.target.value;
     if (e.keyCode === 13) {
-      this.props.onSubmit(value);
+      this.props.dispatch(fetchSearchData(value));
+      this.props.dispatch(push(`/search?q=${value}`));
     }
   }
 
@@ -42,7 +50,8 @@ class Search extends Component {
 Search.propTypes = {
   searchValue: PropTypes.string,
   onChange: PropTypes.func,
-  onSubmit: PropTypes.func,
+  dispatch: PropTypes.func,
+  redirectTo: PropTypes.func,
 };
 
 export default Search;
