@@ -18,10 +18,10 @@ export function fetchHomeData() {
   };
 }
 
-function fetchRepository(id) {
+function fetchRepository(id, currentPage) {
   return {
     type: FETCH_REPOSITORY_DATA,
-    payload: fetch.get(`/repositories/${id}`),
+    payload: fetch.get(`/repositories/${id}?currentPage=${currentPage}&pageSize=64`),
   };
 }
 
@@ -31,15 +31,11 @@ export function clearRepositoryData() {
   };
 }
 
-export function fetchRepositoryData(id) {
+export function fetchRepositoryData(id, currentPage) {
   return (dispatch, getState) => {
-    const { currRepository } = getState().repository;
-
-    if (+id !== +currRepository.id) {
-      dispatch(clearRepositoryData());
-    }
-
-    dispatch(fetchRepository(id));
+    const repoId = getState().repository.currRepository.id;
+    if (+repoId !== +id) dispatch(clearRepositoryData());
+    dispatch(fetchRepository(id, currentPage));
   };
 }
 
