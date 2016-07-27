@@ -15,6 +15,7 @@ class ConfirmReact extends Component {
       onOk: () => {},
       onCancel: () => {},
       zIndex: 1000,
+      empty: false,
     };
     that = this;
   }
@@ -24,14 +25,15 @@ class ConfirmReact extends Component {
   }
 
   render() {
-    const { visible, dTitle, dContent, onOk, onCancel, zIndex } = this.state;
+    const { visible, dTitle, dContent, onOk, onCancel, zIndex, empty } = this.state;
     return (
       <Modal
         visible={visible}
         title={dTitle}
         onOk={onOk}
         onCancel={onCancel}
-        zindex={zIndex}
+        zIndex={zIndex}
+        empty={empty}
       >
         {dContent}
       </Modal>
@@ -59,7 +61,8 @@ export default function Confirm({
   content,
   onOk,
   onCancel,
-  zindex = 1000,
+  zIndex = 1000,
+  empty = false,
 }) {
   that.setState({
     visible: true,
@@ -67,6 +70,7 @@ export default function Confirm({
     dContent: content,
     onOk: transFn(onOk),
     onCancel: transFn(onCancel),
-    zIndex: zindex,
+    zIndex,
+    empty,
   });
 }

@@ -11,6 +11,7 @@ import {
   Repository,
   Transition,
   Notification,
+  Uploaded,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -58,7 +59,7 @@ export default () => {
         <Route path="user/projects" component={Project} />
         <Route path="user/projects/:id(/version/:version)" />
         <Route path="user/projects/:id/logs" component={Project} />
-
+        <Route path="user/icons" component={Uploaded} />
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
           <Route path="replacement/icon/:id" /> {/* 替换页面 */}

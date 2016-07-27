@@ -1,12 +1,12 @@
 import './Notification.scss';
 import React, { Component, PropTypes } from 'react';
-import InfoItem from './InfoItem.jsx';
 import { connect } from 'react-redux';
-import { SubTitle, Content, Menu, Main, Timeline } from '../../components/';
+import { SubTitle, Content, Menu, Main, Timeline, InfoItem } from '../../components/';
 import { autobind } from 'core-decorators';
 import {
   getInfo,
 } from '../../actions/notification';
+import Pager from '../../components/common/Pager/';
 const scope = {
   repo: '系统',
   project: '项目',
@@ -14,9 +14,9 @@ const scope = {
 
 @connect(
   state => ({
-    allInfo: state.notification.allInfo,
-    systemInfo: state.notification.systemInfo,
-    projectInfo: state.notification.projectInfo,
+    all: state.notification.allInfo,
+    system: state.notification.systemInfo,
+    project: state.notification.projectInfo,
   }),
   {
     getInfo,
@@ -25,9 +25,9 @@ const scope = {
 export default class Notification extends Component {
   static propTypes = {
     getInfo: PropTypes.func,
-    allInfo: PropTypes.object,
-    systemInfo: PropTypes.object,
-    projectInfo: PropTypes.object,
+    all: PropTypes.object,
+    system: PropTypes.object,
+    project: PropTypes.object,
   }
   constructor(props) {
     super(props);
@@ -38,10 +38,11 @@ export default class Notification extends Component {
   componentWillMount() {
     this.props.getInfo();
   }
-  getDataBytag() {
-    const attrName = `${this.state.tag}Info`;
-    return (this.props[attrName] && this.props[attrName].list) || [];
+  @autobind
+  onChangePage(page) {
+    this.getInfo(this.state.tag, page);
   }
+
   getDescribeForInfo(item) {
     const regExp = /@[^@]+@/g;
     let description;
@@ -66,25 +67,6 @@ export default class Notification extends Component {
     }
     return description;
   }
-  createInfoTimeString(t) {
-    const time = new Date(t);
-    const now = new Date();
-    const diff = now.getTime() - time.getTime();
-    const str = [];
-    if (diff < 86400000) {
-      str.push('昨天');
-      if (diff < 43200000) {
-        str.push('上午');
-      } else {
-        str.push('下午');
-      }
-      str.push(` ${time.getHours()}:${time.getMinutes()}`);
-    } else {
-      str.push(`${time.getYears()}.${time.getMonth() + 1}.${time.getDate()}`);
-      str.push(` ${time.getHours()}:${time.getMinutes()})`);
-    }
-    return str.join('');
-  }
   @autobind
   changeTag(e) {
     const nextTag = e.currentTarget.dataset.tag;
@@ -92,8 +74,12 @@ export default class Notification extends Component {
       tag: nextTag,
     });
   }
+
   render() {
-    const InfoList = this.getDataBytag();
+    const attrName = this.state.tag;
+    const InfoList = (this.props[attrName] && this.props[attrName].list) || [];
+    const currentPage = this.props[attrName].currentPage;
+    const totalPage = this.props[attrName].totalPage;
     let mainClassList = InfoList.length === 0 ? 'empty-container' : '';
     return (
       <div className="notification">
@@ -107,8 +93,8 @@ export default class Notification extends Component {
             >
               <a>全部消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.allInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.all.unReadCount}</i> :
                   null
               }
               </a>
@@ -120,8 +106,8 @@ export default class Notification extends Component {
             >
               <a>系统消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.systemInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.system.unReadCount}</i> :
                   null
               }
               </a>
@@ -133,8 +119,8 @@ export default class Notification extends Component {
             >
               <a>项目消息
               {
-                this.props.allInfo.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.projectInfo.unReadCount}</i> :
+                this.props.all.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.project.unReadCount}</i> :
                   null
               }
               </a>
@@ -148,7 +134,7 @@ export default class Notification extends Component {
                     <InfoItem
                       key={item.id}
                       tag={scope[item.scope]}
-                      timeStr={this.createInfoTimeString(item.createdAt)}
+                      timeStr={item.createdAt}
                       titleHtml={this.getDescribeForInfo(item)}
                       isNew={item.userLog.unread}
                     />
@@ -156,6 +142,17 @@ export default class Notification extends Component {
                   }
                   </Timeline> :
                   null
+              }
+              {
+                InfoList.length > 0 ?
+                  <div className="pager-container">
+                    <Pager
+                      defaultCurrent={currentPage}
+                      totalPage={totalPage}
+                      onClick={this.onChangePage}
+                    />
+                  </div> :
+                null
               }
           </Main>
         </Content>

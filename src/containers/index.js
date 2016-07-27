@@ -7,6 +7,7 @@ import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
 import Notification from './Notification/Notification';
 import Transition from './Transition/Transition';
+import Uploaded from './Uploaded/Uploaded';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -22,4 +23,5 @@ export {
   Repository,
   Transition,
   Notification,
+  Uploaded,
 };

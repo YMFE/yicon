@@ -1,3 +1,4 @@
+@import "../DesIcon/DesIcon";
 @mixin timeline(
   $description-width: 166px,
   $dot-color: #008ed6,
@@ -59,6 +60,12 @@
       &::before{
         background-color: $dot-color;
       }
+    }
+  }
+  dd{
+    .detail{
+      margin: 30px 0 20px;
+      transition: height .5s ease-in;
     }
   }
 }

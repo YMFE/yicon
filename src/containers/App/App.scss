@@ -20,15 +20,24 @@ mark{background-color:transparent}
 a,ins,s,u,del{text-decoration:none}
 sup,sub{vertical-align:baseline}
 /*系统图标*/
+// @font-face {
+//   font-family: "iconfont";
+//   src: asset-url('/fonts/iconfont.eot');
+//   src: asset-url('/fonts/iconfont.eot?#iefix') format('eot'),
+//     asset-url('/fonts/iconfont.woff') format('woff'),
+//     asset-url('/fonts/iconfont.ttf') format('truetype');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+$staticUrl: '../../../static/';
 @font-face {
-  font-family: "iconfont";
-  src: asset-url('/fonts/iconfont.eot');
-  src: asset-url('/fonts/iconfont.eot?#iefix') format('eot'),
-    asset-url('/fonts/iconfont.woff') format('woff'),
-    asset-url('/fonts/iconfont.ttf') format('truetype');
-  font-weight: normal;
+  font-family: iconfont;
   font-style: normal;
+  font-weight: normal;
+  src: url(#{$staticUrl}font/QIconLab.eot);
+  src: url(#{$staticUrl}font/QIconLab.eot?#iefix&#iefix) format("embedded-opentype"), url(#{$staticUrl}font/QIconLab.woff) format("woff"), url(#{$staticUrl}font/QIconLab.ttf) format("truetype"), url(#{$staticUrl}font/QIconLab.svg#iconfont) format("svg");
 }
+
 
 :global {
   [class*="iconfont"], [class*="iconfont"]:before {
