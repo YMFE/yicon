@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+// import { connect } from 'react-redux';
 import './Upload.scss';
 const defaultProps = {
   defaultClass: 'upload-area',
@@ -22,9 +23,13 @@ export default class Upload extends Component {
   }
   resetStyle = (event) => {
     const uploadZone = document.querySelector('.upload-area');
+    console.log(event.target);
+    console.log('onDragLeave resetStyle');
+    console.log(this.judgeInside(event, uploadZone));
     if (!this.judgeInside(event, uploadZone)) {
       this.toggleClass(event.target, 'drag-on');
     }
+
     // if(!util.judgeInside(event, uploadZone)) {
     //    util.toggleClass(event.target, 'dragging');
     //   	_uploadShow.isEntering = false;
@@ -34,15 +39,18 @@ export default class Upload extends Component {
     event.preventDefault();
   }
   handlerDrop = (event) => {
-    let fileList = [];
-    event.preventDefault();
-    fileList = event.dataTransfer.files;
-    if (fileList.length === 0) {
-      return false;
-    }
-    return false;
+    console.log(event);
+    console.log('handlerDrop');
+    // let fileList = [];
+    // event.preventDefault();
+    // fileList = event.dataTransfer.files;
+    // if (fileList.length === 0) {
+    //   return false;
+    // }
+    // return false;
   }
   handlerFileChange = () => {
+    console.log('handlerFileChange');
     // _sendFiles(event );
   }
   judgeInside = (event, ele) => {
@@ -58,17 +66,17 @@ export default class Upload extends Component {
     event.offsetY < parseInt(style.height, 10);
   }
   toggleClass = (ele, className) => {
-    let eleClass = ele.className;
+    const eleClass = ele.className;
     const index = eleClass.indexOf(className);
-    let arr = [];
+    // let arr = [];
+    // console.log(`toggleClass===$(index)`);
     if (index === -1) {
-      // classname  存入state中
-      eleClass = '`{$(eleClass) $(className)}`';
-      // top: '152px', background: '#ff8c8c'
+      this.setState({ uploadAreaClass: `upload-area ${className}` });
     } else {
-      arr = ele.className.split('');
-      arr.splice(index, className.length + 2);
-      eleClass = arr.join('');
+      // arr = ele.className.split('');
+      // arr.splice(index, className.length + 2);
+      // eleClass = arr.join('');
+      this.setState({ uploadAreaClass: 'upload-area' });
     }
   }
   render() {
