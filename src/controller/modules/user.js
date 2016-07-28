@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { User, Repo } from '../../model';
 
+// suggest 获取用户名称
 export function* getUserByName() {
-  const { username } = this.param;
-  this.state.respond = yield User.findOne({
-    where: { name: username },
+  const { q } = this.param;
+  this.state.respond = yield User.findAll({
+    where: { name: { $like: `${q}%` } },
+    limit: 6,
   });
 }
 
