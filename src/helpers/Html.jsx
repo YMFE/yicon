@@ -6,6 +6,7 @@ import { getURLStateName } from 'isom-fetch';
 const Html = (props) => {
   const { assets, component, store, urls, authType } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
+  const serverTime = +new Date();
 
   return (
     <html>
@@ -41,13 +42,11 @@ const Html = (props) => {
         <script
           charSet="utf-8"
           dangerouslySetInnerHTML={{
-            __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`,
-          }}
-        />
-        <script
-          charSet="utf-8"
-          dangerouslySetInnerHTML={{
-            __html: `window.${getURLStateName()}=${serialize(urls)};`,
+            __html: `
+            window.__INITIAL_STATE__=${serialize(store.getState())};
+            window.SERVER_TIME=${serverTime};
+            window.${getURLStateName()}=${serialize(urls)};
+            `,
           }}
         />
         <script src={assets.javascript.main} charSet="utf-8" />

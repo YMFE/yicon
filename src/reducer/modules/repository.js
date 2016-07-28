@@ -10,6 +10,8 @@ const initialState = {
   allReposotoryList: [],
   homeRepository: [],
   currRepository: {
+    currentPage: 1,
+    totalPage: 0,
     icons: [],
     user: { name: '' },
     id: 0,
@@ -29,7 +31,11 @@ export default (state = initialState, action) => {
     case FETCH_REPOSITORY_DATA: {
       return {
         ...state,
-        currRepository: action.payload.data,
+        currRepository: {
+          ...action.payload.data,
+          currentPage: action.payload.page.currentPage,
+          totalPage: action.payload.page.totalCount,
+        },
       };
     }
     case CLEAR_REPOSITORY_DATA: {

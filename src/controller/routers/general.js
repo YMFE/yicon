@@ -3,11 +3,12 @@ import { getOne, list } from '../modules/repository';
 import { getById, getByCondition, downloadIcons, getIconInfo } from '../modules/icon';
 import { getOneProject, getAllPublicProjects } from '../modules/project';
 import { getUserInfo, clearUserInfo, validateAuth } from '../modules/user';
+import { pagination } from './middlewares';
 
 const general = new Router();
 
 general.get('/repositories', list);
-general.get('/repositories/:repoId', getOne);
+general.get('/repositories/:repoId', pagination, getOne);
 general.post('/icons', getById);
 general.get('/icons', getByCondition);
 general.get('/projects', getAllPublicProjects);

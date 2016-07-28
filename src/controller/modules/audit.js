@@ -57,7 +57,17 @@ function getBaseClassName(icons, transaction) {
             status: i.passed ? iconStatus.RESOLVED : iconStatus.REJECTED,
           },
           { where: { id: i.id }, transaction }
-        );
+        )
+        // 如果审核未通过，需要移除 repoVersion 库中的关联
+        .then(icon => {
+          if (!i.passed) {
+            return RepoVersion.destroy({
+              where: { repositoryId: i.repoId, iconId: i.id },
+              transaction,
+            });
+          }
+          return icon;
+        });
       });
     });
 }

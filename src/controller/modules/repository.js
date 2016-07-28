@@ -1,28 +1,45 @@
-import { Repo, Icon, User } from '../../model';
+import { Repo, Icon, User, RepoVersion } from '../../model';
 import { iconStatus } from '../../constants/utils';
 
 // 为了提高查询效率，我们设置默认版本为 0.0.0
-function getRepoByVersion({ repoId, version = '0.0.0', limit }) {
-  return Repo.findOne({
+function getRepoByVersion({
+  repoId,
+  version = '0.0.0',
+  limit,
+  pageMixin,
+}) {
+  const mixIn = pageMixin || { offset: 0, limit };
+  let result;
+
+  return RepoVersion.findAll({
+    attributes: ['iconId'],
+    where: { repositoryId: repoId },
+    order: 'iconId',
+    ...mixIn,
+  })
+  .then(data => data.map(d => d.iconId))
+  .then(iconIds => Repo.findOne({
     where: { id: repoId },
     include: [{
       model: Icon,
       attributes: ['id', 'name', 'code', 'path'],
-      where: { status: iconStatus.RESOLVED },
+      where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
       on: { version },
     }, User],
-  })
+  }))
   .then(repo => {
     if (!repo) throw new Error(`id 为 ${repoId} 的大库不存在`);
     return repo.get({ plain: true });
   })
   .then(res => {
-    const repo = res;
-    repo.iconCount = repo.icons.length;
-    if (limit && limit < repo.icons.length) {
-      repo.icons.length = limit;
-    }
-    return repo;
+    result = res;
+    return RepoVersion.count({
+      where: { repositoryId: repoId },
+    });
+  })
+  .then(count => {
+    result.iconCount = count;
+    return result;
   })
   .catch(e => { throw new Error(e); });
 }
@@ -44,9 +61,12 @@ export function* list(next) {
 export function* getOne(next) {
   const { repoId, version } = this.param;
 
-  this.state.respond = yield getRepoByVersion({
-    repoId, version,
+  const repo = yield getRepoByVersion({
+    repoId, version, pageMixin: this.state.pageMixin,
   });
+
+  this.state.respond = repo;
+  this.state.page.totalCount = repo.iconCount;
 
   yield next;
 }
