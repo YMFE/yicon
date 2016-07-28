@@ -2,6 +2,7 @@ import './IconButton.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
+import { getIconDetail } from '../../../actions/icon';
 import Icon from '../Icon/Icon.jsx';
 import DownloadDial from '../../DownloadDial/DownloadDial.jsx';
 import downloadDialConf from '../Dialog/Confirm.jsx';
@@ -18,9 +19,15 @@ if (process.browser) {
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
+    repoId: state.repository.currRepository.id,
     iconSize: state.repository.iconSize,
+    userInfo: state.user.info,
+    iconDetail: state.icon,
   }),
-  { addIconToLocalStorage, deleteIconInLocalStorage }
+  { addIconToLocalStorage,
+    deleteIconInLocalStorage,
+    getIconDetail,
+  }
 )
 class IconButton extends Component {
   constructor(props) {
@@ -57,11 +64,13 @@ class IconButton extends Component {
   @autobind
   download(icon) {
     return () => {
-      downloadDialConf({
-        empty: true,
-        content: <DownloadDial icon={icon} />,
-        onOk: () => {},
-        onCancel: () => {},
+      this.props.getIconDetail(icon.id).then(() => {
+        downloadDialConf({
+          empty: true,
+          content: <DownloadDial icon={this.props.iconDetail} />,
+          onOk: () => {},
+          onCancel: () => {},
+        });
       });
     };
   }
@@ -84,11 +93,16 @@ class IconButton extends Component {
   }
 
   render() {
-    const { icon } = this.props;
+    const { icon, userInfo, repoId } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
-    // 由登录转态决定，暂时写死
-    const status = 2;
+    let status = 1;
+    if (userInfo.login) {
+      status = 2;
+      if (userInfo.admin && userInfo.repoAdmin.indexOf(repoId) !== -1) {
+        status = 3;
+      }
+    }
 
     const toolList = {
       copytip:
@@ -130,6 +144,8 @@ class IconButton extends Component {
         tool = (
           <div className={"tool"}>
             {toolList.copytip}
+            {toolList.download}
+            {toolList.copy}
             {toolList.cart}
           </div>
         );
@@ -173,11 +189,15 @@ class IconButton extends Component {
 
 IconButton.propTypes = {
   icon: PropTypes.object,
+  iconDetail: PropTypes.object,
+  userInfo: PropTypes.object,
   status: PropTypes.number,
   iconSize: PropTypes.number,
+  repoId: PropTypes.number,
   iconsInLocalStorage: PropTypes.array,
   deleteIconInLocalStorage: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
+  getIconDetail: PropTypes.func,
 };
 
 export default IconButton;

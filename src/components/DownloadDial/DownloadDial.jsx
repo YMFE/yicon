@@ -12,7 +12,7 @@ class DownloadDial extends Component {
         <div className="tan-detail">
           <div className="tan-detail-header">
             <div className="icon-name">
-              <span className="icon-name-txt">放大镜</span>
+              <span className="icon-name-txt">{icon.name}</span>
               <button className="to-edit-name">修改名称</button>
             </div>
             <div className="edit-name">
