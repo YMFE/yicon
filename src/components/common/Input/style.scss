@@ -1,0 +1,40 @@
+@charset 'utf-8';
+.info-error{
+  position: relative;
+  border: 1px solid #ffcccc;
+}
+.error-info{
+  position: absolute;
+  left: -1px;
+  top:36px;
+  width: 314px;
+  border:1px solid #ffcccc;
+  background-color: #fff2f2;
+  color:#ff5555;
+  padding: 0 12px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.set-input-wrap {
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  width: 338px;
+  height: 36px;
+  border: 1px solid #dfdfdf;
+  .set-input {
+    margin-left: 10px;
+    width: 314px;
+    outline: none;
+    line-height: 36px;
+    font-size: 14px;
+    border: 0;
+  }
+  .set-style-icon {
+    color: #b3b8c4;
+  }
+  .set-tag-icon {
+    color: #6f6f6f;
+  }
+}
