@@ -2,34 +2,26 @@ import React, { Component, PropTypes } from 'react';
 // import { connect } from 'react-redux';
 import './Upload.scss';
 const defaultProps = {
-  defaultClass: 'upload-area',
-  dragOnClass: 'drag-on',
+  uploadAreaClass: 'upload-area',
 };
 const propTypes = {
-  defaultClass: PropTypes.string,
-  dragOnClass: PropTypes.string,
+  uploadAreaClass: PropTypes.string,
 };
 export default class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploadAreaClass: this.props.defaultClass,
+      uploadAreaClass: this.props.uploadAreaClass,
     };
   }
   handlerDragenter = () => {
     this.setState({ uploadAreaClass: 'upload-area drag-on' });
-    // const uploadZone = document.querySelector('.upload-area');
-    // uploadZone.className = 'upload-area drag-on';
   }
   resetStyle = (event) => {
-    const uploadZone = document.querySelector('.upload-area');
-    console.log(event.target);
-    console.log('onDragLeave resetStyle');
-    console.log(this.judgeInside(event, uploadZone));
+    const uploadZone = this.refs.uploadArea;
     if (!this.judgeInside(event, uploadZone)) {
       this.toggleClass(event.target, 'drag-on');
     }
-
     // if(!util.judgeInside(event, uploadZone)) {
     //    util.toggleClass(event.target, 'dragging');
     //   	_uploadShow.isEntering = false;
@@ -41,13 +33,14 @@ export default class Upload extends Component {
   handlerDrop = (event) => {
     console.log(event);
     console.log('handlerDrop');
-    // let fileList = [];
-    // event.preventDefault();
-    // fileList = event.dataTransfer.files;
-    // if (fileList.length === 0) {
-    //   return false;
-    // }
-    // return false;
+    let fileList = [];
+    event.preventDefault();
+    fileList = event.dataTransfer.files;
+    if (fileList.length === 0) {
+      return false;
+    }
+    window.location.href = '/UploadEdit';
+    return false;
   }
   handlerFileChange = () => {
     console.log('handlerFileChange');
@@ -56,7 +49,8 @@ export default class Upload extends Component {
   judgeInside = (event, ele) => {
     const style = window.getComputedStyle(ele);
     const current = event.target;
-    const uploadZone = document.querySelector('.yicon-upload-icon .upload-area');
+  //  const uploadZone = document.querySelector('.yicon-upload-icon .upload-area');
+    const uploadZone = this.refs.uploadArea;
     if (uploadZone.contains(current) && current !== uploadZone) { // fix 内部的移动时文字改变
       return true;
     }
@@ -68,14 +62,9 @@ export default class Upload extends Component {
   toggleClass = (ele, className) => {
     const eleClass = ele.className;
     const index = eleClass.indexOf(className);
-    // let arr = [];
-    // console.log(`toggleClass===$(index)`);
     if (index === -1) {
       this.setState({ uploadAreaClass: `upload-area ${className}` });
     } else {
-      // arr = ele.className.split('');
-      // arr.splice(index, className.length + 2);
-      // eleClass = arr.join('');
       this.setState({ uploadAreaClass: 'upload-area' });
     }
   }
@@ -84,6 +73,7 @@ export default class Upload extends Component {
     return (
       <div className={'yicon-upload-icon'}>
         <div
+          ref={'uploadArea'}
           className={uploadAreaClass}
           onDragEnter={evt => this.handlerDragenter(evt)}
           onDragLeave={evt => this.resetStyle(evt)}
