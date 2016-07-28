@@ -44,7 +44,6 @@ const getRouteContext = (ctx) =>
         ctx.redirect(redirect.pathname + redirect.search);
         resolve('NOT_MATCH');
       } else if (renderProps) {
-        isomFetch.use(ctx, router);
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
@@ -96,6 +95,7 @@ app.use(function* s() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }
+  isomFetch.use(this, router);
   const result = yield getRouteContext(this);
   if (result !== 'NOT_MATCH') {
     this.body = result;

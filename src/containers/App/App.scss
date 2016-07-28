@@ -67,7 +67,6 @@ sup,sub{vertical-align:baseline}
 .app-container{
   background-color: #f1f3f6;
 }
-
 .info-error{
   border:1px solid #ffcccc;
 }
@@ -78,4 +77,8 @@ sup,sub{vertical-align:baseline}
   padding: 0 12px;
   height: 30px;
   line-height: 30px;
+}
+.pager-container {
+  border-top: 1px solid #d8dbdd;
+  padding: 25px 40px;
 }

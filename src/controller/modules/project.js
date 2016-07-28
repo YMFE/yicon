@@ -226,7 +226,7 @@ export function* updateProjectInfo(next) {
     const existProject = yield Project.findOne({ where: { name }, raw: true });
     if (existProject) {
       const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
-      throw new Error(`项目名已被使用，请更改，如有需要请联系${ownerName.name}`);
+      throw new Error(`项目名已被使用，请更改，如有需要请联系 ${ownerName.name}`);
     }
   }
   const key = Object.keys(data);
