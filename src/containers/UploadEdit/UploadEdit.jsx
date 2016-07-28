@@ -17,14 +17,16 @@ const Option = Select.Option;
 //     label: '填色图标',
 //   },
 // };
-
+const defaultProps = {
+  icon: {},
+};
 const propTypes = {
   icon: PropTypes.object,
 };
 export default class UploadEdit extends Component {
   render() {
     // const { icon } = this.props;
-    const icon = '&#xf50f;';
+    // const icon = '&#xf50f;';
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-upload-container'}>
@@ -56,7 +58,7 @@ export default class UploadEdit extends Component {
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i></button>
-            <IconBgGrid size={350} icon={icon} />
+            <IconBgGrid size={350} />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
@@ -136,5 +138,5 @@ export default class UploadEdit extends Component {
     );
   }
 }
-
+UploadEdit.defaultProps = defaultProps;
 UploadEdit.propTypes = propTypes;
