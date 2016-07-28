@@ -13,12 +13,14 @@ $mainColor:#3bbaff;
 
 
   .quick-menu-sub {
+      border-top: 2px solid $mainColor;
       background-color: #000c15;
       width: 140px;
       font-size: 14px;
       position: absolute;
       left: -5px;
       top: 64px;
+      margin-top: -2px;
       padding: 10px 0;
       border-radius: 0 0 3px 3px;
       overflow: hidden;
@@ -39,7 +41,6 @@ $mainColor:#3bbaff;
       }
   }
   &:hover {
-    border-bottom: 3px solid $mainColor;
 
     > a {
       color: $mainColor;

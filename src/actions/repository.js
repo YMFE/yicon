@@ -1,6 +1,7 @@
 import isonFetch from 'isom-fetch';
 import {
   FETCH_HOME_DATA,
+  FETCH_TINY_REPOSITORY,
   FETCH_REPOSITORY_DATA,
   CLEAR_REPOSITORY_DATA,
   CHANGE_ICON_SIZE,
@@ -22,6 +23,13 @@ function fetchRepository(id, currentPage) {
   return {
     type: FETCH_REPOSITORY_DATA,
     payload: fetch.get(`/repositories/${id}?currentPage=${currentPage}&pageSize=64`),
+  };
+}
+
+export function fetchTinyRepository() {
+  return {
+    type: FETCH_TINY_REPOSITORY,
+    payload: fetch.get('/tiny/repositories'),
   };
 }
 

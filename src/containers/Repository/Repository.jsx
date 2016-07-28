@@ -28,6 +28,13 @@ export default class Repository extends Component {
     this.props.resetIconSize();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.id !== this.props.params.id) {
+      this.props.fetchRepositoryData(nextProps.params.id, 1);
+      this.props.resetIconSize();
+    }
+  }
+
   @autobind
   fetchRepositoryByPage(page) {
     const { params: { id } } = this.props;
