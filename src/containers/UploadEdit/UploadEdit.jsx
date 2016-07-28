@@ -25,7 +25,7 @@ const propTypes = {
 };
 export default class UploadEdit extends Component {
   render() {
-    // const { icon } = this.props;
+    const { icon } = this.props;
     // const icon = '&#xf50f;';
     return (
       <div className={'yicon-main yicon-upload'}>
@@ -58,7 +58,7 @@ export default class UploadEdit extends Component {
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i></button>
-            <IconBgGrid size={350} />
+            <IconBgGrid size={350} icon={icon} />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
@@ -102,7 +102,7 @@ export default class UploadEdit extends Component {
                 <div className={'set-input-wrap'}><input
                   className={'set-input'}
                   type={'text'} id={'set-icon-tag'} placeholder={'回车提交，可多次提交'}
-                /><i className={'iconfont set-tag-icon'}>&#xf50f;</i></div>
+                /><i className={'iconfont set-tag-icon'}>&#xf0ae;</i></div>
                 <ul className={'icon-tag-list'}>
                   <li className={'icon-tag'}>
                     <span>会议室_填色</span><i className={'iconfont delete'}>&#xf077;</i>
