@@ -5,6 +5,7 @@ import Select from '../../components/common/Select/index';
 const Option = Select.Option;
 // 分页
 import Pager from '../../components/common/Pager/index';
+// Dialog
 import Dialog from '../../components/common/Dialog/Index';
 // dropdown  依赖menu
 import Dropdown from '../../components/common/Dropdown/index';
@@ -12,7 +13,8 @@ import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 
 // Slider
 import Slider from '../../components/common/Slider/Slider.jsx';
-
+// Input
+import Input from '../../components/common/Input/Index';
 /* eslint-disable no-console */
 
 function onSelect({ key }) {
@@ -120,6 +122,12 @@ export default class Demo extends Component {
             </li>
           </ul>
         </div>
+        <Input
+          regExp="^\d*$" getVal={val => console.log(val)}
+          extraClass="" error={false} errMsg="你输入的咋不是纯数字呢？"
+        >
+          <i className="iconfont set-tag-icon">&#xf50f;</i>
+        </Input>
       </div>
     );
   }
