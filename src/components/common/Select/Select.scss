@@ -115,7 +115,27 @@ li.rc-select-dropdown-menu-item-divider {
   top: 0;
   color: #aaa;
 }
+.select-narrow{
 
+  border: 1px solid #dfdfdf;
+  height: 36px;
+  line-height: 36px;
+  color: #616161;
+  padding: 0 10px;
+  border-radius: 3px;
+  font-size: 14px;
+}
 li.select-narrow-menu{
   line-height: 36px;
+}
+
+.select-extend{
+  border:1px solid #dfdfdf;
+  border-radius: 5px;
+  background-color: red;
+  line-height: 36px;
+
+}
+.select-extend-dropdown-menu{
+  background: #fff;
 }
