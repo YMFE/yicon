@@ -72,23 +72,23 @@ export default class UploadEdit extends Component {
                 </div>
 
               </div>
+              {/*
+                <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
+                className={'require'}
+              >*</span></label>
+              <div className={'set-input-wrap'}><input
+                className={'set-input'}
+                type={'text'}
+                id={'set-icon-style'} placeholder={'请输选择'}
+              /><i className={'iconfont set-style-icon'}>&#xf032;</i>
+              </div>
+                */}
               <div className={'setting-opt'}>
-                {/*
-                  <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
-                  className={'require'}
-                >*</span></label>
-                <div className={'set-input-wrap'}><input
-                  className={'set-input'}
-                  type={'text'}
-                  id={'set-icon-style'} placeholder={'请输选择'}
-                /><i className={'iconfont set-style-icon'}>&#xf032;</i>
-                </div>
-                  */}
                 <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
                   className={'require'}
                 >*</span></label>
                 <div className={'set-input-wrap setting-opt-select'}>
-                  <Select placeholder="请输选择" className={'set-input-wrap info_error'}>
+                  <Select placeholder="请输选择" className={'info_error'}>
                     <Option value="线性图标">线性图标</Option>
                     <Option value="填色图标">填色图标</Option>
                   </Select>

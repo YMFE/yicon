@@ -146,7 +146,15 @@
         }
       }
       .setting-opt-select{
-        border:none;
+        // border:none;
+        .rc-select{
+          border:none;
+          width: 338px;
+          height: 36px;
+          line-height: 36px;
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
       .info-error{
         border: 1px solid #ffcccc;
@@ -156,6 +164,12 @@
          left: -1px;
          top:36px;
          width: 314px;
+         border:1px solid #ffcccc;
+         background-color: #fff2f2;
+         color:#ff5555;
+         padding: 0 12px;
+         height: 30px;
+         line-height: 30px;
       }
       .icon-tag-list {
         padding: 0 10px;
