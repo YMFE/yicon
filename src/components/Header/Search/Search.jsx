@@ -8,7 +8,6 @@ import { fetchSearchData } from '../../../actions/search';
 @connect(
   state => (state)
 )
-
 class Search extends Component {
   constructor(props) {
     super(props);

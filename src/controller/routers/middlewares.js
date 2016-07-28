@@ -21,7 +21,7 @@ export function* responder(next) {
     };
   } catch (e) {
     this.body = {
-      ret: false,
+      res: false,
       status: e.status || 500,
       message: e.stack || '服务器错误',
     };

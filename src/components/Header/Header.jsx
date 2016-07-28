@@ -75,10 +75,7 @@ class Header extends Component {
                 isShowCart={this.props.isShowCartList}
               />
               <li className="lists">
-                <Link
-                  to="upload"
-                  className="upload"
-                >
+                <Link to="/upload" className="upload">
                   <i className="iconfont">&#xf50a;</i>
                 </Link>
               </li>

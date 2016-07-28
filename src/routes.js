@@ -25,7 +25,8 @@ const validate = (type, transition) => (nextState, replace, next) => {
       .post(`/validate/${type}`)
       .then(data => {
         if (!data.res) {
-          window.location.href = `/transition/${transition}`;
+          replace(`/transition/${transition}`);
+          // window.location.href = `/transition/${transition}`;
         }
         next();
       })
@@ -35,11 +36,11 @@ const validate = (type, transition) => (nextState, replace, next) => {
   }
 };
 
-export default () => {
+export default (store) => {
   // 处理权限校验
-  const requireLogin = validate('login', 'no-login');
-  const requireOwner = validate('owner', 'no-auth');
-  const requireAdmin = validate('admin', 'no-auth');
+  const requireLogin = validate('login', 'no-login', store);
+  const requireOwner = validate('owner', 'no-auth', store);
+  const requireAdmin = validate('admin', 'no-auth', store);
 
   return (
     <Route path="/" component={App}>
