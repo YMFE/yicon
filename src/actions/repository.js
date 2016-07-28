@@ -6,6 +6,7 @@ import {
   CLEAR_REPOSITORY_DATA,
   CHANGE_ICON_SIZE,
   RESET_ICON_SIZE,
+  FETCH_REPOSITORY_LOG,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({
@@ -56,4 +57,11 @@ export function changeIconSize(size) {
 
 export function resetIconSize() {
   return { type: RESET_ICON_SIZE };
+}
+
+export function fetchRepositoryLogs(id, page) {
+  return {
+    type: FETCH_REPOSITORY_LOG,
+    payload: fetch.get(`/owner/log/repositories/${id}?currentPage=${page}`),
+  };
 }

@@ -6,7 +6,8 @@ import Q from 'q';
 
 import { logRecorder } from './log';
 import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion, User } from '../../model';
-import { isPlainObject, ensureCachesExist } from '../../helpers/utils';
+import { isPlainObject } from '../../helpers/utils';
+import { ensureCachesExist } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
