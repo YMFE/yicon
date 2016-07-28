@@ -4,6 +4,7 @@ export const FETCH_REPOSITORY_DATA = 'FETCH_REPOSITORY_DATA';
 export const CLEAR_REPOSITORY_DATA = 'CLEAR_REPOSITORY_DATA';
 export const CHANGE_ICON_SIZE = 'CHANGE_ICON_SIZE';
 export const RESET_ICON_SIZE = 'RESET_ICON_SIZE';
+export const FETCH_TINY_REPOSITORY = 'FETCH_TINY_REPOSITORY';
 
 // cart
 export const INIT_CART = 'INIT_CART';
@@ -36,3 +37,6 @@ export const DELETE_ICON = 'DELETE_ICON';
 // user
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
 export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';
+
+// icon
+export const FETCH_ICON_DETAIL = 'FETCH_ICON_DETAIL';

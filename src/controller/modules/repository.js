@@ -58,6 +58,13 @@ export function* list(next) {
   yield next;
 }
 
+export function* listWithoutIcons(next) {
+  this.state.respond = yield Repo.findAll({
+    attributes: ['id', 'name'],
+  });
+  yield next;
+}
+
 export function* getOne(next) {
   const { repoId, version } = this.param;
 

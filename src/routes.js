@@ -1,7 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import isomFetch from 'isom-fetch';
-import process from 'process';
+// import process from 'process';
 import {
   App,
   Home,
@@ -20,26 +20,23 @@ import {
 const fetch = isomFetch.create({ baseURL: '/api' });
 
 const validate = (type, transition) => (nextState, replace, next) => {
-  if (process.browser) {
-    fetch
-      .post(`/validate/${type}`)
-      .then(data => {
-        if (!data.res) {
-          window.location.href = `/transition/${transition}`;
-        }
-        next();
-      })
-      .catch(() => next());
-  } else {
-    next();
-  }
+  fetch
+    .post(`/validate/${type}`)
+    .then(data => {
+      if (!data.res) {
+        replace(`/transition/${transition}`);
+        // window.location.href = `/transition/${transition}`;
+      }
+      next();
+    })
+    .catch(() => next());
 };
 
-export default () => {
+export default (store) => {
   // 处理权限校验
-  const requireLogin = validate('login', 'no-login');
-  const requireOwner = validate('owner', 'no-auth');
-  const requireAdmin = validate('admin', 'no-auth');
+  const requireLogin = validate('login', 'no-login', store);
+  const requireOwner = validate('owner', 'no-auth', store);
+  const requireAdmin = validate('admin', 'no-auth', store);
 
   return (
     <Route path="/" component={App}>

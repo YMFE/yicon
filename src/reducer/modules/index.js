@@ -8,6 +8,7 @@ import setting from './setting';
 import notification from './notification';
 import uploaded from './uploaded';
 import user from './user';
+import icon from './icon';
 
 import {
   LOGOUT_DESTORY,
@@ -20,6 +21,7 @@ const reducers = combineReducers({
   project,
   search,
   setting,
+  icon,
 
   // 登录用户才使用的信息放到 user 下面
   user: combineReducers({

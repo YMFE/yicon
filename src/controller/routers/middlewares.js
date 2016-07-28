@@ -21,7 +21,7 @@ export function* responder(next) {
     };
   } catch (e) {
     this.body = {
-      ret: false,
+      res: false,
       status: e.status || 500,
       message: e.stack || '服务器错误',
     };
@@ -55,7 +55,7 @@ export function* pagination(next) {
 export function* getCurrentUser(next) {
   this.state.user = {
     userId: this.session.userId,
-    // userId: 9,
+    // userId: 113,
   };
   const { projectId } = this.param;
   const user = yield User.findOne({

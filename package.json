@@ -86,7 +86,7 @@
     "history": "^2.1.1",
     "iconfont-builder": "^2.1.1",
     "invariant": "^2.2.1",
-    "isom-fetch": "^1.1.0",
+    "isom-fetch": "^1.1.1",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",
     "koa-compress": "^1.0.9",

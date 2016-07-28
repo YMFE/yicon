@@ -4,6 +4,7 @@ import {
   CLEAR_REPOSITORY_DATA,
   CHANGE_ICON_SIZE,
   RESET_ICON_SIZE,
+  FETCH_TINY_REPOSITORY,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -25,7 +26,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         homeRepository: action.payload.data,
-        allReposotoryList: action.payload.data.map((item) => ({ id: item.id, name: item.name })),
+      };
+    }
+    case FETCH_TINY_REPOSITORY: {
+      return {
+        ...state,
+        allReposotoryList: action.payload.data,
       };
     }
     case FETCH_REPOSITORY_DATA: {

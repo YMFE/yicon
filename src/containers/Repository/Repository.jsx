@@ -13,6 +13,8 @@ import { autobind } from 'core-decorators';
 import './Repository.scss';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
+const pageSize = 64;
+
 @connect(
   state => ({
     currRepository: state.repository.currRepository,
@@ -20,12 +22,17 @@ import IconButton from '../../components/common/IconButton/IconButton.jsx';
   }),
   { fetchRepositoryData, changeIconSize, resetIconSize }
 )
-
-
 export default class Repository extends Component {
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.id !== this.props.params.id) {
+      this.props.fetchRepositoryData(nextProps.params.id, 1);
+      this.props.resetIconSize();
+    }
   }
 
   @autobind
@@ -96,11 +103,13 @@ export default class Repository extends Component {
               ))
             }
           </div>
-          <Pager
-            defaultCurrent={currentPage}
-            onClick={this.fetchRepositoryByPage}
-            totalPage={Math.ceil(totalPage / 64)}
-          />
+          {totalPage > pageSize &&
+            <Pager
+              defaultCurrent={currentPage}
+              onClick={this.fetchRepositoryByPage}
+              totalPage={Math.ceil(totalPage / pageSize)}
+            />
+          }
         </div>
       </div>
     );
