@@ -20,6 +20,7 @@ import {
   updateIconInfo,
 } from '../modules/icon';
 
+import { getUserByName } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
 import { getAllNotices, getOneNotice } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
@@ -52,5 +53,7 @@ user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:nId', getOneNotice);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
+
+user.get('/list', getUserByName);
 
 export default user;
