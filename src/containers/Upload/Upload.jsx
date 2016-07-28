@@ -3,24 +3,29 @@ import React, { Component, PropTypes } from 'react';
 import './Upload.scss';
 const defaultProps = {
   uploadAreaClass: 'upload-area',
+  isEntering: false,
 };
 const propTypes = {
   uploadAreaClass: PropTypes.string,
+  isEntering: PropTypes.bool,
 };
+const MAX_SIZE = 500; // 文件大小限制
 export default class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
       uploadAreaClass: this.props.uploadAreaClass,
+      isEntering: this.props.isEntering,
     };
   }
   handlerDragenter = () => {
-    this.setState({ uploadAreaClass: 'upload-area drag-on' });
+    this.setState({ uploadAreaClass: 'upload-area drag-on', isEntering: true });
   }
   resetStyle = (event) => {
     const uploadZone = this.refs.uploadArea;
     if (!this.judgeInside(event, uploadZone)) {
       this.toggleClass(event.target, 'drag-on');
+      this.setState({ isEntering: false });
     }
     // if(!util.judgeInside(event, uploadZone)) {
     //    util.toggleClass(event.target, 'dragging');
@@ -31,20 +36,21 @@ export default class Upload extends Component {
     event.preventDefault();
   }
   handlerDrop = (event) => {
-    console.log(event);
     console.log('handlerDrop');
     let fileList = [];
-    event.preventDefault();
+    event.preventDefault();// 取消浏览器的默认拖拽效果
     fileList = event.dataTransfer.files;
     if (fileList.length === 0) {
       return false;
     }
-    window.location.href = '/UploadEdit';
+    this._sendFiles(fileList);
     return false;
+    // window.location.href = '/UploadEdit';
+    // return false;
   }
   handlerFileChange = () => {
     console.log('handlerFileChange');
-    // _sendFiles(event );
+    this._sendFiles(this.refs.inputUpload);
   }
   judgeInside = (event, ele) => {
     const style = window.getComputedStyle(ele);
@@ -68,6 +74,31 @@ export default class Upload extends Component {
       this.setState({ uploadAreaClass: 'upload-area' });
     }
   }
+  _sendFiles = (files) => {
+    let fileSize = 0;
+    const fd = new FormData();
+    const repoId = 1111; // globalContext.respository.id
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].type.indexOf('svg') === -1) {
+        alert('请选择svg文件');
+        return false;
+      }
+      fileSize = files[i].size;
+    }
+    if (Math.floor(fileSize / 1024) > MAX_SIZE) {
+      alert('上传文件大小不能超过500k');
+      return false;
+    }
+    for (let i = 0; i < files.length; i++) {
+      fd.append(`iconfont${i}`, files[i]);
+    }
+    fd.append('repoId', repoId);
+    // 这里开始调上传接口
+    location.assign('/UploadEdit/');
+    return false;
+    // xhr = new XMLHttpRequest();
+    // xhr.open("post", "");
+  }
   render() {
     let { uploadAreaClass } = this.state;
     return (
@@ -84,6 +115,7 @@ export default class Upload extends Component {
             <i className={'iconfont upload-icon'}>&#xf50a;</i>
             <p>将SVG文件拖拽至此</p>
             <a className={'upload-input-area'}><input
+              ref={'inputUpload'}
               type={'file'}
               className={'click-upload'} multiple={'multiple'}
               onChange={(evt) => this.handlerFileChange(evt)}
