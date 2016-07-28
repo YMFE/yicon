@@ -68,6 +68,21 @@ export default class Demo extends Component {
             <Option value="disabled" disabled className={'select-narrow-menu'}>255</Option>
           </Select>
         </div>
+
+        <div style={{ width: 600, height: 50 }}>
+          select 组件测试 simple
+          <Select
+            placeholder="色位" style={{ width: 70 }}
+            prefixCls={'select-extend'}
+          >
+            <Option value="64" className={'select-narrow-menu'}>64</Option>
+            <Option value="32" className={'select-narrow-menu'}>32</Option>
+            <Option value="56" className={'select-narrow-menu'}>56</Option>
+            <Option value="disabled" disabled className={'select-narrow-menu'}>255</Option>
+          </Select>
+        </div>
+
+
         <div style={{ backgroundColor: '#fff' }}>
           <div style={{ width: 200, padding: 10 }}>
             <Slider />
