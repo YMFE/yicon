@@ -8,7 +8,7 @@ const SubTitle = (props) => {
       <div className="container">
         <div className="options">
           <div className="title">
-            <h2>{props.tit}</h2>
+            <h2>{props.tit}图标库</h2>
           </div>
           {props.children}
         </div>
