@@ -1,7 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import isomFetch from 'isom-fetch';
-import process from 'process';
+// import process from 'process';
 import {
   App,
   Home,
@@ -20,20 +20,16 @@ import {
 const fetch = isomFetch.create({ baseURL: '/api' });
 
 const validate = (type, transition) => (nextState, replace, next) => {
-  if (process.browser) {
-    fetch
-      .post(`/validate/${type}`)
-      .then(data => {
-        if (!data.res) {
-          replace(`/transition/${transition}`);
-          // window.location.href = `/transition/${transition}`;
-        }
-        next();
-      })
-      .catch(() => next());
-  } else {
-    next();
-  }
+  fetch
+    .post(`/validate/${type}`)
+    .then(data => {
+      if (!data.res) {
+        replace(`/transition/${transition}`);
+        // window.location.href = `/transition/${transition}`;
+      }
+      next();
+    })
+    .catch(() => next());
 };
 
 export default (store) => {
