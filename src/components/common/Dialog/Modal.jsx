@@ -34,10 +34,10 @@ export default class Modal extends Component {
     this.setState({ show: nextProps.visible });
   }
 
-  componentDidUpdate() {
-    this.props.getShow(this.state.show);
+  close() {
+    this.setState({ show: false });
+    this.props.getShow(false);
   }
-
   render() {
     const { title, zIndex, onOk, onCancel, empty } = this.props;
     document.body.style = this.state.show ? 'overflow: hidden' : '';
@@ -53,7 +53,7 @@ export default class Modal extends Component {
             <div className="myicon-dialog-title">
               <h4>{title}</h4>
               <span className="ibtns">
-                <i className="iconfont" onClick={() => this.setState({ show: false })}>&#xf077;</i>
+                <i className="iconfont" onClick={() => this.close()}>&#xf077;</i>
               </span>
             </div>
             <div className="myicon-dialog-content">
