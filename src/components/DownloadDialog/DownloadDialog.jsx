@@ -49,6 +49,15 @@ class DownloadDial extends Component {
     };
   }
   @autobind
+  save(e) {
+    const name = e.target.value;
+    this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
+      this.setState({
+        isEdit: false,
+      });
+    });
+  }
+  @autobind
   cancel() {
     this.setState({
       isEdit: false,
@@ -63,7 +72,6 @@ class DownloadDial extends Component {
     const { iconDetail, userInfo } = this.props;
     const tagArr = this.tagsToArr(iconDetail.tags);
     const repoId = iconDetail.repo.id;
-
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
@@ -81,12 +89,12 @@ class DownloadDial extends Component {
             <div className="icon-name">
               <span className="icon-name-txt">{iconDetail.name}</span>
               <button
-                className={`to-edit-name ${+status === +3 ? '' : 'hide'}`}
+                className={`to-edit-name ${+status === +2 ? '' : 'hide'}`}
                 onClick={this.showNameEdit}
               >修改名称</button>
             </div>
             <div className="edit-name">
-              <input type="text" className="input-name" />
+              <input type="text" className="input-name" defaultValue={iconDetail.name} />
               <button className="save" onClick={this.save}>保存</button>
               <button className="cancel" onClick={this.cancel}>取消</button>
             </div>
