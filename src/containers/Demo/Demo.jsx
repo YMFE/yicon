@@ -15,6 +15,8 @@ import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 import Slider from '../../components/common/Slider/Slider.jsx';
 // Input
 import Input from '../../components/common/Input/Index';
+// slick
+import Slick from '../../components/common/Slick/index';
 /* eslint-disable no-console */
 
 function onSelect({ key }) {
@@ -128,6 +130,9 @@ export default class Demo extends Component {
         >
           <i className="iconfont set-tag-icon">&#xf50f;</i>
         </Input>
+        <div style={{ width: 1080, margin: '40px auto', backgroundColor: '#fff' }}>
+          <Slick />
+        </div>
       </div>
     );
   }
