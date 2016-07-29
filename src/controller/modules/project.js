@@ -82,29 +82,22 @@ export function* createProject(next) {
 
 export function* getOneProject(next) {
   const { projectId } = this.param;
+  const { model } = this.state.user;
   let { version = '0.0.0' } = this.param;
-  const isPublic = !this.state.user;
 
   version = versionTools.v2n(version);
 
-  if (isNaN(projectId)) throw new Error('不支持传入空参数');
+  invariant(!isNaN(projectId), `项目应该传入合法 id，目前传入的是 ${projectId}`);
 
-  // 公开项目需要按照最大版本号获取
-  if (isPublic) {
-    const getVersion = version
-      ? Promise.resolve(version)
-      : ProjectVersion.max('version', { where: { projectId } });
-    version = yield getVersion;
-    if (!version) throw new Error('公开项目未打版本');
-  }
-
-  const project = yield Project.findOne({
-    where: { id: projectId, public: isPublic },
+  const projects = yield model.getProjects({
+    where: { id: projectId },
     attributes: { exclude: ['owner'] },
     include: [{ model: User, as: 'projectOwner' }],
   });
-  if (!project) throw new Error('暂无数据');
 
+  invariant(projects.length, '未找到项目或当前用户不是项目成员');
+
+  const project = projects[0];
   const result = project.dataValues;
 
   result.version = versionTools.n2v(version);
@@ -116,9 +109,39 @@ export function* getOneProject(next) {
   });
   result.members = yield project.getUsers();
 
-  if (!isPublic) {
-    result.isOwner = this.state.user.userId === result.projectOwner.id;
-  }
+  this.state.respond = result;
+  yield next;
+}
+
+export function* getOnePublicProject(next) {
+  const { projectId } = this.param;
+  let { version } = this.param;
+
+  invariant(!isNaN(projectId), `项目应该传入合法 id，目前传入的是 ${projectId}`);
+
+  const getVersion = version
+    ? Promise.resolve(versionTools.v2n(version))
+    : ProjectVersion.max('version', { where: { projectId } });
+  version = yield getVersion;
+  invariant(version, '本公开项目还没有生成版本，因此无法公开');
+
+  const project = yield Project.findOne({
+    where: { id: projectId, public: true },
+    attributes: { exclude: ['owner'] },
+    include: [{ model: User, as: 'projectOwner' }],
+  });
+  invariant(project, `未找到 id 为 ${projectId} 的公开项目`);
+
+  const result = project.dataValues;
+
+  result.version = versionTools.n2v(version);
+  result.icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: { version },
+    },
+  });
+  result.members = yield project.getUsers();
 
   this.state.respond = result;
   yield next;
