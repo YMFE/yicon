@@ -89,7 +89,7 @@ export default class Upload extends Component {
   _sendFiles = (files) => {
     let fileSize = 0;
     const fd = new FormData();
-    const repoId = 1111; // globalContext.respository.id
+  //  const repoId = 1111; // globalContext.respository.id
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.indexOf('svg') === -1) {
         alert('请选择svg文件');
@@ -104,7 +104,7 @@ export default class Upload extends Component {
     for (let i = 0; i < files.length; i++) {
       fd.append(`iconfont${i}`, files[i]);
     }
-    fd.append('repoId', repoId);
+  //  fd.append('repoId', repoId);
     // 这里开始调上传接口
     this.props.fetchUpload(fd);
     location.assign('/UploadEdit/');
