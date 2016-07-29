@@ -67,6 +67,12 @@ export default class Repository extends Component {
       });
     };
   }
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowDownloadDialog: isShow,
+    });
+  }
 
   render() {
     const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
@@ -139,7 +145,11 @@ export default class Repository extends Component {
             />
           }
         </div>
-        <Dialog empty visible={this.state.isShowDownloadDialog}>
+        <Dialog
+          empty
+          visible={this.state.isShowDownloadDialog}
+          getShow={this.dialogUpdateShow}
+        >
           <DownloadDialog />
         </Dialog>
       </div>

@@ -108,7 +108,7 @@ class IconButton extends Component {
         <ClipboardButton
           component="i"
           className={"tool-item iconfont copy"}
-          title="复制code"
+          button-title="复制code"
           data-clipboard-text={String.fromCharCode(icon.code)}
           onSuccess={this.copySuccess}
           onError={this.copyError}
