@@ -7,7 +7,7 @@ import {
   resetIconSize,
 } from '../../actions/repository';
 import { getIconDetail } from '../../actions/icon';
-import Slider from '../../components/common/Slider/Slider';
+import SliderSize from '../../components/SliderSize/SliderSize';
 import Pager from '../../components/common/Pager';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
@@ -94,10 +94,10 @@ export default class Repository extends Component {
                 <Link to="/upload" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
                 </Link>
-                <button href="#" className="options-btns btns-blue">
+                <button className="options-btns btns-blue">
                   <i className="iconfont">&#xf50b;</i>下载全部图标
                 </button>
-                <button href="#" className="options-btns btns-default ml10">添加公告</button>
+                <button className="options-btns btns-default ml10">添加公告</button>
                 <Link
                   to={`/repositories/${id}/logs`}
                   className="options-btns btns-default"
@@ -105,23 +105,7 @@ export default class Repository extends Component {
                   查看日志
                 </Link>
               </div>
-              <span
-                style={{
-                  float: 'right',
-                  color: '#616161',
-                  fontSize: 16,
-                  lineHeight: '38px',
-                }}
-              >{this.props.iconSize}px</span>
-              <div style={{ width: 216, padding: 11, float: 'right' }}>
-                <Slider
-                  min={16}
-                  max={64}
-                  step={1}
-                  defaultValue={64}
-                  onChange={this.changeSize}
-                />
-              </div>
+              <SliderSize />
             </div>
           </div>
         </SubTitle>
