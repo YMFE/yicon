@@ -5,8 +5,11 @@ import {
   changeIconSize,
   resetIconSize,
 } from '../../actions/repository';
+import { getIconDetail } from '../../actions/icon';
 import Slider from '../../components/common/Slider/Slider';
 import Pager from '../../components/common/Pager';
+import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import Dialog from '../../components/common/Dialog/Index.jsx';
 import { SubTitle } from '../../components/';
 import { autobind } from 'core-decorators';
 
@@ -19,10 +22,17 @@ const pageSize = 64;
   state => ({
     currRepository: state.repository.currRepository,
     iconSize: state.repository.iconSize,
+    iconDetail: state.icon,
   }),
-  { fetchRepositoryData, changeIconSize, resetIconSize }
+  { fetchRepositoryData, changeIconSize, resetIconSize, getIconDetail }
 )
 export default class Repository extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowDownloadDialog: false,
+    };
+  }
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
@@ -46,10 +56,20 @@ export default class Repository extends Component {
     this.props.changeIconSize(value);
   }
 
+  @autobind
+  clikIconDownloadBtn(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
+  }
+
   render() {
-    // const { name, icons, user, id } = this.props.currRepository;
     const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
-    // 待解决：不知道为啥user会为undefined(initialState已经写为'{}')
+    // 待解决：initialState已经写为'{}', 不知道为啥初始user还是为undefined
     let admin = '';
     if (user) {
       admin = user.name;
@@ -63,14 +83,14 @@ export default class Repository extends Component {
             <span className="name">{admin}</span>
             <div className="tool-content">
               <div className="tools">
-                <a href="#" className="options-btns btns-blue">
+                <button href="#" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
-                </a>
-                <a href="#" className="options-btns btns-blue">
+                </button>
+                <button href="#" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50b;</i>下载全部图标
-                </a>
-                <a href="#" className="options-btns btns-default ml10">添加公告</a>
-                <a href="#" className="options-btns btns-default">查看日志</a>
+                </button>
+                <button href="#" className="options-btns btns-default ml10">添加公告</button>
+                <button href="#" className="options-btns btns-default">查看日志</button>
               </div>
               <span
                 style={{
@@ -99,6 +119,7 @@ export default class Repository extends Component {
                 <IconButton
                   icon={icon}
                   key={icon.id}
+                  download={this.clikIconDownloadBtn(icon.id)}
                 />
               ))
             }
@@ -111,6 +132,9 @@ export default class Repository extends Component {
             />
           }
         </div>
+        <Dialog empty visible={this.state.isShowDownloadDialog}>
+          <DownloadDialog />
+        </Dialog>
       </div>
     );
   }
@@ -120,6 +144,7 @@ Repository.propTypes = {
   fetchRepositoryData: PropTypes.func,
   changeIconSize: PropTypes.func,
   resetIconSize: PropTypes.func,
+  getIconDetail: PropTypes.func,
   iconSize: PropTypes.number,
   currRepository: PropTypes.object,
   params: PropTypes.object,

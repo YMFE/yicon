@@ -47,12 +47,12 @@ export default class Input extends Component {
   render() {
     const { errMsg, extraClass } = this.props;
     const { error } = this.state;
-    const classNames = error ? 'set-input-wrap info-error ' : 'set-input-wrap';
+    const classNames = error ? 'input-wrap info-error ' : 'input-wrap';
     return (
       <div className={classNames + extraClass}>
         <input
           type="text"
-          className="set-input"
+          className="input"
           placeholder="china"
           onChange={evt => this.validate(evt.target.value)}
         />

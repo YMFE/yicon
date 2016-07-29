@@ -2,10 +2,7 @@ import './IconButton.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
-import { getIconDetail } from '../../../actions/icon';
 import Icon from '../Icon/Icon.jsx';
-import DownloadDial from '../../DownloadDial/DownloadDial.jsx';
-import downloadDialConf from '../Dialog/Confirm.jsx';
 import { autobind } from 'core-decorators';
 import process from 'process';
 let ClipboardButton;
@@ -19,14 +16,13 @@ if (process.browser) {
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
-    repoId: state.repository.currRepository.id,
     iconSize: state.repository.iconSize,
     userInfo: state.user.info,
     iconDetail: state.icon,
   }),
-  { addIconToLocalStorage,
+  {
+    addIconToLocalStorage,
     deleteIconInLocalStorage,
-    getIconDetail,
   }
 )
 class IconButton extends Component {
@@ -61,20 +57,6 @@ class IconButton extends Component {
     });
   }
 
-  @autobind
-  download(icon) {
-    return () => {
-      this.props.getIconDetail(icon.id).then(() => {
-        downloadDialConf({
-          empty: true,
-          content: <DownloadDial icon={this.props.iconDetail} />,
-          onOk: () => {},
-          onCancel: () => {},
-        });
-      });
-    };
-  }
-
   isSelected(id) {
     if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
       return true;
@@ -93,9 +75,12 @@ class IconButton extends Component {
   }
 
   render() {
-    const { icon, userInfo, repoId } = this.props;
+    const { icon, userInfo, download } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
+    const repoId = icon.repoVersion.repositoryId;
+
+    // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
       status = 2;
@@ -116,7 +101,7 @@ class IconButton extends Component {
         <i
           className={"tool-item iconfont download"}
           title="下载图标"
-          onClick={this.download(icon)}
+          onClick={download}
         >&#xf50b;</i>,
       edit: <i className={"tool-item iconfont edit"} title="图标替换">&#xf515;</i>,
       copy:
@@ -189,15 +174,12 @@ class IconButton extends Component {
 
 IconButton.propTypes = {
   icon: PropTypes.object,
-  iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
-  status: PropTypes.number,
   iconSize: PropTypes.number,
-  repoId: PropTypes.number,
   iconsInLocalStorage: PropTypes.array,
   deleteIconInLocalStorage: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
-  getIconDetail: PropTypes.func,
+  download: PropTypes.func,
 };
 
 export default IconButton;
