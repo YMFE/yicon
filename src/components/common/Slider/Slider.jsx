@@ -27,6 +27,17 @@ class Slider extends Component {
     this.state = { bound: value };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { min } = nextProps;
+    const initialValue = min;
+    const defaultValue = ('defaultValue' in nextProps ? nextProps.defaultValue : initialValue);
+    const value = (nextProps.value !== undefined ? nextProps.value : defaultValue);
+
+    this.setState({
+      bound: value,
+    });
+  }
+
   onChange(value) {
     const props = this.props;
     this.setState({
