@@ -1,11 +1,11 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import isomFetch from 'isom-fetch';
-// import process from 'process';
 import {
   App,
   Home,
   Demo,
+  Log,
   NoMatch,
   Project,
   Repository,
@@ -66,13 +66,13 @@ export default (store) => {
           <Route path="replacement/icon/:id" /> {/* 替换页面 */}
           <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
           <Route path="auditing" /> {/* 审核页面 */}
-          <Route path="repositories/:id/logs" /> {/* 大库日志 */}
+          <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>
 
         {/* 超管用户路由 */}
         <Route onEnter={requireAdmin}>
-          <Route path="amdin/repositories" /> {/* 大库管理 */}
-          <Route path="amdin/projects" /> {/* 项目管理 */}
+          <Route path="admin/repositories" /> {/* 大库管理 */}
+          <Route path="admin/projects" /> {/* 项目管理 */}
         </Route>
       </Route>
 

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import {
   fetchRepositoryData,
   changeIconSize,
@@ -70,6 +71,7 @@ export default class Repository extends Component {
   render() {
     const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
     // 待解决：initialState已经写为'{}', 不知道为啥初始user还是为undefined
+    const { id } = this.props.params;
     let admin = '';
     if (user) {
       admin = user.name;
@@ -83,14 +85,19 @@ export default class Repository extends Component {
             <span className="name">{admin}</span>
             <div className="tool-content">
               <div className="tools">
-                <button href="#" className="options-btns btns-blue">
+                <Link to="/upload" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
-                </button>
+                </Link>
                 <button href="#" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50b;</i>下载全部图标
                 </button>
                 <button href="#" className="options-btns btns-default ml10">添加公告</button>
-                <button href="#" className="options-btns btns-default">查看日志</button>
+                <Link
+                  to={`/repositories/${id}/logs`}
+                  className="options-btns btns-default"
+                >
+                  查看日志
+                </Link>
               </div>
               <span
                 style={{

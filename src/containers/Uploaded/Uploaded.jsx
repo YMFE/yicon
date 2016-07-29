@@ -4,36 +4,31 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Timeline, InfoItem, DesIcon } from '../../components/';
 import { fetchUploaded, deleteIcon } from '../../actions/uploaded';
+import { iconStatus } from '../../constants/utils';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
 import Pager from '../../components/common/Pager/';
+import { dateFormat } from '../../helpers/timer';
 
 const statusMap = {
-  0: {
+  [iconStatus.UPLOADED]: {
     text: '未提交',
     className: 'checking',
   },
-  5: {
+  [iconStatus.REJECTED]: {
     text: '审核失败',
     className: 'fault',
   },
-  10: {
+  [iconStatus.PENDING]: {
     text: '待审核',
     className: 'checking',
   },
-  20: {
+  [iconStatus.RESOLVED]: {
     text: '通过审核',
     className: 'passed',
   },
 };
 
-const handleTime = (t) => {
-  const time = new Date(t);
-  const description = [];
-  description.push(time.getFullYear());
-  description.push(time.getMonth() + 1);
-  description.push(time.getDate());
-  return description.join('-');
-};
+const handleTime = (t) => dateFormat(t, 'yyyy-mm-dd');
 
 @connect(
   state => ({
@@ -140,7 +135,7 @@ const TimelineList = (props) => {
       <div className="pager-container">
         <Pager
           defaultCurrent={props.currentPage}
-          totalPage={props.totalPage}
+          totalPage={Math.ceil(props.totalPage / 10)}
           onClick={props.onChangePage}
         />
       </div>

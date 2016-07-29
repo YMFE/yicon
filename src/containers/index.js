@@ -11,6 +11,7 @@ import Search from './Search/Search';
 import Notification from './Notification/Notification';
 import Transition from './Transition/Transition';
 import Uploaded from './Uploaded/Uploaded';
+import Log from './Log/Log';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -23,6 +24,7 @@ export {
   Upload,
   UploadEdit,
   Home,
+  Log,
   NoMatch,
   Project,
   Repository,

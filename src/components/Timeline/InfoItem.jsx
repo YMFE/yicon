@@ -3,10 +3,12 @@ import timer from '../../helpers/timer';
 // import { Icon } from '../../components/';
 
 class InfoItem extends Component {
+
   static propTypes = {
     tag: PropTypes.string,
     tit: PropTypes.string,
-    titleHtml: PropTypes.string,
+    showTitleHtml: PropTypes.bool,
+    item: PropTypes.object,
     timeStr: PropTypes.string,
     isNew: PropTypes.bool,
     extraClass: PropTypes.string,
@@ -15,12 +17,38 @@ class InfoItem extends Component {
   }
 
   getTitle() {
-    if (this.props.titleHtml) {
-      return <p className="title" dangerouslySetInnerHTML={{ __html: this.props.titleHtml }} />;
-    } else if (this.props.tit) {
-      return <p className="title">{this.props.tit}</p>;
+    const { item, showTitleHtml, tit } = this.props;
+    if (showTitleHtml) {
+      return (
+        <p
+          className="title"
+          dangerouslySetInnerHTML={{ __html: this.getDescribeForInfo(item) }}
+        />
+      );
+    } else if (tit) {
+      return <p className="title">{tit}</p>;
     }
     return null;
+  }
+
+  getDescribeForInfo({ operation }) {
+    // TODO: 这 tmd 对前端来说太不友好了
+    const regExp = /@([^@]+)@/g;
+    return operation.replace(regExp, (_, matched) => {
+      let text;
+      const data = JSON.parse(matched);
+      // 处理一下各种日志的情况
+      const keys = Object.keys(data);
+      // 我们一般只有一个 key
+      const firstKey = keys[0];
+      if (keys.indexOf('icon') || keys.indexOf('user')) {
+        text = data[firstKey].name;
+      } else {
+        text = data[firstKey];
+      }
+
+      return `<span class="key">${text}</span>`;
+    });
   }
 
   render() {
