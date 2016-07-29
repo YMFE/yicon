@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import './UploadEdit.scss';
+import { connect } from 'react-redux';
+import { fetchUploadEditLoad, fetchSubmitEditLoad } from '../../actions/uploadedit';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
 import Select from '../../components/common/Select/';
 const Option = Select.Option;
@@ -18,14 +20,31 @@ const Option = Select.Option;
 //   },
 // };
 const defaultProps = {
-  icon: {},
+  curenticon: {},
 };
 const propTypes = {
-  icon: PropTypes.object,
+  curenticon: PropTypes.object,
+  fetchUploadEditLoad: PropTypes.func,
+  fetchSubmitEditLoad: PropTypes.func,
 };
+@connect(
+  state => ({
+    // list: state.user.uploaded.list,
+    // totalPage: state.user.uploaded.totalPage,
+    // currentPage: state.user.uploaded.currentPage,
+    curenticon: state.user.uploadEdit.curenticon,
+  }),
+  {
+    fetchUploadEditLoad,
+    fetchSubmitEditLoad,
+  }
+)
 export default class UploadEdit extends Component {
+  componentWillMount() {
+    this.props.fetchUploadEditLoad();
+  }
   render() {
-    const { icon } = this.props;
+    const { curenticon } = this.props;
     // const icon = '&#xf50f;';
     return (
       <div className={'yicon-main yicon-upload'}>
@@ -58,7 +77,7 @@ export default class UploadEdit extends Component {
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i></button>
-            <IconBgGrid size={350} icon={icon} />
+            <IconBgGrid size={350} icon={curenticon} />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
