@@ -62,7 +62,7 @@ export default class Upload extends Component {
   }
   handlerFileChange = () => {
     console.log('handlerFileChange');
-    this._sendFiles(this.refs.inputUpload);
+    this._sendFiles(this.refs.inputUpload.files);
   }
   judgeInside = (event, ele) => {
     const style = window.getComputedStyle(ele);
