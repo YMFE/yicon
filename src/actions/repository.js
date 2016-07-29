@@ -3,11 +3,12 @@ import {
   FETCH_HOME_DATA,
   FETCH_REPOSITORY_DATA,
   CLEAR_REPOSITORY_DATA,
+  CHANGE_ICON_SIZE,
+  RESET_ICON_SIZE,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({
   baseURL: '/api',
-  thunk: true,
 });
 
 export function fetchHomeData() {
@@ -40,4 +41,15 @@ export function fetchRepositoryData(id) {
 
     dispatch(fetchRepository(id));
   };
+}
+
+export function changeIconSize(size) {
+  return {
+    type: CHANGE_ICON_SIZE,
+    payload: size,
+  };
+}
+
+export function resetIconSize() {
+  return { type: RESET_ICON_SIZE };
 }

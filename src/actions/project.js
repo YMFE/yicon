@@ -7,6 +7,8 @@ import {
   SAVE_TO_NEW_PROJECT,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_PROJECT,
+  PATCH_USERS_PROJECT_DETAIL,
+  FETCH_MEMBERS_SUGGEST_LIST,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -29,9 +31,24 @@ export function getUserProjectInfo(id, version) {
   const v = version ? `/version/${version}` : '';
   return {
     type: FETCH_USERS_PROJECT_INFO,
-    payload: fetch.get(`/user/projects/${id}/${v}`),
+    payload: fetch.get(`/user/projects/${id}${v}`),
   };
 }
+
+export function patchUserProject(detail) {
+  return {
+    type: PATCH_USERS_PROJECT_DETAIL,
+    payload: fetch.patch(`/user/projects/${detail.id}`, detail),
+  };
+}
+
+export function fetchMemberSuggestList(value) {
+  return {
+    type: FETCH_MEMBERS_SUGGEST_LIST,
+    payload: fetch.get(`/user/list?q=${value}`),
+  };
+}
+
 export function getPublicProjectList() {
   return {
     type: FETCH_PUBLIC_PROJECT_LIST,

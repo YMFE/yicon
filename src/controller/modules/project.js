@@ -107,7 +107,7 @@ export function* getOneProject(next) {
 
   const result = project.dataValues;
 
-  result.version = version;
+  result.version = versionTools.n2v(version);
   result.icons = yield project.getIcons({
     through: {
       model: ProjectVersion,
@@ -223,7 +223,10 @@ export function* updateProjectInfo(next) {
   const data = { info, name, owner, public: publicProject };
   let projectResult = null;
   if (name) {
-    const existProject = yield Project.findOne({ where: { name }, raw: true });
+    const existProject = yield Project.findOne({
+      where: { name, id: { $notIn: [projectId] } },
+      raw: true,
+    });
     if (existProject) {
       const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
       throw new Error(`项目名已被使用，请更改，如有需要请联系${ownerName.name}`);
@@ -247,9 +250,13 @@ export function* updateProjectInfo(next) {
 export function* updateProjectMember(next) {
   const { projectId, members } = this.param;
   this.state.log = [];
-  if (isNaN(projectId) || members.length < 1) throw new Error('必须传入项目编号和具体成员信息');
+  if (isNaN(projectId) || members.length < 1) {
+    throw new Error('必须传入项目编号和具体成员信息');
+  }
   if (!this.state.user.isProjectOwner) throw new Error('普通成员没有权限');
-  if (!has(members, { id: this.state.user.ownerId })) throw new Error('参数错误');
+  if (!has(members, { id: this.state.user.ownerId })) {
+    throw new Error('项目管理员无法被删除');
+  }
   members.forEach(v => {
     if (isNaN(v.id)) throw new Error('参数缺少id');
   });
@@ -267,8 +274,8 @@ export function* updateProjectMember(next) {
       where: {
         userId: { $in: deleted.map(v => v.id) },
       },
-    },
-    { transaction: t }
+      transaction: t,
+    }
   ).then(
     () => UserProject.bulkCreate(data, { transaction: t })
   ));
@@ -301,5 +308,40 @@ export function* getAllPublicProjects(next) {
   this.state.respond = yield Project.findAll({
     where: { public: true },
   });
+  yield next;
+}
+
+export function* diffVersion(next) {
+  const { projectId, highVersion, lowVersion } = this.param;
+  if (isNaN(projectId)) throw new Error('缺少项目id参数');
+
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const hVersion = versionTools.v2n(highVersion);
+  const lVersion = versionTools.v2n(lowVersion);
+  if (isNaN(hVersion) && isNaN(lVersion)) throw new Error('缺少对比项目版本号');
+
+  const icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: {
+        version: {
+          $in: [hVersion, lVersion],
+        },
+      },
+    },
+  });
+  const hvIcons = [];
+  const lvIcons = [];
+  icons.forEach(v => {
+    if (v.projectVersions && v.projectVersions.version === highVersion) {
+      hvIcons.push(v);
+    } else {
+      lvIcons.push(v);
+    }
+  });
+  const { deleted, added } = diffArray(lvIcons, hvIcons);
+  this.state.respond = this.state.respond || {};
+  this.state.respond.deleted = deleted;
+  this.state.respond.added = added;
   yield next;
 }

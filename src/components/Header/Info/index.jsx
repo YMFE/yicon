@@ -1,12 +1,13 @@
 import './Info.scss';
+import { Link } from 'react-router';
 import React, { PropTypes } from 'react';
 
 const Info = (props) => (
   <li className="lists">
-    <a href="#" className="nav-message">
+    <Link to="/user/notifications" className="nav-message">
       <i className="iconfont">&#xf50d;</i>
       <i className="nav-message-count">{props.infoCont}</i>
-    </a>
+    </Link>
   </li>
 );
 

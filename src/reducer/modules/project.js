@@ -6,6 +6,8 @@ import {
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_NEW_PROJECT,
   SAVE_TO_PROJECT,
+  FETCH_MEMBERS_SUGGEST_LIST,
+  PATCH_USERS_PROJECT_DETAIL,
 } from '../../constants/actionTypes';
 
 import {
@@ -16,6 +18,7 @@ const initialState = {
   usersProjectList: [],
   publicProjectList: [],
   currentUserProjectInfo: {},
+  memberSuggestList: [],
   currentPublicProjectInfo: {},
   projectForSave: {
     id: 0,
@@ -43,8 +46,24 @@ export default (state = initialState, action) => {
       }
       return state;
     }
+    case PATCH_USERS_PROJECT_DETAIL: {
+      if (action.payload.res) {
+        // TODO 编辑成功
+      } else {
+        // TODO 编辑失败
+      }
+      return state;
+    }
+    case FETCH_MEMBERS_SUGGEST_LIST: {
+      if (action.payload.res) {
+        return {
+          ...state,
+          memberSuggestList: action.payload.data,
+        };
+      }
+      return state;
+    }
     case FETCH_PUBLIC_PROJECT_LIST: {
-      console.log(action.payload);
       if (action.payload.res) {
         return {
           ...state,

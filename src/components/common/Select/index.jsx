@@ -11,7 +11,9 @@ import './Select.scss';
  * @description 模拟select。
  * @autor leila.wang
  */
-
+export {
+  Option,
+};
 export default class Select extends Component {
     //  es7  写法
   static Option = Option;

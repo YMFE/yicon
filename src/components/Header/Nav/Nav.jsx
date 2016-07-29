@@ -1,13 +1,18 @@
 import './Nav.scss';
+import { Link } from 'react-router';
 import React, { Component, PropTypes } from 'react';
 
 class Nav extends Component {
   render() {
     const { list, name, href } = this.props;
-    let List = () => (
+    const List = () => (
       <ul className="quick-menu-sub">
         {list.map((item, index) => (
-          <li key={index}><a>{item.name}</a></li>
+          <li key={index}>
+            <Link to={item.href}>
+              {item.name}
+            </Link>
+          </li>
         ))}
       </ul>
     );

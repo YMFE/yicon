@@ -37,9 +37,9 @@ const handleTime = (t) => {
 
 @connect(
   state => ({
-    list: state.uploaded.list,
-    totalPage: state.uploaded.totalPage,
-    currentPage: state.uploaded.currentPage,
+    list: state.user.uploaded.list,
+    totalPage: state.user.uploaded.totalPage,
+    currentPage: state.user.uploaded.currentPage,
   }),
   {
     fetchUploaded,
@@ -54,7 +54,7 @@ class Uploaded extends Component {
     deleteIcon: PropTypes.func,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchUploaded(1);
   }
 

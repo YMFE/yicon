@@ -2,6 +2,8 @@ import {
   FETCH_HOME_DATA,
   FETCH_REPOSITORY_DATA,
   CLEAR_REPOSITORY_DATA,
+  CHANGE_ICON_SIZE,
+  RESET_ICON_SIZE,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -9,8 +11,10 @@ const initialState = {
   homeRepository: [],
   currRepository: {
     icons: [],
+    user: { name: '' },
     id: 0,
   },
+  iconSize: 64,
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +38,18 @@ export default (state = initialState, action) => {
         currRepository: {
           icons: [],
         },
+      };
+    }
+    case CHANGE_ICON_SIZE: {
+      return {
+        ...state,
+        iconSize: action.payload,
+      };
+    }
+    case RESET_ICON_SIZE: {
+      return {
+        ...state,
+        iconSize: 64,
       };
     }
     default:

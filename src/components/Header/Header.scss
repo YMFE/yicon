@@ -13,17 +13,6 @@ $mainColor:#3bbaff;
 $btnColor:#008ed6;
 $btnHoverColor:#00b7ee;
 $iconColor:#555f6e;
-.clearfix:after {
-  content: ".";
-  display: block;
-  height: 0;
-  visibility: hidden;
-  clear: both;
-}
-
-.clearfix {
-  *zoom: 1;
-}
 
 .global-header {
     width: 100%;
@@ -117,7 +106,6 @@ $iconColor:#555f6e;
                 border: 1px solid #c9d0d5;
                 border-top: none;
                 z-index: 9;
-                display: none;
                 top: 55px;
                 left: 0;
                 padding: 5px 0;

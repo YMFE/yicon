@@ -5,9 +5,11 @@ import Demo from './Demo/Demo';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
+import Search from './Search/Search';
 import Notification from './Notification/Notification';
+import Transition from './Transition/Transition';
 import Uploaded from './Uploaded/Uploaded';
-
+import UserProject from './UserProject/UserProject';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
@@ -20,6 +22,9 @@ export {
   NoMatch,
   Project,
   Repository,
+  Transition,
+  Search,
   Notification,
   Uploaded,
+  UserProject,
 };

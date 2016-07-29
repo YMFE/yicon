@@ -87,6 +87,7 @@ Icon.belongsToMany(Project, {
   },
   constraints: false,
 });
+Icon.belongsTo(User, { foreignKey: 'uploader' });
 
 Repo.belongsToMany(Icon, {
   through: {
