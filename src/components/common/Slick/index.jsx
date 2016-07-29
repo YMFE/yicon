@@ -1,5 +1,5 @@
 import './Slick.scss';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 const itemData = [
   {
@@ -13,9 +13,20 @@ const itemData = [
     code: 61442,
   }];
 export default class Slick extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  static defaultProps = {
+    directionNav: true,
+  }
+  static propTypes = {
+    defaultCurrent: PropTypes.number,
+    directionNav: PropTypes.bool,
+    onSelect: PropTypes.func,
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentItem: this.props.defaultCurrent,
+    };
+  }
   handleClick(config, evt) {
     const { type, index } = config;
     // let _currentPage = this.state.currentPage;
@@ -54,6 +65,12 @@ export default class Slick extends Component {
 
   //  if (this.props.onClick) this.props.onClick(_currentPage);
   }
+  deleteSingleClick(config, evt) {
+    const { index } = config;
+    console.log(index);
+    console.log(evt);
+    alert('delete');
+  }
   render() {
     const itemArr = [];
     itemData.forEach((item, i) => {
@@ -63,7 +80,10 @@ export default class Slick extends Component {
         className={'upload-icon-item'}
         onClick={(evt) => this.handleClick({ type: 'item', index: i }, evt)}
       >
-        <i className={'iconfont delete'}>&#xf077;</i>
+        <i
+          className={'iconfont delete'}
+          onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
+        >&#xf077;</i>
         <i className={'iconfont upload-icon'}>&#xf50f;</i>
       </li>);
     });
