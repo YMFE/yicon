@@ -5,7 +5,7 @@ const defaultProps = {
   regExp: '',
   error: false,
   errMsg: '',
-  getVal(val) { console.log(val); },
+  getVal(val) { return val; },
   extraClass: '',
 };
 

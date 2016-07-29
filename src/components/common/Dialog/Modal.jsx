@@ -6,6 +6,7 @@ const defaultProps = {
   onOk: () => {},
   onCancel: () => {},
   empty: false,
+  getShow(val) { return val; },
 };
 
 const propTypes = {
@@ -20,6 +21,7 @@ const propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.element),
   ]),
+  getShow: PropTypes.func,
 };
 
 export default class Modal extends Component {
@@ -30,6 +32,10 @@ export default class Modal extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({ show: nextProps.visible });
+  }
+
+  componentDidUpdate() {
+    this.props.getShow(this.state.show);
   }
 
   render() {
