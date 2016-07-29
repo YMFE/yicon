@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import './UploadEdit.scss';
-import { connect } from 'react-redux';
-import { fetchUploadEditLoad, fetchSubmitEditLoad } from '../../actions/uploadedit';
+// import { connect } from 'react-redux';
+// import { fetchUploadEditLoad, fetchSubmitEditLoad } from '../../actions/uploadedit';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
 import Select from '../../components/common/Select/';
 const Option = Select.Option;
@@ -27,18 +27,18 @@ const propTypes = {
   fetchUploadEditLoad: PropTypes.func,
   fetchSubmitEditLoad: PropTypes.func,
 };
-@connect(
-  state => ({
-    // list: state.user.uploaded.list,
-    // totalPage: state.user.uploaded.totalPage,
-    // currentPage: state.user.uploaded.currentPage,
-    curenticon: state.user.uploadEdit.curenticon,
-  }),
-  {
-    fetchUploadEditLoad,
-    fetchSubmitEditLoad,
-  }
-)
+// @connect(
+//   state => ({
+//     // list: state.user.uploaded.list,
+//     // totalPage: state.user.uploaded.totalPage,
+//     // currentPage: state.user.uploaded.currentPage,
+//     curenticon: state.user.uploadEdit.curenticon,
+//   }),
+//   {
+//     fetchUploadEditLoad,
+//     fetchSubmitEditLoad,
+//   }
+// )
 export default class UploadEdit extends Component {
   // componentWillMount() {
   //   this.props.fetchUploadEditLoad();
