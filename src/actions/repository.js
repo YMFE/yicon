@@ -1,10 +1,12 @@
 import isonFetch from 'isom-fetch';
 import {
   FETCH_HOME_DATA,
+  FETCH_TINY_REPOSITORY,
   FETCH_REPOSITORY_DATA,
   CLEAR_REPOSITORY_DATA,
   CHANGE_ICON_SIZE,
   RESET_ICON_SIZE,
+  FETCH_REPOSITORY_LOG,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({
@@ -18,10 +20,17 @@ export function fetchHomeData() {
   };
 }
 
-function fetchRepository(id) {
+function fetchRepository(id, currentPage) {
   return {
     type: FETCH_REPOSITORY_DATA,
-    payload: fetch.get(`/repositories/${id}`),
+    payload: fetch.get(`/repositories/${id}?currentPage=${currentPage}&pageSize=64`),
+  };
+}
+
+export function fetchTinyRepository() {
+  return {
+    type: FETCH_TINY_REPOSITORY,
+    payload: fetch.get('/tiny/repositories'),
   };
 }
 
@@ -31,15 +40,11 @@ export function clearRepositoryData() {
   };
 }
 
-export function fetchRepositoryData(id) {
+export function fetchRepositoryData(id, currentPage) {
   return (dispatch, getState) => {
-    const { currRepository } = getState().repository;
-
-    if (+id !== +currRepository.id) {
-      dispatch(clearRepositoryData());
-    }
-
-    dispatch(fetchRepository(id));
+    const repoId = getState().repository.currRepository.id;
+    if (+repoId !== +id) dispatch(clearRepositoryData());
+    dispatch(fetchRepository(id, currentPage));
   };
 }
 
@@ -52,4 +57,11 @@ export function changeIconSize(size) {
 
 export function resetIconSize() {
   return { type: RESET_ICON_SIZE };
+}
+
+export function fetchRepositoryLogs(id, page) {
+  return {
+    type: FETCH_REPOSITORY_LOG,
+    payload: fetch.get(`/owner/log/repositories/${id}?currentPage=${page}`),
+  };
 }

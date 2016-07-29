@@ -98,14 +98,14 @@ class Cart extends Component {
         onMouseLeave={this.shiftCartList}
       >
 
-        <a className="nav-car" href="#">
+        <span className="nav-car" href="#">
           <i className="iconfont">&#xf50f;</i>
           {
             iconsInLocalStorage.length > 0 ?
               <span className="nav-car-count">{iconsInLocalStorage.length}</span> :
               null
           }
-        </a>
+        </span>
 
         <div className="user-car" id="J_user_car" style={style}>
           <span className="arrow"></span>

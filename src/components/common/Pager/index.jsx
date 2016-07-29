@@ -3,22 +3,29 @@
  */
 import './Pager.scss';
 import React, { Component, PropTypes } from 'react';
+
 export default class Pager extends Component {
   static propTypes = {
     defaultCurrent: PropTypes.number,
     totalPage: PropTypes.number,
+    totalCount: PropTypes.number,
+    pageSize: PropTypes.number,
     onClick: PropTypes.func,
     extraClass: PropTypes.string,
   }
+
+  static defaultProps = {
+    defaultCurrent: 1,
+    pageSize: 10,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       currentPage: this.props.defaultCurrent,
     };
-
-    // this.props.totalPage
-    // this.props.defaultCurrent
   }
+
   handleClick(config, evt) {
     const { type, index } = config;
     let _currentPage = this.state.currentPage;
@@ -65,7 +72,13 @@ export default class Pager extends Component {
   render() {
     let content = [];
     const { currentPage } = this.state;
-    const { totalPage } = this.props;
+    const { totalCount, pageSize } = this.props;
+    let { totalPage } = this.props;
+
+    if (!totalPage && totalCount) {
+      totalPage = Math.ceil(totalCount / pageSize);
+    }
+
     // 上一页
     content.push(<li
       key="prev"

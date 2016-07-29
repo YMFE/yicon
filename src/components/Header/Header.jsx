@@ -10,6 +10,7 @@ import Logo from './Logo/Logo';
 import Cart from './Cart/Cart';
 import Info from './Info/';
 // import { autobind } from 'core-decorators';
+import { fetchTinyRepository } from '../../actions/repository';
 import {
   toggleCartListDisplay,
   getIconsInLocalStorage,
@@ -33,15 +34,13 @@ const iconManageList = [
     toggleCartListDisplay,
     getIconsInLocalStorage,
     fetchSearchResult,
+    fetchTinyRepository,
   }
 )
 
 class Header extends Component {
   componentWillMount() {
-    const {
-      className,
-      extraClass,
-    } = this.props;
+    const { className, extraClass } = this.props;
 
     if (className) {
       this.classList = className;
@@ -50,9 +49,13 @@ class Header extends Component {
     } else {
       this.classList = 'global-header';
     }
+    this.props.fetchTinyRepository();
   }
   render() {
-    const { iconDatabase } = this.props;
+    const { allReposotoryList } = this.props;
+    const list = allReposotoryList.map(r => ({
+      name: r.name, href: `/repositories/${r.id}`,
+    }));
 
     return (
       <header className={this.classList}>
@@ -60,7 +63,7 @@ class Header extends Component {
           <Logo />
           <nav className="nav quick-menu">
             <ul>
-              <Nav name="图标库" list={iconDatabase} />
+              <Nav name="图标库" list={list} />
               <Nav name="图标管理" list={iconManageList} />
             </ul>
           </nav>
@@ -72,10 +75,7 @@ class Header extends Component {
                 isShowCart={this.props.isShowCartList}
               />
               <li className="lists">
-                <Link
-                  to="upload"
-                  className="upload"
-                >
+                <Link to="/upload" className="upload">
                   <i className="iconfont">&#xf50a;</i>
                 </Link>
               </li>
@@ -101,6 +101,7 @@ Header.propTypes = {
   getIconsInLocalStorage: PropTypes.func,
   allReposotoryList: PropTypes.array,
   fetchSearchResult: PropTypes.func,
+  fetchTinyRepository: PropTypes.func,
 };
 
 export default Header;

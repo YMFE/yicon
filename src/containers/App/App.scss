@@ -1,4 +1,17 @@
-html{background-color:#fff;color:#000;font-size:12px}
+
+@charset "utf-8";
+$fontTitleColor:#344562;$fontContentColor:#616161;$fontTipColor:#9e9e9e;$mainColor:#3bbaff;$btnColor:#008ed6;$btnHoverColor:#00b7ee;$iconColor:#555f6e;
+$staticUrl: '../../../static/';
+@font-face {
+  font-family: iconfont;
+  src: url(#{$staticUrl}font/QIconLab.eot);
+  src: url(#{$staticUrl}font/QIconLab.eot?#iefix&#iefix) format("embedded-opentype"), url(#{$staticUrl}font/QIconLab.woff) format("woff"), url(#{$staticUrl}font/QIconLab.ttf) format("truetype"), url(#{$staticUrl}font/QIconLab.svg#iconfont) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.clearfix:after{content:".";display:block;height:0;visibility:hidden;clear:both;}
+.clearfix{*zoom:1;}
+html{background:#f1f3f6;font-size:14px;color:#000;}
 body,ul,ol,dl,dd,h1,h2,h3,h4,h5,h6,figure,form,fieldset,legend,input,textarea,button,p,blockquote,th,td,pre,xmp{margin:0;padding:0}
 body,input,textarea,button,select,pre,xmp,tt,code,kbd,samp{line-height:1.5;font-family:tahoma,arial,"Hiragino Sans GB",simsun,sans-serif}
 h1,h2,h3,h4,h5,h6,small,big,input,textarea,button,select{font-size:100%}
@@ -15,31 +28,12 @@ article,aside,footer,header,section,nav,figure,figcaption,hgroup,details,menu{di
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
 blockquote:before,blockquote:after,q:before,q:after{content:"\0020"}
 textarea{overflow:auto;resize:vertical}
-input,textarea,button,select,a{outline:0 none}
+input,textarea,button,select,a{outline:0 none;border: 0;}
 button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}
 mark{background-color:transparent}
 a,ins,s,u,del{text-decoration:none}
 sup,sub{vertical-align:baseline}
 /*系统图标*/
-// @font-face {
-//   font-family: "iconfont";
-//   src: asset-url('/fonts/iconfont.eot');
-//   src: asset-url('/fonts/iconfont.eot?#iefix') format('eot'),
-//     asset-url('/fonts/iconfont.woff') format('woff'),
-//     asset-url('/fonts/iconfont.ttf') format('truetype');
-//   font-weight: normal;
-//   font-style: normal;
-// }
-$staticUrl: '../../../static/';
-@font-face {
-  font-family: iconfont;
-  font-style: normal;
-  font-weight: normal;
-  src: url(#{$staticUrl}font/QIconLab.eot);
-  src: url(#{$staticUrl}font/QIconLab.eot?#iefix&#iefix) format("embedded-opentype"), url(#{$staticUrl}font/QIconLab.woff) format("woff"), url(#{$staticUrl}font/QIconLab.ttf) format("truetype"), url(#{$staticUrl}font/QIconLab.svg#iconfont) format("svg");
-}
-
-
 :global {
   [class*="iconfont"], [class*="iconfont"]:before {
     display: inline-block;
@@ -73,7 +67,6 @@ $staticUrl: '../../../static/';
 .app-container{
   background-color: #f1f3f6;
 }
-
 .btns-blue{
 	color: #fff;
 	background-color: #008ed6;
@@ -86,4 +79,7 @@ $staticUrl: '../../../static/';
 .btns-blue:hover{
     color:#fff;
 		background-color: #009be9;
+.pager-container {
+  border-top: 1px solid #d8dbdd;
+  padding: 25px 40px;
 }

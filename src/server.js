@@ -13,7 +13,7 @@ import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
 import { router, down } from './controller';
-// import isomFetch from 'isom-fetch';
+import isomFetch from 'isom-fetch';
 
 const app = new Koa();
 const { PORT } = process.env;
@@ -32,17 +32,18 @@ app.use(router.routes());
 app.use(down.routes());
 
 const getRouteContext = (ctx) =>
-  new Promise((resolve, reject) => {
+  new Promise(resolve => {
     match({
       routes: routes(store),
       location: ctx.originalUrl,
     }, (error, redirect, renderProps) => {
       if (error) {
-        reject({ status: 500, error });
+        ctx.status(500).send(error.message);
+        resolve('NOT_MATCH');
       } else if (redirect) {
-        reject({ status: 302, redirect });
+        ctx.redirect(redirect.pathname + redirect.search);
+        resolve('NOT_MATCH');
       } else if (renderProps) {
-        // const fetch = isomFetch.use(ctx, router);
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
@@ -94,6 +95,7 @@ app.use(function* s() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }
+  isomFetch.use(this, router);
   const result = yield getRouteContext(this);
   if (result !== 'NOT_MATCH') {
     this.body = result;

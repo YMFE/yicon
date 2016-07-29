@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { User, Repo } from '../../model';
 
+// suggest 获取用户名称
 export function* getUserByName() {
-  const { username } = this.param;
-  this.state.respond = yield User.findOne({
-    where: { name: username },
+  const { q } = this.param;
+  this.state.respond = yield User.findAll({
+    where: { name: { $like: `${q}%` } },
+    limit: 6,
   });
 }
 
@@ -70,18 +72,18 @@ export function* validateAuth(next) {
     case 'owner': {
       const user = yield User.findOne({ where: { id: userId } });
       if (!user || user.actor < 1) throw new Error('no-auth');
-      yield next;
-      return;
+      break;
     }
     case 'admin': {
       const user = yield User.findOne({ where: { id: userId } });
       if (!user || user.actor < 2) throw new Error('no-auth');
-      yield next;
-      return;
+      break;
     }
     default:
       if (!userId) throw new Error('no-login');
-      yield next;
-      return;
+      break;
   }
+  this.state.respond = '校验成功';
+  yield next;
+  return;
 }

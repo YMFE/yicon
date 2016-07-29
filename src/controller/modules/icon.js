@@ -6,7 +6,8 @@ import Q from 'q';
 
 import { logRecorder } from './log';
 import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion, User } from '../../model';
-import { isPlainObject, ensureCachesExist } from '../../helpers/utils';
+import { isPlainObject } from '../../helpers/utils';
+import { ensureCachesExist } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
@@ -334,7 +335,10 @@ export function* updateIconInfo(next) {
   if (isPlainObject(data)) throw new Error('必须传入非空的数据参数');
   const result = yield Icon.update(data, { where: { id: iconId } });
   if (result) {
-    this.state.respond = '修改图标信息成功';
+    this.state.respond = yield Icon.findOne({
+      where: { id: iconId },
+      attributes: ['name', 'tags'],
+    });
   } else {
     throw new Error('修改图标信息失败');
   }

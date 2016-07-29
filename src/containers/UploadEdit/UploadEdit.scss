@@ -1,0 +1,278 @@
+@charset "utf-8";
+// module upload-icons
+.upload-title {
+  padding-left: 28px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 24px;
+}
+.upload-icon {
+  .upload-icon-list {
+    position: relative;
+    float: left;
+    width: 1008px;
+    height: 76px;
+    overflow: hidden;
+    .upload-icon-item, .upload-icon-btn {
+      float: left;
+      position: relative;
+      text-align: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      border: 2px solid #eef1f3;
+      color: #555f6e;
+      margin: 0 4px;
+      .upload-icon {
+        font-size: 60px;
+        line-height: 72px;
+      }
+      .delete {
+        display: none;
+        font-size: 14px;
+        line-height: 14px;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        cursor: pointer;
+        color: #555f6e;
+      }
+    }
+    .upload-icon-item:hover {
+      border: 2px solid #bfe2f4;
+      color: #008ed6;
+      .delete {
+        display: block;
+      }
+    }
+    .upload-icon-item.on {
+      border: 2px solid #ffcccc;
+      color: #555f6e;
+      .delete {
+        display: none;
+      }
+    }
+    .upload-icon-btn {
+      position: absolute;
+      right: 0;
+      background: #fff;
+      .upload-btn-icon {
+        font-size: 32px;
+      }
+      .upload-btn-txt {
+        line-height: 12px;
+        font-size: 14px;
+      }
+    }
+  }
+  .icons-more-btn {
+    float: left;
+    width: 36px;
+    height: 76px;
+    line-height: 76px;
+    text-align: center;
+    color: #fff;
+    background: #e8e8e8;
+    border: 0;
+    .icons-more-btn-icon {
+      font-size: 16px;
+    }
+  }
+  .icons-more-btn-right {
+    float: right;
+  }
+  .icons-more-btn:hover {
+    background: #008ed6;
+  }
+}
+.upload-setting {
+  margin: 50px 0;
+  .set-pre-next-btn {
+    float: left;
+    line-height: 72px;
+    text-align: center;
+    height: 305px;
+    width: 112px;
+    border: 0;
+    color: #e8e8e8;
+    background: #fff;
+    .set-pre-next-icon {
+      font-size: 72px;
+    }
+  }
+  .set-pre-next-btn:hover {
+    color: #555f6e;
+  }
+  .set-pre-next-right {
+    float: right;
+  }
+  .icon-big-img {
+    margin-left: 20px;
+  }
+  .setting-opts {
+    float: left;
+    margin-left: 30px;
+    .set-opt-name {
+      font-size: 12px;
+      color: #6f6f6f;
+      .require {
+        color: #ff7171;
+      }
+    }
+    .setting-opt {
+      margin-bottom: 25px;
+      .set-input-wrap {
+        margin-left: 5px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 338px;
+        height: 36px;
+        border: 1px solid #dfdfdf;
+        .set-input {
+          margin-left: 10px;
+          width: 314px;
+          outline: none;
+          line-height: 36px;
+          font-size: 14px;
+          border: 0;
+        }
+        .set-style-icon {
+          color: #b3b8c4;
+        }
+        .set-tag-icon {
+          color: #6f6f6f;
+        }
+      }
+      .icon-tag-list {
+        padding: 0 10px;
+        width: 318px;
+        height: 96px;
+        border: 1px solid #dfdfdf;
+        border-top: 0;
+        margin-left: 64px;
+        .icon-tag {
+          float: left;
+          padding: 6px;
+          margin: 12px 8px 0 0;
+          font-size: 12px;
+          border-radius: 6px;
+          background: #f1f3f6;
+          color: #787979;
+          .delete {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+.yicon-upload-container {
+  background: #fff;
+  width: 1080px;
+  margin: 30px auto;
+  .upload-submit {
+    padding: 0 36px;
+    background: #f9fafe;
+    height: 110px;
+    .upload-submit-tips {
+      float: right;
+      line-height: 36px;
+      font-size: 12px;
+      color: #ff7171;
+    }
+    .upload-submit-setting {
+      float: right;
+      color: #616161;
+      .submit-info {
+        line-height: 38px;
+        font-size: 16px;
+        .icon-num {
+          color: #ff7171;
+        }
+      }
+      .select-repository {
+        display: inline-block;
+        height: 36px;
+        border: 1px solid #dfdfdf;
+        border-right: 0;
+        background: #fff;
+        .select-input {
+          margin-left: 10px;
+          line-height: 36px;
+          font-size: 14px;
+          outline: none;
+          border: 0;
+        }
+        .select-repository-icon {
+          color: #b3b8c4;
+        }
+      }
+      .submit-btn {
+        width: 150px;
+        height: 38px;
+        line-height: 38px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        border: 0;
+        border-radius: 2px;
+        color: #fff;
+        background: #008ed6;
+      }
+    }
+  }
+}
+
+
+
+//  big-img
+
+.icon-big-img {
+  float: left;
+  position: relative;
+  width: 305px;
+  height: 305px;
+  .hline, .vline {
+    position: absolute;
+    background: #c2e7f5;
+  }
+  .hline {
+    width: 305px;
+    height: 1px;
+  }
+  .vline {
+    width: 1px;
+    height: 305px;
+  }
+  .big-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 305px;
+    height: 305px;
+    line-height: 305px;
+    text-align: center;
+    .big {
+      font-size: 303px;
+    }
+  }
+}
+.icon-big-img.small {
+  width: 257px;
+  height: 257px;
+  .hline {
+    width: 257px;
+  }
+  .vline {
+    height: 257px;
+  }
+  .big-icon {
+    width: 257px;
+    height: 257px;
+    line-height: 257px;
+    .big {
+      font-size: 255px;
+    }
+  }
+}

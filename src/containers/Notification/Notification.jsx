@@ -7,6 +7,7 @@ import {
   getInfo,
 } from '../../actions/notification';
 import Pager from '../../components/common/Pager/';
+
 const scope = {
   repo: '系统',
   project: '项目',
@@ -44,26 +45,6 @@ export default class Notification extends Component {
   @autobind
   onChangePage(page) {
     this.getInfo(this.state.tag, page);
-  }
-
-  getDescribeForInfo(item) {
-    // TODO: 这 tmd 对前端来说太不友好了
-    const regExp = /@([^@]+)@/g;
-    return item.operation.replace(regExp, (_, matched) => {
-      let text;
-      const data = JSON.parse(matched);
-      // 处理一下各种日志的情况
-      const keys = Object.keys(data);
-      // 我们一般只有一个 key
-      const firstKey = keys[0];
-      if (keys.indexOf('icon') || keys.indexOf('user')) {
-        text = data[firstKey].name;
-      } else {
-        text = data[firstKey];
-      }
-
-      return `<span class="key">${text}</span>`;
-    });
   }
 
   @autobind
@@ -134,7 +115,8 @@ export default class Notification extends Component {
                       key={item.id}
                       tag={scope[item.scope]}
                       timeStr={item.createdAt}
-                      titleHtml={this.getDescribeForInfo(item)}
+                      showTitleHtml
+                      item={item}
                       isNew={item.userLog.unread}
                     />
                     ))
