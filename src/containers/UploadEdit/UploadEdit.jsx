@@ -40,9 +40,9 @@ const propTypes = {
   }
 )
 export default class UploadEdit extends Component {
-  componentWillMount() {
-    this.props.fetchUploadEditLoad();
-  }
+  // componentWillMount() {
+  //   this.props.fetchUploadEditLoad();
+  // }
   render() {
     const { curenticon } = this.props;
     // const icon = '&#xf50f;';
