@@ -29,13 +29,26 @@ class DownloadDial extends Component {
       isEdit: true,
     });
   }
+  validate(tags) {
+    // tags必须为非空字符串
+    return /\S+/.test(tags);
+  }
+  filter(tags) {
+    // 过滤首尾空白字符
+    return tags.replace(/^\s*|\s*$/g, '');
+  }
   @autobind
   addTag(e) {
     if (e.keyCode === 13) {
+      const target = e.target;
       const { iconDetail } = this.props;
-      const value = e.target.value;
-      const tags = `${iconDetail.tags},${value}`;
-      this.props.editIcon(iconDetail.id, { tags });
+      const tag = target.value;
+      if (this.validate(this.filter(tag))) {
+        const tags = `${iconDetail.tags},${tag}`;
+        this.props.editIcon(iconDetail.id, { tags }).then(() => {
+          target.value = '';
+        });
+      }
     }
   }
   @autobind
@@ -50,18 +63,24 @@ class DownloadDial extends Component {
   }
   @autobind
   save(e) {
-    const name = e.target.value;
-    this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
-      this.setState({
-        isEdit: false,
-      });
-    });
+    if (e.type === 'click' || +e.keyCode === +13) {
+      const name = this.refs.inputName.value;
+      if (this.validate(this.filter(name))) {
+        this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
+          this.setState({
+            isEdit: false,
+          });
+          this.refs.inputName.value = '';
+        });
+      }
+    }
   }
   @autobind
   cancel() {
     this.setState({
       isEdit: false,
     });
+    this.refs.inputName.value = '';
   }
 
   tagsToArr(tags) {
@@ -76,7 +95,7 @@ class DownloadDial extends Component {
     let status = 1;
     if (userInfo.login) {
       status = 2;
-      if (userInfo.admin && userInfo.repoAdmin.indexOf(repoId) !== -1) {
+      if (userInfo.repoAdmin.indexOf(repoId) !== -1) {
         status = 3;
       }
     }
@@ -89,12 +108,17 @@ class DownloadDial extends Component {
             <div className="icon-name">
               <span className="icon-name-txt">{iconDetail.name}</span>
               <button
-                className={`to-edit-name ${+status === +2 ? '' : 'hide'}`}
+                className={`to-edit-name ${+status === +3 ? '' : 'hide'}`}
                 onClick={this.showNameEdit}
               >修改名称</button>
             </div>
             <div className="edit-name">
-              <input type="text" className="input-name" defaultValue={iconDetail.name} />
+              <input
+                type="text"
+                className="input-name"
+                ref="inputName"
+                onKeyDown={this.save}
+              />
               <button className="save" onClick={this.save}>保存</button>
               <button className="cancel" onClick={this.cancel}>取消</button>
             </div>
