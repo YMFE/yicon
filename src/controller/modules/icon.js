@@ -335,7 +335,10 @@ export function* updateIconInfo(next) {
   if (isPlainObject(data)) throw new Error('必须传入非空的数据参数');
   const result = yield Icon.update(data, { where: { id: iconId } });
   if (result) {
-    this.state.respond = '修改图标信息成功';
+    this.state.respond = yield Icon.findOne({
+      where: { id: iconId },
+      attributes: ['name', 'tags'],
+    });
   } else {
     throw new Error('修改图标信息失败');
   }

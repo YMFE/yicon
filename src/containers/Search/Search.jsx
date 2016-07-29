@@ -48,6 +48,7 @@ export default class Search extends Component {
                   repo.icons.map((icon) => (
                     <IconButton
                       icon={icon}
+                      repoId={repo.id}
                       key={icon.id}
                     />
                   ))

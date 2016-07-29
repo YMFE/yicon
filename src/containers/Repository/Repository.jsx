@@ -6,8 +6,11 @@ import {
   changeIconSize,
   resetIconSize,
 } from '../../actions/repository';
-import Slider from '../../components/common/Slider/Slider';
+import { getIconDetail } from '../../actions/icon';
+import SliderSize from '../../components/SliderSize/SliderSize';
 import Pager from '../../components/common/Pager';
+import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import Dialog from '../../components/common/Dialog/Index.jsx';
 import { SubTitle } from '../../components/';
 import { autobind } from 'core-decorators';
 
@@ -20,10 +23,17 @@ const pageSize = 64;
   state => ({
     currRepository: state.repository.currRepository,
     iconSize: state.repository.iconSize,
+    iconDetail: state.icon,
   }),
-  { fetchRepositoryData, changeIconSize, resetIconSize }
+  { fetchRepositoryData, changeIconSize, resetIconSize, getIconDetail }
 )
 export default class Repository extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowDownloadDialog: false,
+    };
+  }
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
@@ -47,10 +57,26 @@ export default class Repository extends Component {
     this.props.changeIconSize(value);
   }
 
+  @autobind
+  clikIconDownloadBtn(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
+  }
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowDownloadDialog: isShow,
+    });
+  }
+
   render() {
-    // const { name, icons, user, id } = this.props.currRepository;
     const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
-    // 待解决：不知道为啥user会为undefined(initialState已经写为'{}')
+    // 待解决：initialState已经写为'{}', 不知道为啥初始user还是为undefined
     const { id } = this.props.params;
     let admin = '';
     if (user) {
@@ -68,10 +94,10 @@ export default class Repository extends Component {
                 <Link to="/upload" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
                 </Link>
-                <a href="#" className="options-btns btns-blue">
+                <button className="options-btns btns-blue">
                   <i className="iconfont">&#xf50b;</i>下载全部图标
-                </a>
-                <a href="#" className="options-btns btns-default ml10">添加公告</a>
+                </button>
+                <button className="options-btns btns-default ml10">添加公告</button>
                 <Link
                   to={`/repositories/${id}/logs`}
                   className="options-btns btns-default"
@@ -79,23 +105,7 @@ export default class Repository extends Component {
                   查看日志
                 </Link>
               </div>
-              <span
-                style={{
-                  float: 'right',
-                  color: '#616161',
-                  fontSize: 16,
-                  lineHeight: '38px',
-                }}
-              >{this.props.iconSize}px</span>
-              <div style={{ width: 216, padding: 11, float: 'right' }}>
-                <Slider
-                  min={16}
-                  max={64}
-                  step={1}
-                  defaultValue={64}
-                  onChange={this.changeSize}
-                />
-              </div>
+              <SliderSize />
             </div>
           </div>
         </SubTitle>
@@ -106,6 +116,7 @@ export default class Repository extends Component {
                 <IconButton
                   icon={icon}
                   key={icon.id}
+                  download={this.clikIconDownloadBtn(icon.id)}
                 />
               ))
             }
@@ -118,6 +129,13 @@ export default class Repository extends Component {
             />
           }
         </div>
+        <Dialog
+          empty
+          visible={this.state.isShowDownloadDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <DownloadDialog />
+        </Dialog>
       </div>
     );
   }
@@ -127,6 +145,7 @@ Repository.propTypes = {
   fetchRepositoryData: PropTypes.func,
   changeIconSize: PropTypes.func,
   resetIconSize: PropTypes.func,
+  getIconDetail: PropTypes.func,
   iconSize: PropTypes.number,
   currRepository: PropTypes.object,
   params: PropTypes.object,

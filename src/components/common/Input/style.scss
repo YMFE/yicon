@@ -16,14 +16,14 @@
   line-height: 30px;
 }
 
-.set-input-wrap {
+.input-wrap {
   margin-left: 5px;
   display: inline-block;
   vertical-align: middle;
   width: 338px;
   height: 36px;
   border: 1px solid #dfdfdf;
-  .set-input {
+  .input {
     margin-left: 10px;
     width: 314px;
     outline: none;
@@ -31,10 +31,7 @@
     font-size: 14px;
     border: 0;
   }
-  .set-style-icon {
+  .style-icon {
     color: #b3b8c4;
-  }
-  .set-tag-icon {
-    color: #6f6f6f;
   }
 }
