@@ -82,7 +82,7 @@ export function* createProject(next) {
 
 export function* getOneProject(next) {
   const { projectId } = this.param;
-  const { model } = this.state.user;
+  const { userId, model } = this.state.user;
   let { version = '0.0.0' } = this.param;
 
   version = versionTools.v2n(version);
@@ -91,7 +91,6 @@ export function* getOneProject(next) {
 
   const projects = yield model.getProjects({
     where: { id: projectId },
-    attributes: { exclude: ['owner'] },
     include: [{ model: User, as: 'projectOwner' }],
   });
 
@@ -108,6 +107,8 @@ export function* getOneProject(next) {
     },
   });
   result.members = yield project.getUsers();
+  result.isOwner = project.owner === userId;
+  delete result.owner;
 
   this.state.respond = result;
   yield next;
