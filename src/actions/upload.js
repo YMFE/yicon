@@ -7,6 +7,6 @@ const fetch = isonFetch.create({ baseURL: '/api' });
 export function fetchUpload(icons) {
   return {
     type: FETCH_UPLOAD_ICON,
-    payload: fetch.get(`/user/icons?icons=${icons}`),
+    payload: fetch.post(`/user/icons?icons=${icons}`),
   };
 }

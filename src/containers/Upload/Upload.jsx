@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import './Upload.scss';
+import { fetchUpload } from '../../actions/upload';
+
+
 const defaultProps = {
   uploadAreaClass: 'upload-area',
   isEntering: false,
@@ -8,8 +11,17 @@ const defaultProps = {
 const propTypes = {
   uploadAreaClass: PropTypes.string,
   isEntering: PropTypes.bool,
+  fetchUpload: PropTypes.func,
 };
 const MAX_SIZE = 500; // 文件大小限制
+@connect(
+  state => ({
+    icons: state.user.upload.icons,
+  }),
+  {
+    fetchUpload,
+  }
+)
 export default class Upload extends Component {
   constructor(props) {
     super(props);
@@ -94,6 +106,7 @@ export default class Upload extends Component {
     }
     fd.append('repoId', repoId);
     // 这里开始调上传接口
+    this.props.fetchUpload(fd);
     location.assign('/UploadEdit/');
     return false;
     // xhr = new XMLHttpRequest();
