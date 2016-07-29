@@ -333,36 +333,57 @@ export function* getAllPublicProjects(next) {
 }
 
 export function* diffVersion(next) {
-  const { projectId, highVersion, lowVersion } = this.param;
+  const { projectId } = this.param;
+  let { highVersion, lowVersion } = this.param;
   if (isNaN(projectId)) throw new Error('缺少项目id参数');
 
   const project = yield Project.findOne({ where: { id: projectId } });
   const hVersion = versionTools.v2n(highVersion);
   const lVersion = versionTools.v2n(lowVersion);
   if (isNaN(hVersion) && isNaN(lVersion)) throw new Error('缺少对比项目版本号');
+  if (hVersion < lVersion) {
+    const temp = highVersion;
+    highVersion = lowVersion;
+    lowVersion = temp;
+  }
 
-  const icons = yield project.getIcons({
-    through: {
-      model: ProjectVersion,
-      where: {
-        version: {
-          $in: [hVersion, lVersion],
+  let result = { deleted: [], added: [] };
+  if (hVersion !== lVersion) {
+    const icons = yield project.getIcons({
+      through: {
+        model: ProjectVersion,
+        where: {
+          version: {
+            $in: [hVersion, lVersion],
+          },
         },
       },
-    },
-  });
-  const hvIcons = [];
-  const lvIcons = [];
-  icons.forEach(v => {
-    if (v.projectVersions && v.projectVersions.version === highVersion) {
-      hvIcons.push(v);
-    } else {
-      lvIcons.push(v);
-    }
-  });
-  const { deleted, added } = diffArray(lvIcons, hvIcons);
+    });
+    const hvIcons = [];
+    const lvIcons = [];
+    icons.forEach(v => {
+      if (v.projectVersions && v.projectVersions.version === highVersion) {
+        hvIcons.push(v);
+      } else {
+        lvIcons.push(v);
+      }
+    });
+    result = diffArray(lvIcons, hvIcons);
+  }
   this.state.respond = this.state.respond || {};
-  this.state.respond.deleted = deleted;
-  this.state.respond.added = added;
+  this.state.respond.deleted = result.deleted;
+  this.state.respond.added = result.added;
+  yield next;
+}
+
+export function* getProjectVersion(next) {
+  const { projectId } = this.param;
+  if (isNaN(projectId)) throw new Error('缺少参数项目id');
+  const project = yield Project.findOne({ attributes: ['name'], where: { id: projectId } });
+  const version = yield ProjectVersion.findAll({
+    attributes: [[seq.literal('distinct `version`'), 'version']],
+    where: { projectId },
+  }).map(v => v.version);
+  this.state.respond = { project, version };
   yield next;
 }

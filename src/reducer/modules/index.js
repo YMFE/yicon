@@ -10,6 +10,7 @@ import uploaded from './uploaded';
 import user from './user';
 import icon from './icon';
 import log from './log';
+import versionComparison from './versionComparison';
 
 import {
   LOGOUT_DESTORY,
@@ -30,6 +31,7 @@ const reducers = combineReducers({
     info: user,
     notification,
     uploaded,
+    versionComparison,
   }),
 });
 
