@@ -51,9 +51,9 @@ export default (store) => {
       <Route path="demo" component={Demo} /> {/* demo */}
 
       {/* 登录用户路由 */}
-      <Route path="upload" component={Upload} /> {/* 上传图标 */}
-      <Route path="uploadedit" component={UploadEdit} /> {/* 上传图标 设置图标标签 */}
       <Route onEnter={requireLogin}>
+        <Route path="upload" component={Upload} /> {/* 上传图标 */}
+        <Route path="uploadedit" component={UploadEdit} /> {/* 上传图标 设置图标标签 */}
         <Route path="workbench" /> {/* 工作台 */}
         <Route path="user/notifications/projects" /> {/* 项目通知页面 */}
         <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
