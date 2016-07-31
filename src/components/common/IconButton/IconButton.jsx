@@ -75,16 +75,16 @@ class IconButton extends Component {
   }
 
   render() {
-    const { icon, userInfo, download } = this.props;
+    const { icon, userInfo, download, repoId } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
-    const repoId = icon.repoVersion.repositoryId;
+    const repositoryId = repoId || icon.repoVersion.repositoryId;
 
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
       status = 2;
-      if (userInfo.admin && userInfo.repoAdmin.indexOf(repoId) !== -1) {
+      if (userInfo.admin && userInfo.repoAdmin.indexOf(repositoryId) !== -1) {
         status = 3;
       }
     }
@@ -176,6 +176,7 @@ IconButton.propTypes = {
   icon: PropTypes.object,
   userInfo: PropTypes.object,
   iconSize: PropTypes.number,
+  repoId: PropTypes.number,
   iconsInLocalStorage: PropTypes.array,
   deleteIconInLocalStorage: PropTypes.func,
   addIconToLocalStorage: PropTypes.func,
