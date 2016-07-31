@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import axios from 'axios';
 
+import Message from '../../components/common/Message/Message';
+
 // 最大 20kb
 const MAX_SIZE = 20 * 1024;
 
@@ -54,9 +56,19 @@ export default class Uploader extends Component {
     const fileList = [...files];
 
     fileList.some(file => {
-      // TODO: 使用 message 提示用户错误信息
-      hasInvalidFile = file.type !== 'image/svg+xml' || file.size > MAX_SIZE;
-      return hasInvalidFile;
+      if (file.type !== 'image/svg+xml') {
+        Message.error('上传的文件必须是 SVG 文件！');
+        hasInvalidFile = true;
+        return true;
+      }
+
+      if (file.size > MAX_SIZE) {
+        Message.error('上传的文件最大为 20KB！');
+        hasInvalidFile = true;
+        return true;
+      }
+
+      return false;
     });
 
     if (!hasInvalidFile) {
@@ -69,7 +81,8 @@ export default class Uploader extends Component {
         .post('/api/user/icons', formData)
         .then(() => {
           this.props.dispatch(push('/workbench'));
-        });
+        })
+        .catch(e => Message.error(e));
     }
   }
 

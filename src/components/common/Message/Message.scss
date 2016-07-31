@@ -1,0 +1,48 @@
+.g-message {
+  font-size: 14px;
+  position: fixed;
+  z-index: 1010;
+  width: 100%;
+  top: 16px;
+  left: 0;
+
+  &-notice {
+    width: auto;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+  }
+
+  .tip {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 10px;
+    margin-right: 10px;
+
+    &-error {
+      background-color: #f50;
+    }
+
+    &-success {
+      background-color: #87d068;
+    }
+
+    .iconfont {
+      font-weight: 800;
+      font-size: 13px;
+      margin: -4px 0 0 4px;
+      color: #fff;
+    }
+  }
+
+  &-notice-content {
+    position: relative;
+    right: 50%;
+    padding: 8px 16px;
+    box-shadow: 0 1px 8px rgba(100, 100, 100, .2);
+    background-color: #fff8e5;
+    border:1px solid #ffe8a6;
+    display: block;
+  }
+}

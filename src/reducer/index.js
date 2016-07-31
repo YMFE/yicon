@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxPromise from 'redux-promise';
+import message from './middlewares/message';
 import reduxThunk from 'redux-thunk';
 import { reduxIsomFetch } from 'isom-fetch';
 import { persistState } from 'redux-devtools';
@@ -11,9 +12,10 @@ import reducer from './modules';
 export default (initialState) => {
   const middleware = [
     routerMiddleware(browserHistory),
-    reduxPromise,
     reduxThunk,
     reduxIsomFetch,
+    reduxPromise,
+    message,
   ];
 
   let finalCreateStore;
