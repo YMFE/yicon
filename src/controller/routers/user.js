@@ -15,10 +15,11 @@ import {
 } from '../modules/project';
 import {
   uploadIcons,
-  getUploadedIcons,
+  getSubmittedIcons,
   submitIcons,
   deleteIcons,
   updateIconInfo,
+  getUploadedIcons,
 } from '../modules/icon';
 
 import { getUserByName } from '../modules/user';
@@ -34,7 +35,8 @@ user.use(getCurrentUser);
 
 user.post('/icons', uploader.array('icon', 20), uploadIcons);
 user.patch('/icons', submitIcons);
-user.get('/icons', pagination, getUploadedIcons);
+user.get('/workbench', getUploadedIcons);
+user.get('/icons', pagination, getSubmittedIcons);
 user.delete('/icons/:iconId', deleteIcons);
 user.patch('/icons/:iconId', updateIconInfo);
 

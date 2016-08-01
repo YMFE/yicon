@@ -5,8 +5,9 @@ import Icon from '../Icon/Icon.jsx';
 class IconBgGrid extends Component {
 
   render() {
-    const { size, rows, icon } = this.props;
-    const r = (size - 1) / rows;
+    const { bgSize, rows, iconPath, iconSize, iconColor } = this.props;
+    const size = iconSize || bgSize - 2;
+    const r = (bgSize - 1) / rows;
     const hlines = [];
     const vlines = [];
     for (let i = 0; i <= rows; i++) {
@@ -30,13 +31,13 @@ class IconBgGrid extends Component {
     }
 
     return (
-      <div className="icon-big-img" style={{ width: size, height: size }}>
+      <div className="icon-big-img" style={{ width: bgSize, height: bgSize }}>
         <div className="bg-grid">
           {hlines}
           {vlines}
         </div>
         <div className="big-icon">
-          <Icon size={size - 2} d={icon.path} />
+          <Icon size={size} d={iconPath} fill={iconColor} />
         </div>
       </div>
     );
@@ -45,14 +46,17 @@ class IconBgGrid extends Component {
 
 
 IconBgGrid.defaultProps = {
-  size: 305,
+  bgSize: 305,
   rows: 16,
+  iconColor: '#000',
 };
 
 IconBgGrid.propTypes = {
-  size: PropTypes.number,
+  bgSize: PropTypes.number,
   rows: PropTypes.number,
-  icon: PropTypes.object,
+  iconSize: PropTypes.number,
+  iconColor: PropTypes.string,
+  iconPath: PropTypes.string.isRequired,
 };
 
 export default IconBgGrid;
