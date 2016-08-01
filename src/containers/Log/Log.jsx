@@ -39,7 +39,7 @@ class Log extends Component {
 
     return (
       <div className="log">
-        <SubTitle tit="图标日志" />
+        <SubTitle tit="图标库日志" />
         <Content extraClass={mainClass}>
           <div style={{ width: '100%' }}>
             <TimelineList list={list} />

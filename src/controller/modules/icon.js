@@ -7,7 +7,7 @@ import Q from 'q';
 import { logRecorder } from './log';
 import { seq, Repo, Project, Icon, RepoVersion, ProjectVersion, User } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
-import { ensureCachesExist } from '../../helpers/fs';
+import { ensureCachesExist, getLastestStamp } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 
 export function* getById(next) {
@@ -345,7 +345,18 @@ export function* updateIconInfo(next) {
   yield next;
 }
 
+// 这个是获取已经上传的，但是还没有提交的图标
 export function* getUploadedIcons(next) {
+  const { userId } = this.state.user;
+
+  this.state.respond = yield Icon.findAll({
+    where: { uploader: userId, status: iconStatus.UPLOADED },
+  });
+  yield next;
+}
+
+// 这个是获取已经提交的、上传的、被拒绝的图标
+export function* getSubmittedIcons(next) {
   const { userId } = this.state.user;
   const { pageMixin } = this.state;
   const statusIn = {
@@ -410,7 +421,8 @@ export function* getUploadedIcons(next) {
  * 这里，当下载项为大库时，我们会查看大库的最后更改日期
  * 如果存在的文件的时间戳比最后更改日期晚，就直接用对应的文件好了
  *
- * 这里 tmd 有个坑：图标替换的时候是直接替换的 svg 路径
+ * 项目之所以不这么处理是因为这里 tmd 有个坑：
+ * 图标替换的时候是直接替换的 svg 路径
  * 因此所有的项目目前不太容易感知是否发生了变化
  *
  */
@@ -419,6 +431,10 @@ export function* downloadIcons(next) {
   let { fontName } = this.param;
   let iconData;
   let foldName;
+  let foldPrefix;
+  let lastModify = null;
+
+  const isRepo = type === 'repo';
   const stamp = +new Date;
   if (Array.isArray(icons) && icons.length) {
     iconData = yield Icon.findAll({
@@ -432,7 +448,6 @@ export function* downloadIcons(next) {
     foldName = `${stamp}`;
     fontName = fontName || 'iconfont';
   } else {
-    const isRepo = type === 'repo';
     const model = isRepo ? Repo : Project;
     const throughModel = isRepo ? RepoVersion : ProjectVersion;
     const instance = yield model.findOne({ where: { id } });
@@ -449,20 +464,36 @@ export function* downloadIcons(next) {
       where: { status: iconStatus.RESOLVED },
       raw: true,
     });
-    foldName = `${type}-${instance.id}-${version}-${stamp}`;
+    foldPrefix = `${type}-${instance.id}-${version}`;
+    foldName = `${foldPrefix}-${stamp}`;
     fontName = fontName || (isRepo ? instance.alias : instance.name);
+    if (isRepo) {
+      lastModify = +new Date(instance.updatedAt);
+    }
   }
 
   const fontDest = yield ensureCachesExist(foldName);
-  const zipDest = `${fontDest}.zip`;
-  yield fontBuilder({
-    icons: iconData,
-    readFiles: false,
-    dest: fontDest,
-    fontName,
-  });
-  yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
-  this.state.respond = zipDest;
+  let needReBuilder = true;
+  let zipDest;
+  let latestStamp;
+  // 如果是大库则检查一下
+  if (isRepo) {
+    latestStamp = yield getLastestStamp(foldPrefix);
+    needReBuilder = !latestStamp || latestStamp < lastModify;
+  }
+  if (needReBuilder) {
+    zipDest = `${fontDest}.zip`;
+    yield fontBuilder({
+      icons: iconData,
+      readFiles: false,
+      dest: fontDest,
+      fontName,
+    });
+    yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
+  } else {
+    foldName = `${foldPrefix}-${latestStamp}`;
+  }
+  this.state.respond = `${foldName}.zip`;
   // 之后先创建字体文件夹，然后把它压缩成 zip 包
   yield next;
 }
