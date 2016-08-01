@@ -55,6 +55,11 @@ export default class Uploader extends Component {
     let hasInvalidFile = false;
     const fileList = [...files];
 
+    if (files.length > 20) {
+      Message.error('最多能上传 20 个文件！');
+      return;
+    }
+
     fileList.some(file => {
       if (file.type !== 'image/svg+xml') {
         Message.error('上传的文件必须是 SVG 文件！');
