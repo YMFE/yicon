@@ -83,6 +83,17 @@ body, button, input, select, textarea {
     color:#fff;
 		background-color: #009be9;
 }
+.info-error{
+  border:1px solid #ffcccc;
+}
+.error-info{
+  border:1px solid #ffcccc;
+  background-color: #fff2f2;
+  color:#ff5555;
+  padding: 0 12px;
+  height: 30px;
+  line-height: 30px;
+}
 .pager-container {
   border-top: 1px solid #d8dbdd;
   padding: 25px 40px;

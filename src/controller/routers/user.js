@@ -11,13 +11,15 @@ import {
   updateProjectInfo,
   updateProjectMember,
   diffVersion,
+  getProjectVersion,
 } from '../modules/project';
 import {
   uploadIcons,
-  getUploadedIcons,
+  getSubmittedIcons,
   submitIcons,
   deleteIcons,
   updateIconInfo,
+  getUploadedIcons,
 } from '../modules/icon';
 
 import { getUserByName } from '../modules/user';
@@ -33,7 +35,8 @@ user.use(getCurrentUser);
 
 user.post('/icons', uploader.array('icon', 20), uploadIcons);
 user.patch('/icons', submitIcons);
-user.get('/icons', pagination, getUploadedIcons);
+user.get('/workbench', getUploadedIcons);
+user.get('/icons', pagination, getSubmittedIcons);
 user.delete('/icons/:iconId', deleteIcons);
 user.patch('/icons/:iconId', updateIconInfo);
 
@@ -48,6 +51,7 @@ user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
 // user.get('/projects/:projectId/compareVersion/:highVersion...:lowVersion', diffVersion);
 user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
+user.get('/projects/:projectId/versions', getProjectVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:nId', getOneNotice);

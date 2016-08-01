@@ -13,6 +13,7 @@ import Transition from './Transition/Transition';
 import Uploaded from './Uploaded/Uploaded';
 import UserProject from './UserProject/UserProject';
 import Log from './Log/Log';
+import VersionComparison from './VersionComparison/VersionComparison';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
@@ -33,4 +34,5 @@ export {
   Notification,
   Uploaded,
   UserProject,
+  VersionComparison,
 };
