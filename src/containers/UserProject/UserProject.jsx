@@ -36,6 +36,7 @@ class UserProject extends Component {
     usersProjectList: PropTypes.array,
     currentUserProjectInfo: PropTypes.object,
     getUsersProjectList: PropTypes.func,
+    fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
     patchUserProject: PropTypes.func,
     suggestList: PropTypes.array,
@@ -53,16 +54,17 @@ class UserProject extends Component {
     if (!current || id !== parseInt(current.id, 10)) {
       this.props.getUserProjectInfo(id);
     }
+    this.props.fetchMemberSuggestList();
   }
   componentWillReceiveProps(nextProps) {
     const current = nextProps.currentUserProjectInfo;
-    this.state = {
+    this.setState({
       name: current.name,
       id: current.id,
       owner: current.projectOwner,
       isPublic: current.public,
       members: current.members,
-    };
+    });
   }
   componentDidUpdate(nextProps) {
     const current = this.props.currentUserProjectInfo;
@@ -209,8 +211,9 @@ class UserProject extends Component {
         <ManageMembers
           showManageMember={this.state.showManageMember}
           onOk={this.updateManageMembers}
-          onChange={this.fetchMemberSuggestList}
+          onChange={this.props.fetchMemberSuggestList}
           onCancel={this.closeManageMembers}
+          onChoseMember={this.handleChoseMember}
           suggestList={this.props.suggestList}
           members={current.members}
         />

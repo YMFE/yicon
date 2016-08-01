@@ -3,8 +3,9 @@ import React, { PropTypes, Component } from 'react';
 // import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 // import Select, { Option } from '../../components/common/Select';
-import Select, { Option } from 'rc-select';
+// import Select, { Option } from 'rc-select';
 import Dialog from '../../components/common/Dialog/Index';
+import SearchList from '../../components/SearchList/SearchList';
 
 class ManageMembers extends Component {
   static propTypes = {
@@ -16,43 +17,47 @@ class ManageMembers extends Component {
     onCancel: PropTypes.func,
     onChange: PropTypes.func,
   }
-
+  static defaultProps ={
+    members: [],
+  }
   constructor(props) {
     super(props);
+    this.members = this.props.members.slice(0);
     this.state = {
       value: '',
-      members: this.props.members,
+      members: this.members,
     };
   }
-  // componentWillReceiveProps(nextProps){
-  //   this.setState({
-  //
-  //   })
+  // componentWillReceiveProps(nextProps) {
+    // console.log(nextProps.suggestList);
   // }
-
+  componentWillReceiveProps(props) {
+    props.members.forEach(item => {
+      const notExist = this.state.members.every(itm =>
+        (parseInt(itm.id, 10) !== parseInt(item.id, 10))
+      );
+      if (notExist) {
+        this.members.push(item);
+      }
+    });
+    console.log(`this.members:${this.members}`);
+  }
+  componentDidUpdate() {
+    if (this.props.showManageMember) {
+      if (this.SearchList) this.SearchList.onShow();
+    }
+  }
   @autobind
-  onChange(e) {
-    const value = e.target.value;
-    this.props.fetchMemberSuggestList(value);
+  onChange(value) {
+    this.props.onChange(value);
+    this.setState({
+      value,
+    });
   }
   @autobind
   onSelect(e) {
     this.setState({
       value: e,
-    });
-  }
-  @autobind
-  onDelete(e) {
-    const id = e.currentTarget.dataset.id;
-    this.state.suggestList.some((item, index, arr) => {
-      if (item.id === id) {
-        arr.splice(index, 1);
-        this.setState({
-          members: arr,
-        });
-        return true;
-      }
-      return false;
     });
   }
   getValue() {
@@ -61,26 +66,36 @@ class ManageMembers extends Component {
     };
   }
   @autobind
-  addNewMember() {
-    const suggestList = this.props.suggestList;
-    if (suggestList && suggestList.length === 0) {
-      return;
-    }
-    const list = this.state.members;
-    suggestList.some((item) => {
-      if (+item.id === +this.state.value) {
-        list.push(item);
+  deleteMember(e) {
+    const id = parseInt(e.currentTarget.dataset.id, 10);
+    this.members.some((item, index) => {
+      if (item.id === id) {
+        this.members.splice(index, 1);
         return true;
       }
       return false;
     });
-    this.setState({
-      members: list,
-    });
+    this.forceUpdate();
+  }
+  @autobind
+  addNewMember(item) {
+    console.log(`handle choseMembers${item}`);
+    if (!item) {
+      return;
+    }
+    const notExist = this.members.every(ite =>
+      (ite.id !== parseInt(item.id, 10))
+    );
+    if (notExist) {
+      this.members.push(item);
+      this.forceUpdate();
+    }
   }
   render() {
-    const suggestList = this.props.suggestList;
-    const current = this.state.members;
+    const members = Array.from(this.state.members);
+    const { suggestList } = this.props;
+    // console.log(`suggestList:${suggestList}`);
+    // console.log(`members:${members}`);
     return (
       <Dialog
         title="编辑项目"
@@ -91,46 +106,29 @@ class ManageMembers extends Component {
       >
         <form className="project-form">
           <ul>
-            <li className="field">
-              <div className="field-set">
-              {
-                suggestList && suggestList.length > 0 ?
-                  <Select
-                    placeholder="请输入需要添加成员域账号"
-                    onChange={this.onChange}
-                    onSelect={this.onSelect}
-                    defaultActiveFirstOption={false}
-                    value={this.state.value}
-                    allowClear
-                    combobox
-                  >
-                  {suggestList.map((item, index) => (
-                    <Option key={index} value={item.id}>{item.name}</Option>
-                  ))}
-                  </Select> :
-                  <input
-                    type="text"
-                    name="project-collaborators"
-                    className="project-collaborators"
-                    placeholder="请输入需要添加成员域账号"
-                    onChange={this.onChange}
-                    value={this.state.value}
-                  />
-              }
-              </div>
-              <div className="field-btn">
-                <div type="button" className="add-collaborators" onClick={this.addNewMember}>
-                  添加新成员
-                </div>
-              </div>
-            </li>
+            <SearchList
+              showSearchList={this.props.showManageMember}
+              placeholder="请输入需要添加成员域账号"
+              onChange={this.onChange}
+              onChoseMember={this.addNewMember}
+              suggestList={suggestList}
+              ref={(node) => {
+                if (node) this.SearchList = node;
+              }}
+            />
           </ul>
           <div className="collaborators">
             <p className="collaborators-title">项目成员</p>
             <ul className="collaborators-list">
               {
-                current && current.length > 0 && current.map((item, index) => (
-                  <li data-id={item.id} key={index} onClick={this.onDelete}>
+                members && members.length > 0 && members.map((item, index) => (
+                  <li
+                    data-id={item.id}
+                    key={index}
+                    onClick={(e) => {
+                      this.deleteMember(e);
+                    }}
+                  >
                     {item.name}
                     <i className="iconfont" title="删除成员">&#xf077;</i>
                   </li>
@@ -143,4 +141,5 @@ class ManageMembers extends Component {
     );
   }
 }
+
 export default ManageMembers;

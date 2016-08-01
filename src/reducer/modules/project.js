@@ -8,10 +8,12 @@ import {
   SAVE_TO_PROJECT,
   FETCH_MEMBERS_SUGGEST_LIST,
   PATCH_USERS_PROJECT_DETAIL,
+  PATCH_PROJECT_MEMBERS,
 } from '../../constants/actionTypes';
 
 import {
   dumpIconLocalStorage,
+  getUserProjectInfo,
 } from '../../actions/cart';
 
 const initialState = {
@@ -77,6 +79,14 @@ export default (state = initialState, action) => {
         return {
           ...state,
           currentPublicProjectInfo: action.payload.data,
+        };
+      }
+      return state;
+    }
+    case PATCH_PROJECT_MEMBERS: {
+      if (action.payload.res) {
+        return (dispatch) => {
+          dispatch(getUserProjectInfo(action.project.id));
         };
       }
       return state;

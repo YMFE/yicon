@@ -46,6 +46,7 @@
 		.collaborators{
 			margin-top: 10px;
 			overflow: hidden;
+			width: 420px;
 			&-title{
 				font-size:14px ;
 				color:#616161;
@@ -53,22 +54,23 @@
 			}
 			&-list{
 				li{
-				    float: left;
-				    color: #616161;
-				    padding:0 6px;
-				    background: #f1f3f6;
-				    margin-right: 6px;
-				    margin-top: 4px;
-				    border-radius: 3px;
-				    line-height: 26px;
-				    height: 26px;
-				    .iconfont{
-			    	    font-size:14px;
-					    float: right;
-					    cursor: pointer;
-					    vertical-align: top;
-					    margin-left: 2px;
-				    }
+			    float: left;
+			    color: #616161;
+			    padding:0 6px;
+			    background: #f1f3f6;
+			    margin-right: 6px;
+			    margin-top: 4px;
+			    border-radius: 3px;
+			    line-height: 26px;
+			    height: 26px;
+			    .iconfont{
+	    	    font-size:14px;
+				    float: right;
+				    cursor: pointer;
+				    vertical-align: top;
+				    margin-left: 2px;
+						line-height: 28px;
+			    }
 				}
 
 			}

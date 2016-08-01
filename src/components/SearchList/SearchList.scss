@@ -1,0 +1,26 @@
+.SuggestList{
+  position: relative;
+  &-list{
+    width: 298px;
+    border: 1px solid #dfdfdf;
+    border-top: 0;
+    position: fixed;
+    // padding: 0 10px;
+    z-index: 1002;
+    background-color: #fff;
+    >li{
+      height: 30px;
+      text-indent: 10px;
+      line-height: 30px;
+      &:hover, &.active{
+        background-color: #657289;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+  .add-collaborators{
+    cursor: pointer;
+  }
+
+}

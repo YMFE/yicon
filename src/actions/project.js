@@ -9,6 +9,7 @@ import {
   SAVE_TO_PROJECT,
   PATCH_USERS_PROJECT_DETAIL,
   FETCH_MEMBERS_SUGGEST_LIST,
+  PATCH_PROJECT_MEMBERS,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -46,6 +47,13 @@ export function fetchMemberSuggestList(value) {
   return {
     type: FETCH_MEMBERS_SUGGEST_LIST,
     payload: fetch.get(`/user/list?q=${value}`),
+  };
+}
+
+export function patchProjectMemeber(project) {
+  return {
+    type: PATCH_PROJECT_MEMBERS,
+    payload: fetch.patch(`/user/projects/${project.id}/members`, project.members),
   };
 }
 
