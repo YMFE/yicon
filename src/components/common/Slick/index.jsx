@@ -1,6 +1,5 @@
 import './Slick.scss';
 import React, { Component, PropTypes } from 'react';
-
 const itemData = [
   {
     name: '笔',
@@ -72,31 +71,41 @@ const itemData = [
     tags: '你好,呵呵',
     code: 61442,
   }];
+
+
 export default class Slick extends Component {
   static defaultProps = {
     directionNav: true,
+    defaultTranslateX: 0,
+    iconItemListPos: {
+      transform: 'translateX(0)',
+    },
+    leftStep: 84 * 6,
   }
   static propTypes = {
     defaultCurrent: PropTypes.number,
+    defaultTranslateX: PropTypes.number,
     directionNav: PropTypes.bool,
     onSelect: PropTypes.func,
+    iconItemListPos: PropTypes.object,
+    leftStep: PropTypes.number,
   }
   constructor(props) {
     super(props);
     this.state = {
       currentItem: this.props.defaultCurrent,
+      defaultTranslateX: this.props.defaultTranslateX,
+      iconItemListPos: Object.assign({}, this.props.iconItemListPos),
     };
   }
   handleClick(config, evt) {
     const { type, index } = config;
     let _currentItem = this.state.currentItem;
+    let _iconItemListPosLeft = this.state.defaultTranslateX;
+    console.log('============');
+    console.log(_iconItemListPosLeft);
     switch (type) {
       case 'item':
-        // if (this.state.currentPage > 1) {
-        //   _currentPage = this.state.currentPage - 1;
-        // }
-        console.log(evt);
-        console.log(index);
         _currentItem = index;
         break;
       case 'prev':
@@ -104,12 +113,25 @@ export default class Slick extends Component {
         //   _currentItem = this.state.currentItem - 1;
         // }
         console.log('上一页');
+        _iconItemListPosLeft += this.props.leftStep;
+        this.setState({ defaultTranslateX: _iconItemListPosLeft });
+        console.log(_iconItemListPosLeft);
+        this.setState({ iconItemListPos: {
+          transform: `translateX(${_iconItemListPosLeft}px)`,
+        } });
         break;
       case 'next':
         // if (this.state.currentPage < this.props.totalPage) {
         //   _currentPage = this.state.currentPage + 1;
         // }
+        evt.preventDefault();
         console.log('下一页');
+        _iconItemListPosLeft -= this.props.leftStep;
+        console.log(_iconItemListPosLeft);
+        this.setState({ defaultTranslateX: _iconItemListPosLeft });
+        this.setState({ iconItemListPos: {
+          transform: `translateX(${_iconItemListPosLeft}px)`,
+        } });
         break;
       default:
         break;
@@ -134,7 +156,7 @@ export default class Slick extends Component {
   }
   render() {
     const itemArr = [];
-    const { currentItem } = this.state;
+    const { currentItem, iconItemListPos } = this.state;
     itemData.forEach((item, i) => {
       itemArr.push(<li
         key={`item_${i}`}
@@ -156,9 +178,11 @@ export default class Slick extends Component {
           onClick={(evt) => this.handleClick({ type: 'prev' }, evt)}
         >
           <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
-        <ul className={'upload-icon-list'}>
-          {itemArr}
-        </ul>
+        <div className={'upload-icon-list-area'}>
+          <ul ref={'uploadIconList'} className={'upload-icon-list'} style={iconItemListPos}>
+            {itemArr}
+          </ul>
+        </div>
         <button
           className={'icons-more-btn icons-more-btn-right'}
           onClick={(evt) => this.handleClick({ type: 'next' }, evt)}

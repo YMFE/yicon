@@ -130,7 +130,7 @@ export default class Demo extends Component {
         >
           <i className="iconfont set-tag-icon">&#xf50f;</i>
         </Input>
-        <div style={{ width: 1080, margin: '40px auto', backgroundColor: '#fff' }}>
+        <div style={{ width: '1080px', margin: '40px', backgroundColor: '#fff' }}>
           <Slick />
         </div>
       </div>

@@ -1,4 +1,10 @@
 .upload-icon {
+  .upload-icon-list-area{
+    width: 1008px;
+    overflow: hidden;
+    display: inline;
+    float: left;
+  }
   .upload-icon-list {
     position: relative;
     float: left;
