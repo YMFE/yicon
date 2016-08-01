@@ -11,6 +11,66 @@ const itemData = [
     name: '笔',
     tags: '你好,呵呵',
     code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
+  },
+  {
+    name: '笔',
+    tags: '你好,呵呵',
+    code: 61442,
   }];
 export default class Slick extends Component {
   static defaultProps = {
@@ -86,7 +146,7 @@ export default class Slick extends Component {
         <i
           className={'iconfont delete'}
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
-        >&#xf077;</i>
+        >{`&#${item.code}`};</i>
         <i className={'iconfont upload-icon'}>&#xf50f;</i>
       </li>);
     });
