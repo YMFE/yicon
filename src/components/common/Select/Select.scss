@@ -24,7 +24,8 @@
 }
 /* 下拉小标 */
 .rc-select-arrow {
-  height: 26px;
+  // height: 26px;
+  height: 100%;
   position: absolute;
   top: 1px;
   right: 1px;
@@ -42,7 +43,6 @@
   position: absolute;
   top: 50%;
   left: 50%;
-/*  background-color: red;*/
 }
 
 /*  触发的浮层 */
