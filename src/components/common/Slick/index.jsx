@@ -72,19 +72,23 @@ const itemData = [
     code: 61442,
   }];
 
-
+// itemDate 为icon数据 存入state中 方便操作删除当前后 重新渲染
 export default class Slick extends Component {
   static defaultProps = {
+    currentItem: 0,
     directionNav: true,
     defaultTranslateX: 0,
+  //  itemData: [],
     iconItemListPos: {
       transform: 'translateX(0)',
     },
-    leftStep: 84 * 6,
+    leftStep: 84,
   }
   static propTypes = {
+    currentItem: PropTypes.number,
     defaultCurrent: PropTypes.number,
     defaultTranslateX: PropTypes.number,
+    // itemData: PropTypes.array,
     directionNav: PropTypes.bool,
     onSelect: PropTypes.func,
     iconItemListPos: PropTypes.object,
@@ -96,14 +100,18 @@ export default class Slick extends Component {
       currentItem: this.props.defaultCurrent,
       defaultTranslateX: this.props.defaultTranslateX,
       iconItemListPos: Object.assign({}, this.props.iconItemListPos),
+    //  itemData: this.props.itemData,
     };
   }
+  // componentWillMount() {
+  //   this.setState({
+  //     itemData: itemData,
+  //   });
+  // }
   handleClick(config, evt) {
     const { type, index } = config;
     let _currentItem = this.state.currentItem;
     let _iconItemListPosLeft = this.state.defaultTranslateX;
-    console.log('============');
-    console.log(_iconItemListPosLeft);
     switch (type) {
       case 'item':
         _currentItem = index;
@@ -149,6 +157,8 @@ export default class Slick extends Component {
   //  if (this.props.onClick) this.props.onClick(_currentPage);
   }
   deleteSingleClick(config, evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
     const { index } = config;
     console.log(index);
     console.log(evt);
