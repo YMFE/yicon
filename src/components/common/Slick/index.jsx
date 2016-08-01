@@ -95,8 +95,8 @@ export default class Slick extends Component {
         // if (this.state.currentPage > 1) {
         //   _currentPage = this.state.currentPage - 1;
         // }
+        console.log(evt);
         console.log(index);
-        console.log('item 点击');
         _currentItem = index;
         break;
       case 'prev':
@@ -136,8 +136,6 @@ export default class Slick extends Component {
     const itemArr = [];
     const { currentItem } = this.state;
     itemData.forEach((item, i) => {
-      console.log(item);
-      console.log(i);
       itemArr.push(<li
         key={`item_${i}`}
         className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
@@ -146,8 +144,9 @@ export default class Slick extends Component {
         <i
           className={'iconfont delete'}
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
-        >{`&#${item.code}`};</i>
+        >&#xf077;</i>
         <i className={'iconfont upload-icon'}>&#xf50f;</i>
+        {/* &#xf50f; {`&#${item.code};`} */}
       </li>);
     });
     return (
@@ -160,7 +159,10 @@ export default class Slick extends Component {
         <ul className={'upload-icon-list'}>
           {itemArr}
         </ul>
-        <button className={'icons-more-btn icons-more-btn-right'}>
+        <button
+          className={'icons-more-btn icons-more-btn-right'}
+          onClick={(evt) => this.handleClick({ type: 'next' }, evt)}
+        >
           <i className={'iconfont icons-more-btn-icon'}>&#xf1c1;</i></button>
       </div>
     );
