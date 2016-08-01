@@ -29,7 +29,7 @@ export default class Slick extends Component {
   }
   handleClick(config, evt) {
     const { type, index } = config;
-    // let _currentPage = this.state.currentPage;
+    let _currentItem = this.state.currentItem;
     switch (type) {
       case 'item':
         // if (this.state.currentPage > 1) {
@@ -37,10 +37,11 @@ export default class Slick extends Component {
         // }
         console.log(index);
         console.log('item 点击');
+        _currentItem = index;
         break;
       case 'prev':
-        // if (this.state.currentPage > 1) {
-        //   _currentPage = this.state.currentPage - 1;
+        // if (this.state.currentItem > 1) {
+        //   _currentItem = this.state.currentItem - 1;
         // }
         console.log('上一页');
         break;
@@ -54,11 +55,11 @@ export default class Slick extends Component {
         break;
     }
 
-    // if (_currentPage !== this.state.currentPage) {
-    //   this.setState({
-    //     currentPage: _currentPage,
-    //   });
-    // }
+    if (_currentItem !== this.state.currentItem) {
+      this.setState({
+        currentItem: _currentItem,
+      });
+    }
 
     evt.stopPropagation();
     evt.preventDefault();
@@ -73,11 +74,13 @@ export default class Slick extends Component {
   }
   render() {
     const itemArr = [];
+    const { currentItem } = this.state;
     itemData.forEach((item, i) => {
       console.log(item);
       console.log(i);
       itemArr.push(<li
-        className={'upload-icon-item'}
+        key={`item_${i}`}
+        className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
         onClick={(evt) => this.handleClick({ type: 'item', index: i }, evt)}
       >
         <i
