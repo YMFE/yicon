@@ -42,3 +42,4 @@ export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';
 // icon
 export const FETCH_ICON_DETAIL = 'FETCH_ICON_DETAIL';
 export const EDIT_ICON = 'EDIT_ICON';
+export const EDIT_ICON_STYLE = 'EDIT_ICON_STYLE';

@@ -6,7 +6,7 @@ import {
   changeIconSize,
   resetIconSize,
 } from '../../actions/repository';
-import { getIconDetail } from '../../actions/icon';
+import { getIconDetail, editIconStyle } from '../../actions/icon';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import Pager from '../../components/common/Pager';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
@@ -23,9 +23,8 @@ const pageSize = 64;
   state => ({
     currRepository: state.repository.currRepository,
     iconSize: state.repository.iconSize,
-    iconDetail: state.icon,
   }),
-  { fetchRepositoryData, changeIconSize, resetIconSize, getIconDetail }
+  { fetchRepositoryData, changeIconSize, resetIconSize, getIconDetail, editIconStyle }
 )
 export default class Repository extends Component {
   constructor(props) {
@@ -61,6 +60,7 @@ export default class Repository extends Component {
   clikIconDownloadBtn(iconId) {
     return () => {
       this.props.getIconDetail(iconId).then(() => {
+        this.props.editIconStyle({ color: '#000' });
         this.setState({
           isShowDownloadDialog: true,
         });
@@ -146,6 +146,7 @@ Repository.propTypes = {
   changeIconSize: PropTypes.func,
   resetIconSize: PropTypes.func,
   getIconDetail: PropTypes.func,
+  editIconStyle: PropTypes.func,
   iconSize: PropTypes.number,
   currRepository: PropTypes.object,
   params: PropTypes.object,

@@ -18,7 +18,6 @@ if (process.browser) {
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
     iconSize: state.repository.iconSize,
     userInfo: state.user.info,
-    iconDetail: state.icon,
   }),
   {
     addIconToLocalStorage,
