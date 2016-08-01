@@ -198,16 +198,13 @@ class DownloadDial extends Component {
               <span>{iconDetail.iconStyle.color}</span>
               <div className="color-show" style={{ background: iconDetail.iconStyle.color }}></div>
             </div>
-            <div className="set-size" >
-              <Select
-                defaultValue={255}
-                onChange={this.changeIconSize}
-                className={'select-narrow'}
-                style={{ width: 51 }}
-              >
-                {options}
-              </Select>
-            </div>
+            <Select
+              defaultValue={255}
+              onChange={this.changeIconSize}
+              className={'set-size'}
+            >
+              {options}
+            </Select>
           </div>
           <div className="download-box">
             <button className="download-btn">SVG下载</button>
