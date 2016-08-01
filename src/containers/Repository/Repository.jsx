@@ -60,7 +60,7 @@ export default class Repository extends Component {
   clikIconDownloadBtn(iconId) {
     return () => {
       this.props.getIconDetail(iconId).then(() => {
-        this.props.editIconStyle({ color: '#000' });
+        this.props.editIconStyle({ color: '#000', size: 255 });
         this.setState({
           isShowDownloadDialog: true,
         });

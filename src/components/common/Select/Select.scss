@@ -16,6 +16,12 @@
   position: relative;
   text-indent: 10px;
 }
+.rc-select-focused{
+  box-shadow: 0;
+}
+.rc-select-open{
+  box-shadow: 0;
+}
 /* 下拉小标 */
 .rc-select-arrow {
   height: 26px;
@@ -129,6 +135,9 @@ li.select-narrow-menu{
   line-height: 36px;
 }
 
+.info-error{
+  border:1px solid #ffcccc;
+}
 .select-extend{
   border:1px solid #dfdfdf;
   border-radius: 5px;

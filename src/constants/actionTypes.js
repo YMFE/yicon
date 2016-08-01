@@ -22,9 +22,12 @@ export const FETCH_SEARCH_RESULT = 'FETCH_SEARCH_RESULT';
 export const LAUNCH_REDUX_DEVTOOLS = 'LAUNCH_REDUX_DEVTOOLS';
 
 // project
+export const FETCH_ALL_PROJECT = 'FETCH_ALL_PROJECT';
 export const FETCH_USERS_PROJECT_INFO = 'FETCH_USERS_PROJECT_INFO';
 export const CHOSE_PROJECT_FOR_SAVE = 'CHOSE_PROJECT_FOR_SAVE';
 export const SAVE_TO_PROJECT = 'SAVE_TO_PROJECT';
+export const FETCH_ALL_VERSION = 'FETCH_ALL_VERSION';
+export const COMPARE_PROJECT_VERSION = 'COMPARE_PROJECT_VERSION';
 
 // notification
 export const FETCH_ALL_INFO = 'FETCH_ALL_INFO';
@@ -34,6 +37,10 @@ export const FETCH_PROJECT_INFO = 'FETCH_PROJECT_INFO';
 // uploaded
 export const FETCH_MY_LOADED = 'FETCH_MY_LOADED';
 export const DELETE_ICON = 'DELETE_ICON';
+// upload
+export const FETCH_UPLOAD_ICON = 'FETCH_UPLOAD_ICON';
+// uploadEdit
+export const FETCH_SUBMIT_ICON = 'FETCH_SUBMIT_ICON';
 
 // user
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
@@ -43,3 +50,4 @@ export const LOGOUT_DESTORY = 'LOGOUT_DESTORY';
 export const FETCH_ICON_DETAIL = 'FETCH_ICON_DETAIL';
 export const EDIT_ICON = 'EDIT_ICON';
 export const EDIT_ICON_STYLE = 'EDIT_ICON_STYLE';
+export const UPLOAD_ICON = 'UPLOAD_ICON';

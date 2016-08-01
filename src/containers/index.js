@@ -12,6 +12,7 @@ import Notification from './Notification/Notification';
 import Transition from './Transition/Transition';
 import Uploaded from './Uploaded/Uploaded';
 import Log from './Log/Log';
+import VersionComparison from './VersionComparison/VersionComparison';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -32,4 +33,5 @@ export {
   Search,
   Notification,
   Uploaded,
+  VersionComparison,
 };

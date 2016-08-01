@@ -1,14 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import './UploadEdit.scss';
+import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
+import Select from '../../components/common/Select/';
+const Option = Select.Option;
+// const iconType = {
+//   0: {
+//     value: '',
+//     label: '请选择',
+//   },
+//   1: {
+//     value: '-f',
+//     label: '线形图标',
+//   },
+//   2: {
+//     value: '-o',
+//     label: '填色图标',
+//   },
+// };
+const defaultProps = {
+  icon: {},
+};
+const propTypes = {
+  icon: PropTypes.object,
+};
 export default class UploadEdit extends Component {
   render() {
+    const { icon } = this.props;
+    // const icon = '&#xf50f;';
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-upload-container'}>
           <h2 className={'upload-title'}>上传图标设置</h2>
           <div className={'upload-icon clearfix'}>
             <button className={'icons-more-btn icons-more-btn-left'}>
-              <i className={'iconfont icons-more-btn-icon'}>&#xf50f;</i></button>
+              <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
             <ul className={'upload-icon-list'}>
               <li className={'upload-icon-item'}>
                 <i className={'iconfont delete'}>&#xf077;</i>
@@ -23,80 +48,53 @@ export default class UploadEdit extends Component {
                 <i className={'iconfont upload-icon'}>&#xf50f;</i>
               </li>
               <li className={'upload-icon-btn'}>
-                <i className={'iconfont upload-btn-icon'}>&#xf50f;</i>
+                <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
                 <p className={'upload-btn-txt'}>上传图标</p>
               </li>
             </ul>
             <button className={'icons-more-btn icons-more-btn-right'}>
-              <i className={'iconfont icons-more-btn-icon'}>&#xf50f;</i></button>
+              <i className={'iconfont icons-more-btn-icon'}>&#xf1c1;</i></button>
           </div>
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
-              <i className={'iconfont set-pre-next-icon'}>&#xf50f;</i></button>
-            <div className={'icon-big-img'}>
-              <div className={'bg-grid'}>
-
-                <div className={'hline'} style={{ top: '0px' }}></div>
-                <div className={'hline'} style={{ top: '19px' }}></div>
-                <div className={'hline'} style={{ top: '38px' }}></div>
-                <div className={'hline'} style={{ top: '57px' }}></div>
-                <div className={'hline'} style={{ top: '76px' }}></div>
-                <div className={'hline'} style={{ top: '95px' }}></div>
-                <div className={'hline'} style={{ top: '114px' }}></div>
-                <div className={'hline'} style={{ top: '133px' }}></div>
-                <div className={'hline'} style={{ top: '152px', background: '#ff8c8c' }}></div>
-                <div className={'hline'} style={{ top: '171px' }}></div>
-                <div className={'hline'} style={{ top: '190px' }}></div>
-                <div className={'hline'} style={{ top: '209px' }}></div>
-                <div className={'hline'} style={{ top: '228px' }}></div>
-                <div className={'hline'} style={{ top: '247px' }}></div>
-                <div className={'hline'} style={{ top: '266px' }}></div>
-                <div className={'hline'} style={{ top: '285px' }}></div>
-                <div className={'hline'} style={{ top: '304px' }}></div>
-
-                <div className={'vline'} style={{ left: '0px' }}></div>
-                <div className={'vline'} style={{ left: '19px' }}></div>
-                <div className={'vline'} style={{ left: '38px' }}></div>
-                <div className={'vline'} style={{ left: '57px' }}></div>
-                <div className={'vline'} style={{ left: '76px' }}></div>
-                <div className={'vline'} style={{ left: '95px' }}></div>
-                <div className={'vline'} style={{ left: '114px' }}></div>
-                <div className={'vline'} style={{ left: '133px' }}></div>
-                <div className={'vline'} style={{ left: '152px', background: '#ff8c8c;' }}></div>
-                <div className={'vline'} style={{ left: '171px' }}></div>
-                <div className={'vline'} style={{ left: '190px' }}></div>
-                <div className={'vline'} style={{ left: '209px' }}></div>
-                <div className={'vline'} style={{ left: '228px' }}></div>
-                <div className={'vline'} style={{ left: '247px' }}></div>
-                <div className={'vline'} style={{ left: '266px' }}></div>
-                <div className={'vline'} style={{ left: '285px' }}></div>
-                <div className={'vline'} style={{ left: '304px' }}></div>
-              </div>
-              <div className={'big-icon'}>
-                <i className={'iconfont big'}>&#xf50f;</i>
-              </div>
-            </div>
+              <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i></button>
+            <IconBgGrid size={350} icon={icon} />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
                   className={'require'}
                 >*</span></label>
-                <div className={'set-input-wrap'}><input
+                <div className={'set-input-wrap info-error'}><input
                   className={'set-input'}
                   type={'text'}
                   id={'set-icon-name'}
                   placeholder={'请输入图标名称'}
-                /></div>
+                />
+                  <div className={'error-info'}>请输入图标名称</div>
+                </div>
+
               </div>
+              {/*
+                <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
+                className={'require'}
+              >*</span></label>
+              <div className={'set-input-wrap'}><input
+                className={'set-input'}
+                type={'text'}
+                id={'set-icon-style'} placeholder={'请输选择'}
+              /><i className={'iconfont set-style-icon'}>&#xf032;</i>
+              </div>
+                */}
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
                   className={'require'}
                 >*</span></label>
-                <div className={'set-input-wrap'}><input
-                  className={'set-input'}
-                  type={'text'}
-                  id={'set-icon-style'} placeholder={'请输选择'}
-                /><i className={'iconfont set-style-icon'}>&#xf032;</i>
+                <div className={'set-input-wrap setting-opt-select'}>
+                  <Select placeholder="请输选择" className={'info_error'}>
+                    <Option value="线性图标">线性图标</Option>
+                    <Option value="填色图标">填色图标</Option>
+                  </Select>
+                  <div className={'error-info'}>请选择图标风格</div>
                 </div>
               </div>
               <div className={'setting-opt'}>
@@ -104,7 +102,7 @@ export default class UploadEdit extends Component {
                 <div className={'set-input-wrap'}><input
                   className={'set-input'}
                   type={'text'} id={'set-icon-tag'} placeholder={'回车提交，可多次提交'}
-                /><i className={'iconfont set-tag-icon'}>&#xf50f;</i></div>
+                /><i className={'iconfont set-tag-icon'}>&#xf0ae;</i></div>
                 <ul className={'icon-tag-list'}>
                   <li className={'icon-tag'}>
                     <span>会议室_填色</span><i className={'iconfont delete'}>&#xf077;</i>
@@ -120,7 +118,7 @@ export default class UploadEdit extends Component {
             </div>
             <button className={'set-pre-next-btn set-pre-next-right'}><i
               className={'iconfont set-pre-next-icon'}
-            >&#xf50f;</i></button>
+            >&#xf1c1;</i></button>
           </div>
           <div className={'upload-submit'}>
             <div className={'clearfix'}>
@@ -140,3 +138,5 @@ export default class UploadEdit extends Component {
     );
   }
 }
+UploadEdit.defaultProps = defaultProps;
+UploadEdit.propTypes = propTypes;
