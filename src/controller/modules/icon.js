@@ -289,15 +289,20 @@ export function* deleteIcons(next) {
     where: { id: iconId },
   });
 
+  invariant(iconInfo, '未获取图标信息');
   invariant(
     userId === iconInfo.uploader,
     '没有权限删除他人上传的图标'
   );
   invariant(
-    iconInfo.status === iconStatus.REJECTED,
-    '只能删除审核未通过的图标'
+    iconInfo.status === iconStatus.REJECTED ||
+    iconInfo.status === iconStatus.UPLOADED,
+    '只能删除审核未通过的图标或未上传的图标'
   );
-  const result = yield Icon.update({ status: iconStatus.DELETE }, { where: { id: iconId } });
+  const result = yield Icon.update(
+    { status: iconStatus.DELETE },
+    { where: { id: iconId } },
+  );
   if (result) {
     this.state.respond = '删除图标成功';
   } else {
