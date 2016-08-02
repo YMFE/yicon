@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import classnames from 'classnames';
-import { fetchRepositoryLogs } from '../../actions/repository';
+import { fetchProjectLogs } from '../../actions/project';
 import { SubTitle, Content, Timeline, InfoItem } from '../../components/';
 import Pager from '../../components/common/Pager/';
 
 @connect(
   state => ({ ...state.log.repo }),
-  { fetchRepositoryLogs }
+  { fetchProjectLogs }
 )
 class Log extends Component {
 
@@ -17,18 +17,18 @@ class Log extends Component {
     list: PropTypes.array,
     currentPage: PropTypes.number,
     totalCount: PropTypes.number,
-    fetchRepositoryLogs: PropTypes.func,
+    fetchProjectLogs: PropTypes.func,
   }
 
   componentDidMount() {
     const { id } = this.props.params;
-    this.props.fetchRepositoryLogs(id, 1);
+    this.props.fetchProjectLogs(id, 1);
   }
 
   @autobind
   onChangePage(page) {
     const { id } = this.props.params;
-    this.props.fetchRepositoryLogs(id, page);
+    this.props.fetchProjectLogs(id, page);
   }
 
   render() {
@@ -39,7 +39,7 @@ class Log extends Component {
 
     return (
       <div className="log">
-        <SubTitle tit="图标库日志" />
+        <SubTitle tit="项目日志" />
         <Content>
           <div className={mainClass} style={{ width: '100%' }}>
             <TimelineList list={list} />

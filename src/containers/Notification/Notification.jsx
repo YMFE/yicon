@@ -107,34 +107,33 @@ export default class Notification extends Component {
             </li>
           </Menu>
           <Main extraClass={mainClassList} >
-              {
-                InfoList.length > 0 ?
-                  <Timeline>
-                  {InfoList.map(item => (
-                    <InfoItem
-                      key={item.id}
-                      tag={scope[item.scope]}
-                      timeStr={item.createdAt}
-                      showTitleHtml
-                      item={item}
-                      isNew={item.userLog.unread}
-                    />
-                    ))
-                  }
-                  </Timeline> :
-                  null
-              }
-              {
-                InfoList.length > 0 ?
-                  <div className="pager-container">
-                    <Pager
-                      defaultCurrent={currentPage}
-                      totalPage={totalPage}
-                      onClick={this.onChangePage}
-                    />
-                  </div> :
+            {
+              InfoList.length > 0 ?
+                <Timeline>
+                {InfoList.map(item => (
+                  <InfoItem
+                    key={item.id}
+                    tag={scope[item.scope]}
+                    timeStr={item.createdAt}
+                    showTitleHtml
+                    item={item}
+                    isNew={item.userLog.unread}
+                  />
+                  ))
+                }
+                </Timeline> :
+                null
+            }
+            <div className="pager-container">
+              {InfoList.length > 0 ?
+                <Pager
+                  defaultCurrent={currentPage}
+                  totalPage={totalPage}
+                  onClick={this.onChangePage}
+                /> :
                 null
               }
+            </div>
           </Main>
         </Content>
       </div>

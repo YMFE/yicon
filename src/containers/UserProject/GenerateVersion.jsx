@@ -17,15 +17,15 @@ const GenerateVersion = (props) => (
       >
         <li>
           <label
-            htmlFor="project-version-reversion"
+            htmlFor="project-version-revision"
             onClick={props.onChange}
           >
             小版本迭代
             <input
               type="radio"
-              value="reversion"
-              name="project-version-reversion"
-              checked={props.value === 'reversion'}
+              value="revision"
+              name="project-version-revision"
+              checked={props.value === 'revision'}
               onChange={() => {}}
             />
           </label>
@@ -69,7 +69,7 @@ GenerateVersion.propTypes = {
   onChange: PropTypes.func,
   showGenerateVersion: PropTypes.bool,
   value: PropTypes.oneOf([
-    'reversion',
+    'revision',
     'minor',
     'major',
   ]),

@@ -390,3 +390,18 @@ export function* getProjectVersion(next) {
   this.state.respond = { project, version };
   yield next;
 }
+
+export function* deleteProject(next) {
+  const { projectId } = this.param;
+  invariant(!isNaN(projectId), '缺少参数项目 id');
+  // TODO: 记录日志和发送通知
+  const t = seq.transaction(transaction =>
+    UserProject
+      .destroy({ where: { projectId }, transaction })
+      .then(() => ProjectVersion.destroy({ where: { projectId }, transaction }))
+      .then(() => Project.destroy({ where: { id: projectId }, transaction }))
+  );
+  yield t;
+  this.state.respond = '项目删除成功';
+  yield next;
+}

@@ -1,8 +1,8 @@
 
 import './SearchList.scss';
-import ReactDOM from 'react-dom';
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
+import SuggestList from './SuggestList.jsx';
 
 const WRITE_STATE = {
   EMPTY: Symbol(0),
@@ -43,11 +43,6 @@ class SearchList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.suggestListEle) {
-      this.suggestListEle.forceUpdate();
-    } else {
-      this.renderSuggestList();
-    }
     if (nextProps.suggestList.length > 0) {
       if (nextProps.suggestList.length === 1 &&
         nextProps.suggestList[0].name === this.state.input) {
@@ -76,16 +71,10 @@ class SearchList extends Component {
         showSuggest: false,
       });
     }
-    if (this.suggestListEle) { this.suggestListEle.forceUpdate(); }
   }
   onShow() {
     if (this.inputEle) {
       this.inputLocation = this.inputEle.getBoundingClientRect();
-      if (this.suggestListEle) {
-        this.suggestListEle.forceUpdate();
-      } else {
-        this.renderSuggestList();
-      }
     }
   }
 
@@ -100,7 +89,12 @@ class SearchList extends Component {
   }
 
   @autobind
-  onBlur() {
+  onBlur(e) {
+    if (e.target.nodeName === 'LI') {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
     this.setState({
       showSuggest: false,
     });
@@ -109,13 +103,11 @@ class SearchList extends Component {
   @autobind
   addNewMember() {
     const suggestList = this.props.suggestList;
-    // console.log(suggestList);
     if (suggestList && suggestList.length === 0) {
       return;
     }
     suggestList.some((item) => {
       if (item.name === this.state.input) {
-        console.log('trigger onChoseMember');
         this.props.onChoseMember(item);
         return true;
       }
@@ -125,7 +117,6 @@ class SearchList extends Component {
 
   @autobind
   choseItemfromSuggest(e) {
-    // console.log(`index:${e.target.dataset.index}`);
     let index;
     if (e) {
       index = parseInt(e.target.dataset.index, 10);
@@ -133,7 +124,6 @@ class SearchList extends Component {
       index = this.state.activeIndex;
     }
     const target = this.props.suggestList[index];
-    console.log(`target:${target}`);
     this.setState({
       valueItem: target,
       input: target.name,
@@ -144,7 +134,6 @@ class SearchList extends Component {
   @autobind
   handleKeyDown(e) {
     let activeIndex = this.state.activeIndex;
-    // console.log(e.keyCode);
     if (e.keyCode === 38) {
       if (typeof activeIndex === 'number') {
         activeIndex = activeIndex > 0 ?
@@ -172,39 +161,33 @@ class SearchList extends Component {
       e.preventDefault();
       this.choseItemfromSuggest(null);
     }
-    // console.log(this.state.activeIndex);
   }
+
   renderSuggestList() {
-    this.inputLocation = this.inputEle.getBoundingClientRect();
-    ReactDOM.unstable_renderSubtreeIntoContainer(
-      this,
+    return (
       <SuggestList
         {...this.props}
         writeState={this.state.writeState}
         show={this.state.showSuggest && this.props.showSearchList}
-        top={this.inputLocation.top + this.inputLocation.height}
+        WRITE_STATE={WRITE_STATE}
         onChoseItem={(e) => {
-          console.log('123456');
           this.choseItemfromSuggest(e);
         }}
         activeIndex={this.state.activeIndex}
-        left={this.inputLocation.left}
         ref={(node) => {
           if (node) {
             this.suggestListEle = node;
           }
         }}
-      />,
-      this.wrapper
+      />
     );
   }
-
 
   render() {
     const { writeState } = this.state;
     return (
       <li className="field">
-        <div
+        <label
           className="field-set SuggestList"
         >
           <input
@@ -230,7 +213,7 @@ class SearchList extends Component {
             ? this.renderSuggestList()
             : null
         }
-        </div>
+        </label>
         <div className="field-btn">
           <div type="button" className="add-collaborators" onClick={this.addNewMember}>
             添加新成员
@@ -241,56 +224,3 @@ class SearchList extends Component {
   }
 }
 export default SearchList;
-
-const SuggestList = (props) => {
-  const {
-    writeState,
-    suggestList,
-    noFoundTip,
-    show,
-    top,
-    left,
-  } = props;
-  return (
-    <ul
-      className="SuggestList-list"
-      style={{
-        display: show ? 'block' : 'none',
-        top,
-        left,
-      }}
-    >
-    {
-      writeState === WRITE_STATE.HAS_RESULT
-      ?
-        suggestList.map((item, index) => (
-          <li
-            className={index === props.activeIndex ? 'active' : ''}
-            key={index}
-            data-index={index}
-            data-id={item.id}
-            onClick={(e) => {
-              console.log('trigger click');
-              props.onChoseItem(e);
-            }}
-          >{item.name}
-          </li>
-        ))
-      :
-        <li>{noFoundTip}</li>
-    }
-    </ul>
-  );
-};
-
-SuggestList.propTypes = {
-  writeState: PropTypes.symbol,
-  suggestList: PropTypes.array,
-  noFoundTip: PropTypes.string,
-  onChoseItem: PropTypes.func,
-  onChoseMember: PropTypes.func,
-  show: PropTypes.bool,
-  top: PropTypes.number,
-  left: PropTypes.number,
-  activeIndex: PropTypes.number,
-};

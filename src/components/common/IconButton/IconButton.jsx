@@ -135,7 +135,7 @@ class IconButton extends Component {
           onClick={this.deleteIcon(icon.id)}
           title="删除"
           key="delete"
-        >&#xf50f;</i>,
+        >&#xf513;</i>,
     };
     // let tool = null;
     const tools = [];

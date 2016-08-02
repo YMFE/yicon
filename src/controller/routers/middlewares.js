@@ -20,6 +20,7 @@ export function* responder(next) {
       ...body,
     };
   } catch (e) {
+    // TODO: 记录错误日志
     this.body = {
       res: false,
       status: e.status || 500,
@@ -55,7 +56,7 @@ export function* pagination(next) {
 export function* getCurrentUser(next) {
   this.state.user = {
     userId: this.session.userId,
-    // userId: 284,
+    // userId: 113,
   };
   const { projectId } = this.param;
   const user = yield User.findOne({

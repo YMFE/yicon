@@ -12,6 +12,8 @@ import {
   PATCH_PROJECT_MEMBERS,
   POST_GENERATE_VERSION,
   DELETE_PROJECT,
+  FETCH_PROJECT_LOG,
+  TETCH_PROJECT_VERSION,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -42,6 +44,7 @@ export function patchUserProject(detail) {
   return {
     type: PATCH_USERS_PROJECT_DETAIL,
     payload: fetch.patch(`/user/projects/${detail.id}`, detail),
+    project: detail,
   };
 }
 
@@ -56,6 +59,7 @@ export function patchProjectMemeber(project) {
   return {
     type: PATCH_PROJECT_MEMBERS,
     payload: fetch.patch(`/user/projects/${project.id}/members`, project),
+    project,
   };
 }
 
@@ -100,13 +104,13 @@ export function choseProjectForSave(project) {
     },
   };
 }
-
 export function generateVersion(project) {
   return {
     type: POST_GENERATE_VERSION,
     payload: fetch.post(`/user/projects/${project.id}/update`, {
       versionType: project.versionType,
     }),
+    project,
   };
 }
 
@@ -114,5 +118,19 @@ export function deleteProject(project) {
   return {
     type: DELETE_PROJECT,
     payload: fetch.delete(`/user/projects/${project.id}`),
+  };
+}
+
+export function fetchProjectLogs(id, page) {
+  return {
+    type: FETCH_PROJECT_LOG,
+    payload: fetch.get(`/user/log/projects/${id}?currentPage=${page}`),
+  };
+}
+
+export function fetchProjectVersions(id) {
+  return {
+    type: TETCH_PROJECT_VERSION,
+    payload: fetch.get(`/user/projects/${id}/versions`),
   };
 }

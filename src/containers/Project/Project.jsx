@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
+import { push } from 'react-router-redux';
 import Slider from '../../components/common/Slider/Slider.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
@@ -19,6 +20,7 @@ import {
   {
     getPublicProjectList,
     getPublicProjectInfo,
+    push,
   }
 )
 export default class Project extends Component {
@@ -28,18 +30,25 @@ export default class Project extends Component {
     currentPublicProjectInfo: PropTypes.object,
     getPublicProjectList: PropTypes.func,
     getPublicProjectInfo: PropTypes.func,
+    push: PropTypes.func,
   }
   componentDidMount() {
     this.props.getPublicProjectList();
     const current = this.props.currentPublicProjectInfo;
-    const id = this.props.params.id || this.publicProjectList[0].id;
-    if (!current || +id !== +current.id) {
+    const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
+    if (!id && this.props.publicProjectList[0]) {
+      this.props.push(`/projects/${this.props.publicProjectList[0].id}`);
+    }
+    if (!current || id !== parseInt(current.id, 10)) {
       this.props.getPublicProjectInfo(+id);
     }
   }
   componentWillReceiveProps(nextProps) {
     const current = this.props.currentPublicProjectInfo;
-    const nextId = parseInt(nextProps.params.id, 10);
+    const nextId = nextProps.params.id ? parseInt(nextProps.params.id, 10) : '';
+    if (!nextId && this.props.publicProjectList[0]) {
+      this.props.push(`/projects/${this.props.publicProjectList[0].id}`);
+    }
     if (!current || nextId !== parseInt(current.id, 10)) {
       this.props.getPublicProjectInfo(nextId);
     }
@@ -60,7 +69,6 @@ export default class Project extends Component {
         return (
           <IconButton
             icon={icon}
-            status={2}
             key={index}
             toolBtns={['cart', 'copy', 'download', 'copytip']}
           />

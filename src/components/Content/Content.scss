@@ -28,3 +28,21 @@
     }
   }
 }
+
+.empty-content {
+  $imgUrl: '../../../static/images/';
+  min-height: 600px;
+  width: 100%;
+  &::after{
+    content: '还没有内容哦';
+    height: 40px;
+    width: 191px;
+    display: block;
+    margin: 196px auto 0;
+    background: url(#{$imgUrl}notification_empty_container.png) no-repeat ;
+    padding-top: 200px;
+    font-size: 16px;
+    text-align: center;
+    color: #9e9e9e;
+  }
+}

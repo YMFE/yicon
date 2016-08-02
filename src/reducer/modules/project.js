@@ -11,6 +11,7 @@ import {
   PATCH_USERS_PROJECT_DETAIL,
   PATCH_PROJECT_MEMBERS,
   POST_GENERATE_VERSION,
+  TETCH_PROJECT_VERSION,
 } from '../../constants/actionTypes';
 import { push } from 'react-router-redux';
 import {
@@ -24,6 +25,7 @@ const initialState = {
   currentUserProjectInfo: {},
   memberSuggestList: [],
   currentPublicProjectInfo: {},
+  currentUserProjectVersions: [],
   projectForSave: {
     id: 0,
     name: '',
@@ -52,9 +54,7 @@ export default (state = initialState, action) => {
     }
     case PATCH_USERS_PROJECT_DETAIL: {
       if (action.payload.res) {
-        // TODO 编辑成功
-      } else {
-        // TODO 编辑失败
+        getUserProjectInfo(action.project.id);
       }
       return state;
     }
@@ -87,17 +87,23 @@ export default (state = initialState, action) => {
     }
     case PATCH_PROJECT_MEMBERS: {
       if (action.payload.res) {
-        return (dispatch) => {
-          dispatch(getUserProjectInfo(action.project.id));
+        getUserProjectInfo(action.project.id);
+      }
+      return state;
+    }
+    case TETCH_PROJECT_VERSION: {
+      if (action.payload.res) {
+        return {
+          ...state,
+          currentUserProjectVersions: action.payload.data.version,
         };
       }
       return state;
     }
+
     case POST_GENERATE_VERSION: {
       if (action.payload.res) {
-        return (dispatch) => {
-          dispatch(getUserProjectInfo(action.project.id));
-        };
+        getUserProjectInfo(action.project.id);
       }
       return state;
     }
@@ -132,11 +138,8 @@ export default (state = initialState, action) => {
     }
 
     case DELETE_PROJECT: {
-      console.log('handle delete');
       if (action.payload.res) {
-        return (dispatch) => {
-          dispatch(push('../'));
-        };
+        push('/user/project');
       }
       return state;
     }

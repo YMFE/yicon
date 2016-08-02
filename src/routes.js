@@ -8,6 +8,7 @@ import {
   Log,
   NoMatch,
   Project,
+  ProjectLog,
   Repository,
   Transition,
   Search,
@@ -61,7 +62,7 @@ export default (store) => {
         <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
         <Route path="user/projects" component={UserProject} />
         <Route path="user/projects/:id(/version/:version)" component={UserProject} />
-        <Route path="user/projects/:id/logs" component={UserProject} />
+        <Route path="user/projects/:id/logs" component={ProjectLog} />
         <Route path="user/icons" component={Uploaded} />
         <Route path="user/projects/:id/comparison" component={VersionComparison} />
         {/* 库管用户路由 */}

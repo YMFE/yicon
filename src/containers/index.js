@@ -13,6 +13,7 @@ import Transition from './Transition/Transition';
 import Uploaded from './Uploaded/Uploaded';
 import UserProject from './UserProject/UserProject';
 import Log from './Log/Log';
+import ProjectLog from './Log/ProjectLog';
 import VersionComparison from './VersionComparison/VersionComparison';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -26,6 +27,7 @@ export {
   Workbench,
   Home,
   Log,
+  ProjectLog,
   NoMatch,
   Project,
   Repository,

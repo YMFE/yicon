@@ -6,7 +6,7 @@ import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import Slider from '../../components/common/Slider/Slider.jsx';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
-
+import { push } from 'react-router-redux';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import {
   getUsersProjectList,
@@ -35,6 +35,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     patchProjectMemeber,
     generateVersion,
     deleteProject,
+    push,
   }
 )
 class UserProject extends Component {
@@ -42,6 +43,7 @@ class UserProject extends Component {
     params: PropTypes.object,
     usersProjectList: PropTypes.array,
     currentUserProjectInfo: PropTypes.object,
+    currentUserProjectVersions: PropTypes.array,
     getUsersProjectList: PropTypes.func,
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
@@ -50,31 +52,36 @@ class UserProject extends Component {
     patchProjectMemeber: PropTypes.func,
     suggestList: PropTypes.array,
     generateVersion: PropTypes.func,
+    push: PropTypes.func,
   }
 
   static defaultProps ={
-    generateVersion: 'reversion',
+    generateVersion: 'revision',
   }
   constructor(props) {
     super(props);
     this.state = {
       showManageMember: false,
       showGenerateVersion: false,
-      generateVersion: 'reversion',
+      showHistoryVersion: false,
+      generateVersion: 'revision',
     };
   }
   componentDidMount() {
     this.props.getUsersProjectList();
+    const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
     const current = this.props.currentUserProjectInfo;
-    const id = parseInt(this.props.params.id, 10) || this.publicProjectList[0].id;
+    if (!id && this.props.usersProjectList[0]) {
+      this.props.push(`/user/projects/${this.props.usersProjectList[0].id}`);
+    }
     if (!current || id !== parseInt(current.id, 10)) {
       this.props.getUserProjectInfo(id);
     }
     this.props.fetchMemberSuggestList();
-    console.log('123');
   }
   componentWillReceiveProps(nextProps) {
     const current = nextProps.currentUserProjectInfo;
+    const nextId = nextProps.params.id;
     if (current) {
       this.setState({
         name: current.name,
@@ -84,11 +91,11 @@ class UserProject extends Component {
         members: current.members,
       });
     }
-  }
-  componentDidUpdate(nextProps) {
-    const current = this.props.currentUserProjectInfo;
-    const nextId = parseInt(nextProps.params.id, 10);
-    if (!current || nextId !== parseInt(current.id, 10)) {
+    if (!nextId && this.props.usersProjectList[0]) {
+      this.props.push(`/user/projects/${this.props.usersProjectList[0].id}`);
+      return;
+    }
+    if (nextId !== this.props.params.id) {
       this.props.getUserProjectInfo(nextId);
     }
   }
@@ -184,6 +191,7 @@ class UserProject extends Component {
   render() {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
+    const id = this.props.params.id;
     if (list.length === 0) return null;
     let iconList;
     if (current.icons && current.icons.length > 0) {
@@ -191,6 +199,7 @@ class UserProject extends Component {
         <IconButton
           icon={item}
           key={index}
+          toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
         />
       ));
     } else {
@@ -233,7 +242,11 @@ class UserProject extends Component {
               : null
               }
               <div className="tool">
-                <a href="#" className="options-btns btns-blue">
+                <a
+                  href="#"
+                  className="options-btns btns-blue"
+                  onClick={this.downloadAllIcon}
+                >
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
                 </a>
@@ -244,12 +257,18 @@ class UserProject extends Component {
                 >
                   生成版本
                 </a>
-                <a href="#" className="options-btns btns-default">
+                <Link
+                  to={`/user/projects/${id}/logs`}
+                  className="options-btns btns-default"
+                >
                   操作日志
-                </a>
-                <a href="#" className="options-btns btns-default">
+                </Link>
+                <Link
+                  to={`/user/projects/${id}/comparison`}
+                  className="options-btns btns-default"
+                >
                   历史版本
-                </a>
+                </Link>
               </div>
             </div>
             <div className="clearfix icon-list">
