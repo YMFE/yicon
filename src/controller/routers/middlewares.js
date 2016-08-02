@@ -20,6 +20,7 @@ export function* responder(next) {
       ...body,
     };
   } catch (e) {
+    // TODO: 记录错误日志
     this.body = {
       res: false,
       status: e.status || 500,

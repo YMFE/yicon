@@ -1,8 +1,11 @@
 import './Timeline.scss';
+import classnames from 'classnames';
 import React, { PropTypes } from 'react';
 
 const Timeline = (props) => {
-  let classList = props.extraClass ? `global-timeline ${props.extraClass}` : 'global-timeline';
+  const classList = classnames('global-timeline', {
+    [props.extraClass]: props.extraClass,
+  });
   return (
     <div className={classList}>
       {props.children}

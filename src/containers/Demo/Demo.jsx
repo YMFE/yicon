@@ -15,7 +15,19 @@ import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 import Slider from '../../components/common/Slider/Slider.jsx';
 // Input
 import Input from '../../components/common/Input/Index';
+// slick
+import Slick from '../../components/common/Slick/index';
 /* eslint-disable no-console */
+
+const itemData = [];
+for (let i = 0; i < 28; i++) {
+  const obj = {
+    index: i,
+    name: '笔',
+    tags: '你好,呵呵',
+  };
+  itemData.push(obj);
+}
 
 function onSelect({ key }) {
   console.log(`${key} selected`);
@@ -128,6 +140,14 @@ export default class Demo extends Component {
         >
           <i className="iconfont set-tag-icon">&#xf50f;</i>
         </Input>
+        <div style={{ width: '1080px', margin: '40px', backgroundColor: '#fff' }}>
+          <Slick
+            itemData={itemData}
+            defaultCurrent={0}
+            onClick={(index) => { console.log(index); }}
+            onDelete={(index) => { console.log(index); }}
+          />
+        </div>
       </div>
     );
   }
