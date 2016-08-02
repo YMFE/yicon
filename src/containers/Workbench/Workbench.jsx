@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { getIconDetail, editIcon, editIconStyle } from '../../actions/icon';
 import { fetchWorkbench, uploadIcons, deleteIcon } from '../../actions/workbench.js';
+import { push } from 'react-router-redux';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
 import Select from '../../components/common/Select/';
 import Icon from '../../components/common/Icon/Icon.jsx';
@@ -33,6 +34,7 @@ const propTypes = {
   fetchWorkbench: PropTypes.func,
   uploadIcons: PropTypes.func,
   deleteIcon: PropTypes.func,
+  push: PropTypes.func,
 };
 @connect(
   state => ({
@@ -46,18 +48,39 @@ const propTypes = {
     fetchWorkbench,
     uploadIcons,
     deleteIcon,
+    push,
   }
 )
 export default class Workbench extends Component {
   componentWillMount() {
     this.props.fetchWorkbench().then(() => {
-      this.props.getIconDetail(this.props.icons[1].id);
+      const { icons } = this.props;
+      if (icons.length) {
+        this.props.getIconDetail(this.props.icons[0].id);
+      } else {
+        this.props.push('/upload');
+      }
     });
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (!nextProps.icons.length) {
+  //     this.props.push('/upload');
+  //   }
+  // }
+
   delete(id) {
     return () => {
-      this.props.deleteIcon(id);
+      this.props.deleteIcon(id).then(() => {
+        this.props.fetchWorkbench().then(() => {
+          const { icons } = this.props;
+          if (icons.length) {
+            this.props.getIconDetail(this.props.icons[0].id);
+          } else {
+            this.props.push('/upload');
+          }
+        });
+      });
     };
   }
 
@@ -73,8 +96,8 @@ export default class Workbench extends Component {
               <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
             <ul className={'upload-icon-list'}>
               {
-                icons.map((icon) => (
-                  <li className={'upload-icon-item'}>
+                icons.map((icon, index) => (
+                  <li className={'upload-icon-item'} key={index}>
                     <i className={'iconfont delete'} onClick={this.delete(icon.id)}>&#xf077;</i>
                     <Icon className={'iconfont upload-icon'} d={icon.path} size={60} />
                   </li>

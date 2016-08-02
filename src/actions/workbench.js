@@ -17,10 +17,16 @@ export function uploadIcons() {
 }
 
 export function deleteIcon(id) {
-  return () => {
-    fetch.delete(`/user/icons/${id}`).then(() => ({
-      type: DELETE_WORKBENCH_ICON,
-      payload: fetch.get('/user/workbench'),
-    }));
+  // return (dispatch) => {
+  //   fetch.delete(`/user/icons/${id}`).then(() => {
+  //     dispatch({
+  //       type: DELETE_WORKBENCH_ICON,
+  //       payload: fetch.get('/user/workbench'),
+  //     });
+  //   });
+  // };
+  return {
+    type: DELETE_WORKBENCH_ICON,
+    payload: fetch.delete(`/user/icons/${id}`),
   };
 }

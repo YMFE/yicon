@@ -1,31 +1,22 @@
 import './Slick.scss';
 import React, { Component, PropTypes } from 'react';
-const itemData = [];
-for (let i = 0; i < 28; i++) {
-  const obj = {
-    index: i,
-    name: '笔',
-    tags: '你好,呵呵',
-    code: 61442,
-  };
-  itemData.push(obj);
-}
+// import Icon from '../Icon/Icon.jsx';
 export default class Slick extends Component {
   static defaultProps = {
-    currentItem: 0,
-    directionNav: true,
     defaultTranslateX: 0,
     // leftStep: 84 * 12,
-    leftStep: 1008,
+    leftStep: 84 * 11,
   }
   static propTypes = {
     currentItem: PropTypes.number,
     defaultCurrent: PropTypes.number,
     defaultTranslateX: PropTypes.number,
     directionNav: PropTypes.bool,
-    onSelect: PropTypes.func,
+    onClick: PropTypes.func,
+    onDelete: PropTypes.func,
     // iconItemListPos: PropTypes.object,
     leftStep: PropTypes.number,
+    itemData: PropTypes.array,
   }
   constructor(props) {
     super(props);
@@ -37,8 +28,8 @@ export default class Slick extends Component {
     };
   }
   componentWillMount() {
+    const { itemData } = this.props;
     const uiWidth = 84 * itemData.length;
-    // 删除的时候 需要重新渲染 itemData: itemData,
     this.setState({ scrollAreaWidth: uiWidth });
   }
   handleClick(config, evt) {
@@ -51,62 +42,52 @@ export default class Slick extends Component {
         _currentItem = index;
         break;
       case 'prev':
-        console.log('上一页');
         _iconItemListPosLeft += this.props.leftStep;
         if (_iconItemListPosLeft <= 0) {
           this.setState({ defaultTranslateX: _iconItemListPosLeft });
         }
-        console.log(_iconItemListPosLeft);
-        // this.setState({ iconItemListPos: {
-        //   transform: `translateX(${_iconItemListPosLeft}px)`,
-        // } });
         break;
       case 'next':
-        // if (this.state.currentPage < this.props.totalPage) {
-        //   _currentPage = this.state.currentPage + 1;
-        // }
         evt.preventDefault();
-        console.log('下一页');
         _iconItemListPosLeft -= this.props.leftStep;
-        console.log(scrollAreaWidth);
         if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
           this.setState({ defaultTranslateX: _iconItemListPosLeft });
         }
-
-        // this.setState({ defaultTranslateX: _iconItemListPosLeft });
-        // this.setState({ iconItemListPos: {
-        //   transform: `translateX(${_iconItemListPosLeft}px)`,
-        // } });
         break;
       default:
         break;
     }
-
     if (_currentItem !== this.state.currentItem) {
       this.setState({
         currentItem: _currentItem,
       });
     }
-
     evt.stopPropagation();
     evt.preventDefault();
-
-  //  if (this.props.onClick) this.props.onClick(_currentPage);
+    if (this.props.onClick) this.props.onClick(_currentItem);
   }
   deleteSingleClick(config, evt) {
     evt.stopPropagation();
-    evt.preventDefault();
-    const { index } = config;
-    console.log(index);
-    console.log(evt);
-    alert('delete');
-    // 重新计算滚动ul 宽
+    // evt.preventDefault();
+    if (config.index || config.index === 0) {
+      const { index } = config;
+      if (this.props.onDelete) this.props.onDelete(index);
+    }
   }
   render() {
     const itemArr = [];
     // iconItemListPos
     const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
+    const { itemData } = this.props;
     itemData.forEach((item, i) => {
+      let passIcon = 'none';
+      let notPassIcon = 'none';
+      if (item.pass) {
+        passIcon = 'block';
+      }
+      if (item.notPass) {
+        notPassIcon = 'block';
+      }
       itemArr.push(<li
         key={`item_${i}`}
         className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
@@ -117,7 +98,11 @@ export default class Slick extends Component {
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
         >&#xf077;</i>
         <i className={'iconfont upload-icon'}>{i}</i>
-        {/* &#xf50f; {`&#${item.code};`} */}
+        <div className={'pass-tag'} style={{ display: passIcon }}>通过</div>
+        <div className={'no-pass-tag'} style={{ display: notPassIcon }}>不通过</div>
+        {/*
+          <Icon fill={i} />
+        */}
       </li>);
     });
     return (
