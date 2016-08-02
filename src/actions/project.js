@@ -4,6 +4,7 @@ import {
   SAVE_TO_NEW_PROJECT,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_PROJECT,
+  FETCH_PROJECT_LOG,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -47,5 +48,12 @@ export function choseProjectForSave(project) {
     payload: {
       project,
     },
+  };
+}
+
+export function fetchProjectLogs(id, page) {
+  return {
+    type: FETCH_PROJECT_LOG,
+    payload: fetch.get(`/user/log/projects/${id}?currentPage=${page}`),
   };
 }
