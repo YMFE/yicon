@@ -41,7 +41,11 @@ export const DELETE_ICON = 'DELETE_ICON';
 // upload
 export const FETCH_UPLOAD_ICON = 'FETCH_UPLOAD_ICON';
 // uploadEdit
-export const FETCH_SUBMIT_ICON = 'FETCH_SUBMIT_ICON';
+export const FETCH_UPLOAD_EDIT_LOAD = 'FETCH_UPLOAD_EDIT_LOAD';
+export const FETCH_SUBMIT_EDIT_ICONS = 'FETCH_SUBMIT_EDIT_ICONS';
+export const FETCH_UPLOAD_SINGLE_ICON = 'FETCH_UPLOAD_SINGLE_ICON';
+// uploadaudit
+
 
 // user
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
