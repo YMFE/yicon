@@ -15,6 +15,6 @@ export function fetchUploaded(currentPage) {
 export function deleteIcon(id) {
   return {
     type: DELETE_ICON,
-    payload: fetch.get(`/user/icons/delete?id=${id}`),
+    payload: fetch.delete(`/user/icons/${id}`),
   };
 }
