@@ -25,6 +25,8 @@ for (let i = 0; i < 28; i++) {
     index: i,
     name: '笔',
     tags: '你好,呵呵',
+    pass: false,
+    notPass: true,
   };
   itemData.push(obj);
 }
@@ -140,13 +142,24 @@ export default class Demo extends Component {
         >
           <i className="iconfont set-tag-icon">&#xf50f;</i>
         </Input>
-        <div style={{ width: '1080px', margin: '40px', backgroundColor: '#fff' }}>
+        <div
+          style={{
+            width: '1080px',
+            margin: '40px',
+            backgroundColor: '#fff',
+            position: 'relative',
+          }}
+        >
           <Slick
             itemData={itemData}
             defaultCurrent={0}
             onClick={(index) => { console.log(index); }}
             onDelete={(index) => { console.log(index); }}
           />
+          <div className={'upload-icon-btn'}>
+            <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+            <p className={'upload-btn-txt'}>上传图标</p>
+          </div>
         </div>
       </div>
     );

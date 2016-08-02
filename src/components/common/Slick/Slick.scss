@@ -1,9 +1,10 @@
 .upload-icon {
   .upload-icon-list-area{
-    width: 1008px;
+    width: 924px;
     overflow: hidden;
     display: inline;
     float: left;
+    margin-right: 84px;
   }
   .upload-icon-list {
     position: relative;
@@ -16,6 +17,7 @@
       cursor: pointer;
       float: left;
       position: relative;
+      overflow: hidden;
       text-align: center;
       width: 72px;
       height: 72px;
@@ -26,6 +28,24 @@
       .upload-icon {
         font-size: 60px;
         line-height: 72px;
+      }
+      .pass-tag, .no-pass-tag {
+        position: relative;
+        top: -23px;
+        left: 17px;
+        background: #4bb052;
+        color: #fff;
+        font-size: 12px;
+        line-height: 16px;
+        height: 16px;
+        transform: rotate(315deg);
+        -ms-transform: rotate(315deg);		/* IE 9 */
+        -webkit-transform: rotate(315deg);	/* Safari and Chrome */
+        -o-transform: rotate(315deg);		/* Opera */
+        -moz-transform: rotate(315deg);
+      }
+      .no-pass-tag {
+        background: #ff7474;
       }
       .delete {
         display: none;
