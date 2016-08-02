@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 // import Icon from '../Icon/Icon.jsx';
 export default class Slick extends Component {
   static defaultProps = {
-    currentItem: 0,
     defaultTranslateX: 0,
     // leftStep: 84 * 12,
     leftStep: 1008,
@@ -31,7 +30,6 @@ export default class Slick extends Component {
   componentWillMount() {
     const { itemData } = this.props;
     const uiWidth = 84 * itemData.length;
-    // 删除的时候 需要重新渲染 itemData: itemData,
     this.setState({ scrollAreaWidth: uiWidth });
   }
   handleClick(config, evt) {
@@ -59,21 +57,19 @@ export default class Slick extends Component {
       default:
         break;
     }
-
     if (_currentItem !== this.state.currentItem) {
       this.setState({
         currentItem: _currentItem,
       });
     }
-
     evt.stopPropagation();
     evt.preventDefault();
     if (this.props.onClick) this.props.onClick(_currentItem);
   }
   deleteSingleClick(config, evt) {
     evt.stopPropagation();
-    evt.preventDefault();
-    if (config.index) {
+    // evt.preventDefault();
+    if (config.index || config.index === 0) {
       const { index } = config;
       if (this.props.onDelete) this.props.onDelete(index);
     }

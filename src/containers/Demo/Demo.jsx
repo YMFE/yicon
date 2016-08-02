@@ -143,7 +143,7 @@ export default class Demo extends Component {
         <div style={{ width: '1080px', margin: '40px', backgroundColor: '#fff' }}>
           <Slick
             itemData={itemData}
-            currentItem={0}
+            defaultCurrent={0}
             onClick={(index) => { console.log(index); }}
             onDelete={(index) => { console.log(index); }}
           />
