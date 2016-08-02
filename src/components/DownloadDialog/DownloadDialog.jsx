@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
+import Input from '../common/Input/Index.jsx';
 import Select from '../common/Select/index';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
@@ -67,13 +68,13 @@ class DownloadDial extends Component {
   @autobind
   save(e) {
     if (e.type === 'click' || +e.keyCode === +13) {
-      const name = this.refs.inputName.value;
+      const name = this.refs.myInput.getVal();
       if (this.validate(this.filter(name))) {
         this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
           this.setState({
             isEdit: false,
           });
-          this.refs.inputName.value = '';
+          this.refs.myInput.reset();
         });
       }
     }
@@ -83,7 +84,7 @@ class DownloadDial extends Component {
     this.setState({
       isEdit: false,
     });
-    this.refs.inputName.value = '';
+    this.refs.myInput.reset();
   }
 
   @autobind
@@ -104,7 +105,7 @@ class DownloadDial extends Component {
 
   render() {
     const { iconDetail, userInfo } = this.props;
-    const tagArr = this.tagsToArr(iconDetail.tags);
+    const tagArr = this.tagsToArr(iconDetail.tags || '');
     const repoId = iconDetail.repo.id;
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
@@ -143,16 +144,29 @@ class DownloadDial extends Component {
                 onClick={this.showNameEdit}
               >修改名称</button>
             </div>
-            <div className="edit-name">
-              <input
-                type="text"
-                className="input-name"
-                ref="inputName"
-                onKeyDown={this.save}
-              />
+            <Input
+              placeholder="请输入图标名称"
+              extraClass="edit-name"
+              keyDown={this.save}
+              regExp="\S+"
+              errMsg="名字不能为空"
+              ref="myInput"
+            >
               <button className="save" onClick={this.save}>保存</button>
               <button className="cancel" onClick={this.cancel}>取消</button>
-            </div>
+            </Input>
+            {
+            // <div className="edit-name">
+            //   <input
+            //     type="text"
+            //     className="input-name"
+            //     ref="inputName"
+            //     onKeyDown={this.save}
+            //   />
+            //   <button className="save" onClick={this.save}>保存</button>
+            //   <button className="cancel" onClick={this.cancel}>取消</button>
+            // </div>
+            }
           </div>
           <div className="other-info">
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
@@ -167,7 +181,7 @@ class DownloadDial extends Component {
                 onKeyDown={this.addTag}
                 disabled={+status === +1}
               />
-              <i className="iconfont set-tag-icon">&#xf50f;</i>
+              <i className="iconfont set-tag-icon">&#xf0ae;</i>
             </div>
             <ul className="icon-tag-list">
               {
