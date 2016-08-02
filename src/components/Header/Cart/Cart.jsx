@@ -25,7 +25,7 @@ import {
     iconsInCart: state.cart.iconsInCart,
     isShowCart: state.cart.isShowCartList,
     saveType: state.cart.saveType,
-    projectList: state.project.usersProject,
+    projectList: state.project.usersProjectList,
     projectForSave: state.project.projectForSave,
   }),
   {
