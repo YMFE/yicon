@@ -25,6 +25,7 @@ function getRepoByVersion({
       attributes: ['id', 'name', 'code', 'path'],
       where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
       on: { version },
+      required: false,
     }, User],
   }))
   .then(repo => {
@@ -40,8 +41,7 @@ function getRepoByVersion({
   .then(count => {
     result.iconCount = count;
     return result;
-  })
-  .catch(e => { throw new Error(e); });
+  });
 }
 
 export function* list(next) {

@@ -17,7 +17,8 @@ import './App.scss';
 class App extends Component {
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
-      this.props.launchDevTools();
+      const { query } = this.props.location;
+      if (query.dev) this.props.launchDevTools();
     }
   }
 
@@ -44,6 +45,7 @@ App.propTypes = {
   dispatch: PropTypes.func,
   searchValue: PropTypes.string,
   launchDevTools: PropTypes.func,
+  location: PropTypes.object,
 };
 
 export default App;

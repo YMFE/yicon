@@ -137,6 +137,7 @@ class Cart extends Component {
               <div className="clearfix user-car-opt">
               {
                 <Tool
+                  iconsInCart={iconsInCart}
                   saveType={this.props.saveType}
                   onDumpIcon={this.props.dumpIconLocalStorage}
                   onChangeSaveType={this.props.changeCartSaveType}
@@ -144,7 +145,7 @@ class Cart extends Component {
                   onSaveToNewProject={this.props.saveToNewProject}
                   onChoseProjectForSave={this.props.choseProjectForSave}
                   projectForSave={this.props.projectForSave}
-                  projectList={this.props.usersProject}
+                  projectList={this.props.projectList}
                   onCancelSave={this.shiftCartList}
                 />
               }
@@ -173,7 +174,7 @@ Cart.propTypes = {
   toggleCartListDisplay: PropTypes.func,
   dumpIconLocalStorage: PropTypes.func,
   changeCartSaveType: PropTypes.func,
-  usersProject: PropTypes.array,
+  projectList: PropTypes.array,
   saveToProject: PropTypes.func,
   saveToNewProject: PropTypes.func,
   choseProjectForSave: PropTypes.func,
