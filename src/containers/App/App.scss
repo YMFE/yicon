@@ -33,9 +33,6 @@ button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}
 mark{background-color:transparent}
 a,ins,s,u,del{text-decoration:none}
 sup,sub{vertical-align:baseline}
-body, button, input, select, textarea {
-  font: 12px/1.5 tahoma,"microsoft yahei","\5FAE\8F6F\96C5\9ED1";
-}
 /*系统图标*/
 :global {
   [class*="iconfont"], [class*="iconfont"]:before {

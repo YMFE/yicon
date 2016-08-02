@@ -13,9 +13,13 @@ import {
   getUserProjectInfo,
   patchUserProject,
   fetchMemberSuggestList,
+  patchProjectMemeber,
+  generateVersion,
+  deleteProject,
 } from '../../actions/project';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
+import GenerateVersion from './GenerateVersion.jsx';
 
 @connect(
   state => ({
@@ -28,6 +32,9 @@ import ManageMembers from './ManageMembers.jsx';
     getUserProjectInfo,
     patchUserProject,
     fetchMemberSuggestList,
+    patchProjectMemeber,
+    generateVersion,
+    deleteProject,
   }
 )
 class UserProject extends Component {
@@ -38,13 +45,22 @@ class UserProject extends Component {
     getUsersProjectList: PropTypes.func,
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
+    deleteProject: PropTypes.func,
     patchUserProject: PropTypes.func,
+    patchProjectMemeber: PropTypes.func,
     suggestList: PropTypes.array,
+    generateVersion: PropTypes.func,
+  }
+
+  static defaultProps ={
+    generateVersion: 'reversion',
   }
   constructor(props) {
     super(props);
     this.state = {
       showManageMember: false,
+      showGenerateVersion: false,
+      generateVersion: 'reversion',
     };
   }
   componentDidMount() {
@@ -55,16 +71,19 @@ class UserProject extends Component {
       this.props.getUserProjectInfo(id);
     }
     this.props.fetchMemberSuggestList();
+    console.log('123');
   }
   componentWillReceiveProps(nextProps) {
     const current = nextProps.currentUserProjectInfo;
-    this.setState({
-      name: current.name,
-      id: current.id,
-      owner: current.projectOwner,
-      isPublic: current.public,
-      members: current.members,
-    });
+    if (current) {
+      this.setState({
+        name: current.name,
+        id: current.id,
+        owner: current.projectOwner,
+        isPublic: current.public,
+        members: current.members,
+      });
+    }
   }
   componentDidUpdate(nextProps) {
     const current = this.props.currentUserProjectInfo;
@@ -107,7 +126,20 @@ class UserProject extends Component {
       onCancel: () => {},
     });
   }
-
+  @autobind
+  deleteProject() {
+    confirm({
+      content: '删除项目后无法恢复，请慎重操作！',
+      title: '删除项目',
+      onOk: () => {
+        const { id } = this.props.currentUserProjectInfo;
+        this.props.deleteProject({
+          id,
+        });
+      },
+      onCancel: () => {},
+    });
+  }
   @autobind
   editMembers() {
     this.setState({
@@ -122,11 +154,32 @@ class UserProject extends Component {
   }
   @autobind
   updateManageMembers({ members }) {
-    this.props.patchUserProject({
+    this.props.patchProjectMemeber({
       id: this.props.currentUserProjectInfo.id,
       members,
     });
     this.closeManageMembers();
+  }
+  @autobind
+  shiftShowGenerateVersion(isShow = false) {
+    this.setState({
+      showGenerateVersion: isShow,
+    });
+  }
+  @autobind
+  changeGenerateVersion(e) {
+    const version = e.currentTarget.querySelector('input').value;
+    this.setState({
+      generateVersion: version,
+    });
+  }
+  @autobind
+  generateVersion() {
+    this.props.generateVersion({
+      id: this.props.currentUserProjectInfo.id,
+      versionType: this.state.generateVersion,
+    });
+    this.shiftShowGenerateVersion(false);
   }
   render() {
     const list = this.props.usersProjectList;
@@ -134,20 +187,12 @@ class UserProject extends Component {
     if (list.length === 0) return null;
     let iconList;
     if (current.icons && current.icons.length > 0) {
-      iconList = current.icons.map((item, index) => {
-        let icon = {
-          id: item.id,
-          name: item.name,
-          path: item.path,
-          code: item.code,
-        };
-        return (
-          <IconButton
-            icon={icon}
-            key={index}
-          />
-        );
-      });
+      iconList = current.icons.map((item, index) => (
+        <IconButton
+          icon={item}
+          key={index}
+        />
+      ));
     } else {
       iconList = null;
     }
@@ -182,7 +227,7 @@ class UserProject extends Component {
               {current.isOwner ?
                 <menu className="options">
                   <span className="edit" onClick={this.editProject}>编辑项目</span>
-                  <span className="delete">删除项目</span>
+                  <span className="delete" onClick={this.deleteProject}>删除项目</span>
                   <span className="team-member" onClick={this.editMembers}>管理项目成员</span>
                 </menu>
               : null
@@ -192,7 +237,11 @@ class UserProject extends Component {
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
                 </a>
-                <a href="#" className="options-btns btns-blue">
+                <a
+                  href="#"
+                  className="options-btns btns-blue"
+                  onClick={() => { this.shiftShowGenerateVersion(true); }}
+                >
                   生成版本
                 </a>
                 <a href="#" className="options-btns btns-default">
@@ -213,9 +262,20 @@ class UserProject extends Component {
           onOk={this.updateManageMembers}
           onChange={this.props.fetchMemberSuggestList}
           onCancel={this.closeManageMembers}
-          onChoseMember={this.handleChoseMember}
           suggestList={this.props.suggestList}
           members={current.members}
+          ref={
+            (node) => {
+              this.ManageMembersEle = node;
+            }
+          }
+        />
+        <GenerateVersion
+          onOk={this.generateVersion}
+          onCancel={() => { this.shiftShowGenerateVersion(false); }}
+          onChange={this.changeGenerateVersion}
+          value={this.state.generateVersion}
+          showGenerateVersion={this.state.showGenerateVersion}
         />
       </div>
     );

@@ -6,11 +6,13 @@ import {
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_NEW_PROJECT,
   SAVE_TO_PROJECT,
+  DELETE_PROJECT,
   FETCH_MEMBERS_SUGGEST_LIST,
   PATCH_USERS_PROJECT_DETAIL,
   PATCH_PROJECT_MEMBERS,
+  POST_GENERATE_VERSION,
 } from '../../constants/actionTypes';
-
+import { push } from 'react-router-redux';
 import {
   dumpIconLocalStorage,
   getUserProjectInfo,
@@ -91,6 +93,14 @@ export default (state = initialState, action) => {
       }
       return state;
     }
+    case POST_GENERATE_VERSION: {
+      if (action.payload.res) {
+        return (dispatch) => {
+          dispatch(getUserProjectInfo(action.project.id));
+        };
+      }
+      return state;
+    }
     case SAVE_TO_NEW_PROJECT: {
       // if (action.res) {
       //
@@ -121,6 +131,15 @@ export default (state = initialState, action) => {
       };
     }
 
+    case DELETE_PROJECT: {
+      console.log('handle delete');
+      if (action.payload.res) {
+        return (dispatch) => {
+          dispatch(push('../'));
+        };
+      }
+      return state;
+    }
     default:
       return state;
   }

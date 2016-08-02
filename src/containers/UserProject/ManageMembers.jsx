@@ -40,7 +40,7 @@ class ManageMembers extends Component {
         this.members.push(item);
       }
     });
-    console.log(`this.members:${this.members}`);
+    // console.log(`this.members:${this.members}`);
   }
   componentDidUpdate() {
     if (this.props.showManageMember) {
@@ -92,7 +92,7 @@ class ManageMembers extends Component {
     }
   }
   render() {
-    const members = Array.from(this.state.members);
+    const members = this.state.members;
     const { suggestList } = this.props;
     // console.log(`suggestList:${suggestList}`);
     // console.log(`members:${members}`);

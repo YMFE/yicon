@@ -10,6 +10,8 @@ import {
   PATCH_USERS_PROJECT_DETAIL,
   FETCH_MEMBERS_SUGGEST_LIST,
   PATCH_PROJECT_MEMBERS,
+  POST_GENERATE_VERSION,
+  DELETE_PROJECT,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -53,7 +55,7 @@ export function fetchMemberSuggestList(value) {
 export function patchProjectMemeber(project) {
   return {
     type: PATCH_PROJECT_MEMBERS,
-    payload: fetch.patch(`/user/projects/${project.id}/members`, project.members),
+    payload: fetch.patch(`/user/projects/${project.id}/members`, project),
   };
 }
 
@@ -96,5 +98,21 @@ export function choseProjectForSave(project) {
     payload: {
       project,
     },
+  };
+}
+
+export function generateVersion(project) {
+  return {
+    type: POST_GENERATE_VERSION,
+    payload: fetch.post(`/user/projects/${project.id}/update`, {
+      versionType: project.versionType,
+    }),
+  };
+}
+
+export function deleteProject(project) {
+  return {
+    type: DELETE_PROJECT,
+    payload: fetch.delete(`/user/projects/${project.id}`),
   };
 }

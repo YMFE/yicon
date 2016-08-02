@@ -77,7 +77,7 @@ class IconButton extends Component {
     const { icon, userInfo, download, repoId } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
-    const repositoryId = repoId || icon.repoVersion.repositoryId;
+    const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
 
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
