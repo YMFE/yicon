@@ -10,138 +10,11 @@ for (let i = 0; i < 28; i++) {
   };
   itemData.push(obj);
 }
-// const itemData = [
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   },
-//   {
-//     name: '笔',
-//     tags: '你好,呵呵',
-//     code: 61442,
-//   }];
-
-// itemDate 为icon数据 存入state中 方便操作删除当前后 重新渲染
 export default class Slick extends Component {
   static defaultProps = {
     currentItem: 0,
     directionNav: true,
     defaultTranslateX: 0,
-  //  itemData: [],
-    iconItemListPos: {
-      transform: 'translateX(0)',
-    },
     // leftStep: 84 * 12,
     leftStep: 1008,
   }
@@ -149,10 +22,9 @@ export default class Slick extends Component {
     currentItem: PropTypes.number,
     defaultCurrent: PropTypes.number,
     defaultTranslateX: PropTypes.number,
-    // itemData: PropTypes.array,
     directionNav: PropTypes.bool,
     onSelect: PropTypes.func,
-    iconItemListPos: PropTypes.object,
+    // iconItemListPos: PropTypes.object,
     leftStep: PropTypes.number,
   }
   constructor(props) {
@@ -160,9 +32,8 @@ export default class Slick extends Component {
     this.state = {
       currentItem: this.props.defaultCurrent,
       defaultTranslateX: this.props.defaultTranslateX,
-      iconItemListPos: Object.assign({}, this.props.iconItemListPos),
+    // iconItemListPos: Object.assign({}, this.props.iconItemListPos),
       scrollAreaWidth: 0,
-    //  itemData: this.props.itemData,
     };
   }
   componentWillMount() {
