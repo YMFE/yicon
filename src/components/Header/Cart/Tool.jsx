@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
+import { push } from 'react-router-redux';
 
+@connect()
 class Tool extends Component {
+  state = {
+    projectListShow: false,
+  }
 
   @autobind
   dumpIcon() {
@@ -10,7 +15,15 @@ class Tool extends Component {
   }
   @autobind
   saveToProject() {
-    this.props.onSaveToProject();
+    const { projectForSave, onSaveToProject, iconsInCart } = this.props;
+    onSaveToProject(projectForSave, iconsInCart)
+      .then(data => {
+        if (data && data.payload.res) {
+          this.dumpIcon();
+          this.props.onChangeSaveType('DEFAULT');
+          this.props.dispatch(push('/user/projects'));
+        }
+      });
   }
   @autobind
   changeCartSaveType(e) {
@@ -19,8 +32,16 @@ class Tool extends Component {
   }
   @autobind
   saveToNewProject() {
+    const { onSaveToNewProject, iconsInCart } = this.props;
     const saveToProjectInput = this.saveToProjectInput.value;
-    this.props.saveToNewProject(saveToProjectInput);
+    onSaveToNewProject(saveToProjectInput, iconsInCart)
+      .then(data => {
+        if (data && data.payload.res) {
+          this.dumpIcon();
+          this.props.onChangeSaveType('DEFAULT');
+          this.props.dispatch(push('/user/projects'));
+        }
+      });
   }
   @autobind
   cancleSave() {
@@ -40,44 +61,61 @@ class Tool extends Component {
       name: target.innerText,
     };
     this.props.onChoseProjectForSave(project);
+    this.toggleProjectList();
+  }
+  @autobind
+  toggleProjectList() {
+    this.setState({ projectListShow: !this.state.projectListShow });
   }
 
   render() {
     const { saveType, projectList } = this.props;
+    const { projectListShow } = this.state;
+
     switch (saveType) {
       case 'SAVE_TO_PROJECT':
         return (
           <div className="font-cdn save-to-old-pjc">
-            <div className="font-project-name">
+            <div
+              onClick={this.toggleProjectList}
+              className="font-project-name"
+            >
               <input
                 type="text"
                 placeholder="请选择项目"
                 value={this.props.projectForSave && this.props.projectForSave.name}
               />
               <i className="iconfont">&#xf032;</i>
-              <div className="save_to_pjc">
-                <ul >
-                  {
-                    projectList.length > 0 ?
-                    projectList.map((item, index) =>
-                      (
-                      <li
-                        className="pjc-item"
-                        key={index}
-                        data-id={item.id}
-                        onClick={this.choseProjectForSave}
-                      >
-                      {item.name}
-                      </li>
-                      )
-                    ) :
-                      <li className="pjc-item" />
-                  }
-                </ul>
-              </div>
+              {projectListShow &&
+                <div className="save_to_pjc">
+                  <ul >
+                    {
+                      projectList.length > 0 ?
+                      projectList.map((item, index) =>
+                        (
+                        <li
+                          className="pjc-item"
+                          key={index}
+                          data-id={item.id}
+                          onClick={this.choseProjectForSave}
+                        >
+                        {item.name}
+                        </li>
+                        )
+                      ) :
+                        <li className="pjc-item" />
+                    }
+                  </ul>
+                </div>
+              }
             </div>
-            <a href="#" className="button-icon" onClick={this.saveToProject}>确定</a>
-            <a href="#" className="button-icon button-cancel" onClick={this.cancleSave}>取消</a>
+            <a className="button-icon" onClick={this.saveToProject}>确定</a>
+            <a
+              className="button-icon button-cancel"
+              onClick={this.cancleSave}
+            >
+              取消
+            </a>
           </div>
         );
       case 'SAVE_TO_NEW_PROJECT':
@@ -93,8 +131,13 @@ class Tool extends Component {
               />
               <i className="iconfont">&#xf032;</i>
             </div>
-            <a href="#" className="button-icon" onClick={this.saveToProject}>确定</a>
-            <a href="#" className="button-icon button-cancel">取消</a>
+            <a className="button-icon" onClick={this.saveToNewProject}>确定</a>
+            <a
+              className="button-icon button-cancel"
+              onClick={this.cancleSave}
+            >
+              取消
+            </a>
           </div>
         );
       default:
@@ -119,7 +162,8 @@ class Tool extends Component {
                     onClick={this.changeCartSaveType}
                     data-type="SAVE_TO_NEW_PROJECT"
                   >
-                    <span>保存为项目
+                    <span>
+                      保存为项目
                       <i className="iconfont">&#xf032;</i>
                     </span>
                   </a>
@@ -130,7 +174,7 @@ class Tool extends Component {
                       data-type="SAVE_TO_PROJECT"
                       onClick={this.changeCartSaveType}
                     >
-                    保存到已有项目
+                      保存到已有项目
                     </a>
                   </div>
                 </div>
@@ -150,21 +194,17 @@ class Tool extends Component {
 }
 
 Tool.propTypes = {
+  dispatch: PropTypes.func,
+  iconsInCart: PropTypes.array,
   saveType: PropTypes.string,
   onDumpIcon: PropTypes.func,
   onChangeSaveType: PropTypes.func,
   onChoseProjectForSave: PropTypes.func,
   onSaveToProject: PropTypes.func,
-  saveToNewProject: PropTypes.func,
+  onSaveToNewProject: PropTypes.func,
   onCancelSave: PropTypes.func,
   projectList: PropTypes.array,
-  projectForSave: PropTypes.oneOf([
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-    }),
-    PropTypes.Object,
-  ]),
+  projectForSave: PropTypes.object,
 };
 
 export default Tool;

@@ -1,15 +1,15 @@
-import isonFetch from 'isom-fetch';
+import isomFetch from 'isom-fetch';
 import {
   INIT_CART,
   FETCH_CART_DETAIL,
   ADD_ICON_TO_CART,
   DELETE_ICON_IN_CART,
-  DUMP_ICON_LOCALSTORGAGE,
+  DUMP_ICON_LOCALSTORAGE,
   CHANGE_CART_SAVE_TYPE,
   TOGGLE_CART_LIST_DISPLAY,
 } from '../constants/actionTypes';
 
-const fetch = isonFetch.create({ baseURL: '/api' });
+const fetch = isomFetch.create({ baseURL: '/api' });
 let localStorage = {};
 if (process.browser) {
   localStorage = window.localStorage;
@@ -80,7 +80,7 @@ export function deleteIconInLocalStorage(id, isFetchIcons) {
 export function dumpIconLocalStorage() {
   ls.cartIconIds = '';
   return {
-    type: DUMP_ICON_LOCALSTORGAGE,
+    type: DUMP_ICON_LOCALSTORAGE,
     payload: [],
   };
 }

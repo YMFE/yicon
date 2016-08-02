@@ -1,4 +1,4 @@
-import isonFetch from 'isom-fetch';
+import isomFetch from 'isom-fetch';
 import {
   FETCH_USERS_PROJECT_INFO,
   SAVE_TO_NEW_PROJECT,
@@ -7,7 +7,7 @@ import {
   FETCH_PROJECT_LOG,
 } from '../constants/actionTypes';
 
-const fetch = isonFetch.create({ baseURL: '/api' });
+const fetch = isomFetch.create({ baseURL: '/api' });
 
 function getIconList(icons) {
   return icons.map((item) => ({
@@ -26,7 +26,7 @@ export function getUsersProjectInfo() {
 export function saveToNewProject(projectName, icons) {
   return {
     type: SAVE_TO_NEW_PROJECT,
-    payload: fetch.post('/user/project', {
+    payload: fetch.post('/user/projects', {
       projectName,
       icons: getIconList(icons),
     }),
@@ -45,9 +45,7 @@ export function saveToProject(project, icons) {
 export function choseProjectForSave(project) {
   return {
     type: CHOSE_PROJECT_FOR_SAVE,
-    payload: {
-      project,
-    },
+    payload: project,
   };
 }
 

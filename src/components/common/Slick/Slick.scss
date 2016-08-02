@@ -1,0 +1,88 @@
+.upload-icon {
+  .upload-icon-list-area{
+    width: 1008px;
+    overflow: hidden;
+    display: inline;
+    float: left;
+  }
+  .upload-icon-list {
+    position: relative;
+    float: left;
+    // width: 1008px;
+    white-space: nowrap;
+    height: 76px;
+    overflow: hidden;
+    .upload-icon-item, .upload-icon-btn {
+      cursor: pointer;
+      float: left;
+      position: relative;
+      text-align: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      border: 2px solid #eef1f3;
+      color: #555f6e;
+      margin: 0 4px;
+      .upload-icon {
+        font-size: 60px;
+        line-height: 72px;
+      }
+      .delete {
+        display: none;
+        font-size: 14px;
+        line-height: 14px;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        cursor: pointer;
+        color: #555f6e;
+      }
+    }
+    .upload-icon-item:hover {
+      border: 2px solid #bfe2f4;
+      color: #008ed6;
+      .delete {
+        display: block;
+      }
+    }
+    .upload-icon-item.on {
+      border: 2px solid #ffcccc;
+      color: #555f6e;
+      .delete {
+        display: none;
+      }
+    }
+    .upload-icon-btn {
+      position: absolute;
+      right: 0;
+      background: #fff;
+      .upload-btn-icon {
+        font-size: 32px;
+        margin-top: 12px;
+      }
+      .upload-btn-txt {
+        line-height: 12px;
+        font-size: 14px;
+      }
+    }
+  }
+  .icons-more-btn {
+    float: left;
+    width: 36px;
+    height: 76px;
+    line-height: 76px;
+    text-align: center;
+    color: #fff;
+    background: #e8e8e8;
+    border: 0;
+    .icons-more-btn-icon {
+      font-size: 16px;
+    }
+  }
+  .icons-more-btn-right {
+    float: right;
+  }
+  .icons-more-btn:hover {
+    background: #008ed6;
+  }
+}
