@@ -1,5 +1,6 @@
 import zip from 'zip-dir';
 import Q from 'q';
+import invariant from 'invariant';
 import fontBuilder from 'iconfont-builder';
 import { iconStatus } from '../../constants/utils';
 import { Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
@@ -48,6 +49,9 @@ export function* downloadFont(next) {
     const model = isRepo ? Repo : Project;
     const throughModel = isRepo ? RepoVersion : ProjectVersion;
     const instance = yield model.findOne({ where: { id } });
+
+    invariant(instance, `不存在 id 为 ${id} 的 ${isRepo ? '大库' : '项目'}`);
+
     iconData = yield instance.getIcons({
       attributes: [
         ['fontClass', 'name'],
