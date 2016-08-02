@@ -55,40 +55,25 @@ export default class Slick extends Component {
         if (step < 924) {
           const scrollPage = Math.floor(scrollAreaWidth / 924);
           const leftLength = scrollAreaWidth % 924;
-          console.log(Math.abs(_iconItemListPosLeft));
-          console.log(leftLength);
           if (leftLength !== 0) {
             if (scrollPage > 0) {
               if (Math.abs(_iconItemListPosLeft) <= leftLength) {
                 this.setState({ defaultTranslateX: _iconItemListPosLeft });
               } else {
                 const leftScroll = (scrollAreaWidth - 924);
-                console.log('leftScroll');
-                console.log(leftScroll);
                 if (Math.abs(_iconItemListPosLeft) < leftScroll) {
                   this.setState({ defaultTranslateX: _iconItemListPosLeft });
                 }
               }
             }
           } else {
-            console.log('scrollAreaWidth - 924');
-            console.log(scrollAreaWidth - 924);
             if (scrollPage > 1) {
               const leftScroll = (scrollAreaWidth - 924);
-              console.log('leftScroll');
-              console.log(leftScroll);
               if (Math.abs(_iconItemListPosLeft) < leftScroll) {
                 this.setState({ defaultTranslateX: _iconItemListPosLeft });
               }
             }
           }
-          // if ( leftLength !== 0) {
-          //   leftLength = 924;
-          // }
-          // console.log(_iconItemListPosLeft);
-          // if (Math.abs(_iconItemListPosLeft) < leftLength) {
-          //   this.setState({ defaultTranslateX: _iconItemListPosLeft });
-          // }
         } else {
           if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
             this.setState({ defaultTranslateX: _iconItemListPosLeft });
