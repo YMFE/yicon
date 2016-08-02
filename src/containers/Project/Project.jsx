@@ -62,6 +62,7 @@ export default class Project extends Component {
             icon={icon}
             status={2}
             key={index}
+            toolBtns={['cart', 'copy', 'download', 'copytip']}
           />
         );
       });

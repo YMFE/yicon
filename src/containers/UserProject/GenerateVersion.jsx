@@ -50,7 +50,7 @@ const GenerateVersion = (props) => (
             htmlFor="project-version-major"
             onClick={props.onChange}
           >
-            重大辩护
+            重大变更
             <input
               type="radio"
               value="major"

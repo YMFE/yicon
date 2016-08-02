@@ -21,6 +21,9 @@ class Icon extends Component {
     const style = {
       width: size,
       height: size,
+      display: 'inline-block',
+      overflow: 'hidden',
+      verticalAlign: 'top',
     };
     const classList = ['Icon'];
     classList.push(this.props.extraClass);
