@@ -8,7 +8,8 @@
   .upload-icon-list {
     position: relative;
     float: left;
-    width: 1008px;
+    // width: 1008px;
+    white-space: nowrap;
     height: 76px;
     overflow: hidden;
     .upload-icon-item, .upload-icon-btn {
