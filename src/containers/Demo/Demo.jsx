@@ -25,9 +25,36 @@ for (let i = 0; i < 28; i++) {
     index: i,
     name: '笔',
     tags: '你好,呵呵',
+    pass: false,
+    notPass: true,
   };
   itemData.push(obj);
 }
+
+const itemData2 = [];
+for (let i = 0; i < 14; i++) {
+  const obj = {
+    index: i,
+    name: '笔',
+    tags: '你好,呵呵',
+    pass: true,
+    notPass: false,
+  };
+  itemData2.push(obj);
+}
+
+const itemData3 = [];
+for (let i = 0; i < 4; i++) {
+  const obj = {
+    index: i,
+    name: '笔',
+    tags: '你好,呵呵',
+    pass: false,
+    notPass: false,
+  };
+  itemData3.push(obj);
+}
+
 
 function onSelect({ key }) {
   console.log(`${key} selected`);
@@ -140,14 +167,70 @@ export default class Demo extends Component {
         >
           <i className="iconfont set-tag-icon">&#xf50f;</i>
         </Input>
-        <div style={{ width: '1080px', margin: '40px', backgroundColor: '#fff' }}>
+        <div
+          style={{
+            width: '1080px',
+            margin: '40px',
+            backgroundColor: '#fff',
+            position: 'relative',
+          }}
+        >
           <Slick
             itemData={itemData}
-            currentItem={0}
+            defaultCurrent={0}
             onClick={(index) => { console.log(index); }}
             onDelete={(index) => { console.log(index); }}
           />
+          <div className={'upload-icon-btn'}>
+            <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+            <p className={'upload-btn-txt'}>上传图标</p>
+          </div>
+          <h2> 滚动整行 </h2>
         </div>
+
+        <div
+          style={{
+            width: '1080px',
+            margin: '40px',
+            backgroundColor: '#fff',
+            position: 'relative',
+          }}
+        >
+          <Slick
+            itemData={itemData2}
+            defaultCurrent={3}
+            onClick={(index) => { console.log(index); }}
+            onDelete={(index) => { console.log(index); }}
+            step={84}
+          />
+          <div className={'upload-icon-btn'}>
+            <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+            <p className={'upload-btn-txt'}>上传图标</p>
+          </div>
+          <h2> 滚动单个item </h2>
+        </div>
+        <div
+          style={{
+            width: '1080px',
+            margin: '40px',
+            backgroundColor: '#fff',
+            position: 'relative',
+          }}
+        >
+          <Slick
+            itemData={itemData3}
+            defaultCurrent={1}
+            onClick={(index) => { console.log(index); }}
+            onDelete={(index) => { console.log(index); }}
+            step={84}
+          />
+          <div className={'upload-icon-btn'}>
+            <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+            <p className={'upload-btn-txt'}>上传图标</p>
+          </div>
+          <h2> 滚动单个item </h2>
+        </div>
+
       </div>
     );
   }

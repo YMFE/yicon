@@ -8,8 +8,7 @@ export default () => next => action => {
     } else if (action.payload && action.payload.res === false) {
       Message.error(action.payload.message || '服务器错误');
     }
-    next(action);
-  } else {
-    next(action);
+    return next(action);
   }
+  return next(action);
 };

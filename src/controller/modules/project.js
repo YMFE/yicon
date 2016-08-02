@@ -64,6 +64,7 @@ export function* createProject(next) {
       }));
       return ProjectVersion.bulkCreate(record, { transaction });
     })
+    .then(() => UserProject.create({ projectId, userId }))
     .then(() => {
       const log = [{
         type: 'PROJECT_CREATE',
@@ -186,10 +187,14 @@ export function* generatorNewVersion(next) {
 
 export function* addProjectIcon(next) {
   const { projectId, icons } = this.param;
+  const project = yield Project.findOne({
+    where: { id: projectId },
+  });
+
+  invariant(project, `不存在 id 为 ${projectId} 的项目`);
+
   const icon = icons.map(v => v.id);
-  const data = icon.map(
-    (value) => ({ version: '0.0.0', iconId: value, projectId })
-  );
+  const data = icon.map(value => ({ version: '0.0.0', iconId: value, projectId }));
   const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
   if (result.length) {
     this.state.respond = '添加项目图标成功';

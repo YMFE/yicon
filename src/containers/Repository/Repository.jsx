@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import { Link } from 'react-router';
 import {
   fetchRepositoryData,
@@ -24,15 +25,32 @@ const pageSize = 64;
     currRepository: state.repository.currRepository,
     iconSize: state.repository.iconSize,
   }),
-  { fetchRepositoryData, changeIconSize, resetIconSize, getIconDetail, editIconStyle }
+  {
+    fetchRepositoryData,
+    changeIconSize,
+    resetIconSize,
+    getIconDetail,
+    editIconStyle,
+  }
 )
 export default class Repository extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShowDownloadDialog: false,
-    };
+
+  static propTypes = {
+    fetchRepositoryData: PropTypes.func,
+    changeIconSize: PropTypes.func,
+    resetIconSize: PropTypes.func,
+    getIconDetail: PropTypes.func,
+    editIconStyle: PropTypes.func,
+    iconSize: PropTypes.number,
+    currRepository: PropTypes.object,
+    params: PropTypes.object,
+    push: PropTypes.func,
   }
+
+  state = {
+    isShowDownloadDialog: false,
+  }
+
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
@@ -67,11 +85,24 @@ export default class Repository extends Component {
       });
     };
   }
+
   @autobind
   dialogUpdateShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
     });
+  }
+
+  @autobind
+  downloadAllIcons() {
+    const { id } = this.props.params;
+    axios
+      .post('/api/download/font', { type: 'repo', id })
+      .then(({ data }) => {
+        if (data.res) {
+          window.location.href = `/download/${data.data}`;
+        }
+      });
   }
 
   render() {
@@ -94,10 +125,12 @@ export default class Repository extends Component {
                 <Link to="/upload" className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
                 </Link>
-                <button className="options-btns btns-blue">
+                <button
+                  onClick={this.downloadAllIcons}
+                  className="options-btns btns-blue"
+                >
                   <i className="iconfont">&#xf50b;</i>下载全部图标
                 </button>
-                <button className="options-btns btns-default ml10">添加公告</button>
                 <Link
                   to={`/repositories/${id}/logs`}
                   className="options-btns btns-default"
@@ -141,14 +174,3 @@ export default class Repository extends Component {
     );
   }
 }
-
-Repository.propTypes = {
-  fetchRepositoryData: PropTypes.func,
-  changeIconSize: PropTypes.func,
-  resetIconSize: PropTypes.func,
-  getIconDetail: PropTypes.func,
-  editIconStyle: PropTypes.func,
-  iconSize: PropTypes.number,
-  currRepository: PropTypes.object,
-  params: PropTypes.object,
-};

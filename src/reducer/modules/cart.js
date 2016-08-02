@@ -4,7 +4,7 @@ import {
   DELETE_ICON_IN_CART,
   FETCH_CART_DETAIL,
   TOGGLE_CART_LIST_DISPLAY,
-  DUMP_ICON_LOCALSTORGAGE,
+  DUMP_ICON_LOCALSTORAGE,
   CHANGE_CART_SAVE_TYPE,
 } from '../../constants/actionTypes';
 
@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
         isShowCartList: action.payload.isShowCartList,
       };
     }
-    case DUMP_ICON_LOCALSTORGAGE: {
+    case DUMP_ICON_LOCALSTORAGE: {
       return {
         ...state,
         iconsInCart: [],

@@ -1,19 +1,25 @@
 import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 import './style.scss';
 
 const defaultProps = {
   regExp: '',
   error: false,
   errMsg: '',
-  getVal(val) { return val; },
+  onChange: () => {},
+  blur: () => {},
+  keyDown: () => {},
   extraClass: '',
 };
 
 const propTypes = {
   regExp: PropTypes.string,
+  placeholder: PropTypes.string,
   error: PropTypes.bool,
   errMsg: PropTypes.string,
-  getVal: PropTypes.func,
+  onChange: PropTypes.func,
+  blur: PropTypes.func,
+  keyDown: PropTypes.func,
   extraClass: PropTypes.string,
   children: PropTypes.oneOf([
     PropTypes.string,
@@ -34,9 +40,13 @@ export default class Input extends Component {
     this.setState({ error: nextProps.error });
   }
 
+  getVal() {
+    return this.refs.input.value;
+  }
+
   validate(val) {
     const regExp = new RegExp(this.props.regExp);
-    this.props.getVal(val);
+    this.props.onChange(val);
     if (!regExp.test(val)) {
       this.setState({ error: true });
       return;
@@ -44,17 +54,33 @@ export default class Input extends Component {
     this.setState({ error: false });
   }
 
+  @autobind
+  keyDown(e) {
+    this.props.keyDown(e);
+  }
+  @autobind
+  blur(e) {
+    this.props.blur(e);
+  }
+
+  reset() {
+    this.refs.input.value = '';
+  }
+
   render() {
-    const { errMsg, extraClass } = this.props;
+    const { errMsg, extraClass, placeholder } = this.props;
     const { error } = this.state;
     const classNames = error ? 'input-wrap info-error ' : 'input-wrap';
     return (
-      <div className={classNames + extraClass}>
+      <div className={`${classNames} ${extraClass}`}>
         <input
           type="text"
           className="input"
-          placeholder="china"
+          placeholder={placeholder}
           onChange={evt => this.validate(evt.target.value)}
+          onKeyDown={this.keyDown}
+          onBlur={this.blur}
+          ref="input"
         />
       {this.props.children}
         <div

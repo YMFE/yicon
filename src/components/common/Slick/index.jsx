@@ -3,10 +3,8 @@ import React, { Component, PropTypes } from 'react';
 // import Icon from '../Icon/Icon.jsx';
 export default class Slick extends Component {
   static defaultProps = {
-    currentItem: 0,
     defaultTranslateX: 0,
-    // leftStep: 84 * 12,
-    leftStep: 1008,
+    step: 84 * 11,
   }
   static propTypes = {
     currentItem: PropTypes.number,
@@ -16,7 +14,7 @@ export default class Slick extends Component {
     onClick: PropTypes.func,
     onDelete: PropTypes.func,
     // iconItemListPos: PropTypes.object,
-    leftStep: PropTypes.number,
+    step: PropTypes.number,
     itemData: PropTypes.array,
   }
   constructor(props) {
@@ -24,6 +22,7 @@ export default class Slick extends Component {
     this.state = {
       currentItem: this.props.defaultCurrent,
       defaultTranslateX: this.props.defaultTranslateX,
+      step: this.props.step,
     // iconItemListPos: Object.assign({}, this.props.iconItemListPos),
       scrollAreaWidth: 0,
     };
@@ -31,12 +30,12 @@ export default class Slick extends Component {
   componentWillMount() {
     const { itemData } = this.props;
     const uiWidth = 84 * itemData.length;
-    // 删除的时候 需要重新渲染 itemData: itemData,
     this.setState({ scrollAreaWidth: uiWidth });
   }
   handleClick(config, evt) {
     const { type, index } = config;
     const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
+    const { step } = this.props;
     let _currentItem = currentItem;
     let _iconItemListPosLeft = defaultTranslateX;
     switch (type) {
@@ -44,36 +43,59 @@ export default class Slick extends Component {
         _currentItem = index;
         break;
       case 'prev':
-        _iconItemListPosLeft += this.props.leftStep;
+        _iconItemListPosLeft += step;
         if (_iconItemListPosLeft <= 0) {
           this.setState({ defaultTranslateX: _iconItemListPosLeft });
         }
         break;
       case 'next':
         evt.preventDefault();
-        _iconItemListPosLeft -= this.props.leftStep;
-        if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
-          this.setState({ defaultTranslateX: _iconItemListPosLeft });
+        _iconItemListPosLeft -= step;
+        // 单步滚动
+        if (step < 924) {
+          const scrollPage = Math.floor(scrollAreaWidth / 924);
+          const leftLength = scrollAreaWidth % 924;
+          if (leftLength !== 0) {
+            if (scrollPage > 0) {
+              if (Math.abs(_iconItemListPosLeft) <= leftLength) {
+                this.setState({ defaultTranslateX: _iconItemListPosLeft });
+              } else {
+                const leftScroll = (scrollAreaWidth - 924);
+                if (Math.abs(_iconItemListPosLeft) < leftScroll) {
+                  this.setState({ defaultTranslateX: _iconItemListPosLeft });
+                }
+              }
+            }
+          } else {
+            if (scrollPage > 1) {
+              const leftScroll = (scrollAreaWidth - 924);
+              if (Math.abs(_iconItemListPosLeft) < leftScroll) {
+                this.setState({ defaultTranslateX: _iconItemListPosLeft });
+              }
+            }
+          }
+        } else {
+          if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
+            this.setState({ defaultTranslateX: _iconItemListPosLeft });
+          }
         }
         break;
       default:
         break;
     }
-
     if (_currentItem !== this.state.currentItem) {
       this.setState({
         currentItem: _currentItem,
       });
     }
-
     evt.stopPropagation();
     evt.preventDefault();
     if (this.props.onClick) this.props.onClick(_currentItem);
   }
   deleteSingleClick(config, evt) {
     evt.stopPropagation();
-    evt.preventDefault();
-    if (config.index) {
+    // evt.preventDefault();
+    if (config.index || config.index === 0) {
       const { index } = config;
       if (this.props.onDelete) this.props.onDelete(index);
     }
@@ -84,6 +106,14 @@ export default class Slick extends Component {
     const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
     const { itemData } = this.props;
     itemData.forEach((item, i) => {
+      let passIcon = 'none';
+      let notPassIcon = 'none';
+      if (item.pass) {
+        passIcon = 'block';
+      }
+      if (item.notPass) {
+        notPassIcon = 'block';
+      }
       itemArr.push(<li
         key={`item_${i}`}
         className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
@@ -94,6 +124,8 @@ export default class Slick extends Component {
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
         >&#xf077;</i>
         <i className={'iconfont upload-icon'}>{i}</i>
+        <div className={'pass-tag'} style={{ display: passIcon }}>通过</div>
+        <div className={'no-pass-tag'} style={{ display: notPassIcon }}>不通过</div>
         {/*
           <Icon fill={i} />
         */}
@@ -106,7 +138,7 @@ export default class Slick extends Component {
           onClick={(evt) => this.handleClick({ type: 'prev' }, evt)}
         >
           <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
-        <div className={'upload-icon-list-area'}>
+        <div className={'upload-icon-list-area'} ref={'uploadIconListArea'}>
           <ul
             ref={'uploadIconList'}
             className={'upload-icon-list'}

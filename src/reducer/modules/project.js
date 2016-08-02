@@ -5,7 +5,6 @@ import {
   FETCH_PUBLIC_PROJECT_LIST,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_NEW_PROJECT,
-  SAVE_TO_PROJECT,
   DELETE_PROJECT,
   FETCH_MEMBERS_SUGGEST_LIST,
   PATCH_USERS_PROJECT_DETAIL,
@@ -14,8 +13,8 @@ import {
   TETCH_PROJECT_VERSION,
 } from '../../constants/actionTypes';
 import { push } from 'react-router-redux';
+// dumpIconLocalStorage,
 import {
-  dumpIconLocalStorage,
   getUserProjectInfo,
 } from '../../actions/cart';
 
@@ -108,32 +107,16 @@ export default (state = initialState, action) => {
       return state;
     }
     case SAVE_TO_NEW_PROJECT: {
-      // if (action.res) {
-      //
-      // }
       return {
-
+        ...state,
+        usersProject: action.payload.data.organization,
       };
     }
 
     case CHOSE_PROJECT_FOR_SAVE: {
       return {
         ...state,
-        projectForSave: action.project,
-      };
-    }
-
-    case SAVE_TO_PROJECT: {
-      return (dispatch) => {
-        if (action.res) {
-          // TODO
-          // 处理存储成功的交互
-          dispatch(dumpIconLocalStorage);
-        } else {
-          // TODO
-          // 处理存储失败的交互
-        }
-        return state;
+        projectForSave: action.payload,
       };
     }
 
