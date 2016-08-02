@@ -14,7 +14,7 @@ general.post('/icons', getById);
 general.get('/icons', getByCondition);
 general.get('/projects', getAllPublicProjects);
 general.get('/projects/:projectId', getOnePublicProject);
-general.post('/download', downloadIcons);
+general.post('/download/font', downloadIcons);
 
 general.get('/icons/:iconId', getIconInfo);
 general.post('/login', getUserInfo);

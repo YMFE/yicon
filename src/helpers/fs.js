@@ -22,7 +22,7 @@ export function* getLastestStamp(foldPrefix) {
   const dir = yield Q.nfcall(fs.readdir, downloadPath);
   const matchedDir = dir
     .filter(d => regFold.test(d))
-    .map(d => regFold.match(d)[1])
+    .map(d => d.match(regFold)[1])
     .sort();
   const len = matchedDir.length;
   return len ? +matchedDir[matchedDir.length - 1] : null;
