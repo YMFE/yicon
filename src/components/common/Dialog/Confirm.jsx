@@ -48,12 +48,16 @@ if (process.browser) {
 }
 
 function transFn(fn) {
-  const regExp = /new\s+Promise/g;
-  const str = fn.toString();
-
-  return regExp.test(str) ?
-        () => fn().then(() => that.setState({ visible: false }))
-        : () => { fn(); that.setState({ visible: false }); return null; };
+  return () => {
+    const callback = () => {
+      that.setState({ visible: false });
+    };
+    const result = fn(callback);
+    // 当返回值不是 false 时，就关闭对话框
+    if (result !== false) {
+      that.setState({ visible: false });
+    }
+  };
 }
 
 export default function Confirm({
