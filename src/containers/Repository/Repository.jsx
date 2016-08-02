@@ -117,6 +117,7 @@ export default class Repository extends Component {
                   icon={icon}
                   key={icon.id}
                   download={this.clikIconDownloadBtn(icon.id)}
+                  toolBtns={['copytip', 'copy', 'edit', 'download', 'cart']}
                 />
               ))
             }

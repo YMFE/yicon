@@ -36,7 +36,7 @@ class IconBgGrid extends Component {
           {hlines}
           {vlines}
         </div>
-        <div className="big-icon">
+        <div className="big-icon" style={{ width: size, height: size }}>
           <Icon size={size} d={iconPath} fill={iconColor} />
         </div>
       </div>

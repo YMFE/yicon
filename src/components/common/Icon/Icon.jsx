@@ -22,6 +22,7 @@ class Icon extends Component {
       height: size,
       display: 'inline-block',
       overflow: 'hidden',
+      verticalAlign: 'top',
     };
 
     return (

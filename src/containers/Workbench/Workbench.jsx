@@ -1,7 +1,11 @@
+import './Workbench.scss';
 import React, { Component, PropTypes } from 'react';
-import './UploadEdit.scss';
+import { connect } from 'react-redux';
+import { getIconDetail, editIcon, editIconStyle } from '../../actions/icon';
+import { fetchWorkbench, uploadIcons, deleteIcon } from '../../actions/workbench.js';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
 import Select from '../../components/common/Select/';
+import Icon from '../../components/common/Icon/Icon.jsx';
 const Option = Select.Option;
 // const iconType = {
 //   0: {
@@ -21,11 +25,44 @@ const defaultProps = {
   icon: {},
 };
 const propTypes = {
-  icon: PropTypes.object,
+  iconDetail: PropTypes.object,
+  icons: PropTypes.array,
+  getIconDetail: PropTypes.func,
+  editIcon: PropTypes.func,
+  editIconStyle: PropTypes.func,
+  fetchWorkbench: PropTypes.func,
+  uploadIcons: PropTypes.func,
+  deleteIcon: PropTypes.func,
 };
-export default class UploadEdit extends Component {
+@connect(
+  state => ({
+    icons: state.workbench,
+    iconDetail: state.icon,
+  }),
+  {
+    getIconDetail,
+    editIcon,
+    editIconStyle,
+    fetchWorkbench,
+    uploadIcons,
+    deleteIcon,
+  }
+)
+export default class Workbench extends Component {
+  componentWillMount() {
+    this.props.fetchWorkbench().then(() => {
+      this.props.getIconDetail(this.props.icons[1].id);
+    });
+  }
+
+  delete(id) {
+    return () => {
+      this.props.deleteIcon(id);
+    };
+  }
+
   render() {
-    const { icon } = this.props;
+    const { iconDetail, icons } = this.props;
     // const icon = '&#xf50f;';
     return (
       <div className={'yicon-main yicon-upload'}>
@@ -35,30 +72,31 @@ export default class UploadEdit extends Component {
             <button className={'icons-more-btn icons-more-btn-left'}>
               <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
             <ul className={'upload-icon-list'}>
-              <li className={'upload-icon-item'}>
-                <i className={'iconfont delete'}>&#xf077;</i>
-                <i className={'iconfont upload-icon'}>&#xf50f;</i>
-              </li>
-              <li className={'upload-icon-item'}>
-                <i className={'iconfont delete'}>&#xf077;</i>
-                <i className={'iconfont upload-icon'}>&#xf50f;</i>
-              </li>
-              <li className={'upload-icon-item on'}>
-                <i className={'iconfont delete'}>&#xf077;</i>
-                <i className={'iconfont upload-icon'}>&#xf50f;</i>
-              </li>
+              {
+                icons.map((icon) => (
+                  <li className={'upload-icon-item'}>
+                    <i className={'iconfont delete'} onClick={this.delete(icon.id)}>&#xf077;</i>
+                    <Icon className={'iconfont upload-icon'} d={icon.path} size={60} />
+                  </li>
+                ))
+              }
               <li className={'upload-icon-btn'}>
                 <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
                 <p className={'upload-btn-txt'}>上传图标</p>
               </li>
             </ul>
             <button className={'icons-more-btn icons-more-btn-right'}>
-              <i className={'iconfont icons-more-btn-icon'}>&#xf1c1;</i></button>
+              <i className={'iconfont icons-more-btn-icon'}>&#xf1c1;</i>
+            </button>
           </div>
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i></button>
-            <IconBgGrid size={350} icon={icon} />
+            <IconBgGrid
+              iconSize={iconDetail.size}
+              iconColor={iconDetail.color}
+              iconPath={iconDetail.path}
+            />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
                 <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
@@ -138,5 +176,5 @@ export default class UploadEdit extends Component {
     );
   }
 }
-UploadEdit.defaultProps = defaultProps;
-UploadEdit.propTypes = propTypes;
+Workbench.defaultProps = defaultProps;
+Workbench.propTypes = propTypes;
