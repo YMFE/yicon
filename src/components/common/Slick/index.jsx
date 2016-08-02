@@ -4,8 +4,7 @@ import React, { Component, PropTypes } from 'react';
 export default class Slick extends Component {
   static defaultProps = {
     defaultTranslateX: 0,
-    // leftStep: 84 * 12,
-    leftStep: 84 * 11,
+    step: 84 * 11,
   }
   static propTypes = {
     currentItem: PropTypes.number,
@@ -15,7 +14,7 @@ export default class Slick extends Component {
     onClick: PropTypes.func,
     onDelete: PropTypes.func,
     // iconItemListPos: PropTypes.object,
-    leftStep: PropTypes.number,
+    step: PropTypes.number,
     itemData: PropTypes.array,
   }
   constructor(props) {
@@ -23,6 +22,7 @@ export default class Slick extends Component {
     this.state = {
       currentItem: this.props.defaultCurrent,
       defaultTranslateX: this.props.defaultTranslateX,
+      step: this.props.step,
     // iconItemListPos: Object.assign({}, this.props.iconItemListPos),
       scrollAreaWidth: 0,
     };
@@ -35,6 +35,7 @@ export default class Slick extends Component {
   handleClick(config, evt) {
     const { type, index } = config;
     const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
+    const { step } = this.props;
     let _currentItem = currentItem;
     let _iconItemListPosLeft = defaultTranslateX;
     switch (type) {
@@ -42,16 +43,41 @@ export default class Slick extends Component {
         _currentItem = index;
         break;
       case 'prev':
-        _iconItemListPosLeft += this.props.leftStep;
+        _iconItemListPosLeft += step;
         if (_iconItemListPosLeft <= 0) {
           this.setState({ defaultTranslateX: _iconItemListPosLeft });
         }
         break;
       case 'next':
         evt.preventDefault();
-        _iconItemListPosLeft -= this.props.leftStep;
-        if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
-          this.setState({ defaultTranslateX: _iconItemListPosLeft });
+        _iconItemListPosLeft -= step;
+        // 单步滚动
+        if (step < 924) {
+          const scrollPage = Math.floor(scrollAreaWidth / 924);
+          const leftLength = scrollAreaWidth % 924;
+          if (leftLength !== 0) {
+            if (scrollPage > 0) {
+              if (Math.abs(_iconItemListPosLeft) <= leftLength) {
+                this.setState({ defaultTranslateX: _iconItemListPosLeft });
+              } else {
+                const leftScroll = (scrollAreaWidth - 924);
+                if (Math.abs(_iconItemListPosLeft) < leftScroll) {
+                  this.setState({ defaultTranslateX: _iconItemListPosLeft });
+                }
+              }
+            }
+          } else {
+            if (scrollPage > 1) {
+              const leftScroll = (scrollAreaWidth - 924);
+              if (Math.abs(_iconItemListPosLeft) < leftScroll) {
+                this.setState({ defaultTranslateX: _iconItemListPosLeft });
+              }
+            }
+          }
+        } else {
+          if (Math.abs(_iconItemListPosLeft) < scrollAreaWidth) {
+            this.setState({ defaultTranslateX: _iconItemListPosLeft });
+          }
         }
         break;
       default:
@@ -112,7 +138,7 @@ export default class Slick extends Component {
           onClick={(evt) => this.handleClick({ type: 'prev' }, evt)}
         >
           <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
-        <div className={'upload-icon-list-area'}>
+        <div className={'upload-icon-list-area'} ref={'uploadIconListArea'}>
           <ul
             ref={'uploadIconList'}
             className={'upload-icon-list'}
