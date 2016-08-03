@@ -23,6 +23,7 @@ import {
 const iconManageList = [
   { name: '我上传的图标', href: '/user/icons' },
   { name: '我的图标项目', href: '/user/projects' },
+  { name: '公开图标项目', href: '/projects' },
 ];
 
 @connect(
