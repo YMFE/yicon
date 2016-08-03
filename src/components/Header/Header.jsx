@@ -9,6 +9,7 @@ import Search from './Search/Search';
 import Logo from './Logo/Logo';
 import Cart from './Cart/Cart';
 import Info from './Info/';
+import classnames from 'classnames';
 // import { autobind } from 'core-decorators';
 import { fetchTinyRepository } from '../../actions/repository';
 import {
@@ -41,25 +42,19 @@ const iconManageList = [
 
 class Header extends Component {
   componentWillMount() {
-    const { className, extraClass } = this.props;
-
-    if (className) {
-      this.classList = className;
-    } else if (extraClass) {
-      this.classList = `global-header ${extraClass}`;
-    } else {
-      this.classList = 'global-header';
-    }
     this.props.fetchTinyRepository();
   }
   render() {
-    const { allReposotoryList } = this.props;
+    const { allReposotoryList, extraClass } = this.props;
     const list = allReposotoryList.map(r => ({
       name: r.name, href: `/repositories/${r.id}`,
     }));
+    const className = classnames('global-header', {
+      [extraClass]: extraClass,
+    });
 
     return (
-      <header className={this.classList}>
+      <header className={className}>
         <div className="container">
           <Logo />
           <nav className="nav quick-menu">
