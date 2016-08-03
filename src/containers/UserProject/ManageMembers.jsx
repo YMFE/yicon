@@ -75,7 +75,9 @@ class ManageMembers extends Component {
       }
       return false;
     });
-    this.forceUpdate();
+    this.setState({
+      members: this.members.slice(0),
+    });
   }
   @autobind
   addNewMember(item) {
@@ -88,7 +90,9 @@ class ManageMembers extends Component {
     );
     if (notExist) {
       this.members.push(item);
-      this.forceUpdate();
+      this.setState({
+        members: this.members.slice(0),
+      });
     }
   }
   render() {
@@ -121,7 +125,12 @@ class ManageMembers extends Component {
                 <div
                   type="button"
                   className="add-collaborators"
-                  onClick={this.SearchList && this.SearchList.checkValue}
+                  onClick={() => {
+                    if (this.SearchList) {
+                      this.SearchList.checkValue();
+                      this.SearchList.clearInput();
+                    }
+                  }}
                 >
                   添加新成员
                 </div>

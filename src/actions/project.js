@@ -42,10 +42,19 @@ export function getUserProjectInfo(id, version) {
 }
 
 export function patchUserProject(detail) {
-  return {
-    type: PATCH_USERS_PROJECT_DETAIL,
-    payload: fetch.patch(`/user/projects/${detail.id}`, detail),
-    project: detail,
+  return (dispatch) => {
+    dispatch({
+      type: PATCH_USERS_PROJECT_DETAIL,
+      payload: fetch.patch(`/user/projects/${detail.id}`, detail).then(
+        responese => {
+          if (responese.res) {
+            dispatch(getUserProjectInfo(detail.id));
+            dispatch(getUsersProjectList());
+          }
+        }
+      ),
+      project: detail,
+    });
   };
 }
 
@@ -57,10 +66,18 @@ export function fetchMemberSuggestList(value) {
 }
 
 export function patchProjectMemeber(project) {
-  return {
-    type: PATCH_PROJECT_MEMBERS,
-    payload: fetch.patch(`/user/projects/${project.id}/members`, project),
-    project,
+  return (dispatch) => {
+    dispatch({
+      type: PATCH_PROJECT_MEMBERS,
+      payload: fetch.patch(`/user/projects/${project.id}/members`, project).then(
+        (responese) => {
+          if (responese.res) {
+            dispatch(getUserProjectInfo(project.id));
+          }
+        }
+      ),
+      project,
+    });
   };
 }
 
@@ -75,10 +92,6 @@ export function getPublicProjectInfo(id, version) {
   return {
     type: FETCH_PUBLIC_PROJECT_INFO,
     payload: fetch.get(`/projects/${id}${v}`),
-    success: () => {
-      this.getUsersProjectList();
-      this.getUserProjectInfo(id);
-    },
   };
 }
 
@@ -108,12 +121,20 @@ export function choseProjectForSave(project) {
   };
 }
 export function generateVersion(project) {
-  return {
-    type: POST_GENERATE_VERSION,
-    payload: fetch.post(`/user/projects/${project.id}/update`, {
-      versionType: project.versionType,
-    }),
-    project,
+  return (dispatch) => {
+    dispatch({
+      type: POST_GENERATE_VERSION,
+      payload: fetch.post(`/user/projects/${project.id}/update`, {
+        versionType: project.versionType,
+      }).then(
+        responese => {
+          if (responese.res) {
+            dispatch(getUserProjectInfo());
+          }
+        }
+      ),
+      project,
+    });
   };
 }
 
@@ -142,12 +163,17 @@ export function deletePorjectIcon(id, icon) {
   const obj = {
     icons: icon,
   };
-  // console.log(obj);
-  return {
-    type: DELETE_PROJECT_ICON,
-    payload: fetch.delete(`/user/projects/${id}/icons`, {
-      data: obj,
-    }),
-    id,
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_PROJECT_ICON,
+      payload: fetch.delete(`/user/projects/${id}/icons`, {
+        data: obj,
+      }).then((response) => {
+        if (response.res) {
+          dispatch(getUserProjectInfo(id));
+        }
+      }),
+      id,
+    });
   };
 }
