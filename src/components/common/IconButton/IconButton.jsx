@@ -73,9 +73,9 @@ class IconButton extends Component {
     };
   }
 
-  deleteIcon(id) {
+  deleteIcon(icon) {
     return () => {
-      this.props.delete(id);
+      this.props.delete(icon);
     };
   }
 
@@ -132,7 +132,10 @@ class IconButton extends Component {
       delete:
         <i
           className={"tool-item iconfont"}
-          onClick={this.deleteIcon(icon.id)}
+          onClick={this.deleteIcon({
+            id: icon.id,
+            name: icon.name,
+          })}
           title="删除"
           key="delete"
         >&#xf513;</i>,

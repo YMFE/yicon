@@ -14,6 +14,7 @@ import {
   DELETE_PROJECT,
   FETCH_PROJECT_LOG,
   TETCH_PROJECT_VERSION,
+  DELETE_PROJECT_ICON,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -45,6 +46,7 @@ export function patchUserProject(detail) {
     type: PATCH_USERS_PROJECT_DETAIL,
     payload: fetch.patch(`/user/projects/${detail.id}`, detail),
     project: detail,
+    id: detail.id,
   };
 }
 
@@ -130,5 +132,15 @@ export function fetchProjectVersions(id) {
   return {
     type: TETCH_PROJECT_VERSION,
     payload: fetch.get(`/user/projects/${id}/versions`),
+  };
+}
+
+export function deletePorjectIcon(id, icons) {
+  return {
+    type: DELETE_PROJECT_ICON,
+    payload: fetch.delete(`/user/project/${id}/icons`, {
+      icons,
+    }),
+    id,
   };
 }

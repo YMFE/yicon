@@ -11,11 +11,13 @@ import {
   PATCH_PROJECT_MEMBERS,
   POST_GENERATE_VERSION,
   TETCH_PROJECT_VERSION,
+  DELETE_PROJECT_ICON,
 } from '../../constants/actionTypes';
 import { push } from 'react-router-redux';
 // dumpIconLocalStorage,
 import {
   getUserProjectInfo,
+  getUsersProjectList,
 } from '../../actions/cart';
 
 const initialState = {
@@ -53,6 +55,7 @@ export default (state = initialState, action) => {
     }
     case PATCH_USERS_PROJECT_DETAIL: {
       if (action.payload.res) {
+        getUsersProjectList();
         getUserProjectInfo(action.project.id);
       }
       return state;
@@ -123,6 +126,12 @@ export default (state = initialState, action) => {
     case DELETE_PROJECT: {
       if (action.payload.res) {
         push('/user/project');
+      }
+      return state;
+    }
+    case DELETE_PROJECT_ICON: {
+      if (action.payload.res) {
+        getUserProjectInfo(action.id);
       }
       return state;
     }
