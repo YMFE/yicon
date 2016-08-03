@@ -44,7 +44,7 @@ export default class Notification extends Component {
 
   @autobind
   onChangePage(page) {
-    this.getInfo(this.state.tag, page);
+    this.props.getInfo(this.state.tag, page);
   }
 
   @autobind
@@ -118,6 +118,7 @@ export default class Notification extends Component {
                     showTitleHtml
                     item={item}
                     isNew={item.userLog.unread}
+                    hasScope
                   />
                   ))
                 }
@@ -128,7 +129,8 @@ export default class Notification extends Component {
               {InfoList.length > 0 ?
                 <Pager
                   defaultCurrent={currentPage}
-                  totalPage={totalPage}
+                  pageSize={10}
+                  totalCount={totalPage}
                   onClick={this.onChangePage}
                 /> :
                 null
