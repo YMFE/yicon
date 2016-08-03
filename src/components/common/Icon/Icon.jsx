@@ -23,7 +23,7 @@ class Icon extends Component {
       height: size,
       display: 'inline-block',
       overflow: 'hidden',
-      verticalAlign: 'top',
+     // verticalAlign: 'top',
     };
     const classList = ['Icon'];
     classList.push(this.props.extraClass);
