@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+.yicon-authority{
+	.yicon-myicon-main{
+		position: relative;
+	}
+	.yicon-authority-info{
+		padding:20px 20px 0;
+	}
+	.authority-search{
+		float: right;
+		.authority-input{
+			border:1px solid #dfdfdf;
+			width: 318px;
+			height: 36px;
+			line-height: 36px;
+			float: left;
+			padding:0 10px;
+			border-radius: 3px;
+			margin-right: 10px;
+			font-size: 14px;
+		}
+	}
+}
+
+.yicon-authority-list{
+	&:after{
+		height: 0;
+		display: block;
+		clear: both;
+		content: '';
+	}
+}
+
+.yicon-authority-pager{
+	height: 27px;
+	margin: 32px 24px 32px;
+	.pager{
+		position: absolute;
+		right: 24px;
+		bottom: 27px;
+	}
+}
+
+.authority-dialog{
+	.dialog-item,.field {
+		width: 100%;
+		line-height: 36px;
+		margin-top: 20px;
+		&:after{
+			height: 0;
+			display: block;
+			clear: both;
+			content: '';
+		}
+		.item-name{
+	    width: 48px;
+			margin: 10px 0;
+	    float: left;
+			display: block;
+	    text-align: right;
+			color: #616161;
+	    font: 12px/1.5 tahoma,"microsoft yahei","\5FAE\8F6F\96C5\9ED1";
+		}
+		.dialog-input{
+			margin-left: 74px;
+			input{
+				width: 276px;
+				height: 36px;
+				padding: 0 12px;
+				border: 1px solid #dfdfdf;
+			}
+		}
+		.SuggestList{
+			margin-left: 26px;
+		}
+	}
+}

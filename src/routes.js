@@ -18,6 +18,7 @@ import {
   Workbench,
   Uploaded,
   VersionComparison,
+  Authority,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -77,6 +78,7 @@ export default (store) => {
         <Route onEnter={requireAdmin}>
           <Route path="admin/repositories" /> {/* 大库管理 */}
           <Route path="admin/projects" /> {/* 项目管理 */}
+          <Route path="admin/authority/:type" component={Authority} /> {/* 权限设置 */}
         </Route>
       </Route>
 

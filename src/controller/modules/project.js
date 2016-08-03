@@ -410,3 +410,103 @@ export function* deleteProject(next) {
   this.state.respond = '项目删除成功';
   yield next;
 }
+
+export function* addProject(next) {
+  const { name, owner } = this.param;
+  if (!(name && owner)) throw new Error('name和owner参数不可缺少');
+  const user = yield User.findOne({ where: { id: owner } });
+  if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
+
+  const project = yield Project.create({
+    name,
+    owner,
+  });
+  this.state.respond = project;
+  yield next;
+}
+
+export function* appointProjectOwner(next) {
+  const { projectId, name } = this.param;
+  const { userId } = this.state.user;
+  if (isNaN(projectId)) throw new Error('缺少项目id');
+  if (!name) throw new Error('缺少指定的项目管理员name');
+
+  const allMembers = [];
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const memberInfo = yield project.getUsers({ attributes: ['id', 'name'], raw: true });
+  const oldOwner = {};
+  memberInfo.forEach(v => {
+    allMembers.push(Object.assign({}, { id: v.id, name: v.name }));
+    if (v.id === project.owner) Object.assign(oldOwner, { id: v.id, name: v.name });
+  });
+  const newOwner = yield User.findOne({
+    attributes: ['id', 'name'],
+    where: { name },
+    raw: true,
+  });
+  if (oldOwner === null || newOwner === null) throw new Error('没有指定的用户信息');
+  if (oldOwner.id === newOwner.id) throw new Error('指定的用户已是项目管理员');
+
+  const t = yield seq.transaction(transaction =>
+      Promise.all([
+        Project.update({ owner: newOwner.id }, { where: { id: projectId }, transaction }),
+        UserProject.create({ projectId, userId: newOwner.id }, { transaction }),
+      ])
+    .then(() => {
+      const log = {
+        params: {
+          userFrom: oldOwner,
+          userTo: newOwner,
+        },
+        type: 'PROJECT_OWNER',
+        loggerId: projectId,
+        subscribers: [newOwner, ...allMembers],
+      };
+      return logRecorder(log, transaction, userId);
+    })
+  );
+
+  yield t;
+  yield next;
+}
+
+export function* getAdminProjects(next) {
+  const { pageMixin } = this.state;
+
+  const project = yield Project.findAndCountAll({
+    attributes: ['id', 'name'],
+    include: [{
+      model: User,
+      as: 'projectOwner',
+    }],
+    ...pageMixin,
+  });
+  this.state.respond = project.rows.map(
+    v => Object.assign({}, { id: v.id, name: v.name, ownerName: v.projectOwner.name })
+  );
+  this.state.page.totalCount = project.count;
+  yield next;
+}
+
+export function* searchProjects(next) {
+  const { name } = this.param;
+  const { pageMixin } = this.state;
+  if (!name) throw new Error('请传入查询的项目名称name');
+
+  const project = yield Project.findAndCountAll({
+    attributes: ['id', 'name'],
+    where: {
+      name: { $like: `%${name}%` },
+    },
+    include: [{
+      model: User,
+      as: 'projectOwner',
+    }],
+    ...pageMixin,
+  });
+  this.state.respond = project.rows.map(
+    v => Object.assign({}, { id: v.id, name: v.name, ownerName: v.projectOwner.name })
+  );
+  this.state.page.totalCount = project.count;
+  yield next;
+}

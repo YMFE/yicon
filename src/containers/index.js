@@ -15,6 +15,7 @@ import UserProject from './UserProject/UserProject';
 import Log from './Log/Log';
 import ProjectLog from './Log/ProjectLog';
 import VersionComparison from './VersionComparison/VersionComparison';
+import Authority from './Authority/Authority';
 
 export {
   App,
@@ -34,4 +35,5 @@ export {
   Uploaded,
   UserProject,
   VersionComparison,
+  Authority,
 };

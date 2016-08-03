@@ -1,5 +1,7 @@
 import { Repo, Icon, User, RepoVersion } from '../../model';
+import { seq } from '../../model/tables/_db';
 import { iconStatus } from '../../constants/utils';
+import { logRecorder } from './log';
 
 // 为了提高查询效率，我们设置默认版本为 0.0.0
 function getRepoByVersion({
@@ -99,5 +101,100 @@ export function* updateRepoOwner(next) {
   } else {
     this.state.respond = '大库所有者更改失败';
   }
+  yield next;
+}
+
+export function* addRepo(next) {
+  const { name, alias, admin } = this.param;
+  if (!(name && alias && admin)) throw new Error('name、alias和admin参数不可缺少');
+  const user = yield User.findOne({ where: { id: admin } });
+  if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
+
+  const repo = yield Repo.create({ name, alias, admin });
+  this.state.respond = repo;
+  yield next;
+}
+
+export function* appointRepoOwner(next) {
+  const { repoId, name } = this.param;
+  const { userId } = this.state.user;
+  if (isNaN(repoId)) throw new Error('缺少大库id');
+  if (!name) throw new Error('缺少指定的大库管理员name');
+
+  const adminId = yield Repo.findOne({ attributes: ['admin'], where: { id: repoId } });
+  const adminInfo = yield adminId.getUser();
+  const oldAdmin = adminInfo.get({ plain: true });
+  const newAdmin = yield User.findOne({
+    attributes: ['id', 'name', 'actor'],
+    where: { name },
+    raw: true,
+  });
+
+  if (oldAdmin === null || newAdmin === null) throw new Error('没有指定的用户信息');
+  if (oldAdmin.id === newAdmin.id) throw new Error('指定的用户已是大库管理员');
+
+  let actor = { actor: 1 };
+  if (newAdmin.actor > 0) actor = { actor: newAdmin.actor };
+  const t = yield seq.transaction(transaction =>
+      Promise.all([
+        Repo.update({ admin: newAdmin.id }, { where: { id: repoId }, transaction }),
+        User.update(actor, { where: { id: newAdmin.id }, transaction }),
+      ])
+    .then(() => {
+      delete oldAdmin.actor;
+      delete newAdmin.actor;
+      const log = {
+        params: {
+          userFrom: oldAdmin,
+          userTo: newAdmin,
+        },
+        type: 'REPO_ADMIN',
+        loggerId: repoId,
+        subscribers: [oldAdmin, newAdmin],
+      };
+      return logRecorder(log, transaction, userId);
+    })
+  );
+
+  yield t;
+  yield next;
+}
+
+export function* getAdminRepos(next) {
+  const { pageMixin } = this.state;
+
+  const repo = yield Repo.findAndCountAll({
+    attributes: ['id', 'name'],
+    include: [{
+      model: User,
+    }],
+    ...pageMixin,
+  });
+  this.state.respond = repo.rows.map(
+    v => Object.assign({}, { id: v.id, name: v.name, ownerName: v.user.name })
+  );
+  this.state.page.totalCount = repo.count;
+  yield next;
+}
+
+export function* searchRepos(next) {
+  const { name } = this.param;
+  const { pageMixin } = this.state;
+  if (!name) throw new Error('请传入查询的大库名称name');
+
+  const repo = yield Repo.findAndCountAll({
+    attributes: ['id', 'name'],
+    where: {
+      name: { $like: `%${name}%` },
+    },
+    include: [{
+      model: User,
+    }],
+    ...pageMixin,
+  });
+  this.state.respond = repo.rows.map(
+    v => Object.assign({}, { id: v.id, name: v.name, ownerName: v.user.name })
+  );
+  this.state.page.totalCount = repo.count;
   yield next;
 }
