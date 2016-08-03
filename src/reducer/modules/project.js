@@ -15,9 +15,9 @@ import {
 } from '../../constants/actionTypes';
 import { push } from 'react-router-redux';
 // dumpIconLocalStorage,
+// getUsersProjectList,
 import {
   getUserProjectInfo,
-  getUsersProjectList,
 } from '../../actions/cart';
 
 const initialState = {
@@ -55,8 +55,9 @@ export default (state = initialState, action) => {
     }
     case PATCH_USERS_PROJECT_DETAIL: {
       if (action.payload.res) {
-        getUsersProjectList();
-        getUserProjectInfo(action.project.id);
+        console.log('success accept result');
+        // window.location.reload();
+        action.success();
       }
       return state;
     }
