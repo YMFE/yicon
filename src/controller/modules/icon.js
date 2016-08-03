@@ -380,13 +380,13 @@ export function* getSubmittedIcons(next) {
   };
 
   const timeGroup = yield Icon.findAll({
-    attributes: ['applyTime'],
+    attributes: ['createTime'],
     where: {
       uploader: userId,
       ...statusIn,
     },
-    order: 'applyTime DESC',
-    group: 'applyTime',
+    order: 'createTime DESC',
+    group: 'createTime',
     ...pageMixin,
     raw: true,
   });
@@ -396,22 +396,23 @@ export function* getSubmittedIcons(next) {
       where: {
         uploader: userId,
         applyTime: {
-          $lte: timeGroup[0].applyTime,
-          $gte: timeGroup[len - 1].applyTime,
+          $lte: timeGroup[0].createTime,
+          $gte: timeGroup[len - 1].createTime,
         },
         ...statusIn,
       },
-      order: 'applyTime DESC',
+      order: 'createTime DESC',
       raw: true,
     });
     const result = [];
-    const _tmp = { applyTime: '', icons: [] };
+    const _tmp = { createTime: '', icons: [] };
     icons.forEach(v => {
-      if (_tmp.applyTime && _tmp.applyTime.toString() !== v.applyTime.toString()) {
+      if (_tmp.createTime
+        && _tmp.createTime.toString() !== v.createTime.toString()) {
         result.push(Object.assign({}, _tmp)); // 只有一条数据时不会push进result；多条数据的最后一条数据也不会
         _tmp.icons = [];
       }
-      _tmp.applyTime = v.applyTime;
+      _tmp.createTime = v.createTime;
       _tmp.icons.push(v);
     });
     result.push(Object.assign({}, _tmp));

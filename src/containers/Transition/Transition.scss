@@ -1,11 +1,11 @@
 @charset "utf-8";
 $imgUrl: '../../../static/images/';
-.no-match{
+.no-auth{
   text-align: center;
   padding: 160px 0;
   overflow: hidden;
   &-logo{
-    background:url("#{$imgUrl}noMatchIcon.png") 0  -190px no-repeat;
+    background:url("#{$imgUrl}noMatchIcon.png") 0  0 no-repeat;
     width:210px;
     height:192px;
     display:inline-block;
@@ -20,7 +20,7 @@ $imgUrl: '../../../static/images/';
     margin:16px auto;
     overflow:hidden;
   }
-  &-return{
+  &-login{
     height: 30px;
     line-height: 30px;
     padding: 0 12px;

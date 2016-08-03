@@ -64,6 +64,7 @@ class UserProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showEditProject: false,
       showManageMember: false,
       showGenerateVersion: false,
       showHistoryVersion: false,
@@ -107,37 +108,19 @@ class UserProject extends Component {
     }
   }
   @autobind
-  editProject() {
-    confirm({
-      title: '编辑项目',
-      extraClass: 'project-dialog',
-      content: (
-        <EditProject
-          projectName={this.state.name}
-          owner={this.state.owner}
-          isPublic={this.state.isPublic}
-          members={this.state.members}
-          id={this.state.id}
-          ref={(node) => {
-            if (node) { this.editProject = node; }
-          }}
-        />
-      ),
-      onOk: () => {
-        const {
-          id,
-          projectName,
-          owner,
-          isPublic,
-        } = this.editProject.getValue();
-        this.props.patchUserProject({
-          id,
-          name: projectName,
-          publicProject: isPublic,
-          owner: owner.id,
-        });
-      },
-      onCancel: () => {},
+  updateProjectDetail(result) {
+    this.props.patchUserProject({
+      id: result.id,
+      name: result.projectName,
+      publicProject: result.isPublic,
+      owner: result.owner.id,
+    });
+    this.shiftEidtProject();
+  }
+  @autobind
+  shiftEidtProject(isShow = false) {
+    this.setState({
+      showEditProject: isShow,
     });
   }
   @autobind
@@ -155,16 +138,8 @@ class UserProject extends Component {
     });
   }
   @autobind
-  editMembers() {
-    this.setState({
-      showManageMember: true,
-    });
-  }
-  @autobind
-  closeManageMembers() {
-    this.setState({
-      showManageMember: false,
-    });
+  editProject() {
+    this.shiftEidtProject(true);
   }
   @autobind
   updateManageMembers({ members }) {
@@ -172,12 +147,18 @@ class UserProject extends Component {
       id: this.props.currentUserProjectInfo.id,
       members,
     });
-    this.closeManageMembers();
+    this.shiftShowManageMembers();
   }
   @autobind
   shiftShowGenerateVersion(isShow = false) {
     this.setState({
       showGenerateVersion: isShow,
+    });
+  }
+  @autobind
+  shiftShowManageMembers(isShow = false) {
+    this.setState({
+      showManageMember: isShow,
     });
   }
   @autobind
@@ -193,20 +174,18 @@ class UserProject extends Component {
       id: this.props.currentUserProjectInfo.id,
       versionType: this.state.generateVersion,
     });
-    this.shiftShowGenerateVersion(false);
+    this.shiftShowGenerateVersion();
   }
-  render() {
-    const list = this.props.usersProjectList;
+  renderIconList() {
     const current = this.props.currentUserProjectInfo;
-    const id = this.props.params.id;
-    let iconList;
+    let iconList = null;
     if (current.icons && current.icons.length > 0) {
       iconList = current.icons.map((item, index) => (
         <IconButton
           icon={item}
           key={index}
           toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
-          delet={(icons) => {
+          delete={(icons) => {
             this.props.deletePorjectIcon(
               this.props.currentUserProjectInfo.id,
               [icons]
@@ -214,9 +193,62 @@ class UserProject extends Component {
           }}
         />
       ));
-    } else {
-      iconList = null;
     }
+    return iconList;
+  }
+  renderDialogList() {
+    const current = this.props.currentUserProjectInfo;
+    let dialogList = null;
+    if (current.name) {
+      dialogList = [
+        <EditProject
+          key={1}
+          projectName={current.name}
+          owner={current.projectOwner}
+          isPublic={current.public}
+          members={current.members}
+          id={current.id}
+          onOk={this.updateProjectDetail}
+          onCancel={this.shiftEidtProject}
+          showEditProject={this.state.showEditProject}
+          ref={
+            (node) => {
+              this.EditProjectEle = node;
+            }
+          }
+        />,
+        <ManageMembers
+          key={2}
+          showManageMember={this.state.showManageMember}
+          onChange={this.props.fetchMemberSuggestList}
+          onOk={this.updateManageMembers}
+          onCancel={this.shiftShowManageMembers}
+          suggestList={this.props.suggestList}
+          members={current.members}
+          ref={
+            (node) => {
+              this.ManageMembersEle = node;
+            }
+          }
+        />,
+        <GenerateVersion
+          key={3}
+          onOk={this.generateVersion}
+          onCancel={this.shiftShowGenerateVersion}
+          onChange={this.changeGenerateVersion}
+          value={this.state.generateVersion}
+          showGenerateVersion={this.state.showGenerateVersion}
+        />,
+      ];
+    }
+    return dialogList;
+  }
+  render() {
+    const list = this.props.usersProjectList;
+    const current = this.props.currentUserProjectInfo;
+    const id = this.props.params.id;
+    const iconList = this.renderIconList();
+    const dialogList = this.renderDialogList();
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
@@ -247,9 +279,23 @@ class UserProject extends Component {
               </header>
               {current.isOwner ?
                 <menu className="options">
-                  <span className="edit" onClick={this.editProject}>编辑项目</span>
+                  <span
+                    className="edit"
+                    onClick={() => {
+                      this.shiftEidtProject(true);
+                    }}
+                  >
+                    编辑项目
+                  </span>
                   <span className="delete" onClick={this.deleteProject}>删除项目</span>
-                  <span className="team-member" onClick={this.editMembers}>管理项目成员</span>
+                  <span
+                    className="team-member"
+                    onClick={() => {
+                      this.shiftShowManageMembers(true);
+                    }}
+                  >
+                    管理项目成员
+                  </span>
                 </menu>
               : null
               }
@@ -288,26 +334,7 @@ class UserProject extends Component {
             </div>
           </Main>
         </Content>
-        <ManageMembers
-          showManageMember={this.state.showManageMember}
-          onOk={this.updateManageMembers}
-          onChange={this.props.fetchMemberSuggestList}
-          onCancel={this.closeManageMembers}
-          suggestList={this.props.suggestList}
-          members={current.members}
-          ref={
-            (node) => {
-              this.ManageMembersEle = node;
-            }
-          }
-        />
-        <GenerateVersion
-          onOk={this.generateVersion}
-          onCancel={() => { this.shiftShowGenerateVersion(false); }}
-          onChange={this.changeGenerateVersion}
-          value={this.state.generateVersion}
-          showGenerateVersion={this.state.showGenerateVersion}
-        />
+        {dialogList}
       </div>
     );
   }

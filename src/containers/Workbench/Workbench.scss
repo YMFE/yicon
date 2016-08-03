@@ -122,6 +122,9 @@
     }
     .setting-opt {
       margin-bottom: 40px;
+      .set-tag {
+        display: inline-block;
+      }
       .set-input-wrap {
         margin-left: 5px;
         display: inline-block;
@@ -177,7 +180,7 @@
         height: 96px;
         border: 1px solid #dfdfdf;
         border-top: 0;
-        margin-left: 60px;
+        margin-left: 5px;
         .icon-tag {
           float: left;
           padding: 6px;

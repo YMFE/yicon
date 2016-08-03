@@ -55,6 +55,7 @@ function getBaseClassName(icons, transaction) {
             code,
             fontClass,
             status: i.passed ? iconStatus.RESOLVED : iconStatus.REJECTED,
+            applyTime: new Date,
           },
           { where: { id: i.id }, transaction }
         )
