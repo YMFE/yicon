@@ -28,6 +28,7 @@ const iconManageList = [
   (state) => ({
     isShowCartList: state.cart.toggleCartListDisplay,
     searchValue: state.search.value,
+    infoCont: state.user.notification.allInfo.unReadCount,
     allReposotoryList: state.repository.allReposotoryList,
   }),
   {
@@ -70,7 +71,7 @@ class Header extends Component {
           <div className="quick-menu nav-menu-info">
             <ul className="clearfix">
               <ToolUserName />
-              <Info infoCont={2} />
+              <Info infoCont={this.props.infoCont} />
               <Cart
                 isShowCart={this.props.isShowCartList}
               />
@@ -102,6 +103,7 @@ Header.propTypes = {
   allReposotoryList: PropTypes.array,
   fetchSearchResult: PropTypes.func,
   fetchTinyRepository: PropTypes.func,
+  infoCont: PropTypes.number,
 };
 
 export default Header;
