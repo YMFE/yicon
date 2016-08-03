@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
-import Slider from '../../components/common/Slider/Slider.jsx';
+import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
 import { push } from 'react-router-redux';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
@@ -16,6 +16,7 @@ import {
   patchProjectMemeber,
   generateVersion,
   deleteProject,
+  deletePorjectIcon,
 } from '../../actions/project';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
@@ -35,6 +36,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     patchProjectMemeber,
     generateVersion,
     deleteProject,
+    deletePorjectIcon,
     push,
   }
 )
@@ -48,6 +50,7 @@ class UserProject extends Component {
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
     deleteProject: PropTypes.func,
+    deletePorjectIcon: PropTypes.func,
     patchUserProject: PropTypes.func,
     patchProjectMemeber: PropTypes.func,
     suggestList: PropTypes.array,
@@ -200,6 +203,12 @@ class UserProject extends Component {
           icon={item}
           key={index}
           toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
+          delet={(icons) => {
+            this.props.deletePorjectIcon(
+              this.props.currentUserProjectInfo.id,
+              [icons]
+            );
+          }}
         />
       ));
     } else {
@@ -208,7 +217,7 @@ class UserProject extends Component {
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
-          <Slider />
+          <SliderSize />
         </SubTitle>
         <Content>
           <Menu>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
-import Slider from '../../components/common/Slider/Slider.jsx';
+import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
 import {
@@ -80,7 +80,7 @@ export default class Project extends Component {
     return (
       <div className="Project">
         <SubTitle tit="我的公开项目">
-          <Slider />
+          <SliderSize />
         </SubTitle>
         <Content>
           <Menu>

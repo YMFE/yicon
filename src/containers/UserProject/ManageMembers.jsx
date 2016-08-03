@@ -110,12 +110,23 @@ class ManageMembers extends Component {
               showSearchList={this.props.showManageMember}
               placeholder="请输入需要添加成员域账号"
               onChange={this.onChange}
-              onChoseMember={this.addNewMember}
+              onChoseItem={this.addNewMember}
+              onChoseError={() => { console.log('内容不合法'); }}
               suggestList={suggestList}
               ref={(node) => {
                 if (node) this.SearchList = node;
               }}
-            />
+            >
+              <div className="field-btn">
+                <div
+                  type="button"
+                  className="add-collaborators"
+                  onClick={this.SearchList && this.SearchList.checkValue}
+                >
+                  添加新成员
+                </div>
+              </div>
+            </SearchList>
           </ul>
           <div className="collaborators">
             <p className="collaborators-title">项目成员</p>

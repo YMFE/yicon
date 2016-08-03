@@ -14,12 +14,17 @@ class SearchList extends Component {
   static propTypes = {
     suggestList: PropTypes.array,
     noFoundTip: PropTypes.string,
+    placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    onChoseMember: PropTypes.func,
+    onChoseItem: PropTypes.func,
+    onChoseError: PropTypes.func,
     showSearchList: PropTypes.bool,
+    extraClass: PropTypes.string,
+    children: PropTypes.element,
   }
   static defaultProps = {
     noFoundTip: '没有符合的结果',
+    placeholder: '请输入成员名称',
   }
   constructor(props) {
     super(props);
@@ -99,20 +104,22 @@ class SearchList extends Component {
       showSuggest: false,
     });
   }
-
   @autobind
-  addNewMember() {
+  checkValue() {
     const suggestList = this.props.suggestList;
     if (suggestList && suggestList.length === 0) {
-      return;
+      this.props.onChoseError();
+      return false;
     }
-    suggestList.some((item) => {
+    const result = suggestList.some((item) => {
       if (item.name === this.state.input) {
-        this.props.onChoseMember(item);
+        this.props.onChoseItem(item);
         return true;
       }
       return false;
     });
+    if (!result) this.props.onChoseError();
+    return false;
   }
 
   @autobind
@@ -185,16 +192,18 @@ class SearchList extends Component {
 
   render() {
     const { writeState } = this.state;
+    const classList = ['field-set', 'SuggestList'];
+    classList.push(this.props.extraClass);
     return (
       <li className="field">
         <label
-          className="field-set SuggestList"
+          className={classList.join(' ')}
         >
           <input
             type="text"
             name="project-collaborators"
             className="project-collaborators"
-            placeholder="请输入需要添加成员域账号"
+            placeholder={this.props.placeholder}
             onChange={this.onChange}
             onBlur={this.onBlur}
             value={this.state.input}
@@ -214,11 +223,7 @@ class SearchList extends Component {
             : null
         }
         </label>
-        <div className="field-btn">
-          <div type="button" className="add-collaborators" onClick={this.addNewMember}>
-            添加新成员
-          </div>
-        </div>
+        {this.props.children}
       </li>
     );
   }
