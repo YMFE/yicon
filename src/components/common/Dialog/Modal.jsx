@@ -37,6 +37,7 @@ export default class Modal extends Component {
   close() {
     this.setState({ show: false });
     this.props.getShow(false);
+    this.props.onCancel();
   }
   render() {
     const { title, zIndex, onOk, onCancel, empty } = this.props;

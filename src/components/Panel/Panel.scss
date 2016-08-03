@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.authority-list-item{
+	padding:18px 30px 12px;
+	width: 198px;
+	border:1px solid #eff2fb;
+	margin:20px 0 0 20px;
+	display: inline;
+	float: left;
+	color: #212121;
+	height: 70px;
+	.prj-name{
+		font-size: 18px;
+		max-height: 50px;
+		overflow: hidden;
+		span{
+			line-height: 22px;
+		}
+	}
+	.tool{
+		position: relative;
+		font-size: 14px;
+		line-height: 28px;
+		.admin-name{
+			margin-right: 8px;
+		}
+		.change-admin{
+			color:#008ed6;
+		}
+		.tips{
+			position: absolute;
+			background-color: #fff8e5;
+			border: 1px solid #ffe8a6;
+			padding: 0 18px;
+			height: 34px;
+			line-height: 34px;
+			left: 38px;
+			top: -14px;
+			font-size: 14px;
+			border-radius: 3px;
+		}
+	}
+}
