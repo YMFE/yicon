@@ -98,7 +98,7 @@ class ManageMembers extends Component {
     // console.log(`members:${members}`);
     return (
       <Dialog
-        title="编辑项目"
+        title="成员管理"
         extraClass="project-dialog"
         onOk={() => { this.props.onOk(this.getValue()); }}
         onCancel={() => { this.props.onCancel(); }}

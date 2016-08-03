@@ -97,7 +97,7 @@ const TimelineList = (props) => {
         <InfoItem
           extraClass="new"
           key={index}
-          timeString={handleTime(item.applyTime)}
+          timeString={handleTime(item.createTime)}
         >
           <div className="detail">
             {

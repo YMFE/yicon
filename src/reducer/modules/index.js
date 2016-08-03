@@ -12,6 +12,7 @@ import icon from './icon';
 import log from './log';
 import workbench from './workbench';
 import versionComparison from './versionComparison';
+import admin from './admin';
 
 import {
   LOGOUT_DESTORY,
@@ -34,6 +35,7 @@ const reducers = combineReducers({
     notification,
     uploaded,
     versionComparison,
+    admin,
   }),
 });
 

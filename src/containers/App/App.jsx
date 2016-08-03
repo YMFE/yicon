@@ -22,12 +22,14 @@ class App extends Component {
   }
 
   render() {
-    const { list, searchValue } = this.props;
+    const { list, searchValue, location } = this.props;
+    const extraClass = location.pathname === '/' ? 'main' : '';
+    console.log(extraClass);
     return (
       <div className="app-container">
         <Header
           list={list}
-          extraClass="main"
+          extraClass={extraClass}
           searchValue={searchValue}
         />
         <section>

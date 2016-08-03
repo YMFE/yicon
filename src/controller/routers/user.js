@@ -51,7 +51,6 @@ user.delete('/projects/:projectId/icons', deleteProjectIcon, recordLog);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
 user.delete('/projects/:projectId', isProjectOwner, deleteProject);
-// user.get('/projects/:projectId/compareVersion/:highVersion...:lowVersion', diffVersion);
 user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
 user.get('/projects/:projectId/versions', getProjectVersion);
 
