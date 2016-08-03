@@ -1,7 +1,9 @@
 const common = {
   path: {
     caches: '../caches',
-    download: 'download',
+    font: 'download/font',
+    svg: 'download/svg',
+    png: 'download/png',
   },
 };
 

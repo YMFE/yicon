@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 import Slider from '../../components/common/Slider/Slider.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
@@ -20,7 +20,7 @@ import {
   {
     getPublicProjectList,
     getPublicProjectInfo,
-    push,
+    replace,
   }
 )
 export default class Project extends Component {
@@ -30,33 +30,33 @@ export default class Project extends Component {
     currentPublicProjectInfo: PropTypes.object,
     getPublicProjectList: PropTypes.func,
     getPublicProjectInfo: PropTypes.func,
-    push: PropTypes.func,
+    replace: PropTypes.func,
   }
   componentDidMount() {
-    this.props.getPublicProjectList();
-    const current = this.props.currentPublicProjectInfo;
-    const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
-    if (!id && this.props.publicProjectList[0]) {
-      this.props.push(`/projects/${this.props.publicProjectList[0].id}`);
-    }
-    if (!current || id !== parseInt(current.id, 10)) {
-      this.props.getPublicProjectInfo(+id);
-    }
+    this.props.getPublicProjectList().then(ret => {
+      const current = this.props.currentPublicProjectInfo;
+      const id = +this.props.params.id;
+      const [firstProject] = ret.payload.data;
+      if (isNaN(id) && firstProject) {
+        this.props.replace(`/projects/${firstProject.id}`);
+      } else if (!current || id !== +current.id) {
+        this.props.getPublicProjectInfo(+id);
+      }
+    });
   }
   componentWillReceiveProps(nextProps) {
-    const current = this.props.currentPublicProjectInfo;
-    const nextId = nextProps.params.id ? parseInt(nextProps.params.id, 10) : '';
+    const nextId = nextProps.params.id;
     if (!nextId && this.props.publicProjectList[0]) {
-      this.props.push(`/projects/${this.props.publicProjectList[0].id}`);
+      this.props.replace(`/projects/${this.props.publicProjectList[0].id}`);
     }
-    if (!current || nextId !== parseInt(current.id, 10)) {
+    if (nextId !== this.props.params.id) {
       this.props.getPublicProjectInfo(nextId);
     }
   }
   render() {
     const list = this.props.publicProjectList;
     const current = this.props.currentPublicProjectInfo;
-    if (list.length === 0) return null;
+    // if (list.length === 0) return null;
     let iconList;
     if (current.icons && current.icons.length > 0) {
       iconList = current.icons.map((item, index) => {
@@ -79,7 +79,7 @@ export default class Project extends Component {
     }
     return (
       <div className="Project">
-        <SubTitle tit="我的公开项目">
+        <SubTitle tit="公开图标项目">
           <Slider />
         </SubTitle>
         <Content>

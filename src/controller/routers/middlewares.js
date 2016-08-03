@@ -26,6 +26,7 @@ export function* responder(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
+    console.log(`[Error] ${e.stack}`);
     // this.app.emit('error', e, this);
     return;
   }

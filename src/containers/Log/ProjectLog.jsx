@@ -7,7 +7,7 @@ import { SubTitle, Content, Timeline, InfoItem } from '../../components/';
 import Pager from '../../components/common/Pager/';
 
 @connect(
-  state => ({ ...state.log.repo }),
+  state => ({ ...state.log.project }),
   { fetchProjectLogs }
 )
 class Log extends Component {

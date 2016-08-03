@@ -22,12 +22,26 @@ const down = new Router();
 
 // 下载比较特殊，单独写吧
 down.get('/download/:filename', function* loadFile(next) {
-  const { caches, download } = config.path;
+  const { caches } = config.path;
   const { filename } = this.params;
-  const downloadPath = path.join(caches, download, filename);
-  this.set('Content-disposition', `attachment; filename=${filename}`);
-  this.set('Content-type', 'application/zip');
-  this.body = fs.createReadStream(downloadPath);
+  const reg = /\.(\w+)$/;
+  const type = filename.match(reg) ? filename.match(reg)[1] : null;
+  const contentTypeMap = {
+    zip: 'application/zip',
+    png: 'image/png',
+    svg: 'text/xml',
+  };
+
+  if (type) {
+    const downloadPath = path.join(caches, config.path[type], filename);
+    this.set('Content-disposition', `attachment; filename=${filename}`);
+    this.set('Content-type', contentTypeMap[type]);
+    this.body = fs.createReadStream(downloadPath);
+  } else {
+    this.status = 500;
+    this.body = `无法找到对应下载的文件：${filename}`;
+  }
+
   yield next;
 });
 
