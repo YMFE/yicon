@@ -17,6 +17,8 @@ import Slider from '../../components/common/Slider/Slider.jsx';
 import Input from '../../components/common/Input/Index';
 // slick
 import Slick from '../../components/common/Slick/index';
+// loading
+import Loading from '../../components/common/Loading/Loading';
 /* eslint-disable no-console */
 
 const itemData = [];
@@ -230,7 +232,10 @@ export default class Demo extends Component {
           </div>
           <h2> 滚动单个item </h2>
         </div>
-
+        <div>
+          <Loading visible={false} />
+          <Loading visible={'true'} />
+        </div>
       </div>
     );
   }
