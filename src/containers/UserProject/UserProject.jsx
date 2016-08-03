@@ -325,7 +325,7 @@ class UserProject extends Component {
                   to={`/user/projects/${id}/comparison`}
                   className="options-btns btns-default"
                 >
-                  历史版本
+                  版本对比
                 </Link>
               </div>
             </div>

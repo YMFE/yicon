@@ -17,18 +17,19 @@ import './App.scss';
 class App extends Component {
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
-      const { query } = this.props.location;
-      if (query.dev) this.props.launchDevTools();
+      this.props.launchDevTools();
     }
   }
 
   render() {
-    const { list, searchValue } = this.props;
+    const { list, searchValue, location } = this.props;
+    const extraClass = location.pathname === '/' ? 'main' : '';
+    console.log(extraClass);
     return (
       <div className="app-container">
         <Header
           list={list}
-          extraClass="main"
+          extraClass={extraClass}
           searchValue={searchValue}
         />
         <section>
