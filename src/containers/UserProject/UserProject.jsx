@@ -137,10 +137,7 @@ class UserProject extends Component {
       onCancel: () => {},
     });
   }
-  @autobind
-  editProject() {
-    this.shiftEidtProject(true);
-  }
+
   @autobind
   updateManageMembers({ members }) {
     this.props.patchProjectMemeber({
@@ -160,6 +157,9 @@ class UserProject extends Component {
     this.setState({
       showManageMember: isShow,
     });
+    if (!isShow) {
+      this.ManageMembersEle.clearInput();
+    }
   }
   @autobind
   changeGenerateVersion(e) {

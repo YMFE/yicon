@@ -7,18 +7,9 @@ import {
   SAVE_TO_NEW_PROJECT,
   DELETE_PROJECT,
   FETCH_MEMBERS_SUGGEST_LIST,
-  PATCH_USERS_PROJECT_DETAIL,
-  PATCH_PROJECT_MEMBERS,
-  POST_GENERATE_VERSION,
   TETCH_PROJECT_VERSION,
-  DELETE_PROJECT_ICON,
 } from '../../constants/actionTypes';
 import { push } from 'react-router-redux';
-// dumpIconLocalStorage,
-// getUsersProjectList,
-import {
-  getUserProjectInfo,
-} from '../../actions/cart';
 
 const initialState = {
   usersProjectList: [],
@@ -53,14 +44,6 @@ export default (state = initialState, action) => {
       }
       return state;
     }
-    case PATCH_USERS_PROJECT_DETAIL: {
-      if (action.payload.res) {
-        console.log('success accept result');
-        // window.location.reload();
-        action.success();
-      }
-      return state;
-    }
     case FETCH_MEMBERS_SUGGEST_LIST: {
       if (action.payload.res) {
         return {
@@ -88,12 +71,6 @@ export default (state = initialState, action) => {
       }
       return state;
     }
-    case PATCH_PROJECT_MEMBERS: {
-      if (action.payload.res) {
-        getUserProjectInfo(action.project.id);
-      }
-      return state;
-    }
     case TETCH_PROJECT_VERSION: {
       if (action.payload.res) {
         return {
@@ -104,12 +81,6 @@ export default (state = initialState, action) => {
       return state;
     }
 
-    case POST_GENERATE_VERSION: {
-      if (action.payload.res) {
-        getUserProjectInfo(action.project.id);
-      }
-      return state;
-    }
     case SAVE_TO_NEW_PROJECT: {
       return {
         ...state,
@@ -130,12 +101,7 @@ export default (state = initialState, action) => {
       }
       return state;
     }
-    case DELETE_PROJECT_ICON: {
-      if (action.payload.res) {
-        getUserProjectInfo(action.id);
-      }
-      return state;
-    }
+
     default:
       return state;
   }

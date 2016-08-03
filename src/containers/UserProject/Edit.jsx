@@ -8,7 +8,6 @@ class EditProject extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = Object.assign({}, props);
   }
 
