@@ -168,7 +168,7 @@
         border: 1px solid #dfdfdf;
         color: #616161;
         cursor: pointer;
-        
+
         .drop-down {
           margin-left: 6px;
           color: #abb1be;
@@ -187,6 +187,10 @@
         outline: 0;
         border: 0;
         border-radius: 2px;
+      }
+      .disabled {
+        color: #fff;
+        background: #e8e8e8;
       }
     }
   }

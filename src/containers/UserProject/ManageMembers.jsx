@@ -79,7 +79,7 @@ class ManageMembers extends Component {
   }
   @autobind
   addNewMember(item) {
-    console.log(`handle choseMembers${item}`);
+    // console.log(`handle choseMembers${item}`);
     if (!item) {
       return;
     }

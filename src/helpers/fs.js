@@ -58,6 +58,5 @@ export function* buildSVG(name, svgPath, color, size) {
 export function* buildPNG(name, svgPath) {
   yield ensureCachesExist('hodor', 'png');
   const filePath = path.join(downloadPath.png, `${name}.png`);
-  console.log('svgPath: ', svgPath);
   yield Q.nfcall(render, { input: svgPath, output: filePath });
 }
