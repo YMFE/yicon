@@ -26,6 +26,11 @@ export function* responder(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
+    if (__DEVELOPMENT__) {
+      /* eslint-disable no-console */
+      console.log(`[Error] ${e.stack}`);
+      /* eslint-enable no-console */
+    }
     // this.app.emit('error', e, this);
     return;
   }

@@ -7,6 +7,7 @@ import Input from '../common/Input/Index.jsx';
 import Select from '../common/Select/index';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
+import axios from 'axios';
 
 @connect(
   state => ({
@@ -102,6 +103,22 @@ class DownloadDial extends Component {
   tagsToArr(tags) {
     return tags.split(/[,| ]+/);
   }
+
+  @autobind
+  download(type) {
+    const { id, iconStyle: { color, size } } = this.props.iconDetail;
+    axios
+      .post(`/api/download/icon/${type}`, { iconId: id, color, size })
+      .then(ret => {
+        const { res, data } = ret.data;
+        if (res) {
+          window.location.href = `/download/${data}`;
+        }
+      });
+  }
+
+  downloadSVG = this.download.bind(this, 'svg')
+  downloadPNG = this.download.bind(this, 'png')
 
   render() {
     const { iconDetail, userInfo } = this.props;
@@ -221,9 +238,9 @@ class DownloadDial extends Component {
             </Select>
           </div>
           <div className="download-box">
-            <button className="download-btn">SVG下载</button>
-            <button className="download-btn">AI下载</button>
-            <button className="download-btn">PNG下载</button>
+            <button className="download-btn" onClick={this.downloadSVG}>SVG下载</button>
+            <button className="download-btn disabled" disabled>AI下载</button>
+            <button className="download-btn" onClick={this.downloadPNG}>PNG下载</button>
           </div>
         </div>
       </div>

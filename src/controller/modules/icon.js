@@ -313,7 +313,7 @@ export function* updateIconInfo(next) {
   const { iconId, tags, name } = this.param;
   const { userId } = this.state.user;
 
-  if (isNaN(iconId)) throw new Error('缺少图标id');
+  invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
   const iconInfo = yield Icon.findOne({
     where: { id: iconId },
     include: [
@@ -327,24 +327,32 @@ export function* updateIconInfo(next) {
     ],
   });
   const data = {};
-  if (typeof tags === 'string' && tags !== '') data.tags = tags;
+  const errorMsg = [];
+
+  if (typeof tags === 'string' && tags !== '') {
+    data.tags = tags;
+  } else {
+    errorMsg.push(`期望传入的 tags 是非空字符串，传入的却是 ${tags}`);
+  }
+
   // 大库管理员可以修改icon的name
-  if (iconInfo.repositories[0] &&
-    iconInfo.repositories[0].admin === userId &&
-    typeof name === 'string' &&
-    name !== '') {
+  if (!iconInfo.repositories[0] || iconInfo.repositories[0].admin === userId) {
+    errorMsg.push('用户不是大库管理员，无法修改图标名称');
+  } else if (typeof name !== 'string' || name === '') {
+    errorMsg.push(`期望传入的 name 是非空字符串，传入的却是 ${name}`);
+  } else {
     data.name = name;
   }
-  if (isPlainObject(data)) throw new Error('必须传入非空的数据参数');
-  const result = yield Icon.update(data, { where: { id: iconId } });
-  if (result) {
-    this.state.respond = yield Icon.findOne({
-      where: { id: iconId },
-      attributes: ['name', 'tags'],
-    });
-  } else {
-    throw new Error('修改图标信息失败');
-  }
+  const msgStr = errorMsg.join('；');
+
+  invariant(!isPlainObject(data), msgStr || '必须传入非空的数据参数');
+  yield Icon.update(data, { where: { id: iconId } });
+
+  this.state.respond = yield Icon.findOne({
+    where: { id: iconId },
+    attributes: ['name', 'tags'],
+  });
+
   yield next;
 }
 

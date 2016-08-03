@@ -15,9 +15,6 @@ import UserProject from './UserProject/UserProject';
 import Log from './Log/Log';
 import ProjectLog from './Log/ProjectLog';
 import VersionComparison from './VersionComparison/VersionComparison';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-injectTapEventPlugin();
 
 export {
   App,

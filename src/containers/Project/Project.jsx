@@ -79,7 +79,7 @@ export default class Project extends Component {
     }
     return (
       <div className="Project">
-        <SubTitle tit="我的公开项目">
+        <SubTitle tit="公开项目图标">
           <SliderSize />
         </SubTitle>
         <Content>

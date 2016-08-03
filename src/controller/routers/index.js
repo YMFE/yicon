@@ -21,14 +21,27 @@ const router = new Router({ prefix: '/api' });
 const down = new Router();
 
 // 下载比较特殊，单独写吧
-down.get('/download/:filename', function* loadFile(next) {
-  const { caches, download } = config.path;
+down.get('/download/:filename', function* loadFile() {
+  const { caches } = config.path;
   const { filename } = this.params;
-  const downloadPath = path.join(caches, download, filename);
-  this.set('Content-disposition', `attachment; filename=${filename}`);
-  this.set('Content-type', 'application/zip');
-  this.body = fs.createReadStream(downloadPath);
-  yield next;
+  const reg = /\.(\w+)$/;
+  const type = filename.match(reg) ? filename.match(reg)[1] : null;
+  const contentTypeMap = {
+    zip: 'application/zip',
+    png: 'image/png',
+    svg: 'text/xml',
+  };
+  const pos = type === 'zip' ? 'font' : type;
+
+  if (type || Object.keys(contentTypeMap).indexOf(type) === -1) {
+    const downloadPath = path.join(caches, config.path[pos], filename);
+    this.set('Content-disposition', `attachment; filename=${filename}`);
+    this.set('Content-type', contentTypeMap[type]);
+    this.body = fs.createReadStream(downloadPath);
+  } else {
+    this.status = 500;
+    this.body = `无法找到对应下载的文件：${filename}`;
+  }
 });
 
 router.use(bodyParser());

@@ -71,16 +71,20 @@ class UserProject extends Component {
     };
   }
   componentDidMount() {
-    this.props.getUsersProjectList();
-    const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
-    const current = this.props.currentUserProjectInfo;
-    if (!id && this.props.usersProjectList[0]) {
-      this.props.push(`/user/projects/${this.props.usersProjectList[0].id}`);
-    }
-    if (!current || id !== parseInt(current.id, 10)) {
-      this.props.getUserProjectInfo(id);
-    }
-    this.props.fetchMemberSuggestList();
+    this.props.getUsersProjectList().then(ret => {
+      const id = this.props.params.id ? +this.props.params.id : '';
+      const current = this.props.currentUserProjectInfo;
+      if (!id && ret.data.organization) {
+        const [firstProject] = ret.data.organization;
+        if (firstProject && firstProject.id) {
+          this.props.push(`/user/projects/${firstProject.id}`);
+        }
+      }
+      if (!current || id !== +current.id) {
+        this.props.getUserProjectInfo(id);
+      }
+      this.props.fetchMemberSuggestList();
+    });
   }
   componentWillReceiveProps(nextProps) {
     const current = nextProps.currentUserProjectInfo;
@@ -195,7 +199,6 @@ class UserProject extends Component {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
     const id = this.props.params.id;
-    if (list.length === 0) return null;
     let iconList;
     if (current.icons && current.icons.length > 0) {
       iconList = current.icons.map((item, index) => (
