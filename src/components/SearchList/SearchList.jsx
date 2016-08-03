@@ -171,9 +171,14 @@ class SearchList extends Component {
   }
 
   renderSuggestList() {
+    const {
+      height,
+    } = this.inputEle.getBoundingClientRect();
+    // console.log(top,left);
     return (
       <SuggestList
         {...this.props}
+        top={height}
         writeState={this.state.writeState}
         show={this.state.showSuggest && this.props.showSearchList}
         WRITE_STATE={WRITE_STATE}
@@ -202,7 +207,7 @@ class SearchList extends Component {
           <input
             type="text"
             name="project-collaborators"
-            className="project-collaborators"
+            className="SearchList-input project-collaborators"
             placeholder={this.props.placeholder}
             onChange={this.onChange}
             onBlur={this.onBlur}

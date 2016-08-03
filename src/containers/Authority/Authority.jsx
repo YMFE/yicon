@@ -409,9 +409,10 @@ export default class Authority extends Component {
                 </li>
                 <SearchList
                   extraClass="dialog-input"
-                  SuggestList={this.props.suggestList}
+                  suggestList={this.props.suggestList}
                   onChoseItem={this.userChange}
                   onChoseError={() => {}}
+                  showSearchList
                   onChange={this.userChange}
                 >
                   <div className="item-name">管理员</div>
