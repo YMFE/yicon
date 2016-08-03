@@ -40,8 +40,6 @@ class SearchList extends Component {
     };
   }
   componentDidMount() {
-    this.wrapper = document.createElement('div');
-    document.body.appendChild(this.wrapper);
     document.onresize = () => {
       this.onShow();
     };
@@ -170,10 +168,23 @@ class SearchList extends Component {
     }
   }
 
+  clearInput() {
+    this.setState({
+      input: '',
+      writeState: WRITE_STATE.EMPTY,
+    });
+    this.props.onChange('');
+  }
+
   renderSuggestList() {
+    const {
+      height,
+    } = this.inputLocation;
+    // console.log(top,left);
     return (
       <SuggestList
         {...this.props}
+        top={height}
         writeState={this.state.writeState}
         show={this.state.showSuggest && this.props.showSearchList}
         WRITE_STATE={WRITE_STATE}
@@ -195,14 +206,14 @@ class SearchList extends Component {
     const classList = ['field-set', 'SuggestList'];
     classList.push(this.props.extraClass);
     return (
-      <li className="field">
+      <li className="field SearchList">
         <label
           className={classList.join(' ')}
         >
           <input
             type="text"
             name="project-collaborators"
-            className="project-collaborators"
+            className="SearchList-input project-collaborators"
             placeholder={this.props.placeholder}
             onChange={this.onChange}
             onBlur={this.onBlur}

@@ -46,7 +46,6 @@ export function patchUserProject(detail) {
     type: PATCH_USERS_PROJECT_DETAIL,
     payload: fetch.patch(`/user/projects/${detail.id}`, detail),
     project: detail,
-    id: detail.id,
   };
 }
 
@@ -76,6 +75,10 @@ export function getPublicProjectInfo(id, version) {
   return {
     type: FETCH_PUBLIC_PROJECT_INFO,
     payload: fetch.get(`/projects/${id}${v}`),
+    success: () => {
+      this.getUsersProjectList();
+      this.getUserProjectInfo(id);
+    },
   };
 }
 
@@ -135,11 +138,15 @@ export function fetchProjectVersions(id) {
   };
 }
 
-export function deletePorjectIcon(id, icons) {
+export function deletePorjectIcon(id, icon) {
+  const obj = {
+    icons: icon,
+  };
+  // console.log(obj);
   return {
     type: DELETE_PROJECT_ICON,
-    payload: fetch.delete(`/user/project/${id}/icons`, {
-      icons,
+    payload: fetch.delete(`/user/projects/${id}/icons`, {
+      data: obj,
     }),
     id,
   };
