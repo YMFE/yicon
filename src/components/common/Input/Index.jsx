@@ -4,12 +4,13 @@ import './style.scss';
 
 const defaultProps = {
   regExp: '',
-  error: false,
   errMsg: '',
+  defaultValue: '',
+  extraClass: '',
+  error: false,
   onChange: () => {},
   blur: () => {},
   keyDown: () => {},
-  extraClass: '',
 };
 
 const propTypes = {
@@ -17,11 +18,12 @@ const propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.bool,
   errMsg: PropTypes.string,
+  defaultValue: PropTypes.string,
   onChange: PropTypes.func,
   blur: PropTypes.func,
   keyDown: PropTypes.func,
   extraClass: PropTypes.string,
-  children: PropTypes.oneOf([
+  children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
@@ -33,11 +35,15 @@ export default class Input extends Component {
     super(props);
     this.state = {
       error: props.error,
+      value: props.defaultValue,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ error: nextProps.error });
+    this.setState({
+      error: nextProps.error,
+      value: nextProps.defaultValue,
+    });
   }
 
   getVal() {
@@ -46,6 +52,9 @@ export default class Input extends Component {
 
   validate(val) {
     const regExp = new RegExp(this.props.regExp);
+    this.setState({
+      value: val,
+    });
     this.props.onChange(val);
     if (!regExp.test(val)) {
       this.setState({ error: true });
@@ -56,11 +65,15 @@ export default class Input extends Component {
 
   @autobind
   keyDown(e) {
-    this.props.keyDown(e);
+    if (!this.state.error) {
+      this.props.keyDown(e, this.getVal());
+    }
   }
   @autobind
-  blur(e) {
-    this.props.blur(e);
+  blur() {
+    if (!this.state.error) {
+      this.props.blur(this.getVal());
+    }
   }
 
   reset() {
@@ -69,11 +82,12 @@ export default class Input extends Component {
 
   render() {
     const { errMsg, extraClass, placeholder } = this.props;
-    const { error } = this.state;
+    const { error, value } = this.state;
     const classNames = error ? 'input-wrap info-error ' : 'input-wrap';
     return (
       <div className={`${classNames} ${extraClass}`}>
         <input
+          value={value || ''}
           type="text"
           className="input"
           placeholder={placeholder}
@@ -82,7 +96,7 @@ export default class Input extends Component {
           onBlur={this.blur}
           ref="input"
         />
-      {this.props.children}
+        {this.props.children}
         <div
           className="error-info" style={{ display: this.state.error ? '' : 'none' }}
         >{errMsg}</div>
