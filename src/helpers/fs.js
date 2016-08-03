@@ -7,6 +7,7 @@ import { render } from 'svgexport';
 import svgBuilder from './svgTemplate';
 
 const { caches, font, svg, png } = config.path;
+const downPath = path.join(caches, 'download');
 const downloadPath = {
   font: path.join(caches, font),
   svg: path.join(caches, svg),
@@ -23,6 +24,8 @@ const downloadPath = {
 export function ensureCachesExist(name, pos) {
   return Q.nfcall(fs.access, caches)
     .catch(() => Q.nfcall(fs.mkdir, caches))
+    .then(() => Q.nfcall(fs.access, downPath))
+    .catch(() => Q.nfcall(fs.mkdir, downPath))
     .then(() => Q.nfcall(fs.access, downloadPath[pos]))
     .catch(() => Q.nfcall(fs.mkdir, downloadPath[pos]))
     .then(() => path.join(caches, font, name));

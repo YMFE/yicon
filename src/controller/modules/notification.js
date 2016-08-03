@@ -19,10 +19,7 @@ export function* getAllNotices(next) {
         model: Project,
         as: 'project',
       }],
-      through: {
-        model: Notification,
-        where: { userId },
-      },
+      order: 'updatedAt DESC',
       ...pageMixin,
     });
     this.state.page.totalCount = yield user.countLogs();
@@ -35,11 +32,8 @@ export function* getAllNotices(next) {
         model: Project,
         as: 'project',
       }],
-      where: { scope: type },
-      through: {
-        model: Notification,
-        where: { userId },
-      },
+      where: { scope: type === 'system' ? 'repo' : 'project' },
+      order: 'updatedAt DESC',
       ...pageMixin,
     });
     this.state.page.totalCount = yield user.countLogs({ where: { scope: type } });

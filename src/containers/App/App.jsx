@@ -17,8 +17,7 @@ import './App.scss';
 class App extends Component {
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
-      const { query } = this.props.location;
-      if (query.dev) this.props.launchDevTools();
+      this.props.launchDevTools();
     }
   }
 

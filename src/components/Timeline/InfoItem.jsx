@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import timer from '../../helpers/timer';
+import { Link } from 'react-router';
+import { autobind } from 'core-decorators';
 // import { Icon } from '../../components/';
 
 class InfoItem extends Component {
@@ -14,28 +16,40 @@ class InfoItem extends Component {
     extraClass: PropTypes.string,
     timeString: PropTypes.string,
     children: PropTypes.element,
+    hasScope: PropTypes.bool,
   }
 
   getTitle() {
     const { item, showTitleHtml, tit } = this.props;
     if (showTitleHtml) {
-      return (
-        <p
-          className="title"
-          dangerouslySetInnerHTML={{ __html: this.getDescribeForInfo(item) }}
-        />
-      );
-    } else if (tit) {
+      return this.getDescribeForInfo(item);
+    }
+    if (tit) {
       return <p className="title">{tit}</p>;
     }
     return null;
   }
 
-  getDescribeForInfo({ operation }) {
-    // TODO: 这 tmd 对前端来说太不友好了
+  @autobind
+  getDescribeForInfo({ operation, scope, project, repo }) {
     const regExp = /@([^@]+)@/g;
-    return operation.replace(regExp, (_, matched) => {
+    let prefix = null;
+    let result = regExp.exec(operation);
+    let content = [];
+    let lastIndex = 0;
+    let index = 0;
+
+    while (result !== null) {
       let text;
+      const matched = result[1];
+
+      index = result.index;
+      // 先处理下匹配之前的部分
+      const prevText = operation.slice(lastIndex, index);
+      if (prevText.length) content.push(<span key={lastIndex}>{prevText}</span>);
+      lastIndex = regExp.lastIndex;
+
+      // 处理下匹配到的关键词
       const data = JSON.parse(matched);
       // 处理一下各种日志的情况
       const keys = Object.keys(data);
@@ -47,8 +61,24 @@ class InfoItem extends Component {
         text = data[firstKey];
       }
 
-      return `<span class="key">${text}</span>`;
-    });
+      content.push(<span key={index} className="key">{text}</span>);
+      result = regExp.exec(operation);
+    }
+    // 查看尾巴是否有未捕获的
+    const tailText = operation.slice(lastIndex, operation.length);
+    if (tailText.length) content.push(<span key={lastIndex}>{tailText}</span>);
+
+    if (this.props.hasScope) {
+      const scopeData = scope === 'project' ? project : repo;
+      const link = scope === 'project'
+        ? `/user/projects/${project.id}`
+        : `/repositories/${repo.id}`;
+
+      prefix = (
+        <span><Link to={link}>{scopeData.name}</Link>：</span>
+      );
+    }
+    return <p className="title">{prefix}{content}</p>;
   }
 
   render() {
