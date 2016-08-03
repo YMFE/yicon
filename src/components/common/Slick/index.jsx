@@ -1,5 +1,6 @@
 import './Slick.scss';
 import React, { Component, PropTypes } from 'react';
+import Icon from '../Icon/Icon.jsx';
 // import Icon from '../Icon/Icon.jsx';
 export default class Slick extends Component {
   static defaultProps = {
@@ -27,11 +28,18 @@ export default class Slick extends Component {
       scrollAreaWidth: 0,
     };
   }
-  componentWillMount() {
-    const { itemData } = this.props;
-    const uiWidth = 84 * itemData.length;
-    this.setState({ scrollAreaWidth: uiWidth });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultCurrent || nextProps.defaultCurrent === 0) {
+      this.setState({
+        currentItem: nextProps.defaultCurrent,
+      });
+    }
   }
+  // componentWillMount() {
+  //   const { itemData } = this.props;
+  //   const uiWidth = 84 * itemData.length;
+  //   this.setState({ scrollAreaWidth: uiWidth });
+  // }
   handleClick(config, evt) {
     const { type, index } = config;
     const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
@@ -103,8 +111,10 @@ export default class Slick extends Component {
   render() {
     const itemArr = [];
     // iconItemListPos
-    const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
     const { itemData } = this.props;
+    const scrollAreaWidth = 84 * itemData.length;
+    const { currentItem, defaultTranslateX } = this.state;
+    // const { itemData } = this.props;
     itemData.forEach((item, i) => {
       let passIcon = 'none';
       let notPassIcon = 'none';
@@ -123,12 +133,9 @@ export default class Slick extends Component {
           className={'iconfont delete'}
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
         >&#xf077;</i>
-        <i className={'iconfont upload-icon'}>{i}</i>
+        <Icon className={'iconfont upload-icon'} d={item.path} size={60} />
         <div className={'pass-tag'} style={{ display: passIcon }}>通过</div>
         <div className={'no-pass-tag'} style={{ display: notPassIcon }}>不通过</div>
-        {/*
-          <Icon fill={i} />
-        */}
       </li>);
     });
     return (

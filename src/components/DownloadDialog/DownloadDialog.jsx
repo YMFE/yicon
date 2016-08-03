@@ -189,7 +189,7 @@ class DownloadDial extends Component {
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
           </div>
           <div className="set-tag">
-            <div className="set-input-wrap" onKeyDown={this.keydown}>
+            <div className="set-input-wrap">
               <input
                 className="set-input"
                 type="text"

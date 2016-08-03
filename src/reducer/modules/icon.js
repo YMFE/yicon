@@ -11,6 +11,7 @@ const initialState = {
   },
   name: '',
   tags: '',
+  style: '',
   id: 0,
   repo: {
     id: 0,
