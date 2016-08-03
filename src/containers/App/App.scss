@@ -30,6 +30,7 @@ blockquote:before,blockquote:after,q:before,q:after{content:"\0020"}
 textarea{overflow:auto;resize:vertical}
 input,textarea,button,select,a{outline:0 none;border: 0;}
 button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}
+button{cursor:pointer}
 mark{background-color:transparent}
 a,ins,s,u,del{text-decoration:none}
 sup,sub{vertical-align:baseline}

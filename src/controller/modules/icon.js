@@ -211,7 +211,7 @@ export function* submitIcons(next) {
       const data = {
         name: icon.name,
         tags: icon.tags,
-        fontClass: icon.style,
+        fontClass: icon.fontClass,
         status: iconStatus.PENDING,
         applyTime: new Date,
       };
