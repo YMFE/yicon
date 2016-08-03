@@ -10,10 +10,11 @@ import { connect } from 'react-redux';import {
 } from '../../actions/workbench.js';
 import { push } from 'react-router-redux';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
-import Select from '../../components/common/Select/';
 import SetTag from '../../components/EditIcon/SetTag/SetTag.jsx';
 import Slick from '../../components/common/Slick/index.jsx';
 import Input from '../../components/common/Input/Index.jsx';
+import { Link } from 'react-router';
+import Select from '../../components/common/Select/';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 const defaultProps = {};
@@ -79,7 +80,8 @@ export default class Workbench extends Component {
     icons.splice(index, 1);
     this.props.deleteIcon(id, icons.concat());
     if (selcIndex >= index) {
-      this.props.selectEdit(selcIndex - 1);
+      const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
+      this.props.selectEdit(newIndex);
     }
     if (!icons.length) {
       this.props.push('/upload');
@@ -119,13 +121,19 @@ export default class Workbench extends Component {
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-upload-container'}>
           <h2 className={'upload-title'}>上传图标设置</h2>
-          <Slick
-            itemData={icons}
-            defaultCurrent={index}
-            onClick={this.select}
-            onDelete={this.delete}
-            curr
-          />
+          <div style={{ position: 'relative' }}>
+            <Slick
+              itemData={icons}
+              defaultCurrent={index}
+              onClick={this.select}
+              onDelete={this.delete}
+              curr
+            />
+            <Link to="/upload" className={'upload-icon-btn'}>
+              <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+              <p className={'upload-btn-txt'}>上传图标</p>
+            </Link>
+          </div>
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
