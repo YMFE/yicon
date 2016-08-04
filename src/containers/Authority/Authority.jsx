@@ -169,7 +169,7 @@ export default class Authority extends Component {
       const data = this.props.suggestList;
       if (data.length === 1 && data[0].name === value) {
         this.setState({
-          ownerName: data[0].id,
+          ownerName: data[0].name,
         });
       }
     });

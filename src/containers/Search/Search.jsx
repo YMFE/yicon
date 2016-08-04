@@ -94,6 +94,16 @@ export default class Search extends Component {
               </div>
             ))
           }
+          {
+            <div style={{ display: `${this.props.totalCount > 0 ? 'none' : 'block'}` }}>
+              <div className="no-search">
+                <div className="no-search-logo"></div>
+                <div>
+                  <div className="no-search-tips">没有找到任何东西哦</div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
         <Dialog
           empty
