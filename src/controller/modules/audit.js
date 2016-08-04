@@ -2,7 +2,7 @@ import invariant from 'invariant';
 import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion } from '../../model';
+import { seq, Repo, Icon, User, RepoVersion } from '../../model';
 import { unique } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -90,7 +90,7 @@ export function* getAuditList(next) {
         model: RepoVersion,
         ...whereMixin,
       },
-    }],
+    }, User],
   }).then(icons => icons.map(i => {
     const icon = i.get({ plain: true });
     if (icon.repositories && icon.repositories.length) {

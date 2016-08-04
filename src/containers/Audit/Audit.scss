@@ -1,0 +1,20 @@
+.approval {
+  height: 115px;
+  background: #fff;
+  .aprv-btn {
+    width: 108px;
+    height: 40px;
+    outline: none;
+    border: 0;
+    font-size: 14px;
+    color: #fff;
+    border-radius: 2px;
+  }
+  .pass {
+    margin: 0 8px 0 531px;
+    background: #4bb052;
+  }
+  .no-pass {
+    background: #ff7474;
+  }
+}

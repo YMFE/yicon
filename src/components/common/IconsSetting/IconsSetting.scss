@@ -5,6 +5,18 @@
   line-height: 80px;
   font-size: 24px;
 }
+.upload-author {
+  padding-left: 64px;
+  line-height: 40px;
+  .repository {
+    font-size: 20px;
+    color: #616161;
+  }
+  .author {
+    font-size: 12px;
+    color: #a5a5a5;
+  }
+}
 .upload-setting {
   margin: 50px 0;
   .set-pre-next-btn {

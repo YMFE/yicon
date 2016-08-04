@@ -122,10 +122,10 @@ export default class Slick extends Component {
     itemData.forEach((item, i) => {
       let passIcon = 'none';
       let notPassIcon = 'none';
-      if (item.pass) {
+      if (item.pass === true) {
         passIcon = 'block';
       }
-      if (item.notPass) {
+      if (item.pass === false) {
         notPassIcon = 'block';
       }
       itemArr.push(<li
