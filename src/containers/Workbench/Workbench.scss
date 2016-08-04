@@ -6,86 +6,6 @@
   line-height: 80px;
   font-size: 24px;
 }
-.upload-icon {
-  .upload-icon-list {
-    position: relative;
-    float: left;
-    width: 1008px;
-    height: 76px;
-    overflow: hidden;
-    .upload-icon-item, .upload-icon-btn {
-      float: left;
-      position: relative;
-      text-align: center;
-      width: 72px;
-      height: 72px;
-      border-radius: 8px;
-      border: 2px solid #eef1f3;
-      color: #555f6e;
-      margin: 0 4px;
-      .upload-icon {
-        font-size: 60px;
-        line-height: 72px;
-      }
-      .delete {
-        display: none;
-        font-size: 14px;
-        line-height: 14px;
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        cursor: pointer;
-        color: #555f6e;
-      }
-    }
-    .upload-icon-item:hover {
-      border: 2px solid #bfe2f4;
-      color: #008ed6;
-      .delete {
-        display: block;
-      }
-    }
-    .upload-icon-item.on {
-      border: 2px solid #ffcccc;
-      color: #555f6e;
-      .delete {
-        display: none;
-      }
-    }
-    .upload-icon-btn {
-      position: absolute;
-      right: 0;
-      background: #fff;
-      .upload-btn-icon {
-        font-size: 32px;
-        margin-top: 12px;
-      }
-      .upload-btn-txt {
-        line-height: 12px;
-        font-size: 14px;
-      }
-    }
-  }
-  .icons-more-btn {
-    float: left;
-    width: 36px;
-    height: 76px;
-    line-height: 76px;
-    text-align: center;
-    color: #fff;
-    background: #e8e8e8;
-    border: 0;
-    .icons-more-btn-icon {
-      font-size: 16px;
-    }
-  }
-  .icons-more-btn-right {
-    float: right;
-  }
-  .icons-more-btn:hover {
-    background: #008ed6;
-  }
-}
 .upload-setting {
   margin: 50px 0;
   .set-pre-next-btn {
@@ -251,71 +171,10 @@
         color: #fff;
         background: #008ed6;
       }
+      .disabled {
+        color: #fff;
+        background: #e8e8e8;
+      }
     }
   }
 }
-
-
-
-//  big-img
-
-.icon-big-img {
-  float: left;
-  position: relative;
-  width: 305px;
-  height: 305px;
-  .hline, .vline {
-    position: absolute;
-    background: #c2e7f5;
-  }
-  .hline {
-    width: 305px;
-    height: 1px;
-  }
-  .vline {
-    width: 1px;
-    height: 305px;
-  }
-  .big-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 305px;
-    height: 305px;
-    line-height: 305px;
-    text-align: center;
-    .big {
-      font-size: 303px;
-    }
-  }
-}
-.icon-big-img.small {
-  width: 257px;
-  height: 257px;
-  .hline {
-    width: 257px;
-  }
-  .vline {
-    height: 257px;
-  }
-  .big-icon {
-    width: 257px;
-    height: 257px;
-    line-height: 257px;
-    .big {
-      font-size: 255px;
-    }
-  }
-}
-
-
-
-// .error-info{
-//   border:1px solid #ffcccc;
-//   background-color: #fff2f2;
-//   color:#ff5555;
-//   padding: 0 12px;
-//   height: 30px;
-//   line-height: 30px;
-//
-// }
