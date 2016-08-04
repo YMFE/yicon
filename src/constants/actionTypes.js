@@ -74,7 +74,7 @@ export const FETCH_ICON_DETAIL = 'FETCH_ICON_DETAIL';
 export const EDIT_ICON = 'EDIT_ICON';
 export const EDIT_ICON_STYLE = 'EDIT_ICON_STYLE';
 export const UPLOAD_ICON = 'UPLOAD_ICON';
-
+export const DOWNLOAD_ICONS = 'DOWNLOAD_ICONS';
 // workbench
 export const FETCH_WORKBENCH_ICONS = 'FETCH_WORKBENCH_ICONS';
 export const DELETE_WORKBENCH_ICON = 'DELETE_WORKBENCH_ICON';
@@ -83,5 +83,8 @@ export const SELECT_EDIT = 'SELECT_EDIT';
 export const UPLOAD_ICONS = 'UPLOAD_ICONS';
 export const SELECT_REPO = 'SELECT_REPO';
 
-// audit
-export const FETCH_AUDIT_LIST = 'FETCH_AUDIT_LIST';
+// auditing
+export const FETCH_AUDIT_ICONS = 'FETCH_AUDIT_ICONS';
+export const AUDIT_ICONS = 'AUDIT_ICONS';
+export const UPDATE_AUDIT_ICONS = 'UPDATE_AUDIT_ICONS';
+export const SELECT_AUDIT_ICON = 'SELECT_AUDIT_ICON';

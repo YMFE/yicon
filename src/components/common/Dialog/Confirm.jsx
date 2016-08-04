@@ -63,8 +63,8 @@ function transFn(fn) {
 export default function Confirm({
   title,
   content,
-  onOk,
-  onCancel,
+  onOk = () => {},
+  onCancel = () => {},
   zIndex = 1000,
   empty = false,
 }) {

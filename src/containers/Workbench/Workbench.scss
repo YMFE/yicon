@@ -18,8 +18,8 @@
       float: left;
       position: relative;
       text-align: center;
-      width: 72px;
-      height: 72px;
+      width: 62px;
+      height: 62px;
       border-radius: 8px;
       border: 2px solid #eef1f3;
       color: #555f6e;
@@ -252,71 +252,10 @@
         color: #fff;
         background: #008ed6;
       }
+      .disabled {
+        color: #fff;
+        background: #e8e8e8;
+      }
     }
   }
 }
-
-
-
-//  big-img
-
-.icon-big-img {
-  float: left;
-  position: relative;
-  width: 305px;
-  height: 305px;
-  .hline, .vline {
-    position: absolute;
-    background: #c2e7f5;
-  }
-  .hline {
-    width: 305px;
-    height: 1px;
-  }
-  .vline {
-    width: 1px;
-    height: 305px;
-  }
-  .big-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 305px;
-    height: 305px;
-    line-height: 305px;
-    text-align: center;
-    .big {
-      font-size: 303px;
-    }
-  }
-}
-.icon-big-img.small {
-  width: 257px;
-  height: 257px;
-  .hline {
-    width: 257px;
-  }
-  .vline {
-    height: 257px;
-  }
-  .big-icon {
-    width: 257px;
-    height: 257px;
-    line-height: 257px;
-    .big {
-      font-size: 255px;
-    }
-  }
-}
-
-
-
-// .error-info{
-//   border:1px solid #ffcccc;
-//   background-color: #fff2f2;
-//   color:#ff5555;
-//   padding: 0 12px;
-//   height: 30px;
-//   line-height: 30px;
-//
-// }

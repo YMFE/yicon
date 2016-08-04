@@ -5,9 +5,9 @@ import { autobind } from 'core-decorators';
 import SuggestList from './SuggestList.jsx';
 
 const WRITE_STATE = {
-  EMPTY: Symbol(0),
-  NOT_FOUND: Symbol(1),
-  HAS_RESULT: Symbol(2),
+  EMPTY: 0,
+  NOT_FOUND: 1,
+  HAS_RESULT: 2,
 };
 
 class SearchList extends Component {
@@ -31,6 +31,7 @@ class SearchList extends Component {
     this.state = {
       writeState: WRITE_STATE.EMPTY,
       input: '',
+      isFocus: false,
       showSuggest: false,
     };
     this.inputLocation = {
@@ -100,6 +101,13 @@ class SearchList extends Component {
     }
     this.setState({
       showSuggest: false,
+      isFocus: false,
+    });
+  }
+  @autobind
+  onFocus() {
+    this.setState({
+      isFocus: true,
     });
   }
   @autobind
@@ -172,8 +180,9 @@ class SearchList extends Component {
     this.setState({
       input: '',
       writeState: WRITE_STATE.EMPTY,
+      showSuggest: false,
     });
-    this.props.onChange('');
+    // this.props.onChange('');
   }
 
   renderSuggestList() {
@@ -186,7 +195,7 @@ class SearchList extends Component {
         {...this.props}
         top={height}
         writeState={this.state.writeState}
-        show={this.state.showSuggest && this.props.showSearchList}
+        show={this.state.showSuggest && this.props.showSearchList && this.state.isFocus}
         WRITE_STATE={WRITE_STATE}
         onChoseItem={(e) => {
           this.choseItemfromSuggest(e);
@@ -217,6 +226,7 @@ class SearchList extends Component {
             placeholder={this.props.placeholder}
             onChange={this.onChange}
             onBlur={this.onBlur}
+            onFocus={this.onFocus}
             value={this.state.input}
             autoComplete="off"
             onKeyDown={this.handleKeyDown}

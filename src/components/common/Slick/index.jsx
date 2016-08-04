@@ -44,7 +44,9 @@ export default class Slick extends Component {
   // }
   handleClick(config, evt) {
     const { type, index } = config;
-    const { currentItem, defaultTranslateX, scrollAreaWidth } = this.state;
+    const { itemData } = this.props;
+    const scrollAreaWidth = 84 * itemData.length;
+    const { currentItem, defaultTranslateX } = this.state;
     const { step } = this.props;
     let _currentItem = currentItem;
     let _iconItemListPosLeft = defaultTranslateX;

@@ -11,9 +11,9 @@ import user from './user';
 import icon from './icon';
 import log from './log';
 import workbench from './workbench';
+import audit from './audit';
 import versionComparison from './versionComparison';
 import admin from './admin';
-import audit from './audit';
 
 import {
   LOGOUT_DESTORY,
@@ -29,6 +29,7 @@ const reducers = combineReducers({
   icon,
   log,
   workbench,
+  audit,
 
   // TODO: 其实没啥用，因为登出的时候直接跳页就行了。。。。
   // 登录用户才使用的信息放到 user 下面
@@ -38,7 +39,6 @@ const reducers = combineReducers({
     uploaded,
     versionComparison,
     admin,
-    audit,
   }),
 });
 

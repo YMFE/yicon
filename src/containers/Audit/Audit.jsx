@@ -1,43 +1,106 @@
+import './Audit.scss';
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-
-
-import { fetchAuditList } from '../../actions/audit';
-// import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
-// import Select from '../../components/common/Select/';
-// import SetTag from '../../components/EditIcon/SetTag/SetTag.jsx';
-import Slick from '../../components/common/Slick/index.jsx';
-// import Input from '../../components/common/Input/Index.jsx';
+import { connect } from 'react-redux';import {
+  fetchAuditIcons,
+  updateAuditIcons,
+  AuditIcons,
+  selectIcon,
+} from '../../actions/audit.js';
+import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx';
+import { autobind } from 'core-decorators';
 
 @connect(
-  state => ({ auditList: state.user.audit.list }),
-  { fetchAuditList }
+  state => ({
+    icons: state.audit.icons,
+    index: state.audit.selcIndex,
+  }),
+  {
+    fetchAuditIcons,
+    updateAuditIcons,
+    AuditIcons,
+    selectIcon,
+  }
 )
 export default class Audit extends Component {
   static propTypes = {
-    fetchAuditList: PropTypes.func,
-    auditList: PropTypes.func,
+    index: PropTypes.number,
+    icons: PropTypes.array,
+    fetchAuditIcons: PropTypes.func,
+    updateAuditIcons: PropTypes.func,
+    AuditIcons: PropTypes.func,
+    selectIcon: PropTypes.func,
   }
 
+  defaultProps = {}
+
   componentWillMount() {
-    this.props.fetchAuditList();
+    this.props.fetchAuditIcons();
   }
+
+  @autobind
+  select(index) {
+    this.props.selectIcon(index);
+  }
+
+  @autobind
+  delete(icons, index) {
+    this.props.updateAuditIcons(icons);
+    this.props.selectIcon(index);
+  }
+
+  @autobind
+  updateIcons(icons) {
+    this.props.updateAuditIcons(icons);
+  }
+
+  @autobind
+  AuditIcons() {
+    // const icons = this.calcDone();
+    // this.props.uploadIcons({
+    //   repoId: this.props.repoId,
+    //   icons,
+    // }).then(() => {
+    //   const noDone = this.props.icons.filter((icon) => (
+    //     !(icon.name && icon.fontClass)
+    //   ));
+    //   if (!noDone.length) {
+    //     this.props.push('/upload');
+    //   } else {
+    //     this.props.updateAudit(noDone);
+    //   }
+    // });
+  }
+
+  @autobind
+  showUploadDialog() {
+    // const doneNum = this.calcDone().length;
+    // const title = '提交上传';
+    // const content = `还有${this.props.icons.length - doneNum}枚图标未设置完成，确认上传设置完成的${doneNum}枚图标吗？`;
+    // dialog({
+    //   title,
+    //   content,
+    //   onOk: this.uploadIcons,
+    // });
+  }
+
   render() {
-    const { auditList } = this.props;
+    const { index, icons } = this.props;
+    if (!icons.length) {
+      return null;
+    }
     return (
-      <div className="yicon-main yicon-upload">
-        <div className="yicon-upload-container">
-          <h2 className="upload-title">图标审核</h2>
-          <Slick
-            itemData={auditList}
-            defaultCurrent={1}
-            onClick={(index) => { console.log(index); }}
-            onDelete={(index) => { console.log(index); }}
-            step={84}
-            noRemoveIcon
+      <div className={'yicon-main yicon-upload'}>
+        <div className={'yicon-upload-container'}>
+          <IconsSetting
+            title="上传图标设置"
+            icons={icons}
+            index={index}
+            onClick={this.select}
+            onDelete={this.delete}
+            saveName={this.updateIcons}
+            selectStyle={this.updateIcons}
+            saveTags={this.updateIcons}
           />
-          <div className="upload-setting clearfix">
-          </div>
         </div>
       </div>
     );

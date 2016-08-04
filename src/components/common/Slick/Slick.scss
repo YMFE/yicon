@@ -26,9 +26,8 @@
       border: 2px solid #eef1f3;
       color: #555f6e;
       margin: 0 4px;
-      .upload-icon {
-        font-size: 60px;
-        line-height: 72px;
+      .Icon {
+        margin-top: 6px;
       }
       .pass-tag, .no-pass-tag {
         position: relative;
@@ -53,8 +52,8 @@
         font-size: 14px;
         line-height: 14px;
         position: absolute;
-        right: 2px;
-        top: 2px;
+        right: 1px;
+        top: 1px;
         cursor: pointer;
         color: #555f6e;
       }
@@ -71,6 +70,13 @@
       color: #555f6e;
       .delete {
         display: none;
+      }
+    }
+    .upload-icon-item.on:hover {
+      border: 2px solid #ffcccc;
+      color: #555f6e;
+      .delete {
+        display: block;
       }
     }
     .upload-icon-btn {

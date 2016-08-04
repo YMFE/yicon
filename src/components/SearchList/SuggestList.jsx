@@ -41,7 +41,7 @@ const SuggestList = props => {
 };
 
 SuggestList.propTypes = {
-  writeState: PropTypes.symbol,
+  writeState: PropTypes.number,
   suggestList: PropTypes.array,
   noFoundTip: PropTypes.string,
   onChoseItem: PropTypes.func,
