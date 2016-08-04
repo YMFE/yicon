@@ -18,6 +18,9 @@ import {
   deleteProject,
   deletePorjectIcon,
 } from '../../actions/project';
+import {
+  downloadIcon,
+} from '../../actions/icon';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
 import GenerateVersion from './GenerateVersion.jsx';
@@ -37,6 +40,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     generateVersion,
     deleteProject,
     deletePorjectIcon,
+    downloadIcon,
     push,
   }
 )
@@ -55,6 +59,7 @@ class UserProject extends Component {
     patchProjectMemeber: PropTypes.func,
     suggestList: PropTypes.array,
     generateVersion: PropTypes.func,
+    downloadIcon: PropTypes.func,
     push: PropTypes.func,
   }
 
@@ -157,9 +162,6 @@ class UserProject extends Component {
     this.setState({
       showManageMember: isShow,
     });
-    if (!isShow) {
-      this.ManageMembersEle.clearInput();
-    }
   }
   @autobind
   changeGenerateVersion(e) {
@@ -175,6 +177,15 @@ class UserProject extends Component {
       versionType: this.state.generateVersion,
     });
     this.shiftShowGenerateVersion();
+  }
+  @autobind
+  downloadAllIcon() {
+    this.props.downloadIcon({
+      type: 'project',
+      id: this.props.currentUserProjectInfo.id,
+      version: this.props.currentUserProjectInfo.version,
+      icons: this.props.currentUserProjectInfo.icons,
+    });
   }
   renderIconList() {
     const current = this.props.currentUserProjectInfo;

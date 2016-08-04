@@ -18,7 +18,9 @@ import {
   saveToNewProject,
   choseProjectForSave,
 } from '../../../actions/project';
-
+import {
+  downloadIcon,
+} from '../../../actions/icon';
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
@@ -39,6 +41,7 @@ import {
     changeCartSaveType,
     saveToProject,
     saveToNewProject,
+    downloadIcon,
   }
 )
 
@@ -82,6 +85,12 @@ class Cart extends Component {
   @autobind
   removeFromCart(e) {
     this.props.deleteIconInLocalStorage(parseInt(e.currentTarget.dataset.id, 10), true);
+  }
+  @autobind
+  download() {
+    this.props.downloadIcon({
+      icons: this.props.iconsInCart,
+    });
   }
   render() {
     const {
@@ -147,6 +156,7 @@ class Cart extends Component {
                   projectForSave={this.props.projectForSave}
                   projectList={this.props.projectList}
                   onCancelSave={this.shiftCartList}
+                  download={this.download}
                 />
               }
               </div> :
@@ -162,6 +172,7 @@ Cart.propTypes = {
   iconsInLocalStorage: PropTypes.array,
   iconsInCart: PropTypes.array,
   getIconsInLocalStorage: PropTypes.func,
+  downloadIcon: PropTypes.func,
   getIconsInCart: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
   count: PropTypes.number,

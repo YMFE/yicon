@@ -5,8 +5,8 @@
   float: left;
   text-align: center;
   >.info{
-    /*border: 1px solid #f1f3f6;*/
-    padding:13px;
+    border: 1px solid transparent;
+    padding:11px;
     width: 72px;
     margin: 0 auto;
     /*background-color: #fff;*/
@@ -41,6 +41,7 @@
     height: 30px;
     position: relative;
     font-size: 0;
+    // display: none;
     .copytip{
       display: none;
       position: absolute;
@@ -82,21 +83,17 @@
   }
 
 }
-.icon-detail-item:hover,.icon-detail-item.hover{
-  .tool{
-    .tool-item{
+.icon-detail-item:hover,.icon-detail-item.active{
+  .info{
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #fff;
+    .icon{
+      color:#008ed6;
       display: inline-block;
     }
   }
-}
-.icon-detail-item:hover,.icon-detail-item.active{
-  .info{
-    border: 2px solid #ccc;
-    border-radius: 2px;
-    background-color: #fff;
-    padding:11px;
-    .icon{
-      color:#008ed6;
-    }
+  .tool-item{
+    display: inline-block;
   }
 }

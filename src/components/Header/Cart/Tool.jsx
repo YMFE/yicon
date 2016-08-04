@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { push } from 'react-router-redux';
 
-@connect()
 class Tool extends Component {
   state = {
     projectListShow: false,
@@ -48,10 +47,7 @@ class Tool extends Component {
     this.props.onChangeSaveType('DEFAULT');
     this.props.onCancelSave(null, false);
   }
-  @autobind
-  download() {
-    // TODO 下载
-  }
+
   @autobind
   choseProjectForSave(e) {
     const target = e.currentTarget;
@@ -84,6 +80,7 @@ class Tool extends Component {
                 type="text"
                 placeholder="请选择项目"
                 value={this.props.projectForSave && this.props.projectForSave.name}
+                disabled
               />
               <i className="iconfont">&#xf032;</i>
               {projectListShow &&
@@ -128,8 +125,8 @@ class Tool extends Component {
                 ref={(node) => {
                   if (node) { this.saveToProjectInput = node; }
                 }}
+                autoComplete={false}
               />
-              <i className="iconfont">&#xf032;</i>
             </div>
             <a className="button-icon" onClick={this.saveToNewProject}>确定</a>
             <a
@@ -174,7 +171,7 @@ class Tool extends Component {
                       data-type="SAVE_TO_PROJECT"
                       onClick={this.changeCartSaveType}
                     >
-                      保存到已有项目
+                      <span>保存到已有项目</span>
                     </a>
                   </div>
                 </div>
@@ -182,7 +179,7 @@ class Tool extends Component {
               <a
                 href="#"
                 className="ibtn ibtn-download"
-                onClick={this.download}
+                onClick={this.props.download}
               >
               下载
               </a>
@@ -203,6 +200,7 @@ Tool.propTypes = {
   onSaveToProject: PropTypes.func,
   onSaveToNewProject: PropTypes.func,
   onCancelSave: PropTypes.func,
+  download: PropTypes.func,
   projectList: PropTypes.array,
   projectForSave: PropTypes.object,
 };

@@ -1,15 +1,24 @@
 .global-header {
   &-cart {
-    $fontTitleColor:#344562;$fontContentColor:#616161;$fontTipColor:#9e9e9e;$mainColor:#3bbaff;$btnColor:#008ed6;$btnHoverColor:#00b7ee;$iconColor:#555f6e;
+    $fontTitleColor: #344562;
+    $fontContentColor: #616161;
+    $fontTipColor: #9e9e9e;
+    $mainColor: #3bbaff;
+    $btnColor: #008ed6;
+    $btnHoverColor: #00b7ee;
+    $iconColor: #555f6e;
+
     .icon {
       float: left;
       width: 25px;
       height: 25px;
     }
-    .car_info{
+
+    .car_info {
       margin: 12px;
       text-align: center;
     }
+
     .user-car {
       width: 400px;
       position: absolute;
@@ -231,8 +240,9 @@
         line-height: auto;
 
         .save_ct {
+          display: flex;
           .clear-car {
-            float: left;
+            // float: left;
             height: 28px;
             line-height: 28px;
             margin-left: 10px;
@@ -244,14 +254,17 @@
           }
 
           .btn-download {
-            float: right;
+            // float: right;
+            flex: 1;
+            display: inline-flex;
+            justify-content: flex-end;
             height: 28px;
 
             .ibtn {
               width: 106px;
               display: block;
               color: #fff;
-              height: 28px;
+              height: 26px;
               line-height: 28px;
               text-decoration: none;
               text-align: center;
@@ -279,144 +292,134 @@
 
     }
 
-
     .save_selection {
-  position: relative;
-  display: inline-block;
-  overflow: visible;
-  line-height: 28px;
-  vertical-align: top;
-  background:$btnColor;
-  width: 106px;
-  text-align: center;
-  .ibtn {
-    -webkit-transition: all 0s;
-    -moz-transition: all 0s;
-    -ms-transition: all 0s;
-    -o-transition: all 0s;
-    transition: all 0s;
-  }
+      position: relative;
+      display: inline-block;
+      overflow: visible;
+      line-height: 28px;
+      vertical-align: top;
+      background: $btnColor;
+      width: 106px;
+      text-align: center;
+      margin-right: 10px;
 
-  .save_selection_btns {
-    display: none;
-    position: absolute;
-    z-index: 300;
-    width: 100%;
-    left: 0;
-    top: 0;
-    overflow: visible;
-    .save-history:hover{
-      a {
-        position: relative;
-        color: $btnColor;
-        margin-right: 0px;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
+      .ibtn {
+        -webkit-transition: all 0s;
+        -moz-transition: all 0s;
+        -ms-transition: all 0s;
+        -o-transition: all 0s;
+        transition: all 0s;
+      }
+
+      .save_selection_btns {
+        display: none;
+        position: absolute;
         z-index: 300;
+        width: 100%;
+        left: 0;
+        top: 0;
+        overflow: visible;
+        .iconfont{
+          transform: rotateZ(180deg);
+        }
+        .save-history:hover {
+          a {
+            position: relative;
+            // color: $btnColor;
+            margin-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            z-index: 300;
+          }
+
+          .save_to_pjc {
+            display: block;
+
+          }
+        }
       }
-      .save_to_pjc {
+
+      .iconfont {
+        display: inline;
+        font-size: inherit;
+        line-height: inherit;
+        vertical-align: top;
+      }
+
+    }
+
+    .save_selection:hover {
+      .save_selection_btns {
         display: block;
-
+        background-color: $btnColor;
+        border-radius: 2px;
       }
+
     }
-  }
 
-  .iconfont {
-    display: inline;
-    font-size: inherit;
-    line-height: inherit;
-    vertical-align: top;
-  }
+    .save-to-old-pjc {
+      position: relative;
+    }
 
+    .save_to_pjc {
+      display: block;
+      position: absolute;
+      top: 28px;
+      left: -1px;
+      z-index: 201;
+      width: 100%;
+      border: 1px solid #dfdfdf;
+      border-top: none;
+      border-radius: 3px;
+      border-top-left-radius: 0;
+      box-shadow: 0 0 5px #dfdfdf;
 
+      ul {
+        background-color: #fff;
+        padding: 5px 0;
+        color: $btnColor;
+        max-height: 300px;
+        overflow-y: auto;
 
-}
+        .pjc-item {
+          list-style: none;
+          line-height: 25px;
+          padding: 0 11px;
+          border: 0;
+          border-radius: 0;
+          text-align: left;
+          cursor: pointer;
+          position: static;
+          float: none;
+          width: inherit;
+          height: inherit;
+          color: $fontTitleColor;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
-.save_selection:hover {
-  .save_selection_btns {
-    display: block;
-    background-color: $btnColor;
-    border-radius: 2px;
-  }
+          .J_arrow_down {
+            visibility: hidden;
+          }
 
-}
-
-
-
-.save-to-old-pjc{
-  position: relative;
-}
-.save_to_pjc {
-    display: block;
-    position: absolute;
-    top: 28px;
-    left: -1px;
-    z-index: 201;
-    width: 250px;
-    border:1px solid #dfdfdf;
-    border-top: none;
-    border-radius: 3px;
-    border-top-left-radius: 0px;
-    box-shadow:0 0 5px #dfdfdf;
-    ul {
-      background-color: #fff;
-      padding:5px 0;
-      color: $btnColor;
-      max-height: 300px;
-      overflow-y: auto;
-
-      .pjc-item {
-        list-style: none;
-        line-height: 25px;
-        padding: 0 11px;
-        border:0;
-        border-radius: 0;
-        text-align: left;
-        cursor: pointer;
-        position: static;
-        float: none;
-        width: inherit;
-        height: inherit;
-        color: $fontTitleColor;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        .J_arrow_down {
-          visibility: hidden;
         }
 
-      }
-      .pjc-item:hover {
-        background-color: #f8f8f8;
-        .J_arrow_down {
-          visibility: visible;
+        .pjc-item:hover {
+          background-color: #f8f8f8;
+
+          .J_arrow_down {
+            visibility: visible;
+          }
+
         }
 
       }
 
     }
 
-  }
-
-.yicon-nav-main {
-  padding-top: 36px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    .yicon-nav-main {
+      padding-top: 36px;
+    }
 
   }
 }
