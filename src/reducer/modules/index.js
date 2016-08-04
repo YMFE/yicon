@@ -12,7 +12,6 @@ import icon from './icon';
 import log from './log';
 import workbench from './workbench';
 import audit from './audit';
-import versionComparison from './versionComparison';
 import admin from './admin';
 
 import {
@@ -36,7 +35,6 @@ const reducers = combineReducers({
     info: user,
     notification,
     uploaded,
-    versionComparison,
     admin,
   }),
 });

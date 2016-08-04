@@ -4,7 +4,7 @@ import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main, DesIcon } from '../../components/';
 import Select from '../../components/common/Select/index';
 import SliderSize from '../../components/SliderSize/SliderSize';
-import { getAllProjects, getAllVersions, compareVersion } from '../../actions/versionComparison';
+import { fetchAllProjects, fetchAllVersions, compareProjectVersion } from '../../actions/project';
 
 import './VersionComparison.scss';
 
@@ -12,11 +12,11 @@ const Option = Select.Option;
 
 @connect(
   state => ({
-    myProjects: state.user.versionComparison.myProjects,
-    projectInfo: state.user.versionComparison.projectInfo,
-    comparisonResult: state.user.versionComparison.comparisonResult,
+    myProjects: state.project.myProjects,
+    projectInfo: state.project.projectInfo,
+    comparisonResult: state.project.comparisonResult,
     iconSize: state.repository.iconSize,
-  }), { getAllProjects, getAllVersions, compareVersion }
+  }), { fetchAllProjects, fetchAllVersions, compareProjectVersion }
 )
 
 export default class VersionComparison extends Component {
@@ -31,8 +31,14 @@ export default class VersionComparison extends Component {
   }
 
   componentWillMount() {
-    this.props.getAllProjects();
-    this.props.getAllVersions(this.props.params.id);
+    this.props.fetchAllProjects();
+    this.props.fetchAllVersions(this.props.params.id);
+  }
+
+  componentWillUnmount() {
+    const _tempHigh = this.state.defaultVersion;
+    const _tempLow = this.state.defaultVersion;
+    this.props.compareProjectVersion(this.props.params.id, _tempHigh, _tempLow);
   }
 
   v2n(version) {
@@ -68,7 +74,7 @@ export default class VersionComparison extends Component {
         version: _tempLow,
       });
     }
-    this.props.compareVersion(this.props.params.id, _tempHigh, _tempLow);
+    this.props.compareProjectVersion(this.props.params.id, _tempHigh, _tempLow);
   }
 
   render() {
@@ -210,9 +216,9 @@ export default class VersionComparison extends Component {
 }
 
 VersionComparison.propTypes = {
-  getAllProjects: PropTypes.func,
-  getAllVersions: PropTypes.func,
-  compareVersion: PropTypes.func,
+  fetchAllProjects: PropTypes.func,
+  fetchAllVersions: PropTypes.func,
+  compareProjectVersion: PropTypes.func,
   projectInfo: PropTypes.object,
   myProjects: PropTypes.arrayOf(PropTypes.string),
   comparisonResult: PropTypes.object,

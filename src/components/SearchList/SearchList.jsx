@@ -190,6 +190,7 @@ class SearchList extends Component {
       height,
     } = this.inputLocation;
     // console.log(top,left);
+    // console.log(this.state.writeState);
     return (
       <SuggestList
         {...this.props}
