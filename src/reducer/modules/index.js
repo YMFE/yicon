@@ -11,6 +11,7 @@ import user from './user';
 import icon from './icon';
 import log from './log';
 import workbench from './workbench';
+import audit from './audit';
 import versionComparison from './versionComparison';
 import admin from './admin';
 
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   icon,
   log,
   workbench,
+  audit,
 
   // 登录用户才使用的信息放到 user 下面
   user: combineReducers({

@@ -4,6 +4,7 @@ import Home from './Home/Home';
 import Demo from './Demo/Demo';
 import Upload from './Upload/Upload';
 import Workbench from './Workbench/Workbench';
+import Audit from './Audit/Audit';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
@@ -23,6 +24,7 @@ export {
   Demo,
   Upload,
   Workbench,
+  Audit,
   Home,
   Log,
   ProjectLog,

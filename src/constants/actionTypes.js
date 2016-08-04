@@ -82,3 +82,9 @@ export const UPDATE_WORKBENCH = 'UPDATE_WORKBENCH';
 export const SELECT_EDIT = 'SELECT_EDIT';
 export const UPLOAD_ICONS = 'UPLOAD_ICONS';
 export const SELECT_REPO = 'SELECT_REPO';
+
+// auditing
+export const FETCH_AUDIT_ICONS = 'FETCH_AUDIT_ICONS';
+export const AUDIT_ICONS = 'AUDIT_ICONS';
+export const UPDATE_AUDIT_ICONS = 'UPDATE_AUDIT_ICONS';
+export const SELECT_AUDIT_ICON = 'SELECT_AUDIT_ICON';
