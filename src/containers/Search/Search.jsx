@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchSearchData } from '../../actions/search';
-import Slider from '../../components/common/Slider/Slider.jsx';
+import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
+import { getIconDetail, editIconStyle } from '../../actions/icon';
+import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import Dialog from '../../components/common/Dialog/Index.jsx';
+import { autobind } from 'core-decorators';
 
 import './Search.scss';
 
@@ -11,16 +15,47 @@ import './Search.scss';
     list: state.search.data,
     totalCount: state.search.totalCount,
     queryKey: state.search.queryKey,
-  }), { fetchSearchData }
+  }),
+  {
+    fetchSearchData,
+    getIconDetail,
+    editIconStyle,
+  }
 )
 
 export default class Search extends Component {
+
+  state = {
+    isShowDownloadDialog: false,
+  }
+
   componentWillMount() {
-    if (this.props.queryKey !== encodeURI(this.props.location.query.q) ||
-      !this.props.list.length
-    ) {
-      this.props.fetchSearchData(this.props.location.query.q);
+    this.props.fetchSearchData(this.props.location.query.q);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location.query.q !== this.props.location.query.q) {
+      this.props.fetchSearchData(nextProps.location.query.q);
     }
+  }
+
+  @autobind
+  clikIconDownloadBtn(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.props.editIconStyle({ color: '#34475e', size: 255 });
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
+  }
+
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowDownloadDialog: isShow,
+    });
   }
 
   render() {
@@ -32,7 +67,7 @@ export default class Search extends Component {
               <div className="search-result">
                 共为您找到 <em className="search-result-count">{this.props.totalCount}</em> 个结果
               </div>
-              <div style={{ width: 200, padding: 10 }}><Slider /></div>
+              <SliderSize />
             </div>
           </div>
         </div>
@@ -50,6 +85,8 @@ export default class Search extends Component {
                       icon={icon}
                       repoId={repo.id}
                       key={icon.id}
+                      download={this.clikIconDownloadBtn(icon.id)}
+                      toolBtns={['copytip', 'copy', 'edit', 'download', 'cart']}
                     />
                   ))
                 }
@@ -58,6 +95,13 @@ export default class Search extends Component {
             ))
           }
         </div>
+        <Dialog
+          empty
+          visible={this.state.isShowDownloadDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <DownloadDialog />
+        </Dialog>
       </div>
     );
   }
@@ -65,12 +109,10 @@ export default class Search extends Component {
 
 Search.propTypes = {
   fetchSearchData: PropTypes.func,
-  location: PropTypes.shape({
-    query: PropTypes.shape({
-      q: PropTypes.string.isRequired,
-    }),
-  }),
+  location: PropTypes.object,
   queryKey: PropTypes.string,
+  getIconDetail: PropTypes.func,
+  editIconStyle: PropTypes.func,
   totalCount: PropTypes.number,
   list: PropTypes.array,
 };

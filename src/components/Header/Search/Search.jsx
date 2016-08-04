@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { push } from 'react-router-redux';
-import { fetchSearchData } from '../../../actions/search';
 
 @connect(
   state => (state)
@@ -20,7 +19,6 @@ class Search extends Component {
   searchIcon(e) {
     const value = e.target.value;
     if (e.keyCode === 13) {
-      this.props.dispatch(fetchSearchData(value));
       this.props.dispatch(push(`/search?q=${value}`));
     }
   }

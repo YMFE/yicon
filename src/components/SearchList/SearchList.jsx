@@ -37,7 +37,7 @@ class SearchList extends Component {
     this.inputLocation = {
       top: 0,
       left: 0,
-      height: 0,
+      height: 38,
     };
   }
   componentDidMount() {
@@ -182,7 +182,7 @@ class SearchList extends Component {
       writeState: WRITE_STATE.EMPTY,
       showSuggest: false,
     });
-    // this.props.onChange('');
+    this.props.onChange('');
   }
 
   renderSuggestList() {
