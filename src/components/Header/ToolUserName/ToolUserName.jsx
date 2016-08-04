@@ -38,8 +38,8 @@ const Tool = (props) => (
             <Link to="/admin/authority/repo">权限管理</Link>
           </li>
       }
-      <li>
-        <span onClick={props.loginOut}>退出</span>
+      <li onClick={props.loginOut}>
+        <span>退出</span>
       </li>
     </ul>
     <span className="arrow"></span>
