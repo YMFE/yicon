@@ -157,9 +157,6 @@ class UserProject extends Component {
     this.setState({
       showManageMember: isShow,
     });
-    if (!isShow) {
-      this.ManageMembersEle.clearInput();
-    }
   }
   @autobind
   changeGenerateVersion(e) {

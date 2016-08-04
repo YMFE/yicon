@@ -10,12 +10,15 @@ import { connect } from 'react-redux';import {
 } from '../../actions/workbench.js';
 import { push } from 'react-router-redux';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
-import Select from '../../components/common/Select/';
 import SetTag from '../../components/EditIcon/SetTag/SetTag.jsx';
 import Slick from '../../components/common/Slick/index.jsx';
 import Input from '../../components/common/Input/Index.jsx';
+import { Link } from 'react-router';
+import dialog from '../../components/common/Dialog/Confirm.jsx';
+import Select from '../../components/common/Select/';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
+
 const defaultProps = {};
 const propTypes = {
   index: PropTypes.number,
@@ -79,7 +82,8 @@ export default class Workbench extends Component {
     icons.splice(index, 1);
     this.props.deleteIcon(id, icons.concat());
     if (selcIndex >= index) {
-      this.props.selectEdit(selcIndex - 1);
+      const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
+      this.props.selectEdit(newIndex);
     }
     if (!icons.length) {
       this.props.push('/upload');
@@ -98,7 +102,7 @@ export default class Workbench extends Component {
     const doneArr = icons.filter((icon) => (
       icon.name && icon.fontClass
     ));
-    return doneArr.length;
+    return doneArr;
   }
   @autobind
   selectStyle(style) {
@@ -110,28 +114,65 @@ export default class Workbench extends Component {
   selectRepo(id) {
     this.props.selectRepo(id);
   }
+  @autobind
+  uploadIcons() {
+    const icons = this.calcDone();
+    this.props.uploadIcons({
+      repoId: this.props.repoId,
+      icons,
+    }).then(() => {
+      const noDone = this.props.icons.filter((icon) => (
+        !(icon.name && icon.fontClass)
+      ));
+      if (!noDone.length) {
+        this.props.push('/upload');
+      } else {
+        this.props.updateWorkbench(noDone);
+      }
+    });
+  }
+  @autobind
+  showUploadDialog() {
+    const doneNum = this.calcDone().length;
+    const title = '提交上传';
+    const content = `还有${this.props.icons.length - doneNum}枚图标未设置完成，确认上传设置完成的${doneNum}枚图标吗？`;
+    dialog({
+      title,
+      content,
+      onOk: this.uploadIcons,
+    });
+  }
 
   render() {
     const { index, icons, allRepoList, repoId } = this.props;
     const iconDetail = icons[index];
-    const doneNum = this.calcDone();
+    const doneNum = this.calcDone().length;
+    if (!icons.length) {
+      return null;
+    }
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-upload-container'}>
           <h2 className={'upload-title'}>上传图标设置</h2>
-          <Slick
-            itemData={icons}
-            defaultCurrent={index}
-            onClick={this.select}
-            onDelete={this.delete}
-            curr
-          />
+          <div style={{ position: 'relative' }}>
+            <Slick
+              itemData={icons}
+              defaultCurrent={index}
+              onClick={this.select}
+              onDelete={this.delete}
+              curr
+            />
+            <Link to="/upload" className={'upload-icon-btn'}>
+              <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
+              <p className={'upload-btn-txt'}>上传图标</p>
+            </Link>
+          </div>
           <div className={'upload-setting clearfix'}>
             <button className={'set-pre-next-btn'}>
               <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
             </button>
             <IconBgGrid
-              iconPath={iconDetail.path || ''}
+              iconPath={iconDetail.path}
             />
             <div className={'setting-opts'}>
               <div className={'setting-opt'}>
@@ -207,7 +248,11 @@ export default class Workbench extends Component {
                   }
                 </Select>
               </div>
-              <button className={'submit-btn'}>确认并完成上传</button>
+              <button
+                className={`submit-btn ${doneNum && repoId ? '' : 'disabled'}`}
+                onClick={this.showUploadDialog}
+                disabled={!(doneNum && repoId)}
+              >确认并完成上传</button>
             </div>
           </div>
         </div>

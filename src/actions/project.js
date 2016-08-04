@@ -129,7 +129,7 @@ export function generateVersion(project) {
       }).then(
         responese => {
           if (responese.res) {
-            dispatch(getUserProjectInfo());
+            dispatch(getUserProjectInfo(project.id));
           }
         }
       ),
