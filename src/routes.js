@@ -18,6 +18,7 @@ import {
   Workbench,
   Uploaded,
   VersionComparison,
+  Audit,
   Authority,
 } from './containers';
 
@@ -70,7 +71,7 @@ export default (store) => {
         <Route onEnter={requireOwner}>
           <Route path="replacement/icon/:id" /> {/* 替换页面 */}
           <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
-          <Route path="auditing" /> {/* 审核页面 */}
+          <Route path="auditing" component={Audit} /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>
 

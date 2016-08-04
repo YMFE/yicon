@@ -5,9 +5,9 @@ import { autobind } from 'core-decorators';
 import SuggestList from './SuggestList.jsx';
 
 const WRITE_STATE = {
-  EMPTY: Symbol(0),
-  NOT_FOUND: Symbol(1),
-  HAS_RESULT: Symbol(2),
+  EMPTY: 0,
+  NOT_FOUND: 1,
+  HAS_RESULT: 2,
 };
 
 class SearchList extends Component {
