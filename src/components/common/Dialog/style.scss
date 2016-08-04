@@ -50,14 +50,16 @@
 		line-height: 62px;
 		position:relative;
 		border-bottom: 1px solid #ececec;
+		display: flex;
 		h4{
 			font-size:18px;
 			color:#616161;
-			float: left;
+			text-align: left;
+			flex: 1;
 		}
 		.iconfont{
 			font-size:20px;
-			float: right;
+			cursor: pointer;
 		}
 	}
 	&-content{

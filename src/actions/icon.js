@@ -3,6 +3,7 @@ import {
   FETCH_ICON_DETAIL,
   EDIT_ICON,
   EDIT_ICON_STYLE,
+  DOWNLOAD_ICONS,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -27,15 +28,15 @@ export function editIconStyle(style) {
     payload: style,
   };
 }
-// export function downloadIcon(obj) {
-//   return (dispatch) => {
-//     dispatch({
-//       type: DOWNLOAD_ICONS,
-//       payload: fetch.post('/download/font', obj).then((response) => {
-//         if (response.res) {
-//           window.location.pathname = `/download/${response.data}`;
-//         }
-//       }),
-//     });
-//   };
-// }
+export function downloadIcon(obj) {
+  return (dispatch) => {
+    dispatch({
+      type: DOWNLOAD_ICONS,
+      payload: fetch.post('/download/font', obj).then((response) => {
+        if (response.res) {
+          window.location.pathname = `/download/${response.data}`;
+        }
+      }),
+    });
+  };
+}
