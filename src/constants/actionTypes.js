@@ -82,3 +82,6 @@ export const UPDATE_WORKBENCH = 'UPDATE_WORKBENCH';
 export const SELECT_EDIT = 'SELECT_EDIT';
 export const UPLOAD_ICONS = 'UPLOAD_ICONS';
 export const SELECT_REPO = 'SELECT_REPO';
+
+// audit
+export const FETCH_AUDIT_LIST = 'FETCH_AUDIT_LIST';

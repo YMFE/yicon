@@ -76,6 +76,11 @@ function getBaseClassName(icons, transaction) {
 // 获取审核列表
 export function* getAuditList(next) {
   const { repoList } = this.state.user;
+  const whereMixin = {};
+
+  if (repoList && repoList.length) {
+    whereMixin.where = { repositoryId: { $in: repoList } };
+  }
 
   const auditData = yield Icon.findAll({
     where: { status: iconStatus.PENDING },
@@ -83,7 +88,7 @@ export function* getAuditList(next) {
       model: Repo,
       through: {
         model: RepoVersion,
-        where: { repositoryId: { $in: repoList } },
+        ...whereMixin,
       },
     }],
   }).then(icons => icons.map(i => {

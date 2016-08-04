@@ -234,7 +234,6 @@ export default class Demo extends Component {
         </div>
         <div>
           <Loading visible={false} />
-          <Loading visible={'true'} />
         </div>
       </div>
     );
