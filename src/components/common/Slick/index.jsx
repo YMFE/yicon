@@ -6,7 +6,7 @@ export default class Slick extends Component {
 
   static defaultProps = {
     defaultTranslateX: 0,
-    step: 84 * 11,
+    step: 84 * 12,
   }
 
   static propTypes = {
@@ -48,6 +48,7 @@ export default class Slick extends Component {
     const scrollAreaWidth = 84 * itemData.length;
     const { currentItem, defaultTranslateX } = this.state;
     const { step } = this.props;
+    const uploadIconListArea = 1008;
     let _currentItem = currentItem;
     let _iconItemListPosLeft = defaultTranslateX;
     switch (type) {
@@ -64,15 +65,15 @@ export default class Slick extends Component {
         evt.preventDefault();
         _iconItemListPosLeft -= step;
         // 单步滚动
-        if (step < 924) {
-          const scrollPage = Math.floor(scrollAreaWidth / 924);
-          const leftLength = scrollAreaWidth % 924;
+        if (step < uploadIconListArea) {
+          const scrollPage = Math.floor(scrollAreaWidth / uploadIconListArea);
+          const leftLength = scrollAreaWidth % uploadIconListArea;
           if (leftLength !== 0) {
             if (scrollPage > 0) {
               if (Math.abs(_iconItemListPosLeft) <= leftLength) {
                 this.setState({ defaultTranslateX: _iconItemListPosLeft });
               } else {
-                const leftScroll = (scrollAreaWidth - 924);
+                const leftScroll = (scrollAreaWidth - uploadIconListArea);
                 if (Math.abs(_iconItemListPosLeft) < leftScroll) {
                   this.setState({ defaultTranslateX: _iconItemListPosLeft });
                 }
@@ -80,7 +81,7 @@ export default class Slick extends Component {
             }
           } else {
             if (scrollPage > 1) {
-              const leftScroll = (scrollAreaWidth - 924);
+              const leftScroll = (scrollAreaWidth - uploadIconListArea);
               if (Math.abs(_iconItemListPosLeft) < leftScroll) {
                 this.setState({ defaultTranslateX: _iconItemListPosLeft });
               }
