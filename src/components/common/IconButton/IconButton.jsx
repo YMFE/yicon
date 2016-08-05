@@ -139,7 +139,6 @@ class IconButton extends Component {
           key="delete"
         >&#xf513;</i>,
     };
-    // let tool = null;
     const tools = [];
     toolBtns.forEach((btn) => {
       if (btn !== 'edit') {
@@ -148,38 +147,6 @@ class IconButton extends Component {
         tools.push(toolList[btn]);
       }
     });
-    // switch (+status) {
-    //   case 1:
-    //     tool = (
-    //       <div className={"tool"}>
-    //         {toolList.copytip}
-    //         {toolList.download}
-    //         {toolList.copy}
-    //         {toolList.cart}
-    //       </div>
-    //     );
-    //     break;
-    //   case 2:
-    //     tool = (
-    //       <div className={"tool"}>
-    //         {toolList.copytip}
-    //         {toolList.download}
-    //         {toolList.copy}
-    //         {toolList.cart}
-    //       </div>
-    //     );
-    //     break;
-    //   default:
-    //     tool = (
-    //       <div className={"tool"}>
-    //         {toolList.copytip}
-    //         {toolList.download}
-    //         {toolList.edit}
-    //         {toolList.copy}
-    //         {toolList.cart}
-    //       </div>
-    //     );
-    // }
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className={"info"}>
@@ -187,7 +154,7 @@ class IconButton extends Component {
             <Icon size={this.props.iconSize} fill={fill} d={icon.path} />
           </div>
           <div className={"name"} title={icon.name}>{icon.name}</div>
-          <div className={"code"}>{`&#${icon.code.toString(16)};`}</div>
+          <div className={"code"}>{`&#x${icon.code.toString(16)};`}</div>
         </div>
         <div className="tool">
           {tools}
