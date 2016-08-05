@@ -88,7 +88,7 @@ class IconsSetting extends Component {
   @autobind
   turnRight() {
     const { index, icons } = this.props;
-    const newIndex = index >= icons.length ? index : index + 1;
+    const newIndex = index >= icons.length - 1 ? index : index + 1;
     this.props.turnRight(newIndex);
   }
 
