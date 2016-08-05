@@ -395,7 +395,7 @@ export function* getSubmittedIcons(next) {
     const icons = yield Icon.findAll({
       where: {
         uploader: userId,
-        applyTime: {
+        createTime: {
           $lte: timeGroup[0].createTime,
           $gte: timeGroup[len - 1].createTime,
         },
@@ -419,7 +419,7 @@ export function* getSubmittedIcons(next) {
     this.state.respond = result;
     const total = yield Icon.count({
       where: { uploader: userId },
-      group: 'applyTime',
+      group: 'createTime',
     });
     this.state.page.totalCount = total.length;
   } else {

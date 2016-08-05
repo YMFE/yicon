@@ -36,8 +36,13 @@ function getRepoByVersion({
   })
   .then(res => {
     result = res;
-    return RepoVersion.count({
-      where: { repositoryId: repoId },
+    return Icon.count({
+      where: { status: iconStatus.RESOLVED },
+      include: [{
+        model: Repo,
+        where: { id: repoId },
+        on: { version },
+      }],
     });
   })
   .then(count => {
