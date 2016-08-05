@@ -418,7 +418,7 @@ export function* getSubmittedIcons(next) {
     result.push(Object.assign({}, _tmp));
     this.state.respond = result;
     const total = yield Icon.count({
-      where: { uploader: userId },
+      where: { uploader: userId, ...statusIn },
       group: 'createTime',
     });
     this.state.page.totalCount = total.length;
