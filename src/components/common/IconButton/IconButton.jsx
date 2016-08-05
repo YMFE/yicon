@@ -5,7 +5,7 @@ import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../action
 import Icon from '../Icon/Icon.jsx';
 import { autobind } from 'core-decorators';
 import process from 'process';
-let ClipboardButton;
+let ClipboardButton = () => <br />;
 
 /* eslint-disable global-require */
 if (process.browser) {
@@ -180,7 +180,6 @@ class IconButton extends Component {
     //       </div>
     //     );
     // }
-
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className={"info"}>

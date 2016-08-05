@@ -15,6 +15,9 @@ import {
   FETCH_PROJECT_LOG,
   TETCH_PROJECT_VERSION,
   DELETE_PROJECT_ICON,
+  FETCH_ALL_PROJECT,
+  FETCH_ALL_VERSION,
+  COMPARE_PROJECT_VERSION,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -175,5 +178,26 @@ export function deletePorjectIcon(id, icon) {
       }),
       id,
     });
+  };
+}
+
+export function fetchAllProjects() {
+  return {
+    type: FETCH_ALL_PROJECT,
+    payload: fetch.get('/user/projects'),
+  };
+}
+
+export function fetchAllVersions(id) {
+  return {
+    type: FETCH_ALL_VERSION,
+    payload: fetch.get(`/user/projects/${id}/versions`),
+  };
+}
+
+export function compareProjectVersion(projectId, highVersion, lowVersion) {
+  return {
+    type: COMPARE_PROJECT_VERSION,
+    payload: fetch.get(`/user/projects/${projectId}/version/${highVersion}/version/${lowVersion}`),
   };
 }

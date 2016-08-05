@@ -1,4 +1,5 @@
 @charset "utf-8";
+$imgUrl: '../../../static/images/';
 
 .yicon-search {
 	&-info {
@@ -55,6 +56,28 @@
 			bottom:0;
 			left: 28px;
 		}
+	}
+
+	.no-search{
+	  text-align: center;
+	  padding: 160px 0;
+	  overflow: hidden;
+	  &-logo{
+	    background:url("#{$imgUrl}noSearch.png") 0  0 no-repeat;
+	    width:210px;
+	    height:192px;
+	    display:inline-block;
+	    margin:0 auto;
+	  }
+	  &-tips{
+	    font-size:16px;
+	    color:#9e9e9e;
+	    line-height:24px;
+	    width: 182px;
+	    text-align:center;
+	    margin:16px auto;
+	    overflow:hidden;
+	  }
 	}
 
 }

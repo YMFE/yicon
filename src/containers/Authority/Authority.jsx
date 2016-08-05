@@ -6,6 +6,7 @@ import { SubTitle, Content, Menu, Main, Panel } from '../../components/';
 import SearchList from '../../components/SearchList/SearchList';
 import Pager from '../../components/common/Pager';
 import Dialog from '../../components/common/Dialog/Index';
+// import Message from '../../components/common/Message/Message';
 
 import {
   fetchAllRepo,
@@ -47,7 +48,7 @@ export default class Authority extends Component {
     super(props);
     this.state = {
       updateVisible: false,
-      createVisible: true,
+      createVisible: false,
       ownerName: '',
       searchValue: '',
       isSearch: false,
@@ -85,6 +86,9 @@ export default class Authority extends Component {
     }
   }
 
+  /* 统一处理根据type(repo/project)查询，修改，新建和搜索大库或者项目
+  ** start
+  */
   fetchByType(type, page) {
     if (type === 'repo') {
       this.props.fetchAllRepo(page, 15);
@@ -133,9 +137,15 @@ export default class Authority extends Component {
       this.props.searchProjects(name, page, 15);
     }
   }
+  /* end */
 
+  /* 更新管理员功能(项目、大库)
+  ** start
+  */
+  // 打开dialog
   @autobind
   updateOwner(id) {
+    this.updateSearchList.clearInput();
     this.setState({
       updateVisible: true,
       createVisible: false,
@@ -144,6 +154,7 @@ export default class Authority extends Component {
     });
   }
 
+  // 关闭dialog
   @autobind
   closeUpdateDialog() {
     this.setState({
@@ -151,13 +162,20 @@ export default class Authority extends Component {
     });
   }
 
+  // 处理suggest，同步dialog中input输入的用户域账号对应的id
   @autobind
-  handleUpdateChange(evt) {
-    this.setState({
-      ownerName: evt.target.value,
+  handleUpdateChange(value) {
+    this.props.fetchMemberSuggestList(value).then(() => {
+      const data = this.props.suggestList;
+      if (data.length === 1 && data[0].name === value) {
+        this.setState({
+          ownerName: data[0].name,
+        });
+      }
     });
   }
 
+  // 提交数据，修改管理员
   @autobind
   ensureUpdate() {
     const type = this.props.params && this.props.params.type;
@@ -167,9 +185,15 @@ export default class Authority extends Component {
       updateVisible: false,
     });
   }
+  /* end */
 
+  /* 新建大库/项目
+  ** start
+  */
+  // 打开dialog
   @autobind
   createRepoOrProject() {
+    this.createSearchList.clearInput();
     this.setState({
       updateVisible: false,
       createVisible: true,
@@ -180,6 +204,7 @@ export default class Authority extends Component {
     });
   }
 
+  // 关闭dialog
   @autobind
   closeCreateDialog() {
     this.setState({
@@ -187,6 +212,7 @@ export default class Authority extends Component {
     });
   }
 
+  // 处理dialog中非suggest的input输入
   @autobind
   handleCreateChange(evt) {
     switch (evt.target.dataset.type) {
@@ -202,23 +228,33 @@ export default class Authority extends Component {
         });
         break;
       }
-      case 'repo': {
-        this.setState({
-          admin: evt.target.value,
-        });
-        break;
-      }
-      case 'project': {
-        this.setState({
-          owner: evt.target.value,
-        });
-        break;
-      }
       default:
         return;
     }
   }
 
+  // 处理suggest，同步新建大库/项目时指定的用户id
+  @autobind
+  userChange(value) {
+    this.props.fetchMemberSuggestList(value).then(() => {
+      const data = this.props.suggestList;
+      const type = this.props.params && this.props.params.type;
+      if (data.length === 1 && data[0].name === value) {
+        if (type === 'repo') {
+          this.setState({
+            admin: data[0].id,
+          });
+        }
+        if (type === 'project') {
+          this.setState({
+            owner: data[0].id,
+          });
+        }
+      }
+    });
+  }
+
+  // 提交数据，新建大库或项目
   @autobind
   ensureCreate() {
     const type = this.props.params && this.props.params.type;
@@ -227,7 +263,9 @@ export default class Authority extends Component {
       createVisible: false,
     });
   }
+  /* end */
 
+  // 翻页功能
   @autobind
   fetchDataByPage(page) {
     if (page === this.props.page.currentPage) return;
@@ -243,12 +281,18 @@ export default class Authority extends Component {
     });
   }
 
+  /* 搜索功能
+  ** start
+  */
+  // 同步搜索框中的内容
   @autobind
   handleSearchChange(evt) {
     this.setState({
       searchValue: evt.target.value,
     });
   }
+
+  // 搜索
   @autobind
   search() {
     const type = this.props.params && this.props.params.type;
@@ -262,27 +306,20 @@ export default class Authority extends Component {
       this.fetchByType(type, 1);
     }
   }
-
-  @autobind
-  userChange(value) {
-    this.props.fetchMemberSuggestList(value);
-  }
+  /* end */
 
   render() {
     const type = this.props.params && this.props.params.type;
     let btnName = '';
-    let user = '';
     let data = [];
     let isShow = false;
     if (type === 'repo') {
       btnName = '大库';
-      user = 'admin';
       data = this.props.repo || [];
       isShow = true;
     }
     if (type === 'project') {
       btnName = '项目';
-      user = 'owner';
       data = this.props.project || [];
       isShow = false;
     }
@@ -354,17 +391,17 @@ export default class Authority extends Component {
           >
             <div className="authority-dialog">
               <ul>
-                <li className="dialog-item">
+                <SearchList
+                  extraClass="dialog-input"
+                  showSearchList={this.props.suggestList.length > 0}
+                  suggestList={this.props.suggestList}
+                  onChange={this.handleUpdateChange}
+                  ref={(node) => {
+                    if (node) this.updateSearchList = node;
+                  }}
+                >
                   <div className="item-name">管理员</div>
-                  <div className="dialog-input">
-                    <input
-                      type="text"
-                      value={this.state.ownerName}
-                      onChange={this.handleUpdateChange}
-                      placeholder="请输入管理员名称"
-                    />
-                  </div>
-                </li>
+                </SearchList>
               </ul>
             </div>
           </Dialog>
@@ -397,23 +434,14 @@ export default class Authority extends Component {
                     />
                   </div>
                 </li>
-                <li className="dialog-item">
-                  <div className="item-name">管理员</div>
-                  <div className="dialog-input">
-                    <input
-                      type="text"
-                      value={this.state[user]}
-                      data-type={`${type}`}
-                    />
-                  </div>
-                </li>
                 <SearchList
                   extraClass="dialog-input"
+                  showSearchList={this.props.suggestList.length > 0}
                   suggestList={this.props.suggestList}
-                  onChoseItem={this.userChange}
-                  onChoseError={() => {}}
-                  showSearchList
                   onChange={this.userChange}
+                  ref={(node) => {
+                    if (node) this.createSearchList = node;
+                  }}
                 >
                   <div className="item-name">管理员</div>
                 </SearchList>
