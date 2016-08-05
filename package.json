@@ -6,11 +6,14 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx src",
     "start:dev": "better-npm-run start:dev",
+    "start:prd": "better-npm-run start:prd",
     "client": "better-npm-run client",
     "dev": "concurrently --kill-others \"npm run client\" \"npm run start:dev\"",
+    "prd": "concurrently --kill-others \"npm run build\" \"npm run start:prd\"",
     "db:sync": "better-npm-run database:sync",
     "db:force": "better-npm-run database:force",
-    "test": "karma start"
+    "test": "karma start",
+    "build": "better-npm-run build"
   },
   "betterScripts": {
     "client": {
@@ -31,6 +34,14 @@
         "PORT": 3000
       }
     },
+    "start:prd": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "production",
+        "PORT": 3000
+      }
+    },
     "database:sync": {
       "command": "node ./bin/server.js",
       "env": {
@@ -47,6 +58,12 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "PORT": 3000
+      }
+    },
+    "build": {
+      "command": "webpack --verbose --colors --display-error-details --config webpack/prd.config.js",
+      "env": {
+        "NODE_ENV": "production"
       }
     }
   },
@@ -149,6 +166,7 @@
     "better-npm-run": "0.0.8",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
+    "clean-webpack-plugin": "^0.1.10",
     "concurrently": "^2.1.0",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^9.0.1",
