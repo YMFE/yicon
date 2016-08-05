@@ -88,6 +88,16 @@ export default class Workbench extends Component {
     this.props.updateWorkbench(icons);
   }
 
+  @autobind
+  turnLeft(index) {
+    this.props.selectEdit(index);
+  }
+
+  @autobind
+  turnRight(index) {
+    this.props.selectEdit(index);
+  }
+
   calcDone() {
     const { icons } = this.props;
     const doneArr = icons.filter((icon) => (
@@ -149,6 +159,8 @@ export default class Workbench extends Component {
             saveName={this.updateIcons}
             selectStyle={this.updateIcons}
             saveTags={this.updateIcons}
+            turnLeft={this.turnLeft}
+            turnRight={this.turnRight}
           />
           <div className={'upload-submit'}>
             <div className={'clearfix'}>

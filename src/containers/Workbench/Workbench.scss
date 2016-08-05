@@ -24,6 +24,7 @@
       }
       .select-repository {
         display: inline-block;
+        vertical-align: middle;
         height: 36px;
         border: 1px solid #dfdfdf;
         border-right: 0;
@@ -37,6 +38,14 @@
         }
         .select-repository-icon {
           color: #b3b8c4;
+        }
+        .rc-select {
+          line-height: 36px;
+          font-size: 14px;
+          outline: none;
+          border: 0;
+          width: 150px;
+          height: 36px;
         }
       }
       .submit-btn {
@@ -56,5 +65,8 @@
         background: #e8e8e8;
       }
     }
+  }
+  .setting-opt {
+    margin-bottom: 40px;
   }
 }
