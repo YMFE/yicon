@@ -24,7 +24,6 @@ class App extends Component {
   render() {
     const { list, searchValue, location } = this.props;
     const extraClass = location.pathname === '/' ? 'main' : '';
-    console.log(extraClass);
     return (
       <div className="app-container">
         <Header

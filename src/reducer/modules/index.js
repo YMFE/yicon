@@ -30,6 +30,7 @@ const reducers = combineReducers({
   workbench,
   audit,
 
+  // TODO: 其实没啥用，因为登出的时候直接跳页就行了。。。。
   // 登录用户才使用的信息放到 user 下面
   user: combineReducers({
     info: user,

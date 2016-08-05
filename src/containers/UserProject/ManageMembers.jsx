@@ -115,7 +115,6 @@ class ManageMembers extends Component {
               placeholder="请输入需要添加成员域账号"
               onChange={this.onChange}
               onChoseItem={this.addNewMember}
-              onChoseError={() => { console.log('内容不合法'); }}
               suggestList={suggestList}
               ref={(node) => {
                 if (node) this.SearchList = node;

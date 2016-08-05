@@ -1,10 +1,10 @@
 import App from './App/App';
+import Audit from './Audit/Audit';
 import DevTools from './DevTools/DevTools';
 import Home from './Home/Home';
 import Demo from './Demo/Demo';
 import Upload from './Upload/Upload';
 import Workbench from './Workbench/Workbench';
-import Audit from './Audit/Audit';
 import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
@@ -20,11 +20,11 @@ import Authority from './Authority/Authority';
 
 export {
   App,
+  Audit,
   DevTools,
   Demo,
   Upload,
   Workbench,
-  Audit,
   Home,
   Log,
   ProjectLog,

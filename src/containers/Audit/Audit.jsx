@@ -3,21 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';import {
   fetchAuditIcons,
   updateAuditIcons,
-  AuditIcons,
+  auditIcons,
   selectIcon,
 } from '../../actions/audit.js';
 import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx';
 import { autobind } from 'core-decorators';
 
-const defaultProps = {};
-const propTypes = {
-  index: PropTypes.number,
-  icons: PropTypes.array,
-  fetchAuditIcons: PropTypes.func,
-  updateAuditIcons: PropTypes.func,
-  AuditIcons: PropTypes.func,
-  selectIcon: PropTypes.func,
-};
 @connect(
   state => ({
     icons: state.audit.icons,
@@ -26,11 +17,22 @@ const propTypes = {
   {
     fetchAuditIcons,
     updateAuditIcons,
-    AuditIcons,
+    auditIcons,
     selectIcon,
   }
 )
 export default class Audit extends Component {
+  static propTypes = {
+    index: PropTypes.number,
+    icons: PropTypes.array,
+    fetchAuditIcons: PropTypes.func,
+    updateAuditIcons: PropTypes.func,
+    auditIcons: PropTypes.func,
+    selectIcon: PropTypes.func,
+  }
+
+  defaultProps = {}
+
   componentWillMount() {
     this.props.fetchAuditIcons();
   }
@@ -52,7 +54,7 @@ export default class Audit extends Component {
   }
 
   @autobind
-  AuditIcons() {
+  auditIcons() {
     // const icons = this.calcDone();
     // this.props.uploadIcons({
     //   repoId: this.props.repoId,
@@ -87,10 +89,10 @@ export default class Audit extends Component {
       return null;
     }
     return (
-      <div className={'yicon-main yicon-upload'}>
-        <div className={'yicon-upload-container'}>
+      <div className="yicon-main yicon-upload">
+        <div className="yicon-upload-container">
           <IconsSetting
-            title="上传图标设置"
+            title="审核图标"
             icons={icons}
             index={index}
             onClick={this.select}
@@ -98,11 +100,15 @@ export default class Audit extends Component {
             saveName={this.updateIcons}
             selectStyle={this.updateIcons}
             saveTags={this.updateIcons}
+            noRemoveIcon
+            hasUploader
           />
+          <div className="approval">
+            <button className="aprv-btn pass">审核通过</button>
+            <button className="aprv-btn no-pass">审核不通过</button>
+          </div>
         </div>
       </div>
     );
   }
 }
-Audit.defaultProps = defaultProps;
-Audit.propTypes = propTypes;

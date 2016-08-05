@@ -15,13 +15,15 @@ const DesIcon = (props) => {
   return (
     <div className={classList}>
       <div className="icon-container">
-        <Icon
-          d={props.iconPath}
-          fill={props.iconFill}
-          size={props.iconSize}
-        />
+        <div className="icon-room">
+          <Icon
+            d={props.iconPath}
+            fill={props.iconFill}
+            size={props.iconSize}
+          />
+        </div>
         {props.name
-          ? <a className="name" title={props.name} href="#">{props.name}</a>
+          ? <p><i className="name" title={props.name}>{props.name}</i></p>
           : null
         }
         {props.showCode ?

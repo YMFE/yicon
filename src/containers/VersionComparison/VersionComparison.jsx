@@ -166,7 +166,6 @@ export default class VersionComparison extends Component {
                     this.props.comparisonResult.deleted.map((icon, index) => (
                       <DesIcon
                         key={index}
-                        className="info"
                         name={icon.name}
                         code={`&#${icon.code.toString(16)}`}
                         showCode
@@ -184,21 +183,20 @@ export default class VersionComparison extends Component {
                   个图标</span>
                 </div>
                 <div className="clearfix yicon-myiconvs-info">
-                  <div className="icon-detail-item">
                   {
                     this.props.comparisonResult.added.map((icon, index) => (
-                      <DesIcon
-                        key={index}
-                        className="info"
-                        name={icon.name}
-                        code={`&#${icon.code.toString(16)}`}
-                        showCode
-                        iconPath={icon.path}
-                        iconSize={this.props.iconSize}
-                      />
+                      <div className="icon-detail-item">
+                        <DesIcon
+                          key={index}
+                          name={icon.name}
+                          code={`&#${icon.code.toString(16)}`}
+                          showCode
+                          iconPath={icon.path}
+                          iconSize={this.props.iconSize}
+                        />
+                      </div>
                     ))
                   }
-                  </div>
                 </div>
               </div>
               <div

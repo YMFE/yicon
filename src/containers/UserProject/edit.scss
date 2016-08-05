@@ -24,8 +24,18 @@
 				height: 36px;
 			}
 			.project-author{
+				padding: 0;
+				width: 298px;
 				.iconfont{
 					float: right;
+				}
+				.rc-select-selection.rc-select-selection--single{
+					height: 36px;
+					outline: none;
+					.rc-select-selection__rendered, .rc-select-selection-selected-value{
+						height: 36px;
+						line-height: 36px;
+					}
 				}
 			}
 

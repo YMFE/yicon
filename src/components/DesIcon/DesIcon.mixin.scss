@@ -1,14 +1,22 @@
-@mixin global-icon( $icon-width: 72px, $icon-color: #555f6e, $icon-size: 64px, $text-color: #616161 ) {
+@mixin global-icon(
+  $icon-width: 72px,
+  $icon-size: 64px,
+  $icon-color: #555f6e,
+  $text-color: #616161
+  ) {
   // overflow-y: hidden;
   display: inline-block;
   .icon-container {
     padding: 12px;
     margin:0 auto;
-    height: $icon-width;
     overflow: hidden;
     text-align: center;
   }
-
+  .icon-room {
+    height: $icon-width;
+    display: block;
+    line-height: $icon-width;
+  }
   .iconfont {
     font-size: $icon-size;
     vertical-align: top;
@@ -26,12 +34,7 @@
     font-size: 14px;
     text-align: center;
     display: block;
-  }
-
-  .tag {
-    }
-  .Icon{
-    display: block;
-    margin: 0 auto;
+    line-height: 16px;
+    height: 16px;
   }
 }

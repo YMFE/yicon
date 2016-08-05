@@ -70,13 +70,17 @@ class InfoItem extends Component {
 
     if (this.props.hasScope) {
       const scopeData = scope === 'project' ? project : repo;
-      const link = scope === 'project'
-        ? `/user/projects/${project.id}`
-        : `/repositories/${repo.id}`;
+      if (scopeData) {
+        const link = scope === 'project'
+          ? `/user/projects/${scopeData.id}`
+          : `/repositories/${scopeData.id}`;
 
-      prefix = (
-        <span><Link to={link}>{scopeData.name}</Link>：</span>
-      );
+        prefix = (
+          <span><Link to={link}>{scopeData.name}</Link>：</span>
+        );
+      } else {
+        prefix = <span>已删除项目：</span>;
+      }
     }
     return <p className="title">{prefix}{content}</p>;
   }
