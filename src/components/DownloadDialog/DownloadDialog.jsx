@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
 import Input from '../common/Input/Index.jsx';
+import SetTag from '../common/SetTag/SetTag.jsx';
 import Select from '../common/Select/index';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
@@ -43,28 +44,9 @@ class DownloadDial extends Component {
     return tags.replace(/^\s*|\s*$/g, '');
   }
   @autobind
-  addTag(e) {
-    if (e.keyCode === 13) {
-      const target = e.target;
-      const { iconDetail } = this.props;
-      const tag = target.value;
-      if (this.validate(this.filter(tag))) {
-        const tags = `${iconDetail.tags},${tag}`;
-        this.props.editIcon(iconDetail.id, { tags }).then(() => {
-          target.value = '';
-        });
-      }
-    }
-  }
-  @autobind
-  deleteTag(tag) {
-    return () => {
-      const { iconDetail } = this.props;
-      const tagArr = this.tagsToArr(iconDetail.tags);
-      tagArr.splice(tagArr.indexOf(tag), 1);
-      const tags = tagArr.join(',');
-      this.props.editIcon(iconDetail.id, { tags });
-    };
+  saveTags(tags) {
+    const { iconDetail } = this.props;
+    this.props.editIcon(iconDetail.id, { tags });
   }
   @autobind
   save(e) {
@@ -122,7 +104,6 @@ class DownloadDial extends Component {
 
   render() {
     const { iconDetail, userInfo } = this.props;
-    const tagArr = this.tagsToArr(iconDetail.tags || '');
     const repoId = iconDetail.repo.id;
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
@@ -178,29 +159,10 @@ class DownloadDial extends Component {
           <div className="other-info">
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
           </div>
-          <div className="set-tag">
-            <div className="set-input-wrap">
-              <input
-                className="set-input"
-                type="text"
-                id="set-icon-tag"
-                placeholder="添加图标标签，回车提交，可多次提交"
-                onKeyDown={this.addTag}
-                disabled={+status === +1}
-              />
-              <i className="iconfont set-tag-icon">&#xf0ae;</i>
-            </div>
-            <ul className="icon-tag-list">
-              {
-                tagArr.map((tag, index) => (
-                  <li className="icon-tag" key={index}>
-                    <span>{tag}</span>
-                    <i className="iconfont delete" onClick={this.deleteTag(tag)}>&#xf077;</i>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
+          <SetTag
+            onTagChange={this.saveTags}
+            tags={iconDetail.tags || ''}
+          />
           <div className="select-color clearfix">
             <ul className="color-list">
               {

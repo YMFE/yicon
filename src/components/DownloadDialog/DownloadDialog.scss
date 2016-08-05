@@ -90,20 +90,23 @@
       font-size: 14px;
     }
     .set-tag {
-      .set-input-wrap {
+      .input-wrap {
+        margin: 0;
         width: 344px;
         height: 26px;
-        border: 1px solid #dfdfdf;
-        .set-input {
-          margin-left: 10px;
-          width: 314px;
-          outline: none;
+        .input {
           line-height: 26px;
           font-size: 12px;
-          border: 0;
         }
         .set-tag-icon {
           color: #6f6f6f;
+        }
+        .error-info {
+          width: 320px;
+          top: 26px;
+          font-size: 12px;
+          line-height: 26px;
+          height: 26px;
         }
       }
       .icon-tag-list {
