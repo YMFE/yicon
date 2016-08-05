@@ -3,11 +3,10 @@ import {
   DELETE_ICON,
 } from '../../constants/actionTypes';
 
-import {
-  fetchUploaded,
-} from '../../actions/uploaded';
 const initialState = {
   list: [],
+  totalPage: 1,
+  currentPage: 1,
 };
 
 export default (state = initialState, action) => {
@@ -21,11 +20,6 @@ export default (state = initialState, action) => {
       };
     }
     case DELETE_ICON: {
-      if (action.payload.ret) {
-        fetchUploaded(1);
-      } else {
-        //  TODO 处理删除失败逻辑
-      }
       return state;
     }
     default:
