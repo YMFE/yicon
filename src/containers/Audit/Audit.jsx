@@ -7,6 +7,7 @@ import { connect } from 'react-redux';import {
   selectIcon,
 } from '../../actions/audit.js';
 import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx';
+import dialog from '../../components/common/Dialog/Confirm.jsx';
 import { autobind } from 'core-decorators';
 
 const defaultProps = {};
@@ -83,8 +84,7 @@ export default class Audit extends Component {
     this.props.updateAuditIcons(icons.concat());
   }
 
-  @autobind
-  auditIconsSubmit() {
+  calcAuditDone() {
     const { icons } = this.props;
     const submitIcons = [];
     const notSubmitIcons = [];
@@ -104,9 +104,29 @@ export default class Audit extends Component {
         notSubmitIcons.push(icon);
       }
     });
-    this.props.auditIcons({ icons: submitIcons }).then(() => {
-      this.props.selectIcon(0);
-      this.props.updateAuditIcons(notSubmitIcons);
+    return { submitIcons, notSubmitIcons };
+  }
+
+  @autobind
+  auditIconsSubmit() {
+    const { submitIcons, notSubmitIcons } = this.calcAuditDone();
+    this.props.auditIcons({ icons: submitIcons }).then((res) => {
+      if (res.payload.res) {
+        this.props.selectIcon(0);
+        this.props.updateAuditIcons(notSubmitIcons);
+      }
+    });
+  }
+
+  @autobind
+  showSubmitDialog() {
+    const { submitIcons } = this.calcAuditDone();
+    const title = '提交审核';
+    const content = `已审核完成${submitIcons.length}枚图标，确认上传吗？`;
+    dialog({
+      title,
+      content,
+      onOk: this.auditIconsSubmit,
     });
   }
 
@@ -142,7 +162,7 @@ export default class Audit extends Component {
             >审核不通过</button>
           </div>
           <div className="approval-submit">
-            <button className="submit" onClick={this.auditIconsSubmit}>提交已通过审核图标生成字体</button>
+            <button className="submit" onClick={this.showSubmitDialog}>提交已通过审核图标生成字体</button>
           </div>
         </div>
       </div>
