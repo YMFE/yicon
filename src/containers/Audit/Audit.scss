@@ -1,0 +1,81 @@
+@charset "utf-8";
+.yicon-audit-container {
+  background: #fff;
+  width: 1080px;
+  margin: 30px auto;
+  .upload-author {
+    padding-left: 64px;
+    line-height: 40px;
+    .repository {
+      font-size: 20px;
+      color: #616161;
+    }
+    .author {
+      margin-left: 15px;
+      font-size: 12px;
+      color: #a5a5a5;
+    }
+  }
+  .upload-icon-item {
+    overflow: hidden;
+  }
+  .upload-icon {
+    .pass-tag, .no-pass-tag {
+      position: relative;
+      top: -23px;
+      left: 17px;
+      background: #4bb052;
+      color: #fff;
+      font-size: 12px;
+      line-height: 16px;
+      height: 16px;
+      transform: rotate(315deg);
+      -ms-transform: rotate(315deg);		/* IE 9 */
+      -webkit-transform: rotate(315deg);	/* Safari and Chrome */
+      -o-transform: rotate(315deg);		/* Opera */
+      -moz-transform: rotate(315deg);
+    }
+    .no-pass-tag {
+      background: #ff7474;
+    }
+  }
+  .approval {
+    height: 115px;
+    background: #fff;
+    .aprv-btn {
+      width: 108px;
+      height: 40px;
+      outline: none;
+      border: 0;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 2px;
+    }
+    .pass {
+      margin: 0 8px 0 531px;
+      background: #4bb052;
+    }
+    .no-pass {
+      background: #ff7474;
+    }
+  }
+  .approval-submit {
+    padding: 35px 36px;
+    background: #f9fafe;
+    height: 40px;
+    .submit {
+      float: right;
+      width: 235px;
+      height: 40px;
+      outline: none;
+      border: 0;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 2px;
+      background: #008ed6;
+    }
+  }
+  .setting-opt{
+    margin-bottom: 25px;
+  }
+}

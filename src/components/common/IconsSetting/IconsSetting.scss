@@ -32,6 +32,9 @@
   .setting-opts {
     float: left;
     margin-left: 30px;
+    .setting-opt:last-child {
+      margin-bottom: 0;
+    }
     .set-opt-name {
       font-size: 12px;
       color: #6f6f6f;
@@ -40,7 +43,6 @@
       }
     }
     .setting-opt {
-      margin-bottom: 40px;
       .set-tag {
         display: inline-block;
       }

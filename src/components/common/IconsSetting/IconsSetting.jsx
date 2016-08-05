@@ -23,6 +23,9 @@ const propTypes = {
   saveName: PropTypes.func,
   selectStyle: PropTypes.func,
   saveTags: PropTypes.func,
+  turnLeft: PropTypes.func,
+  turnRight: PropTypes.func,
+  isAudit: PropTypes.bool,
 };
 
 class IconsSetting extends Component {
@@ -75,8 +78,21 @@ class IconsSetting extends Component {
     this.props.saveTags(icons.concat());
   }
 
+  @autobind
+  turnLeft() {
+    const { index } = this.props;
+    const newIndex = index - 1 < 0 ? 0 : index - 1;
+    this.props.turnLeft(newIndex);
+  }
+  @autobind
+  turnRight() {
+    const { index, icons } = this.props;
+    const newIndex = index >= icons.length ? index : index + 1;
+    this.props.turnRight(newIndex);
+  }
+
   render() {
-    const { title, icons, index } = this.props;
+    const { title, icons, index, isAudit } = this.props;
     const iconDetail = icons[index];
     if (!iconDetail) {
       return null;
@@ -91,19 +107,23 @@ class IconsSetting extends Component {
             onClick={this.select}
             onDelete={this.delete}
           />
-          <Link to="/upload" className={'upload-icon-btn'} style={{ display: 'none' }}>
+          <Link to="/upload" className={`upload-icon-btn ${isAudit ? 'hide' : ''}`}>
             <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
             <p className={'upload-btn-txt'}>上传图标</p>
           </Link>
         </div>
         <div className={'upload-setting clearfix'}>
-          <button className={'set-pre-next-btn'}>
+          <button className={'set-pre-next-btn'} onClick={this.turnLeft}>
             <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
           </button>
           <IconBgGrid
             iconPath={iconDetail.path}
           />
           <div className={'setting-opts'}>
+            <div className={`upload-author ${isAudit ? '' : 'hide'}`}>
+              <span className="repository">无线大客户端</span>
+              <span className="author">上传人：hongliang.zhang</span>
+            </div>
             <div className={'setting-opt'}>
               <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
                 className={'require'}
@@ -147,7 +167,7 @@ class IconsSetting extends Component {
             </div>
 
           </div>
-          <button className={'set-pre-next-btn set-pre-next-right'}><i
+          <button className={'set-pre-next-btn set-pre-next-right'} onClick={this.turnRight}><i
             className={'iconfont set-pre-next-icon'}
           >&#xf1c1;</i></button>
         </div>

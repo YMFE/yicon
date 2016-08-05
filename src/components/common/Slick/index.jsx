@@ -118,14 +118,6 @@ export default class Slick extends Component {
     const { currentItem, defaultTranslateX } = this.state;
     // const { itemData } = this.props;
     itemData.forEach((item, i) => {
-      let passIcon = 'none';
-      let notPassIcon = 'none';
-      if (item.pass) {
-        passIcon = 'block';
-      }
-      if (item.notPass) {
-        notPassIcon = 'block';
-      }
       itemArr.push(<li
         key={`item_${i}`}
         className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
@@ -136,8 +128,8 @@ export default class Slick extends Component {
           onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
         >&#xf077;</i>
         <Icon className={'iconfont upload-icon'} d={item.path} size={60} />
-        <div className={'pass-tag'} style={{ display: passIcon }}>通过</div>
-        <div className={'no-pass-tag'} style={{ display: notPassIcon }}>不通过</div>
+        <div className={`pass-tag ${item.passed ? '' : 'hide'}`}>通过</div>
+        <div className={`no-pass-tag ${item.passed === false ? '' : 'hide'}`}>不通过</div>
       </li>);
     });
     return (
