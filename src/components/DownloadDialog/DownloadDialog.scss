@@ -32,19 +32,21 @@
           display: none;
         }
       }
-      .edit-name {
+      .edit-name-box {
         display: none;
-        height: 38px;
-        .input-name {
-          padding-left: 10px;
-          float: left;
-          width: 186px;
+        .edit-name {
           height: 36px;
-          border: 1px solid #dfdfdf;
+          width: 196px;
+          float: left;
+          margin: 0;
           border-right: 0;
-          outline: 0;
-          line-height: 36px;
-          font-size: 14px;
+          .input {
+            height: 36px;
+            width: 176px;
+          }
+          .error-info {
+            width: 172px;
+          }
         }
         .save {
           float: left;
@@ -77,7 +79,7 @@
       .icon-name {
         display: none;
       }
-      .edit-name {
+      .edit-name-box {
         display: block;
       }
     }

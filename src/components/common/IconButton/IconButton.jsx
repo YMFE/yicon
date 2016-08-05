@@ -91,7 +91,7 @@ class IconButton extends Component {
     let status = 1;
     if (userInfo.login) {
       status = 2;
-      if (userInfo.repoAdmin.indexOf(repositoryId) !== -1) {
+      if (userInfo.repoAdmin.indexOf(repositoryId) !== -1 || userInfo.admin) {
         status = 3;
       }
     }

@@ -128,7 +128,7 @@ class DownloadDial extends Component {
     let status = 1;
     if (userInfo.login) {
       status = 2;
-      if (userInfo.repoAdmin.indexOf(repoId) !== -1) {
+      if (userInfo.repoAdmin.indexOf(repoId) !== -1 || userInfo.admin) {
         status = 3;
       }
     }
@@ -161,17 +161,19 @@ class DownloadDial extends Component {
                 onClick={this.showNameEdit}
               >修改名称</button>
             </div>
-            <Input
-              placeholder="请输入图标名称"
-              extraClass="edit-name"
-              keyDown={this.save}
-              regExp="\S+"
-              errMsg="名字不能为空"
-              ref="myInput"
-            >
+            <div className="edit-name-box clearfix">
+              <Input
+                placeholder="请输入图标名称"
+                defaultValue={iconDetail.name}
+                extraClass="edit-name"
+                keyDown={this.save}
+                regExp="\S+"
+                errMsg="名字不能为空"
+                ref="myInput"
+              />
               <button className="save" onClick={this.save}>保存</button>
               <button className="cancel" onClick={this.cancel}>取消</button>
-            </Input>
+            </div>
           </div>
           <div className="other-info">
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
