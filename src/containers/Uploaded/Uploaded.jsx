@@ -44,6 +44,7 @@ class Uploaded extends Component {
     list: PropTypes.array,
     fetchUploaded: PropTypes.func,
     deleteIcon: PropTypes.func,
+    currentPage: PropTypes.number,
   }
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class Uploaded extends Component {
       title: '删除确认',
       content: '是否确认删除图标',
       onOk: () => {
-        this.props.deleteIcon(iconId);
+        this.props.deleteIcon(iconId, this.props.currentPage);
       },
       onCancel: () => {},
     });

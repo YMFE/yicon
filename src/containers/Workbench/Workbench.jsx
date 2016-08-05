@@ -133,8 +133,12 @@ export default class Workbench extends Component {
   @autobind
   showUploadDialog() {
     const doneNum = this.calcDone().length;
+    const notDoneNum = this.props.icons.length - doneNum;
     const title = '提交上传';
-    const content = `还有${this.props.icons.length - doneNum}枚图标未设置完成，确认上传设置完成的${doneNum}枚图标吗？`;
+    let content = `还有${notDoneNum}枚图标未设置完成，确认上传设置完成的${doneNum}枚图标吗？`;
+    if (!notDoneNum) {
+      content = '所有图标已设置完成，确认上传吗？';
+    }
     dialog({
       title,
       content,
@@ -165,7 +169,13 @@ export default class Workbench extends Component {
           />
           <div className={'upload-submit'}>
             <div className={'clearfix'}>
-              <p className={'upload-submit-tips'}>你还有{icons.length - doneNum}枚图标未设置未完成!</p>
+              <p className={'upload-submit-tips'}>
+                {
+                  icons.length - doneNum ?
+                  `你还有${icons.length - doneNum}枚图标未设置未完成!` :
+                  '全部设置完成!'
+                }
+              </p>
             </div>
             <div className={'upload-submit-setting'}>
               <span className={'submit-info'}>
