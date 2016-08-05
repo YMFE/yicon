@@ -94,17 +94,17 @@ export function* getAuditList(next) {
       },
     }, User],
   }).then(icons => {
-    const data = icons.filter(i => {
+    const data = icons.map(i => {
       const icon = i.get({ plain: true });
       if (icon.repositories && icon.repositories.length) {
         icon.repo = icon.repositories[0];
         delete icon.repo.repoVersion;
         delete icon.repositories;
-        return true;
+        return icon;
       }
-      return false;
+      return null;
     });
-    return data;
+    return data.filter(v => v);
   });
 
   this.state.respond = auditData.reduce((p, n) => p.concat(n), []);
