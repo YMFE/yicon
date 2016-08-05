@@ -9,13 +9,9 @@ import { connect } from 'react-redux';import {
   selectRepo,
 } from '../../actions/workbench.js';
 import { push } from 'react-router-redux';
-import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
-import SetTag from '../../components/EditIcon/SetTag/SetTag.jsx';
-import Slick from '../../components/common/Slick/index.jsx';
-import Input from '../../components/common/Input/Index.jsx';
-import { Link } from 'react-router';
 import dialog from '../../components/common/Dialog/Confirm.jsx';
 import Select from '../../components/common/Select/';
+import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 
@@ -63,38 +59,33 @@ export default class Workbench extends Component {
   }
 
   @autobind
-  setTags(tags) {
-    const { index, icons } = this.props;
-    icons[index].tags = tags;
-    this.props.updateWorkbench(icons.concat());
-  }
-
-  @autobind
   select(index) {
     this.props.selectEdit(index);
   }
 
   @autobind
-  delete(index) {
-    const { icons } = this.props;
-    const selcIndex = this.props.index;
-    const id = icons[index].id;
-    icons.splice(index, 1);
-    this.props.deleteIcon(id, icons.concat());
-    if (selcIndex >= index) {
-      const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
-      this.props.selectEdit(newIndex);
-    }
+  delete(icons, index, id) {
+    // const { icons } = this.props;
+    // const selcIndex = this.props.index;
+    // const id = icons[index].id;
+    // icons.splice(index, 1);
+    // this.props.deleteIcon(id, icons);
+    // if (selcIndex >= index) {
+    //   const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
+    //   this.props.selectEdit(newIndex);
+    // }
+    this.props.deleteIcon(id, icons);
+    this.props.selectEdit(index);
     if (!icons.length) {
       this.props.push('/upload');
     }
   }
 
   @autobind
-  blur(val) {
-    const { index, icons } = this.props;
-    icons[index].name = val;
-    this.props.updateWorkbench(icons.concat());
+  updateIcons(icons) {
+    // const { index, icons } = this.props;
+    // icons[index].name = val;
+    this.props.updateWorkbench(icons);
   }
 
   calcDone() {
@@ -104,16 +95,12 @@ export default class Workbench extends Component {
     ));
     return doneArr;
   }
-  @autobind
-  selectStyle(style) {
-    const { index, icons } = this.props;
-    icons[index].fontClass = style;
-    this.props.updateWorkbench(icons.concat());
-  }
+
   @autobind
   selectRepo(id) {
     this.props.selectRepo(id);
   }
+
   @autobind
   uploadIcons() {
     const icons = this.calcDone();
@@ -131,6 +118,7 @@ export default class Workbench extends Component {
       }
     });
   }
+
   @autobind
   showUploadDialog() {
     const doneNum = this.calcDone().length;
@@ -145,7 +133,6 @@ export default class Workbench extends Component {
 
   render() {
     const { index, icons, allRepoList, repoId } = this.props;
-    const iconDetail = icons[index];
     const doneNum = this.calcDone().length;
     if (!icons.length) {
       return null;
@@ -153,76 +140,16 @@ export default class Workbench extends Component {
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-upload-container'}>
-          <h2 className={'upload-title'}>上传图标设置</h2>
-          <div style={{ position: 'relative' }}>
-            <Slick
-              itemData={icons}
-              defaultCurrent={index}
-              onClick={this.select}
-              onDelete={this.delete}
-              curr
-            />
-            <Link to="/upload" className={'upload-icon-btn'}>
-              <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
-              <p className={'upload-btn-txt'}>上传图标</p>
-            </Link>
-          </div>
-          <div className={'upload-setting clearfix'}>
-            <button className={'set-pre-next-btn'}>
-              <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
-            </button>
-            <IconBgGrid
-              iconPath={iconDetail.path}
-            />
-            <div className={'setting-opts'}>
-              <div className={'setting-opt'}>
-                <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
-                  className={'require'}
-                >*</span></label>
-                <Input
-                  defaultValue={iconDetail.name}
-                  placeholder="请输入图标名称"
-                  extraClass="edit-name"
-                  keyDown={this.save}
-                  blur={this.blur}
-                  regExp="\S+"
-                  errMsg="名字不能为空"
-                  ref="myInput"
-                />
-              </div>
-              <div className={'setting-opt'}>
-                <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
-                  className={'require'}
-                >*</span></label>
-                <div className={'set-input-wrap setting-opt-select'}>
-                  <Select
-                    placeholder="请输选择"
-                    value={iconDetail.fontClass}
-                    className={'info_error'}
-                    onChange={this.selectStyle}
-                  >
-                    <Option value="-f">线性图标</Option>
-                    <Option value="-o">填色图标</Option>
-                  </Select>
-                  <div className={`error-info ${iconDetail.fontClass ? 'hide' : ''}`}>
-                    请选择图标风格
-                  </div>
-                </div>
-              </div>
-
-              <div className={'setting-opt'}>
-                <label htmlFor={'set-icon-tag'} className={'set-opt-name'}>图标标签&nbsp;&nbsp;</label>
-                <SetTag
-                  onTagChange={this.update}
-                  tags={iconDetail.tags || ''}
-                />
-              </div>
-
-            </div>
-            <button className={'set-pre-next-btn set-pre-next-right'}><i
-              className={'iconfont set-pre-next-icon'}
-            >&#xf1c1;</i></button>
-          </div>
+          <IconsSetting
+            title="上传图标设置"
+            icons={icons}
+            index={index}
+            onClick={this.select}
+            onDelete={this.delete}
+            saveName={this.updateIcons}
+            selectStyle={this.updateIcons}
+            saveTags={this.updateIcons}
+          />
           <div className={'upload-submit'}>
             <div className={'clearfix'}>
               <p className={'upload-submit-tips'}>你还有{icons.length - doneNum}枚图标未设置未完成!</p>
@@ -232,10 +159,6 @@ export default class Workbench extends Component {
                 共上传<span className={'icon-num'}>{doneNum}</span>枚图标至
               </span>
               <div className={'select-repository'}>
-                {
-                // <input className={'select-input'} type={'text'} placeholder={'选择图标库'} />
-                // <i className={'iconfont select-repository-icon'}>&#xf032;</i>
-                }
                 <Select
                   placeholder="选择图标库"
                   value={repoId}

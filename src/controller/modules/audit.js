@@ -2,7 +2,7 @@ import invariant from 'invariant';
 import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion } from '../../model';
+import { seq, Repo, Icon, User, RepoVersion } from '../../model';
 import { unique } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -76,6 +76,11 @@ function getBaseClassName(icons, transaction) {
 // 获取审核列表
 export function* getAuditList(next) {
   const { repoList } = this.state.user;
+  const whereMixin = {};
+
+  if (repoList && repoList.length) {
+    whereMixin.where = { repositoryId: { $in: repoList } };
+  }
 
   const auditData = yield Icon.findAll({
     where: { status: iconStatus.PENDING },
@@ -83,9 +88,9 @@ export function* getAuditList(next) {
       model: Repo,
       through: {
         model: RepoVersion,
-        where: { repositoryId: { $in: repoList } },
+        ...whereMixin,
       },
-    }],
+    }, User],
   }).then(icons => icons.map(i => {
     const icon = i.get({ plain: true });
     if (icon.repositories && icon.repositories.length) {

@@ -3,10 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import Icon from '../Icon/Icon.jsx';
 // import Icon from '../Icon/Icon.jsx';
 export default class Slick extends Component {
+
   static defaultProps = {
     defaultTranslateX: 0,
     step: 84 * 11,
   }
+
   static propTypes = {
     currentItem: PropTypes.number,
     defaultCurrent: PropTypes.number,
@@ -17,17 +19,17 @@ export default class Slick extends Component {
     // iconItemListPos: PropTypes.object,
     step: PropTypes.number,
     itemData: PropTypes.array,
+    noRemoveIcon: PropTypes.bool,
   }
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentItem: this.props.defaultCurrent,
-      defaultTranslateX: this.props.defaultTranslateX,
-      step: this.props.step,
-    // iconItemListPos: Object.assign({}, this.props.iconItemListPos),
-      scrollAreaWidth: 0,
-    };
+
+  state = {
+    currentItem: this.props.defaultCurrent,
+    defaultTranslateX: this.props.defaultTranslateX,
+    step: this.props.step,
+  // iconItemListPos: Object.assign({}, this.props.iconItemListPos),
+    scrollAreaWidth: 0,
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultCurrent || nextProps.defaultCurrent === 0) {
       this.setState({
@@ -113,17 +115,17 @@ export default class Slick extends Component {
   render() {
     const itemArr = [];
     // iconItemListPos
-    const { itemData } = this.props;
+    const { itemData, noRemoveIcon } = this.props;
     const scrollAreaWidth = 84 * itemData.length;
     const { currentItem, defaultTranslateX } = this.state;
     // const { itemData } = this.props;
     itemData.forEach((item, i) => {
       let passIcon = 'none';
       let notPassIcon = 'none';
-      if (item.pass) {
+      if (item.pass === true) {
         passIcon = 'block';
       }
-      if (item.notPass) {
+      if (item.pass === false) {
         notPassIcon = 'block';
       }
       itemArr.push(<li
@@ -131,36 +133,38 @@ export default class Slick extends Component {
         className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
         onClick={(evt) => this.handleClick({ type: 'item', index: i }, evt)}
       >
-        <i
-          className={'iconfont delete'}
-          onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
-        >&#xf077;</i>
-        <Icon className={'iconfont upload-icon'} d={item.path} size={60} />
-        <div className={'pass-tag'} style={{ display: passIcon }}>通过</div>
-        <div className={'no-pass-tag'} style={{ display: notPassIcon }}>不通过</div>
+        {noRemoveIcon ||
+          <i
+            className="iconfont delete"
+            onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
+          >&#xf077;</i>
+        }
+        <Icon className="iconfont upload-icon" d={item.path} size={60} />
+        <div className="pass-tag" style={{ display: passIcon }}>通过</div>
+        <div className="no-pass-tag" style={{ display: notPassIcon }}>不通过</div>
       </li>);
     });
     return (
-      <div className={'upload-icon clearfix'}>
+      <div className="upload-icon clearfix">
         <button
-          className={'icons-more-btn icons-more-btn-left'}
+          className="icons-more-btn icons-more-btn-left"
           onClick={(evt) => this.handleClick({ type: 'prev' }, evt)}
         >
-          <i className={'iconfont icons-more-btn-icon'}>&#xf1c3;</i></button>
-        <div className={'upload-icon-list-area'} ref={'uploadIconListArea'}>
+          <i className="iconfont icons-more-btn-icon">&#xf1c3;</i></button>
+        <div className="upload-icon-list-area" ref="uploadIconListArea">
           <ul
-            ref={'uploadIconList'}
-            className={'upload-icon-list'}
+            ref="uploadIconList"
+            className="upload-icon-list"
             style={{ marginLeft: defaultTranslateX, width: scrollAreaWidth }}
           >
             {itemArr}
           </ul>
         </div>
         <button
-          className={'icons-more-btn icons-more-btn-right'}
+          className="icons-more-btn icons-more-btn-right"
           onClick={(evt) => this.handleClick({ type: 'next' }, evt)}
         >
-          <i className={'iconfont icons-more-btn-icon'}>&#xf1c1;</i></button>
+          <i className="iconfont icons-more-btn-icon">&#xf1c1;</i></button>
       </div>
     );
   }

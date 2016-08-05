@@ -13,32 +13,33 @@ $mainColor:#3bbaff;
 
 
   .quick-menu-sub {
-      border-top: 2px solid $mainColor;
-      background-color: #000c15;
-      width: 140px;
-      font-size: 14px;
-      position: absolute;
-      left: -5px;
-      top: 64px;
-      margin-top: -2px;
-      padding: 10px 0 20px;
-      border-radius: 0 0 3px 3px;
-      overflow: hidden;
-      display: none;
-      li {
-          padding: 0 20px;
-          line-height: 36px;
+    z-index: 1009;
+    border-top: 2px solid $mainColor;
+    background-color: #000c15;
+    width: 140px;
+    font-size: 14px;
+    position: absolute;
+    left: -5px;
+    top: 64px;
+    margin-top: -2px;
+    padding: 10px 0 20px;
+    border-radius: 0 0 3px 3px;
+    overflow: hidden;
+    display: none;
+    li {
+      padding: 0 20px;
+      line-height: 36px;
+    }
+    li:hover {
+      a {
+        color: $mainColor;
       }
-      li:hover {
-          a {
-              color: $mainColor;
-          }
+    }
+    .current {
+      a {
+        color: $mainColor;
       }
-      .current {
-          a {
-              color: $mainColor;
-          }
-      }
+    }
   }
   &:hover {
 

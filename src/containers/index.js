@@ -1,4 +1,5 @@
 import App from './App/App';
+import Audit from './Audit/Audit';
 import DevTools from './DevTools/DevTools';
 import Home from './Home/Home';
 import Demo from './Demo/Demo';
@@ -19,6 +20,7 @@ import Authority from './Authority/Authority';
 
 export {
   App,
+  Audit,
   DevTools,
   Demo,
   Upload,

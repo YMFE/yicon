@@ -1,5 +1,6 @@
 import './Demo.scss';
 import React, { Component } from 'react';
+
 // select
 import Select from '../../components/common/Select/index';
 const Option = Select.Option;
