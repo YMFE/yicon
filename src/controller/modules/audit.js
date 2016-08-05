@@ -75,11 +75,13 @@ function getBaseClassName(icons, transaction) {
 
 // 获取审核列表
 export function* getAuditList(next) {
-  const { repoList } = this.state.user;
+  const { repoList, model } = this.state.user;
   const whereMixin = {};
 
-  if (repoList && repoList.length) {
+  if (model.actor === 1 && repoList && repoList.length) {
     whereMixin.where = { repositoryId: { $in: repoList } };
+  } else if (model.actor !== 2) {
+    throw new Error('您没有权限进行图标审核');
   }
 
   const auditData = yield Icon.findAll({
@@ -91,17 +93,19 @@ export function* getAuditList(next) {
         ...whereMixin,
       },
     }, User],
-  }).then(icons => icons.map(i => {
-    const icon = i.get({ plain: true });
-    if (icon.repositories && icon.repositories.length) {
-      icon.repo = icon.repositories[0];
-      delete icon.repo.repoVersion;
-      delete icon.repositories;
-    } else {
-      throw new Error(`图标 ${i.name} 未找到所属的大库`);
-    }
-    return icon;
-  }));
+  }).then(icons => {
+    const data = icons.filter(i => {
+      const icon = i.get({ plain: true });
+      if (icon.repositories && icon.repositories.length) {
+        icon.repo = icon.repositories[0];
+        delete icon.repo.repoVersion;
+        delete icon.repositories;
+        return true;
+      }
+      return false;
+    });
+    return data;
+  });
 
   this.state.respond = auditData.reduce((p, n) => p.concat(n), []);
   yield next;
