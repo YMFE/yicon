@@ -30,12 +30,15 @@ export default class Search extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchSearchData(this.props.location.query.q);
+    const query = encodeURIComponent(this.props.location.query.q);
+    this.props.fetchSearchData(query);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.query.q !== this.props.location.query.q) {
-      this.props.fetchSearchData(nextProps.location.query.q);
+    const nextQuery = encodeURIComponent(nextProps.location.query.q);
+    const lastQuery = encodeURIComponent(this.props.location.query.q);
+    if (nextQuery !== lastQuery) {
+      this.props.fetchSearchData(nextQuery);
     }
   }
 
@@ -65,7 +68,8 @@ export default class Search extends Component {
           <div className="yicon-search-info-container">
             <div className="clearfix options">
               <div className="search-result">
-                共为您找到 <em className="search-result-count">{this.props.totalCount}</em> 个结果
+                共为您找到 <em className="search-result-count">{this.props.totalCount}</em> 个结果，
+                如需搜索编码，请输入完整的编码，例如"<code>&#xf407</code>;"
               </div>
               <SliderSize />
             </div>
