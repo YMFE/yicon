@@ -2,6 +2,7 @@ import './ToolUserName.scss';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 class UnLogin extends Component {
   qssoLogin() {
@@ -33,12 +34,12 @@ const Tool = (props) => (
     <ul>
       {
         props.admin &&
-          <li className="">
-            <a href="#">权限管理</a>
+          <li>
+            <Link to="/admin/authority/repo">权限管理</Link>
           </li>
       }
-      <li className="">
-        <a href="/api/logout">退出</a>
+      <li onClick={props.loginOut}>
+        <span>退出</span>
       </li>
     </ul>
     <span className="arrow"></span>
@@ -47,6 +48,7 @@ const Tool = (props) => (
 
 Tool.propTypes = {
   admin: PropTypes.bool,
+  loginOut: PropTypes.func,
 };
 
 const ToolUserName = (props) => {
@@ -58,7 +60,7 @@ const ToolUserName = (props) => {
   return (
     <li className={className} >
       {props.login ? <Name name={props.name} /> : <UnLogin />}
-      {props.login ? <Tool admin={props.admin} /> : null}
+      {props.login ? <Tool admin={props.admin} loginOut={props.loginOut} /> : null}
     </li>
   );
 };
@@ -67,6 +69,7 @@ ToolUserName.propTypes = {
   name: PropTypes.string,
   login: PropTypes.bool,
   admin: PropTypes.bool,
+  loginOut: PropTypes.func,
 };
 
 export default connect(

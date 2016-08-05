@@ -26,6 +26,7 @@ const propTypes = {
   turnLeft: PropTypes.func,
   turnRight: PropTypes.func,
   isAudit: PropTypes.bool,
+  noRemoveIcon: PropTypes.bool,
 };
 
 class IconsSetting extends Component {
@@ -99,13 +100,14 @@ class IconsSetting extends Component {
     }
     return (
       <div>
-        <h2 className={'upload-title'}>{title}</h2>
+        <h2 className="upload-title">{title}</h2>
         <div style={{ position: 'relative' }}>
           <Slick
             itemData={icons}
             defaultCurrent={index}
             onClick={this.select}
             onDelete={this.delete}
+            noRemoveIcon={isAudit}
           />
           <Link to="/upload" className={`upload-icon-btn ${isAudit ? 'hide' : ''}`}>
             <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
@@ -119,14 +121,16 @@ class IconsSetting extends Component {
           <IconBgGrid
             iconPath={iconDetail.path}
           />
-          <div className={'setting-opts'}>
-            <div className={`upload-author ${isAudit ? '' : 'hide'}`}>
-              <span className="repository">无线大客户端</span>
-              <span className="author">上传人：hongliang.zhang</span>
-            </div>
-            <div className={'setting-opt'}>
-              <label htmlFor={'set-icon-name'} className={'set-opt-name'}>图标名称<span
-                className={'require'}
+          <div className="setting-opts">
+            {isAudit &&
+              <div className="upload-author">
+                <span className="repository">{iconDetail.repo.name}</span>
+                <span className="author">上传人：{iconDetail.user.name}</span>
+              </div>
+            }
+            <div className="setting-opt">
+              <label htmlFor="set-icon-name" className="set-opt-name">图标名称<span
+                className="require"
               >*</span></label>
               <Input
                 defaultValue={iconDetail.name}
@@ -138,15 +142,15 @@ class IconsSetting extends Component {
                 ref="myInput"
               />
             </div>
-            <div className={'setting-opt'}>
-              <label htmlFor={'set-icon-style'} className={'set-opt-name'}>图标风格<span
-                className={'require'}
+            <div className="setting-opt">
+              <label htmlFor="set-icon-style" className="set-opt-name">图标风格<span
+                className="require"
               >*</span></label>
-              <div className={'set-input-wrap setting-opt-select'}>
+              <div className="set-input-wrap setting-opt-select">
                 <Select
                   placeholder="请输选择"
                   value={iconDetail.fontClass}
-                  className={'info_error'}
+                  className="info_error"
                   onChange={this.selectStyle}
                 >
                   <Option value="-f">线性图标</Option>
@@ -158,8 +162,8 @@ class IconsSetting extends Component {
               </div>
             </div>
 
-            <div className={'setting-opt'}>
-              <label htmlFor={'set-icon-tag'} className={'set-opt-name'}>图标标签&nbsp;&nbsp;</label>
+            <div className="setting-opt">
+              <label htmlFor="set-icon-tag" className="set-opt-name">图标标签&nbsp;&nbsp;</label>
               <SetTag
                 onTagChange={this.saveTags}
                 tags={iconDetail.tags || ''}

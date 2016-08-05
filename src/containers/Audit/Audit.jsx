@@ -31,6 +31,17 @@ const propTypes = {
   }
 )
 export default class Audit extends Component {
+  static propTypes = {
+    index: PropTypes.number,
+    icons: PropTypes.array,
+    fetchAuditIcons: PropTypes.func,
+    updateAuditIcons: PropTypes.func,
+    auditIcons: PropTypes.func,
+    selectIcon: PropTypes.func,
+  }
+
+  defaultProps = {}
+
   componentWillMount() {
     this.props.fetchAuditIcons();
   }
@@ -157,5 +168,6 @@ export default class Audit extends Component {
     );
   }
 }
+
 Audit.defaultProps = defaultProps;
 Audit.propTypes = propTypes;

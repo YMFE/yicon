@@ -81,6 +81,11 @@ sup,sub{vertical-align:baseline}
     color:#fff;
 		background-color: #009be9;
 }
+.btns-default{
+  &:hover{
+    color: #3bbaff;
+  }
+}
 .info-error{
   border:1px solid #ffcccc;
 }

@@ -3,6 +3,7 @@ import { IndexRoute, Route } from 'react-router';
 import isomFetch from 'isom-fetch';
 import {
   App,
+  Audit,
   Home,
   Demo,
   Log,
@@ -18,7 +19,6 @@ import {
   Workbench,
   Uploaded,
   VersionComparison,
-  Audit,
   Authority,
 } from './containers';
 

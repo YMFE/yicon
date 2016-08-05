@@ -10,7 +10,7 @@ const fetch = isonFetch.create({ baseURL: '/api' });
 export function fetchAuditIcons() {
   return {
     type: FETCH_AUDIT_ICONS,
-    // payload: fetch.get('/owner/icons'),
+    payload: fetch.get('/owner/icons'),
   };
 }
 
