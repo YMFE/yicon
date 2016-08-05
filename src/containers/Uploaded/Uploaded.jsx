@@ -7,7 +7,6 @@ import { fetchUploaded, deleteIcon } from '../../actions/uploaded';
 import { iconStatus } from '../../constants/utils';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
 import Pager from '../../components/common/Pager/';
-import { dateFormat } from '../../helpers/timer';
 
 const statusMap = {
   [iconStatus.UPLOADED]: {
@@ -27,8 +26,6 @@ const statusMap = {
     className: 'passed',
   },
 };
-
-const handleTime = (t) => dateFormat(t, 'yyyy-mm-dd');
 
 @connect(
   state => ({
@@ -97,7 +94,7 @@ const TimelineList = (props) => {
         <InfoItem
           extraClass="new"
           key={index}
-          timeString={handleTime(item.createTime)}
+          timeStr={item.createTime}
         >
           <div className="detail">
             {

@@ -1,4 +1,5 @@
 import './UserProject.scss';
+import axios from 'axios';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
@@ -179,13 +180,16 @@ class UserProject extends Component {
     this.shiftShowGenerateVersion();
   }
   @autobind
-  downloadAllIcon() {
-    this.props.downloadIcon({
-      type: 'project',
-      id: this.props.currentUserProjectInfo.id,
-      version: this.props.currentUserProjectInfo.version,
-      icons: this.props.currentUserProjectInfo.icons,
-    });
+  downloadAllIcons() {
+    const { id } = this.props.params;
+    const { version } = this.props.currentUserProjectInfo;
+    axios
+      .post('/api/download/font', { type: 'project', id, version })
+      .then(({ data }) => {
+        if (data.res) {
+          window.location.href = `/download/${data.data}`;
+        }
+      });
   }
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
@@ -311,21 +315,19 @@ class UserProject extends Component {
               : null
               }
               <div className="tool">
-                <a
-                  href="#"
+                <button
                   className="options-btns btns-blue"
-                  onClick={this.downloadAllIcon}
+                  onClick={this.downloadAllIcons}
                 >
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
-                </a>
-                <a
-                  href="#"
+                </button>
+                <button
                   className="options-btns btns-blue"
                   onClick={() => { this.shiftShowGenerateVersion(true); }}
                 >
                   生成版本
-                </a>
+                </button>
                 <Link
                   to={`/user/projects/${id}/logs`}
                   className="options-btns btns-default"

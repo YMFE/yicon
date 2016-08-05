@@ -1,9 +1,11 @@
 import './Project.scss';
+import axios from 'axios';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { autobind } from 'core-decorators';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
@@ -52,6 +54,17 @@ export default class Project extends Component {
     if (!current || nextId !== parseInt(current.id, 10)) {
       this.props.getPublicProjectInfo(nextId);
     }
+  }
+  @autobind
+  downloadAllIcons() {
+    const { id } = this.props.params;
+    axios
+      .post('/api/download/font', { type: 'project', id })
+      .then(({ data }) => {
+        if (data.res) {
+          window.location.href = `/download/${data.data}`;
+        }
+      });
   }
   render() {
     const list = this.props.publicProjectList;
@@ -106,10 +119,13 @@ export default class Project extends Component {
                 <h3>{current.name}</h3>
               </header>
               <div className="tool">
-                <a href="#" className="options-btns btns-blue">
+                <button
+                  onClick={this.downloadAllIcons}
+                  className="options-btns btns-blue"
+                >
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
-                </a>
+                </button>
               </div>
             </div>
             <div className="clearfix icon-list">
