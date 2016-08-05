@@ -29,7 +29,7 @@ const DesIcon = (props) => {
         {props.showCode ?
           <p
             className="code"
-          >{props.code}
+          >{`${props.code};`}
           </p> :
           null
         }
