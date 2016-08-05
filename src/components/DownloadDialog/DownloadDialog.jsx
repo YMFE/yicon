@@ -172,18 +172,6 @@ class DownloadDial extends Component {
               <button className="save" onClick={this.save}>保存</button>
               <button className="cancel" onClick={this.cancel}>取消</button>
             </Input>
-            {
-            // <div className="edit-name">
-            //   <input
-            //     type="text"
-            //     className="input-name"
-            //     ref="inputName"
-            //     onKeyDown={this.save}
-            //   />
-            //   <button className="save" onClick={this.save}>保存</button>
-            //   <button className="cancel" onClick={this.cancel}>取消</button>
-            // </div>
-            }
           </div>
           <div className="other-info">
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;

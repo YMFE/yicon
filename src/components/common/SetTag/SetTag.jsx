@@ -22,11 +22,9 @@ class SetTag extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.tags) {
-      this.setState({
-        tags: nextProps.tags,
-      });
-    }
+    this.setState({
+      tags: nextProps.tags,
+    });
   }
 
   validate(tags) {

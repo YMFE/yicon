@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import Slick from '../Slick/index.jsx';
 import IconBgGrid from '../IconBgGrid/IconBgGrid';
 import Input from '../Input/Index.jsx';
-import SetTag from '../../EditIcon/SetTag/SetTag.jsx';
+import SetTag from '../SetTag/SetTag.jsx';
 import Select from '../../common/Select/';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
