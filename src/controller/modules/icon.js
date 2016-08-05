@@ -25,17 +25,32 @@ export function* getByCondition(next) {
   if (isPlainObject(this.query)) throw new Error('必须传入查询条件');
   if (q === '') throw new Error('不支持传入空参数');
 
-  const query = `%${decodeURI(q)}%`;
-  const icons = yield Icon.findAndCountAll({
-    where: {
-      status: { $gte: iconStatus.RESOLVED },
-      $or: {
-        name: { $like: query },
-        tags: { $like: query },
+  const regExp = /^&#x(e|f)[0-9a-f]{3};$/i;
+  const query = decodeURIComponent(q);
+  const isCode = regExp.test(query);
+  let icons = null;
+  if (isCode) {
+    const code = query.replace(/[^0-9a-f]+/ig, '');
+    icons = yield Icon.findAndCountAll({
+      where: {
+        status: { $gte: iconStatus.RESOLVED },
+        code: parseInt(code, 16),
       },
-    },
-    include: [{ model: Repo }],
-  });
+      include: [{ model: Repo }],
+    });
+  } else {
+    const queryKey = `%${query}%`;
+    icons = yield Icon.findAndCountAll({
+      where: {
+        status: { $gte: iconStatus.RESOLVED },
+        $or: {
+          name: { $like: queryKey },
+          tags: { $like: queryKey },
+        },
+      },
+      include: [{ model: Repo }],
+    });
+  }
   let data = [];
   icons.rows.forEach(v => {
     const id = v.repositories[0].id;
