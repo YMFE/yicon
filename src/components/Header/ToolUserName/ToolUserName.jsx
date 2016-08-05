@@ -38,8 +38,8 @@ const Tool = (props) => (
             <Link to="/admin/authority/repo">权限管理</Link>
           </li>
       }
-      <li onClick={props.loginOut}>
-        <span>退出</span>
+      <li>
+        <a href="/api/logout">退出</a>
       </li>
     </ul>
     <span className="arrow"></span>
@@ -48,7 +48,6 @@ const Tool = (props) => (
 
 Tool.propTypes = {
   admin: PropTypes.bool,
-  loginOut: PropTypes.func,
 };
 
 const ToolUserName = (props) => {
@@ -60,7 +59,7 @@ const ToolUserName = (props) => {
   return (
     <li className={className} >
       {props.login ? <Name name={props.name} /> : <UnLogin />}
-      {props.login ? <Tool admin={props.admin} loginOut={props.loginOut} /> : null}
+      {props.login ? <Tool admin={props.admin} /> : null}
     </li>
   );
 };
