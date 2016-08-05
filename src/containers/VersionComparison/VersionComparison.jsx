@@ -108,7 +108,7 @@ export default class VersionComparison extends Component {
                     <span className="tips">版本对比</span>
                     <Link
                       className="return"
-                      to={`/user/projects/${this.props.projectInfo.id}`}
+                      to={`/user/projects/${this.props.params.id}`}
                     >
                       &gt;返回项目
                     </Link>
