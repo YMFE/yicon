@@ -21,9 +21,10 @@ import {
 } from '../../actions/search.js';
 
 const iconManageList = [
-  { name: '我上传的图标', href: '/user/icons' },
-  { name: '我的图标项目', href: '/user/projects' },
+  { name: '我上传的图标', href: '/user/icons', auth: 'login' },
+  { name: '我的图标项目', href: '/user/projects', auth: 'login' },
   { name: '公开图标项目', href: '/projects' },
+  { name: '图标审核', href: '/auditing', auth: 'owner' },
 ];
 
 @connect(
