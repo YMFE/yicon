@@ -86,48 +86,29 @@ export default class Audit extends Component {
   @autobind
   auditIconsSubmit() {
     const { icons } = this.props;
-    // path需要吗
-    const newIcons = icons.map((icon) => (
-      {
-        id: icon.id,
-        fontClass: icon.fontClass,
-        name: icon.name,
-        tags: icon.tags,
-        passed: icon.passed,
+    const submitIcons = [];
+    const notSubmitIcons = [];
+    icons.forEach((icon) => {
+      if (icon.hasOwnProperty('passed')) {
+        const iconItem = {
+          id: icon.id,
+          fontClass: icon.fontClass,
+          name: icon.name,
+          tags: icon.tags,
+          passed: icon.passed,
+          repoId: icon.repo.id,
+          uploader: icon.uploader,
+        };
+        submitIcons.push(iconItem);
+      } else {
+        notSubmitIcons.push(icon);
       }
-    ));
-    this.props.auditIcons(newIcons);
+    });
+    this.props.auditIcons({ icons: submitIcons }).then(() => {
+      this.props.selectIcon(0);
+      this.props.updateAuditIcons(notSubmitIcons);
+    });
   }
-
-  // @autobind
-  // AuditIcons() {
-  //   const icons = this.calcDone();
-  //   this.props.uploadIcons({
-  //     repoId: this.props.repoId,
-  //     icons,
-  //   }).then(() => {
-  //     const noDone = this.props.icons.filter((icon) => (
-  //       !(icon.name && icon.fontClass)
-  //     ));
-  //     if (!noDone.length) {
-  //       this.props.push('/upload');
-  //     } else {
-  //       this.props.updateAudit(noDone);
-  //     }
-  //   });
-  // }
-  //
-  // @autobind
-  // showUploadDialog() {
-  //   const doneNum = this.calcDone().length;
-  //   const title = '提交上传';
-  //   const content = `还有${this.props.icons.length - doneNum}枚图标未设置完成，确认上传设置完成的${doneNum}枚图标吗？`;
-  //   dialog({
-  //     title,
-  //     content,
-  //     onOk: this.uploadIcons,
-  //   });
-  // }
 
   render() {
     const { index, icons } = this.props;

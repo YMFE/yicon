@@ -74,8 +74,8 @@ export default class Workbench extends Component {
     //   const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
     //   this.props.selectEdit(newIndex);
     // }
-    this.props.deleteIcon(id, icons);
     this.props.selectEdit(index);
+    this.props.deleteIcon(id, icons);
     if (!icons.length) {
       this.props.push('/upload');
     }
@@ -124,6 +124,7 @@ export default class Workbench extends Component {
       if (!noDone.length) {
         this.props.push('/upload');
       } else {
+        this.props.selectEdit(0);
         this.props.updateWorkbench(noDone);
       }
     });

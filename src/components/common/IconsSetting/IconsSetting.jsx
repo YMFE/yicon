@@ -1,7 +1,6 @@
 import './IconsSetting.scss';
 import React, { Component, PropTypes } from 'react';
 // import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import Slick from '../Slick/index.jsx';
 import IconBgGrid from '../IconBgGrid/IconBgGrid';
 import Input from '../Input/Index.jsx';
@@ -101,19 +100,13 @@ class IconsSetting extends Component {
     return (
       <div>
         <h2 className="upload-title">{title}</h2>
-        <div style={{ position: 'relative' }}>
-          <Slick
-            itemData={icons}
-            defaultCurrent={index}
-            onClick={this.select}
-            onDelete={this.delete}
-            noRemoveIcon={isAudit}
-          />
-          <Link to="/upload" className={`upload-icon-btn ${isAudit ? 'hide' : ''}`}>
-            <i className={'iconfont upload-btn-icon'}>&#xf3e1;</i>
-            <p className={'upload-btn-txt'}>上传图标</p>
-          </Link>
-        </div>
+        <Slick
+          itemData={icons}
+          defaultCurrent={index}
+          onClick={this.select}
+          onDelete={this.delete}
+          noRemoveIcon={isAudit}
+        />
         <div className={'upload-setting clearfix'}>
           <button className={'set-pre-next-btn'} onClick={this.turnLeft}>
             <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
