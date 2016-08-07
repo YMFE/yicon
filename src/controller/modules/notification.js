@@ -1,15 +1,26 @@
-import { Icon, Repo, Project, Log, User, Notification } from '../../model';
+import { Icon, Repo, Project, Log, Notification } from '../../model';
 import { analyzeLog } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
 
+export function* getUnreadCount(next) {
+  const { model } = this.state.user;
+  this.state.respond = yield model.countLogs({
+    through: {
+      model: Notification,
+      where: { unread: true },
+    },
+  });
+  yield next;
+}
+
 export function* getAllNotices(next) {
-  const { userId } = this.state.user;
+  const { userId, model } = this.state.user;
   const { pageMixin } = this.state;
   const { type } = this.param;
   if (!type) throw new Error('缺少参数');
 
   let notice = null;
-  const user = yield User.findOne({ where: { id: userId } });
+  const user = model;
   if (type === 'all') {
     notice = yield user.getLogs({
       include: [{

@@ -1,4 +1,5 @@
 import {
+  FETCH_UNREAD_COUNT,
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
@@ -92,6 +93,12 @@ export default (state = initialState, action) => {
         };
       }
       return state;
+    }
+    case FETCH_UNREAD_COUNT: {
+      return {
+        ...state,
+        unReadCount: action.payload.data,
+      };
     }
     default:
       return state;
