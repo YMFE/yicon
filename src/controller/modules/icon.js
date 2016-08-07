@@ -202,6 +202,9 @@ export function* replaceIcon(next) {
   yield next;
 }
 
+/**
+ * 提交图标至待审核状态
+ */
 export function* submitIcons(next) {
   const { repoId, icons } = this.param;
   const { userId } = this.state.user;

@@ -5,26 +5,28 @@ import { versionTools, has, diffArray } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 
-export function* getAllProjects(next) {
-  const { userId } = this.state.user;
-
-  const user = yield User.findOne({ where: { id: userId } });
+function* listProjects(user) {
   const projects = yield user.getProjects();
-  const result = {
-    id: userId,
+  return {
+    id: user.id,
     name: user.name,
     actor: user.actor,
     organization: projects,
   };
+}
 
-  this.state.respond = result;
+export function* getAllProjects(next) {
+  const { userId } = this.state.user;
+
+  const user = yield User.findOne({ where: { id: userId } });
+  this.state.respond = yield listProjects(user);
 
   yield next;
 }
 
 export function* createProject(next) {
   const { projectName, icons } = this.param;
-  const { userId } = this.state.user;
+  const { userId, model } = this.state.user;
   let projectId;
 
   invariant(icons.length, '传入的图标数组不应为空');
@@ -77,6 +79,8 @@ export function* createProject(next) {
       return logRecorder(log, transaction, userId);
     })
   );
+
+  this.state.respond = yield listProjects(model);
 
   yield next;
 }
@@ -398,6 +402,7 @@ export function* getProjectVersion(next) {
 
 export function* deleteProject(next) {
   const { projectId } = this.param;
+  const { model } = this.state.user;
   invariant(!isNaN(projectId), '缺少参数项目 id');
   // TODO: 记录日志和发送通知
   const t = seq.transaction(transaction =>
@@ -407,7 +412,7 @@ export function* deleteProject(next) {
       .then(() => Project.destroy({ where: { id: projectId }, transaction }))
   );
   yield t;
-  this.state.respond = '项目删除成功';
+  this.state.respond = yield listProjects(model);
   yield next;
 }
 

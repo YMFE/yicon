@@ -35,15 +35,20 @@ export default class Project extends Component {
     push: PropTypes.func,
   }
   componentDidMount() {
-    this.props.getPublicProjectList();
-    const current = this.props.currentPublicProjectInfo;
-    const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
-    if (!id && this.props.publicProjectList[0]) {
-      this.props.push(`/projects/${this.props.publicProjectList[0].id}`);
-    }
-    if (!current || id !== parseInt(current.id, 10)) {
-      this.props.getPublicProjectInfo(+id);
-    }
+    this.props.getPublicProjectList().then(ret => {
+      const { organization } = ret.data;
+      const current = this.props.currentPublicProjectInfo;
+      const id = this.props.params.id ? parseInt(this.props.params.id, 10) : '';
+      if (!id && organization) {
+        const [firstProject] = organization;
+        if (firstProject && firstProject.id) {
+          this.props.push(`/user/projects/${firstProject.id}`);
+        }
+      }
+      if (!current || id !== +current.id) {
+        this.props.getPublicProjectInfo(id);
+      }
+    });
   }
   componentWillReceiveProps(nextProps) {
     const current = this.props.currentPublicProjectInfo;

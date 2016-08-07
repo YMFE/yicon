@@ -1,4 +1,5 @@
 import isomFetch from 'isom-fetch';
+import { replace } from 'react-router-redux';
 import {
   FETCH_USERS_PROJECT_LIST,
   FETCH_USERS_PROJECT_INFO,
@@ -142,9 +143,11 @@ export function generateVersion(project) {
 }
 
 export function deleteProject(project) {
-  return {
-    type: DELETE_PROJECT,
-    payload: fetch.delete(`/user/projects/${project.id}`),
+  return dispatch => {
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: fetch.delete(`/user/projects/${project.id}`),
+    }).then(() => dispatch(replace('/user/projects')));
   };
 }
 

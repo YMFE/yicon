@@ -7,7 +7,7 @@ import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import {
   getUsersProjectList,
@@ -42,7 +42,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     deleteProject,
     deletePorjectIcon,
     downloadIcon,
-    push,
+    replace,
   }
 )
 class UserProject extends Component {
@@ -61,7 +61,7 @@ class UserProject extends Component {
     suggestList: PropTypes.array,
     generateVersion: PropTypes.func,
     downloadIcon: PropTypes.func,
-    push: PropTypes.func,
+    replace: PropTypes.func,
   }
 
   static defaultProps ={
@@ -79,12 +79,13 @@ class UserProject extends Component {
   }
   componentDidMount() {
     this.props.getUsersProjectList().then(ret => {
+      const { organization } = ret.data;
       const id = this.props.params.id ? +this.props.params.id : '';
       const current = this.props.currentUserProjectInfo;
-      if (!id && ret.data.organization) {
-        const [firstProject] = ret.data.organization;
+      if (!id && organization) {
+        const [firstProject] = organization;
         if (firstProject && firstProject.id) {
-          this.props.push(`/user/projects/${firstProject.id}`);
+          this.props.replace(`/user/projects/${firstProject.id}`);
         }
       }
       if (!current || id !== +current.id) {
@@ -106,7 +107,7 @@ class UserProject extends Component {
       });
     }
     if (!nextId && this.props.usersProjectList[0]) {
-      this.props.push(`/user/projects/${this.props.usersProjectList[0].id}`);
+      this.props.replace(`/user/projects/${this.props.usersProjectList[0].id}`);
       return;
     }
     if (nextId !== this.props.params.id) {
