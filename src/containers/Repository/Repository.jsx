@@ -117,7 +117,7 @@ export default class Repository extends Component {
       <div className="repository">
         <SubTitle tit={`${name}图标库`}>
           <div className="sub-title-chil">
-            <span className="count"><b className="num">{totalPage}</b>icons</span>
+            <span className="count"><b className="num">{totalPage || 0}</b>icons</span>
             <span className="powerby">管理员:</span>
             <span className="name">{admin}</span>
             <div className="tool-content">
