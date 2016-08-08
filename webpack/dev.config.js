@@ -43,7 +43,7 @@ module.exports = {
       // ] },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?minimize!postcss!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
       },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
@@ -55,7 +55,6 @@ module.exports = {
     ]
   },
   progress: true,
-  postcss: [autoprefixer],
   resolve: {
     modulesDirectories: [
       'src',
@@ -73,10 +72,7 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
-    new ExtractTextPlugin(
-      'style@[contenthash:8].css',
-      { allChunks: false }
-    ),
+    new ExtractTextPlugin('style.css'),
     webpackIsomorphicToolsPlugin.development(),
   ]
 };
