@@ -99,7 +99,7 @@ export default (state = initialState, action) => {
     case SAVE_TO_NEW_PROJECT: {
       return {
         ...state,
-        usersProject: action.payload.data.organization,
+        // usersProject: action.payload.data.organization,
       };
     }
 
