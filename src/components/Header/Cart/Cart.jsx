@@ -64,13 +64,6 @@ class Cart extends Component {
   componentDidMount() {
     this.props.getIconsInLocalStorage();
   }
-  //
-  // @autobind
-  // handleRequestClose() {
-  //   this.setState({
-  //     isShow: false,
-  //   });
-  // }
 
   @autobind
   shiftCartList(e, isOpen) {

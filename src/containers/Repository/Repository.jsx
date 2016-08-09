@@ -23,7 +23,6 @@ const pageSize = 64;
 @connect(
   state => ({
     currRepository: state.repository.currRepository,
-    iconSize: state.repository.iconSize,
   }),
   {
     fetchRepositoryData,
@@ -41,7 +40,6 @@ export default class Repository extends Component {
     resetIconSize: PropTypes.func,
     getIconDetail: PropTypes.func,
     editIconStyle: PropTypes.func,
-    iconSize: PropTypes.number,
     currRepository: PropTypes.object,
     params: PropTypes.object,
     push: PropTypes.func,
@@ -59,7 +57,8 @@ export default class Repository extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.props.fetchRepositoryData(nextProps.params.id, 1);
-      this.props.resetIconSize();
+      // this.props.resetIconSize();
+      this.refs.myslider.getWrappedInstance().reset();
     }
   }
 
@@ -138,7 +137,7 @@ export default class Repository extends Component {
                   查看日志
                 </Link>
               </div>
-              <SliderSize />
+              <SliderSize ref="myslider" />
             </div>
           </div>
         </SubTitle>
