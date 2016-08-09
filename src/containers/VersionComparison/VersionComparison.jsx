@@ -166,20 +166,19 @@ export default class VersionComparison extends Component {
                   个图标</span>
                 </div>
                 <div className="clearfix yicon-myiconvs-info">
-                  <div className="icon-detail-item">
                   {
                     this.props.comparisonResult.deleted.map((icon, index) => (
-                      <DesIcon
-                        key={index}
-                        name={icon.name}
-                        code={`&#${icon.code.toString(16)}`}
-                        showCode
-                        iconPath={icon.path}
-                        iconSize={this.props.iconSize}
-                      />
+                      <div className="icon-detail-item" key={index}>
+                        <DesIcon
+                          name={icon.name}
+                          code={`&#${icon.code.toString(16)}`}
+                          showCode
+                          iconPath={icon.path}
+                          iconSize={this.props.iconSize}
+                        />
+                      </div>
                     ))
                   }
-                  </div>
                 </div>
                 <div className="yicon-myiconvs-title">
                   <i className="iconfont">&#xf515;</i>
@@ -190,9 +189,8 @@ export default class VersionComparison extends Component {
                 <div className="clearfix yicon-myiconvs-info">
                   {
                     this.props.comparisonResult.added.map((icon, index) => (
-                      <div className="icon-detail-item">
+                      <div className="icon-detail-item" key={index}>
                         <DesIcon
-                          key={index}
                           name={icon.name}
                           code={`&#${icon.code.toString(16)}`}
                           showCode
