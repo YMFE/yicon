@@ -17,7 +17,7 @@ class Search extends Component {
 
   @autobind
   searchIcon(e) {
-    const value = e.target.value;
+    const value = encodeURIComponent(e.target.value);
     if (e.keyCode === 13) {
       this.props.dispatch(push(`/search?q=${value}`));
     }

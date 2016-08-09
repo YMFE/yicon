@@ -51,8 +51,9 @@ class SetTag extends Component {
     // }
     if (e.keyCode === 13) {
       const { tags } = this.state;
-      if (this.filter(tag)) {
-        const newTags = tags ? `${tags},${tag}` : tag;
+      const tagsTrim = this.filter(tag);
+      if (this.validate(tagsTrim)) {
+        const newTags = tags ? `${tags},${tagsTrim}` : tagsTrim;
         this.setState({
           tags: newTags,
         });
