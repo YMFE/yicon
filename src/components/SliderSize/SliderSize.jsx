@@ -28,7 +28,7 @@ class SliderSize extends Component {
             min={16}
             max={64}
             step={1}
-            defaultValue={64}
+            defaultValue={1}
             value={iconSize}
             onChange={this.changeSize}
           />

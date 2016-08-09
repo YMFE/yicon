@@ -21,4 +21,5 @@ SubTitle.propTypes = {
   tit: PropTypes.string,
   children: PropTypes.element,
 };
+
 export default SubTitle;
