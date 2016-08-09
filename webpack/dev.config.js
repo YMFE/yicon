@@ -32,7 +32,12 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      { test: /\.scss$/, loader: 'style!css?&localIdentName=[path][name]-[local]!postcss?autoprefixer!sass?outputStyle=expanded' },
+      { test: /\.scss$/, loaders: [
+        'style',
+        'css?localIdentName=[path][name]-[local]',
+        'postcss',
+        'sass?outputStyle=expanded',
+      ] },
       // {
       //   test: /\.scss$/,
       //   loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
@@ -64,6 +69,7 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
+    new ExtractTextPlugin('style.css'),
     webpackIsomorphicToolsPlugin.development(),
   ]
 };

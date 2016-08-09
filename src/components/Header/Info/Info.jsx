@@ -6,24 +6,30 @@ import React, { Component, PropTypes } from 'react';
 import { fetchUnreadNotification } from '../../../actions/notification';
 
 @connect(
-  state => ({ infoCount: state.user.notification.unReadCount }),
+  state => ({
+    userInfo: state.user.info,
+    infoCount: state.user.notification.unReadCount,
+  }),
   { fetchUnreadNotification }
 )
 class Info extends Component {
   static propTypes = {
     infoCount: PropTypes.number,
     fetchUnreadNotification: PropTypes.func,
+    userInfo: PropTypes.object,
   }
 
   componentDidMount() {
-    this.props.fetchUnreadNotification();
-    this.pulseId = setInterval(() => {
+    if (this.props.userInfo.login) {
       this.props.fetchUnreadNotification();
-    }, 30 * 1000);
+      this.pulseId = setInterval(() => {
+        this.props.fetchUnreadNotification();
+      }, 30 * 1000);
+    }
   }
 
   componentWillUnmount() {
-    clearInterval(this.pulseId);
+    if (this.pulseId) clearInterval(this.pulseId);
   }
 
   render() {

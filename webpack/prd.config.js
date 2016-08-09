@@ -57,17 +57,20 @@ module.exports = {
     new CleanPlugin([assetsPath], { root: projectRootPath }),
     new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: false }),
     new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      },
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: false,
-      __DEVTOOLS__: true
+      __DEVTOOLS__: false,
     }),
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: true
       }
     }),
     webpackIsomorphicToolsPlugin,

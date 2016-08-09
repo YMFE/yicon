@@ -23,6 +23,7 @@ import {
 } from '../../../actions/icon';
 @connect(
   state => ({
+    userInfo: state.user.info,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
     iconsInCart: state.cart.iconsInCart,
     isShowCart: state.cart.isShowCartList,
@@ -58,7 +59,9 @@ class Cart extends Component {
     this.props.getIconsInCart({
       icons: iconsInLocalStorage,
     });
-    this.props.getUsersProjectList();
+    if (this.props.userInfo.login) {
+      this.props.getUsersProjectList();
+    }
   }
 
   componentDidMount() {
@@ -197,6 +200,7 @@ Cart.propTypes = {
     }),
     PropTypes.Object,
   ]),
+  userInfo: PropTypes.object,
 };
 
 export default Cart;
