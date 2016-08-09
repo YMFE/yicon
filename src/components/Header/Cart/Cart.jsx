@@ -130,11 +130,7 @@ class Cart extends Component {
   }
   @autobind
   download() {
-    const icons = this.props.iconsInCart.map((item) => ({
-      id: item.id,
-      path: item.path,
-      name: item.name,
-    }));
+    const icons = this.props.iconsInCart.map((item) => (item.id));
     this.props.downloadIcon({
       icons,
     });

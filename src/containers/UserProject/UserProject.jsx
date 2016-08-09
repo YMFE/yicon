@@ -259,6 +259,7 @@ class UserProject extends Component {
           onCancel={this.shiftShowManageMembers}
           suggestList={this.props.suggestList}
           members={current.members}
+          id={current.id}
           ref={
             (node) => {
               this.ManageMembersEle = node;

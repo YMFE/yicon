@@ -1,4 +1,5 @@
 import isomFetch from 'isom-fetch';
+import { push } from 'react-router-redux';
 import {
   FETCH_USERS_PROJECT_LIST,
   FETCH_USERS_PROJECT_INFO,
@@ -99,12 +100,19 @@ export function getPublicProjectInfo(id, version) {
 }
 
 export function saveToNewProject(projectName, icons) {
-  return {
-    type: SAVE_TO_NEW_PROJECT,
-    payload: fetch.post('/user/projects', {
-      projectName,
-      icons: getIconList(icons),
-    }),
+  return (dispatch) => {
+    dispatch({
+      type: SAVE_TO_NEW_PROJECT,
+      payload: fetch.post('/user/projects', {
+        projectName,
+        icons: getIconList(icons),
+      }).then((data) => {
+        if (data.res) {
+          dispatch(push(`/user/projects/${data.data.id}`));
+        }
+        return data;
+      }),
+    });
   };
 }
 
@@ -142,9 +150,16 @@ export function generateVersion(project) {
 }
 
 export function deleteProject(project) {
-  return {
-    type: DELETE_PROJECT,
-    payload: fetch.delete(`/user/projects/${project.id}`),
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: fetch.delete(`/user/projects/${project.id}`).then((data) => {
+        if (data.res) {
+          dispatch(getUsersProjectList());
+          dispatch(push('/user/projects/'));
+        }
+      }),
+    });
   };
 }
 
@@ -176,7 +191,6 @@ export function deletePorjectIcon(id, icon) {
           dispatch(getUserProjectInfo(id));
         }
       }),
-      id,
     });
   };
 }
