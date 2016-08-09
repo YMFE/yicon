@@ -1,9 +1,14 @@
 import './Project.scss';
 import React, { Component, PropTypes } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { autobind } from 'core-decorators';
+import { getIconDetail, editIconStyle } from '../../actions/icon';
+import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import Dialog from '../../components/common/Dialog/Index.jsx';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 
@@ -20,6 +25,8 @@ import {
   {
     getPublicProjectList,
     getPublicProjectInfo,
+    getIconDetail,
+    editIconStyle,
     push,
   }
 )
@@ -31,6 +38,14 @@ export default class Project extends Component {
     getPublicProjectList: PropTypes.func,
     getPublicProjectInfo: PropTypes.func,
     push: PropTypes.func,
+    getIconDetail: PropTypes.func,
+    editIconStyle: PropTypes.func,
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowDownloadDialog: false,
+    };
   }
   componentDidMount() {
     this.props.getPublicProjectList();
@@ -53,6 +68,34 @@ export default class Project extends Component {
       this.props.getPublicProjectInfo(nextId);
     }
   }
+  @autobind
+  handleSingleIconDownload(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.props.editIconStyle({ color: '#34475e', size: 255 });
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
+  }
+  @autobind
+  downloadAllIcons() {
+    const { id } = this.props.params;
+    axios
+      .post('/api/download/font', { type: 'project', id })
+      .then(({ data }) => {
+        if (data.res) {
+          window.location.href = `/download/${data.data}`;
+        }
+      });
+  }
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowDownloadDialog: isShow,
+    });
+  }
   render() {
     const list = this.props.publicProjectList;
     const current = this.props.currentPublicProjectInfo;
@@ -71,6 +114,7 @@ export default class Project extends Component {
             icon={icon}
             key={index}
             toolBtns={['cart', 'copy', 'download', 'copytip']}
+            download={this.handleSingleIconDownload(item.id)}
           />
         );
       });
@@ -106,7 +150,7 @@ export default class Project extends Component {
                 <h3>{current.name}</h3>
               </header>
               <div className="tool">
-                <a href="#" className="options-btns btns-blue">
+                <a href="#" className="options-btns btns-blue" onClick={this.downloadAllIcons}>
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
                 </a>
@@ -116,6 +160,13 @@ export default class Project extends Component {
               {iconList}
             </div>
           </Main>
+          <Dialog
+            empty
+            visible={this.state.isShowDownloadDialog}
+            getShow={this.dialogUpdateShow}
+          >
+            <DownloadDialog />
+          </Dialog>
         </Content>
       </div>
     );
