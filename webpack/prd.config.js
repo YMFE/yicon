@@ -55,17 +55,14 @@ module.exports = {
   },
   plugins: [
     new CleanPlugin([assetsPath], { root: projectRootPath }),
-    new webpack.IgnorePlugin(/webpack-stats\.json$/),
+    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: false }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: false,
       __DEVTOOLS__: true
     }),
-    new ExtractTextPlugin(
-      'style@[contenthash:8].css',
-      { allChunks: false }
-    ),
+    new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({

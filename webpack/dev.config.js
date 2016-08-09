@@ -32,19 +32,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      // { test: /\.scss$/, loaders: [
-      //   'style',
-      //   'css' +
-      //     '?modules' +
-      //     '&localIdentName=[path][name]-[local]',
-      //   'postcss',
-      //   'sass' +
-      //     '?outputStyle=expanded',
-      // ] },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
-      },
+      { test: /\.scss$/, loader: 'style!css?&localIdentName=[path][name]-[local]!postcss?autoprefixer!sass?outputStyle=expanded' },
+      // {
+      //   test: /\.scss$/,
+      //   loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
+      // },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
@@ -72,7 +64,6 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
-    new ExtractTextPlugin('style.css'),
     webpackIsomorphicToolsPlugin.development(),
   ]
 };

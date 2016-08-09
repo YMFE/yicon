@@ -12,13 +12,12 @@ const Content = props => {
       </div>
       <footer>
         <span><a>去哪儿网UED</a></span>
-        <span><a>FEKit</a></span>
-        <span><a>Avalon</a></span>
-        <span><a>Oniui</a></span>
+        <span><a>React</a></span>
+        <span><a>Redux</a></span>
+        <span><a>KOA</a></span>
         <p className="copyright">
           <i className="copyright-ico">©</i>
-          <em className="copyright-year">2003-2016</em>
-          qunar.com 版权所有
+          <em className="copyright-year">2003-2016</em>&nbsp;qunar.com 版权所有
         </p>
       </footer>
     </div>
