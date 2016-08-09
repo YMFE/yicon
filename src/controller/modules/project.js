@@ -355,7 +355,7 @@ export function* diffVersion(next) {
     lowVersion = temp;
   }
 
-  let result = { deleted: [], added: [] };
+  let result = { deleted: [], added: [], replaced: [] };
   if (hVersion !== lVersion) {
     const icons = yield project.getIcons({
       through: {
@@ -376,11 +376,12 @@ export function* diffVersion(next) {
         lvIcons.push(v);
       }
     });
-    result = diffArray(lvIcons, hvIcons);
+    result = diffArray(lvIcons, hvIcons, true);
   }
   this.state.respond = this.state.respond || {};
   this.state.respond.deleted = result.deleted;
   this.state.respond.added = result.added;
+  this.state.respond.replaced = result.replaced;
   yield next;
 }
 

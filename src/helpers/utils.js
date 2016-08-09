@@ -46,9 +46,20 @@ export function has(Arr, o) {
   return Arr.some(v => v === o);
 }
 
-export function diffArray(oldArr, newArr) {
+export function diffArray(oldArr, newArr, getReplaced = false) {
+  const replaced = [];
   const deleted = oldArr.filter(v => !has(newArr, v));
-  const added = newArr.filter(v => !has(oldArr, v));
+  const added = newArr.filter(v => {
+    if (getReplaced) {
+      oldArr.forEach(value => {
+        if (v.oldId === value.id) {
+          replaced.push({ old: value, new: v });
+        }
+      });
+    }
+    return !has(oldArr, v);
+  });
+  if (getReplaced) return { deleted, added, replaced };
   return { deleted, added };
 }
 
