@@ -8,6 +8,8 @@ import { Link } from 'react-router';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
 import { replace } from 'react-router-redux';
+import Dialog from '../../components/common/Dialog/Index.jsx';
+import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import {
   getUsersProjectList,
@@ -20,7 +22,8 @@ import {
   deletePorjectIcon,
 } from '../../actions/project';
 import {
-  downloadIcon,
+  getIconDetail,
+  editIconStyle,
 } from '../../actions/icon';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
@@ -41,8 +44,9 @@ import GenerateVersion from './GenerateVersion.jsx';
     generateVersion,
     deleteProject,
     deletePorjectIcon,
-    downloadIcon,
     replace,
+    getIconDetail,
+    editIconStyle,
   }
 )
 class UserProject extends Component {
@@ -58,9 +62,10 @@ class UserProject extends Component {
     deletePorjectIcon: PropTypes.func,
     patchUserProject: PropTypes.func,
     patchProjectMemeber: PropTypes.func,
+    editIconStyle: PropTypes.func,
+    getIconDetail: PropTypes.func,
     suggestList: PropTypes.array,
     generateVersion: PropTypes.func,
-    downloadIcon: PropTypes.func,
     replace: PropTypes.func,
   }
 
@@ -74,6 +79,7 @@ class UserProject extends Component {
       showManageMember: false,
       showGenerateVersion: false,
       showHistoryVersion: false,
+      isShowDownloadDialog: false,
       generateVersion: 'revision',
     };
   }
@@ -113,6 +119,17 @@ class UserProject extends Component {
     if (nextId !== this.props.params.id) {
       this.props.getUserProjectInfo(nextId);
     }
+  }
+  @autobind
+  handleSingleIconDownload(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.props.editIconStyle({ color: '#34475e', size: 255 });
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
   }
   @autobind
   updateProjectDetail(result) {
@@ -207,6 +224,7 @@ class UserProject extends Component {
               [icons]
             );
           }}
+          download={this.handleSingleIconDownload(item.id)}
         />
       ));
     }
@@ -255,6 +273,14 @@ class UserProject extends Component {
           value={this.state.generateVersion}
           showGenerateVersion={this.state.showGenerateVersion}
         />,
+        <Dialog
+          key={4}
+          empty
+          visible={this.state.isShowDownloadDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <DownloadDialog />
+        </Dialog>,
       ];
     }
     return dialogList;

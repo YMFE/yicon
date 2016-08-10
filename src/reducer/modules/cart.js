@@ -5,7 +5,6 @@ import {
   FETCH_CART_DETAIL,
   TOGGLE_CART_LIST_DISPLAY,
   DUMP_ICON_LOCALSTORAGE,
-  CHANGE_CART_SAVE_TYPE,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -52,13 +51,6 @@ export default (state = initialState, action) => {
         ...state,
         iconsInCart: [],
         iconsInLocalStorage: [],
-      };
-    }
-    case CHANGE_CART_SAVE_TYPE: {
-      //  TODO 判断登陆的逻辑
-      return {
-        ...state,
-        saveType: action.payload.saveType,
       };
     }
     default:

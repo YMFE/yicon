@@ -5,7 +5,6 @@ import {
   ADD_ICON_TO_CART,
   DELETE_ICON_IN_CART,
   DUMP_ICON_LOCALSTORAGE,
-  CHANGE_CART_SAVE_TYPE,
   TOGGLE_CART_LIST_DISPLAY,
 } from '../constants/actionTypes';
 
@@ -97,14 +96,5 @@ export function toggleCartListDisplay(isShowCartList) {
         isShowCartList,
       },
     });
-  };
-}
-
-export function changeCartSaveType(type) {
-  return {
-    type: CHANGE_CART_SAVE_TYPE,
-    payload: {
-      saveType: type,
-    },
   };
 }
