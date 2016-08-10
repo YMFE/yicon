@@ -42,6 +42,11 @@ class ManageMembers extends Component {
           this.members.push(item);
         }
       });
+    } else {
+      this.members = props.members.slice(0);
+      this.setState({
+        members: this.members,
+      });
     }
     // console.log(`this.members:${this.members}`);
   }
