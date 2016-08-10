@@ -9,6 +9,7 @@ import SearchList from '../../components/SearchList/SearchList';
 
 class ManageMembers extends Component {
   static propTypes = {
+    id: PropTypes.number,
     showManageMember: PropTypes.bool,
     members: PropTypes.array,
     suggestList: PropTypes.array,
@@ -32,14 +33,21 @@ class ManageMembers extends Component {
     // console.log(nextProps.suggestList);
   // }
   componentWillReceiveProps(props) {
-    props.members.forEach(item => {
-      const notExist = this.state.members.every(itm =>
-        (parseInt(itm.id, 10) !== parseInt(item.id, 10))
-      );
-      if (notExist) {
-        this.members.push(item);
-      }
-    });
+    if (this.props.id === props.id) {
+      props.members.forEach(item => {
+        const notExist = this.state.members.every(itm =>
+          (parseInt(itm.id, 10) !== parseInt(item.id, 10))
+        );
+        if (notExist) {
+          this.members.push(item);
+        }
+      });
+    } else {
+      this.members = props.members.slice(0);
+      this.setState({
+        members: this.members,
+      });
+    }
     // console.log(`this.members:${this.members}`);
   }
   componentDidUpdate() {

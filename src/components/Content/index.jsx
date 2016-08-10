@@ -11,10 +11,10 @@ const Content = props => {
         {props.children}
       </div>
       <footer>
-        <span><a>去哪儿网UED</a></span>
-        <span><a>FEKit</a></span>
-        <span><a>Avalon</a></span>
-        <span><a>Oniui</a></span>
+        <span><a href="http://ued.qunar.com/">去哪儿网UED</a></span>
+        <span><a href="http://ued.qunar.com/fekit/">FEKit</a></span>
+        <span><a href="http://avalonjs.github.io/">Avalon</a></span>
+        <span><a href="http://ued.qunar.com/oniui/home.htm">Oniui</a></span>
         <p className="copyright">
           <i className="copyright-ico">©</i>
           <em className="copyright-year">2003-2016</em>

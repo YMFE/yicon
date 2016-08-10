@@ -211,6 +211,7 @@ class UserProject extends Component {
   }
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
+    if (!current) return null;
     let iconList = null;
     if (current.icons && current.icons.length > 0) {
       iconList = current.icons.map((item, index) => (
@@ -259,6 +260,7 @@ class UserProject extends Component {
           onCancel={this.shiftShowManageMembers}
           suggestList={this.props.suggestList}
           members={current.members}
+          id={current.id}
           ref={
             (node) => {
               this.ManageMembersEle = node;
