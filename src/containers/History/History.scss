@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-.yicon-myicon {
+.yicon-history {
 	&-info {
 		background-color: #fff;
 		border-bottom: 1px solid #dadcde;
@@ -131,6 +131,13 @@
 					padding: 15px 0 24px;
 					overflow: hidden;
 					border-bottom:1px solid #d8d9d9;
+					.version{
+				    height: 36px;
+				    line-height: 36px;
+						float: left;
+				    font-size: 14px;
+						color: #616161;
+					}
 					.options-btns{
 						float: left;
 						margin-right: 10px;
@@ -170,86 +177,11 @@
 						float: left;
 						margin-right: 10px;
 					}
-					.vs{
-						float: left;
-						font-size:14px;
-					 	font-style:normal;
-					 	line-height: 38px;
-					 	padding-right: 10px;
-					 	color:#616161;
-					}
 				}
-
 			}
-			.yicon-myicon-list {
-				/*margin-left: -18px;*/
-				width: 865px;
-			}
-			.no-data {
-				padding: 0 40px;
+			.myicon-list{
+				margin-bottom: 16px;
 			}
 		}
-
-
 	}
-
-}
-
-.yicon-myicon-history,.yicon-myiconvs{
-
-	.icon-detail-item{
-		.tool{
-			visibility: hidden;
-		}
-	}
-	.icon-detail-item:hover .info, .icon-detail-item.active .info{
-		border:none;
-		padding:13px;
-		.icon{
-			color:#555f6e;
-		}
-	}
-}
-
-.yicon-myiconvs{
-	&-title{
-		font-size:16px;
-		color:#616161;
-		padding:0 40px;
-		line-height: 36px;
-		.iconfont{
-			font-size: 18px;
-			vertical-align: top;
-			line-height: 2;
-		}
-	}
-	.yicon-myiconvs-info{
-		position: relative;
-		padding-bottom: 20px;
-		.icon-detail-item{
-			padding-bottom: 33px;
-		}
-    .options{
-        	clear: both;
-        }
-		.operate-icon{
-			float: left;
-			font-size: 30px;
-			color:#9e9e9e;
-			margin-top: 40px;
-		}
-	}
-	.yicon-myiconvs-info:before{
-		content:"";
-		width:780px;
-		margin:0 40px;
-		border-bottom:1px solid #d8dbdd;
-		position:absolute;
-		bottom:20px;
-		left: 0;
-	}
-}
-
-li.version-item{
-	line-height: 36px;
 }

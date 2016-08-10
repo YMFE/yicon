@@ -20,6 +20,7 @@ import {
   generateVersion,
   deleteProject,
   deletePorjectIcon,
+  fetchAllVersions,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -34,6 +35,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     usersProjectList: state.project.usersProjectList,
     currentUserProjectInfo: state.project.currentUserProjectInfo,
     suggestList: state.project.memberSuggestList,
+    projectInfo: state.project.projectInfo,
   }),
   {
     getUsersProjectList,
@@ -44,6 +46,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     generateVersion,
     deleteProject,
     deletePorjectIcon,
+    fetchAllVersions,
     push,
     getIconDetail,
     editIconStyle,
@@ -60,11 +63,13 @@ class UserProject extends Component {
     getUserProjectInfo: PropTypes.func,
     deleteProject: PropTypes.func,
     deletePorjectIcon: PropTypes.func,
+    fetchAllVersions: PropTypes.func,
     patchUserProject: PropTypes.func,
     patchProjectMemeber: PropTypes.func,
     editIconStyle: PropTypes.func,
     getIconDetail: PropTypes.func,
     suggestList: PropTypes.array,
+    projectInfo: PropTypes.object,
     generateVersion: PropTypes.func,
     push: PropTypes.func,
   }
@@ -82,6 +87,10 @@ class UserProject extends Component {
       isShowDownloadDialog: false,
       generateVersion: 'revision',
     };
+  }
+  componentWillMount() {
+    const id = this.props.params.id;
+    this.props.fetchAllVersions(id);
   }
   componentDidMount() {
     this.props.getUsersProjectList().then(ret => {
@@ -117,6 +126,7 @@ class UserProject extends Component {
     }
     if (nextId !== this.props.params.id) {
       this.props.getUserProjectInfo(nextId);
+      this.props.fetchAllVersions(nextId);
     }
   }
   @autobind
@@ -291,6 +301,7 @@ class UserProject extends Component {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
     const id = this.props.params.id;
+    const versions = this.props.projectInfo.versions;
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
     return (
@@ -366,10 +377,12 @@ class UserProject extends Component {
                   操作日志
                 </Link>
                 <Link
-                  to={`/user/projects/${id}/comparison`}
-                  className="options-btns btns-default"
+                  to={`/user/projects/${id}/history`}
+                  className={
+                    `options-btns btns-default ${versions.length <= 1 ? 'btn-history-hidden' : ''}`
+                  }
                 >
-                  版本对比
+                  历史版本
                 </Link>
               </div>
             </div>
