@@ -84,8 +84,8 @@ class UserProject extends Component {
     };
   }
   componentDidMount() {
-    this.props.getUsersProjectList().then(ret => {
-      const { organization } = ret.data;
+    this.props.getUsersProjectList().then(action => {
+      const { organization } = action.payload.data;
       const id = this.props.params.id ? +this.props.params.id : '';
       const current = this.props.currentUserProjectInfo;
       if (!id && organization) {
