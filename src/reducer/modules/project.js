@@ -111,9 +111,11 @@ export default (state = initialState, action) => {
     }
 
     case DELETE_PROJECT: {
-      // if (action.payload.res) {
-      //   push('/user/project');
-      // }
+      if (action.payload.res) {
+        return {
+          ...state,
+        };
+      }
       return state;
     }
 

@@ -1,5 +1,6 @@
 import isomFetch from 'isom-fetch';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
+
 import {
   FETCH_USERS_PROJECT_LIST,
   FETCH_USERS_PROJECT_INFO,
@@ -149,7 +150,7 @@ export function deleteProject(project) {
       payload: fetch.delete(`/user/projects/${project.id}`).then((data) => {
         if (data.res) {
           dispatch(getUsersProjectList());
-          dispatch(push('/user/projects/'));
+          dispatch(replace('/user/projects/'));
         }
       }),
     });

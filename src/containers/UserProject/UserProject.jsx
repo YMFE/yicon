@@ -1,15 +1,15 @@
 import './UserProject.scss';
-import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
+import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
-import { push } from 'react-router-redux';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import {
   getUsersProjectList,
@@ -44,7 +44,7 @@ import GenerateVersion from './GenerateVersion.jsx';
     generateVersion,
     deleteProject,
     deletePorjectIcon,
-    push,
+    replace,
     getIconDetail,
     editIconStyle,
   }
@@ -66,7 +66,7 @@ class UserProject extends Component {
     getIconDetail: PropTypes.func,
     suggestList: PropTypes.array,
     generateVersion: PropTypes.func,
-    push: PropTypes.func,
+    replace: PropTypes.func,
   }
 
   static defaultProps ={
@@ -85,12 +85,13 @@ class UserProject extends Component {
   }
   componentDidMount() {
     this.props.getUsersProjectList().then(ret => {
+      const { organization } = ret.data;
       const id = this.props.params.id ? +this.props.params.id : '';
       const current = this.props.currentUserProjectInfo;
-      if (!id && ret.data.organization) {
-        const [firstProject] = ret.data.organization;
+      if (!id && organization) {
+        const [firstProject] = organization;
         if (firstProject && firstProject.id) {
-          this.props.push(`/user/projects/${firstProject.id}`);
+          this.props.replace(`/user/projects/${firstProject.id}`);
         }
       }
       if (!current || id !== +current.id) {
@@ -112,7 +113,7 @@ class UserProject extends Component {
       });
     }
     if (!nextId && this.props.usersProjectList[0]) {
-      this.props.push(`/user/projects/${this.props.usersProjectList[0].id}`);
+      this.props.replace(`/user/projects/${this.props.usersProjectList[0].id}`);
       return;
     }
     if (nextId !== this.props.params.id) {
@@ -197,17 +198,16 @@ class UserProject extends Component {
     this.shiftShowGenerateVersion();
   }
   @autobind
-  downloadAllIcon() {
-    const { id, version } = this.props.currentUserProjectInfo;
-    axios.post('/api/download/font', {
-      type: 'project',
-      id,
-      version,
-    }).then(({ data }) => {
-      if (data.res) {
-        window.location.href = `/download/${data.data}`;
-      }
-    });
+  downloadAllIcons() {
+    const { id } = this.props.params;
+    const { version } = this.props.currentUserProjectInfo;
+    axios
+      .post('/api/download/font', { type: 'project', id, version })
+      .then(({ data }) => {
+        if (data.res) {
+          window.location.href = `/download/${data.data}`;
+        }
+      });
   }
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
@@ -344,21 +344,19 @@ class UserProject extends Component {
               : null
               }
               <div className="tool">
-                <a
-                  href="#"
+                <button
                   className="options-btns btns-blue"
-                  onClick={this.downloadAllIcon}
+                  onClick={this.downloadAllIcons}
                 >
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
-                </a>
-                <a
-                  href="#"
+                </button>
+                <button
                   className="options-btns btns-blue"
                   onClick={() => { this.shiftShowGenerateVersion(true); }}
                 >
                   生成版本
-                </a>
+                </button>
                 <Link
                   to={`/user/projects/${id}/logs`}
                   className="options-btns btns-default"
