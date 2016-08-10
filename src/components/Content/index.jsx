@@ -17,8 +17,7 @@ const Content = props => {
         <span><a href="http://ued.qunar.com/oniui/home.htm">Oniui</a></span>
         <p className="copyright">
           <i className="copyright-ico">©</i>
-          <em className="copyright-year">2003-2016</em>
-          qunar.com 版权所有
+          <em className="copyright-year">2003-2016</em>&nbsp;qunar.com 版权所有
         </p>
       </footer>
     </div>

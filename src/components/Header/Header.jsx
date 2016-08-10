@@ -8,7 +8,7 @@ import ToolUserName from './ToolUserName/ToolUserName.jsx';
 import Search from './Search/Search';
 import Logo from './Logo/Logo';
 import Cart from './Cart/Cart';
-import Info from './Info/';
+import Info from './Info/Info';
 import classnames from 'classnames';
 // import { autobind } from 'core-decorators';
 import { fetchTinyRepository } from '../../actions/repository';
@@ -31,7 +31,6 @@ const iconManageList = [
   (state) => ({
     isShowCartList: state.cart.toggleCartListDisplay,
     searchValue: state.search.value,
-    infoCont: state.user.notification.allInfo.unReadCount,
     allReposotoryList: state.repository.allReposotoryList,
   }),
   {
@@ -68,7 +67,7 @@ class Header extends Component {
           <div className="quick-menu nav-menu-info">
             <ul className="clearfix">
               <ToolUserName />
-              <Info infoCont={this.props.infoCont} />
+              <Info />
               <Cart
                 isShowCart={this.props.isShowCartList}
               />
@@ -100,7 +99,6 @@ Header.propTypes = {
   allReposotoryList: PropTypes.array,
   fetchSearchResult: PropTypes.func,
   fetchTinyRepository: PropTypes.func,
-  infoCont: PropTypes.number,
 };
 
 export default Header;

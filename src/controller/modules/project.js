@@ -5,19 +5,21 @@ import { versionTools, has, diffArray } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 
-export function* getAllProjects(next) {
-  const { userId } = this.state.user;
-
-  const user = yield User.findOne({ where: { id: userId } });
+function* listProjects(user) {
   const projects = yield user.getProjects();
-  const result = {
-    id: userId,
+  return {
+    id: user.id,
     name: user.name,
     actor: user.actor,
     organization: projects,
   };
+}
 
-  this.state.respond = result;
+export function* getAllProjects(next) {
+  const { userId } = this.state.user;
+
+  const user = yield User.findOne({ where: { id: userId } });
+  this.state.respond = yield listProjects(user);
 
   yield next;
 }
@@ -77,6 +79,8 @@ export function* createProject(next) {
       return logRecorder(log, transaction, userId);
     })
   );
+
+  this.state.respond = { projectId };
 
   yield next;
 }
@@ -195,12 +199,8 @@ export function* addProjectIcon(next) {
 
   const icon = icons.map(v => v.id);
   const data = icon.map(value => ({ version: '0.0.0', iconId: value, projectId }));
-  const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
-  if (result.length) {
-    this.state.respond = '添加项目图标成功';
-  } else {
-    this.state.respond = '添加的项目图标在项目中均已存在';
-  }
+  yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
+  this.state.respond = { projectId };
 
   const affectedUsers = yield UserProject.findAll({
     where: { projectId },
@@ -399,6 +399,7 @@ export function* getProjectVersion(next) {
 
 export function* deleteProject(next) {
   const { projectId } = this.param;
+  const { model } = this.state.user;
   invariant(!isNaN(projectId), '缺少参数项目 id');
   // TODO: 记录日志和发送通知
   const t = seq.transaction(transaction =>
@@ -408,7 +409,7 @@ export function* deleteProject(next) {
       .then(() => Project.destroy({ where: { id: projectId }, transaction }))
   );
   yield t;
-  this.state.respond = '项目删除成功';
+  this.state.respond = yield listProjects(model);
   yield next;
 }
 

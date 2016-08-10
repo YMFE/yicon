@@ -55,8 +55,9 @@ export function* downloadFont(next) {
         ['code', 'codepoint'],
         ['path', 'd'],
       ],
+      raw: true,
     });
-    foldName = +new Date;
+    foldName = `temporary_${+new Date}`;
     fontName = fontName || 'iconfont';
   } else {
     const model = isRepo ? Repo : Project;
@@ -79,7 +80,7 @@ export function* downloadFont(next) {
       raw: true,
     });
     foldName = `${type}-${instance.id}-${version}`;
-    fontName = fontName || (isRepo ? instance.alias : instance.name);
+    fontName = fontName || (isRepo ? `iconfont${instance.id}` : instance.name);
     if (isRepo) {
       lastModify = +new Date(instance.updatedAt);
     }
