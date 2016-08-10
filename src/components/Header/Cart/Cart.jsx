@@ -104,7 +104,7 @@ class Cart extends Component {
         if (data && data.payload.res) {
           this.dumpIcon();
           this.changeCartSaveType('DEFAULT');
-          this.props.push('/user/projects');
+          this.props.push(`/user/projects/${data.payload.data.id}`);
           this.toggleProjectList();
         }
       });

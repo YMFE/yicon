@@ -100,19 +100,12 @@ export function getPublicProjectInfo(id, version) {
 }
 
 export function saveToNewProject(projectName, icons) {
-  return (dispatch) => {
-    dispatch({
-      type: SAVE_TO_NEW_PROJECT,
-      payload: fetch.post('/user/projects', {
-        projectName,
-        icons: getIconList(icons),
-      }).then((data) => {
-        if (data.res) {
-          dispatch(push(`/user/projects/${data.data.id}`));
-        }
-        return data;
-      }),
-    });
+  return {
+    type: SAVE_TO_NEW_PROJECT,
+    payload: fetch.post('/user/projects', {
+      projectName,
+      icons: getIconList(icons),
+    }),
   };
 }
 
