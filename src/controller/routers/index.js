@@ -29,7 +29,7 @@ down.get('/download/:filename', function* loadFile() {
   const contentTypeMap = {
     zip: 'application/zip',
     png: 'image/png',
-    svg: 'text/xml',
+    svg: 'image/svg+xml',
   };
   const pos = type === 'zip' ? 'font' : type;
 

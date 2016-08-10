@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
 
 import './Upload.scss';
 import Footer from './Footer';
