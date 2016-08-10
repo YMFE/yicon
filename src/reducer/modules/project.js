@@ -96,9 +96,10 @@ export default (state = initialState, action) => {
     }
 
     case SAVE_TO_NEW_PROJECT: {
+      const currentUserProjectInfo = action.payload.data;
       return {
         ...state,
-        // usersProject: action.payload.data.organization,
+        currentUserProjectInfo,
       };
     }
 
@@ -113,7 +114,6 @@ export default (state = initialState, action) => {
       if (action.payload.res) {
         return {
           ...state,
-          usersProject: action.payload.data.organization,
         };
       }
       return state;
