@@ -88,10 +88,6 @@ class UserProject extends Component {
       generateVersion: 'revision',
     };
   }
-  componentWillMount() {
-    const id = this.props.params.id;
-    this.props.fetchAllVersions(id);
-  }
   componentDidMount() {
     this.props.getUsersProjectList().then(ret => {
       const id = this.props.params.id ? +this.props.params.id : '';
@@ -104,6 +100,7 @@ class UserProject extends Component {
       }
       if (!current || id !== +current.id) {
         this.props.getUserProjectInfo(id);
+        this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();
     });
