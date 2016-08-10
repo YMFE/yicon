@@ -148,8 +148,9 @@ export function* uploadReplacingIcon(next) {
  * 将 A 替换为 B，逻辑是：
  * 1. 将 A 除 path 以外的全部信息赋值给 B
  * 2. B 的 oldId 指向 A，A 的 newId 指向 B
- * 3. 将 projectVersion 关联表中所有 0.0.0 且有包含 A 的关联替换成 B
- * 4. 更新大库的 updatedAt
+ * 3. 将 RepoVersion 关联表中所有 0.0.0 且有包含 A 的关联替换成 B
+ * 4. 将 ProjectVersion 关联表中所有 0.0.0 且有包含 A 的关联替换成 B
+ * 5. 更新大库的 updatedAt
  */
 export function* replaceIcon(next) {
   const { fromId, toId } = this.param;
@@ -174,13 +175,26 @@ export function* replaceIcon(next) {
 
   const fromName = from.name;
   const toName = to.name;
-  const { name, fontClass, tags } = from;
+  const { name, fontClass, code, tags } = from;
   const repoVersion = yield RepoVersion.findOne({ iconId: fromId });
 
   yield seq.transaction(transaction =>
-    to.update({ name, fontClass, tags, oldId: fromId }, { transaction })
-    .then(() => from.update({ newId: toId }, { transaction }))
+    to.update({
+      name,
+      fontClass,
+      tags,
+      code,
+      oldId: fromId,
+      applyTime: +new Date,
+      status: iconStatus.RESOLVED,
+    }, { transaction })
+    .then(() => from.update({
+      newId: toId, status: iconStatus.REPLACED,
+    }, { transaction }))
     .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
+    .then(() => RepoVersion.update({ iconId: toId }, {
+      where: { version: '0.0.0', iconId: fromId },
+    }))
     .then(() => ProjectVersion.update({ iconId: toId }, {
       where: { version: '0.0.0', iconId: fromId },
     }))

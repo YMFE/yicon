@@ -11,6 +11,7 @@ import {
   Project,
   ProjectLog,
   Repository,
+  Replacement,
   Transition,
   Search,
   Notification,
@@ -29,10 +30,7 @@ const validate = (type, transition) => (nextState, replace, next) => {
   fetch
     .post(`/validate/${type}`)
     .then(data => {
-      if (!data.res) {
-        replace(`/transition/${transition}`);
-        // window.location.href = `/transition/${transition}`;
-      }
+      if (!data.res) replace(`/transition/${transition}`);
       next();
     })
     .catch(() => next());
@@ -61,27 +59,30 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="upload" component={Upload} /> {/* 上传图标 */}
         <Route path="workbench" component={Workbench} /> {/* 工作台 */}
-        <Route path="user/notifications/projects" /> {/* 项目通知页面 */}
-        <Route path="user/notifications(/system)" component={Notification} /> {/* 大库通知页面 */}
-        <Route path="user/projects" component={UserProject} />
-        <Route path="user/projects/:id(/version/:version)" component={UserProject} />
-        <Route path="user/projects/:id/logs" component={ProjectLog} />
-        <Route path="user/icons" component={Uploaded} />
-        <Route path="user/projects/:id/comparison" component={VersionComparison} />
-        <Route path="user/projects/:id/history" component={History} />
+
+        <Route path="user">
+          <Route path="notifications" component={Notification} /> {/* 通知页面 */}
+          <Route path="projects" component={UserProject} />
+          <Route path="projects/:id(/version/:version)" component={UserProject} />
+          <Route path="projects/:id/logs" component={ProjectLog} />
+          <Route path="icons" component={Uploaded} />
+          <Route path="projects/:id/comparison" component={VersionComparison} />
+          <Route path="user/projects/:id/history" component={History} />
+        </Route>
+
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
-          <Route path="replacement/icon/:id" /> {/* 替换页面 */}
+          <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
           <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
           <Route path="auditing" component={Audit} /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>
 
         {/* 超管用户路由 */}
-        <Route onEnter={requireAdmin}>
-          <Route path="admin/repositories" /> {/* 大库管理 */}
-          <Route path="admin/projects" /> {/* 项目管理 */}
-          <Route path="admin/authority/:type" component={Authority} /> {/* 权限设置 */}
+        <Route path="admin" onEnter={requireAdmin}>
+          <Route path="repositories" /> {/* 大库管理 */}
+          <Route path="projects" /> {/* 项目管理 */}
+          <Route path="authority/:type" component={Authority} /> {/* 权限设置 */}
         </Route>
       </Route>
 

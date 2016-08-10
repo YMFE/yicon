@@ -39,6 +39,16 @@ export const isPlainObject = obj => {
   }
 };
 
+export const parseVersionCompareParam = param => {
+  const reg = /(\d+\.\d+\.\d+)\.\.\.(\d+\.\d+\.\d+)/;
+  const matched = param.match(reg);
+  if (!matched) return null;
+  return {
+    from: matched[1],
+    to: matched[2],
+  };
+};
+
 export function has(Arr, o) {
   if (typeof o === 'object') {
     return Arr.some(v => typeof v === 'object' && v.id === o.id);
