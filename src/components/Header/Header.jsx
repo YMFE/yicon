@@ -57,31 +57,33 @@ class Header extends Component {
 
     return (
       <header className={className}>
-        <div className="container">
-          <Logo />
-          <nav className="nav quick-menu">
-            <ul>
-              <Nav name="图标库" list={list} />
-              <Nav name="图标管理" list={iconManageList} />
-            </ul>
-          </nav>
-          <div className="quick-menu nav-menu-info">
-            <ul className="clearfix">
-              <ToolUserName />
-              <Info infoCont={this.props.infoCont} />
-              <Cart
-                isShowCart={this.props.isShowCartList}
-              />
-              <li className="lists">
-                <Link to="/upload" className="upload">
-                  <i className="iconfont">&#xf50a;</i>
-                </Link>
-              </li>
-              <Search
-                defaultValue={this.props.searchValue}
-                onSubmit={this.props.fetchSearchResult}
-              />
-            </ul>
+        <div className="header-fixed">
+          <div className="container">
+            <Logo />
+            <nav className="nav quick-menu">
+              <ul>
+                <Nav name="图标库" list={list} />
+                <Nav name="图标管理" list={iconManageList} />
+              </ul>
+            </nav>
+            <div className="quick-menu nav-menu-info">
+              <ul className="clearfix">
+                <ToolUserName />
+                <Info infoCont={this.props.infoCont} />
+                <Cart
+                  isShowCart={this.props.isShowCartList}
+                />
+                <li className="lists">
+                  <Link to="/upload" className="upload">
+                    <i className="iconfont">&#xf50a;</i>
+                  </Link>
+                </li>
+                <Search
+                  defaultValue={this.props.searchValue}
+                  onSubmit={this.props.fetchSearchResult}
+                />
+              </ul>
+            </div>
           </div>
         </div>
       </header>
