@@ -26,7 +26,7 @@ export function* getAllProjects(next) {
 
 export function* createProject(next) {
   const { projectName, icons } = this.param;
-  const { userId, model } = this.state.user;
+  const { userId } = this.state.user;
   let projectId;
 
   invariant(icons.length, '传入的图标数组不应为空');
@@ -80,7 +80,7 @@ export function* createProject(next) {
     })
   );
 
-  this.state.respond = yield listProjects(model);
+  this.state.respond = { projectId };
 
   yield next;
 }
@@ -199,12 +199,8 @@ export function* addProjectIcon(next) {
 
   const icon = icons.map(v => v.id);
   const data = icon.map(value => ({ version: '0.0.0', iconId: value, projectId }));
-  const result = yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
-  if (result.length) {
-    this.state.respond = '添加项目图标成功';
-  } else {
-    this.state.respond = '添加的项目图标在项目中均已存在';
-  }
+  yield ProjectVersion.bulkCreate(data, { ignoreDuplicates: true });
+  this.state.respond = { projectId };
 
   const affectedUsers = yield UserProject.findAll({
     where: { projectId },
