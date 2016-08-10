@@ -52,6 +52,7 @@ export default class Repository extends Component {
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,6 +60,20 @@ export default class Repository extends Component {
       this.props.fetchRepositoryData(nextProps.params.id, 1);
       // this.props.resetIconSize();
       this.refs.myslider.getWrappedInstance().reset();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  @autobind
+  handleScroll(event) {
+    const scrollTop = event.srcElement.body.scrollTop;
+    if (scrollTop >= 64) {
+      this.refs.repo.className = 'repository fixed';
+    } else {
+      this.refs.repo.className = 'repository';
     }
   }
 
@@ -113,7 +128,7 @@ export default class Repository extends Component {
       admin = user.name;
     }
     return (
-      <div className="repository">
+      <div className="repository" ref="repo">
         <SubTitle tit={`${name || ''}图标库`}>
           <div className="sub-title-chil">
             <span className="count"><b className="num">{totalPage || 0}</b>icons</span>
