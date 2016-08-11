@@ -81,6 +81,7 @@ export default class VersionComparison extends Component {
   render() {
     const deleteLength = this.props.comparisonResult.deleted.length;
     const addLength = this.props.comparisonResult.added.length;
+    const replacedLength = this.props.comparisonResult.replaced.length;
     return (
       <div className="yicon-main yicon-myicon yicon-myiconvs">
         <div>
@@ -158,47 +159,84 @@ export default class VersionComparison extends Component {
                   >版本对比</button>
                 </div>
               </div>
-              <div style={{ display: `${deleteLength || addLength ? 'block' : 'none'}` }}>
+              <div style={{ display: `${deleteLength ? 'block' : 'none'}` }}>
                 <div className="yicon-myiconvs-title">
                   <i className="iconfont">&#xf513;</i>
                   <span> 高版本{this.state.version}删除了
-                    <em className="count">{this.props.comparisonResult.deleted.length}</em>
+                    <em className="count">{deleteLength}</em>
                   个图标</span>
                 </div>
                 <div className="clearfix yicon-myiconvs-info">
-                  <div className="icon-detail-item">
                   {
                     this.props.comparisonResult.deleted.map((icon, index) => (
-                      <DesIcon
-                        key={index}
-                        name={icon.name}
-                        code={`&#${icon.code.toString(16)}`}
-                        showCode
-                        iconPath={icon.path}
-                        iconSize={this.props.iconSize}
-                      />
-                    ))
-                  }
-                  </div>
-                </div>
-                <div className="yicon-myiconvs-title">
-                  <i className="iconfont">&#xf515;</i>
-                  <span> 高版本{this.state.version}增加了
-                    <em className="count">{this.props.comparisonResult.added.length}</em>
-                  个图标</span>
-                </div>
-                <div className="clearfix yicon-myiconvs-info">
-                  {
-                    this.props.comparisonResult.added.map((icon, index) => (
-                      <div className="icon-detail-item">
+                      <div className="icon-detail-item" key={index}>
                         <DesIcon
-                          key={index}
                           name={icon.name}
                           code={`&#${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
                           iconSize={this.props.iconSize}
                         />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <div style={{ display: `${addLength ? 'block' : 'none'}` }}>
+                <div className="yicon-myiconvs-title">
+                  <i className="iconfont">&#xf515;</i>
+                  <span> 高版本{this.state.version}增加了
+                    <em className="count">{addLength}</em>
+                  个图标</span>
+                </div>
+                <div className="clearfix yicon-myiconvs-info">
+                  {
+                    this.props.comparisonResult.added.map((icon, index) => (
+                      <div className="icon-detail-item" key={index}>
+                        <DesIcon
+                          name={icon.name}
+                          code={`&#${icon.code.toString(16)}`}
+                          showCode
+                          iconPath={icon.path}
+                          iconSize={this.props.iconSize}
+                        />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <div style={{ display: `${replacedLength ? 'block' : 'none'}` }}>
+                <div className="yicon-myiconvs-title">
+                  <i className="iconfont">&#xf515;</i>
+                  <span> 高版本{this.state.version}替换了
+                    <em className="count">{replacedLength}</em>
+                  个图标</span>
+                </div>
+                <div className="clearfix yicon-myiconvs-info">
+                  {
+                    this.props.comparisonResult.replaced.map((icon, index) => (
+                      <div className="options" key={index}>
+                        <div className="icon-detail-item">
+                          <DesIcon
+                            name={icon.old.name}
+                            code={`&#${icon.old.code.toString(16)}`}
+                            showCode
+                            iconPath={icon.old.path}
+                            iconSize={this.props.iconSize}
+                          />
+                        </div>
+                        <div className="operate-icon">
+                          <i className="iconfont">&#xf0f8;</i>
+                        </div>
+                        <div className="icon-detail-item">
+                          <DesIcon
+                            name={icon.new.name}
+                            code={`&#${icon.new.code.toString(16)}`}
+                            showCode
+                            iconPath={icon.new.path}
+                            iconSize={this.props.iconSize}
+                          />
+                        </div>
                       </div>
                     ))
                   }

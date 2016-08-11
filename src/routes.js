@@ -21,6 +21,7 @@ import {
   Uploaded,
   VersionComparison,
   Authority,
+  History,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -66,6 +67,7 @@ export default (store) => {
           <Route path="projects/:id/logs" component={ProjectLog} />
           <Route path="icons" component={Uploaded} />
           <Route path="projects/:id/comparison" component={VersionComparison} />
+          <Route path="user/projects/:id/history" component={History} />
         </Route>
 
         {/* 库管用户路由 */}
