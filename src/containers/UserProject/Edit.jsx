@@ -10,7 +10,11 @@ class EditProject extends Component {
     super(props);
     this.state = Object.assign({}, props);
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (this.props.id !== nextProps.id) {
+      this.setState({ ...nextProps });
+    }
+  }
   @autobind
   onProjectNameChange(e) {
     this.setState({
@@ -50,11 +54,6 @@ class EditProject extends Component {
     };
   }
   render() {
-    const {
-      projectName,
-      owner,
-      isPublic,
-    } = this.state;
     return (
       <Dialog
         title="编辑项目"
@@ -73,7 +72,8 @@ class EditProject extends Component {
                   name="project-name"
                   className="project-name"
                   onChange={this.onProjectNameChange}
-                  defaultValue={projectName}
+                  value={this.state.projectName}
+                  placeholder="请输入项目名称"
                 />
               </div>
             </li>
@@ -85,7 +85,7 @@ class EditProject extends Component {
                   optionLabelProp="children"
                   optionFilterProp="text"
                   onChange={this.onOwnerChange}
-                  value={owner.id}
+                  value={this.state.owner.id}
                 >
                   {this.props.members.map((item, index) => (
                     <Option value={item.id} text={item.name} key={index}>{item.name}</Option>
@@ -101,7 +101,7 @@ class EditProject extends Component {
                   <input
                     name="personal"
                     type="radio"
-                    checked={!isPublic}
+                    checked={!this.state.isPublic}
                     onChange={() => { this.onProjectTypeChange(false); }}
                   /> 私密
                 </label>
@@ -109,7 +109,7 @@ class EditProject extends Component {
                   <input
                     name="public"
                     type="radio"
-                    checked={isPublic}
+                    checked={this.state.isPublic}
                     onChange={() => { this.onProjectTypeChange(true); }}
                   />
                    公开

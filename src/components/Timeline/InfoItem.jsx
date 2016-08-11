@@ -55,7 +55,7 @@ class InfoItem extends Component {
       const keys = Object.keys(data);
       // 我们一般只有一个 key
       const firstKey = keys[0];
-      if (keys.indexOf('icon') || keys.indexOf('user')) {
+      if (keys.indexOf('icon') > -1 || keys.indexOf('user') > -1) {
         text = data[firstKey].name;
       } else {
         text = data[firstKey];

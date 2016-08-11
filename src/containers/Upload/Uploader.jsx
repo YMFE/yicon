@@ -14,6 +14,8 @@ const MAX_SIZE = 20 * 1024;
 export default class Uploader extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
+    replacement: PropTypes.bool,
+    fromId: PropTypes.number,
   }
 
   state = {
@@ -53,10 +55,12 @@ export default class Uploader extends Component {
 
   sendFiles(files) {
     let hasInvalidFile = false;
+    const { replacement, fromId, dispatch } = this.props;
     const fileList = [...files];
+    const MAX_COUNT = replacement ? 1 : 20;
 
-    if (files.length > 20) {
-      Message.error('最多能上传 20 个文件！');
+    if (files.length > MAX_COUNT) {
+      Message.error(`最多能上传 ${MAX_COUNT} 个文件！`);
       return;
     }
 
@@ -81,13 +85,24 @@ export default class Uploader extends Component {
       fileList.forEach(file => {
         formData.append('icon', file);
       });
+
       // 这里没有必要触发 reducer，直接使用请求跳转
-      axios
-        .post('/api/user/icons', formData)
-        .then(() => {
-          this.props.dispatch(push('/workbench'));
-        })
-        .catch(e => Message.error(e));
+      if (replacement) {
+        axios
+          .post('/api/owner/replacement', formData)
+          .then(data => {
+            const { replaceId } = data.data.data;
+            dispatch(push(`/replacement/icon/${fromId}...${replaceId}`));
+          })
+          .catch(e => Message.error(e));
+      } else {
+        axios
+          .post('/api/user/icons', formData)
+          .then(() => {
+            dispatch(push('/workbench'));
+          })
+          .catch(e => Message.error(e));
+      }
     }
   }
 
@@ -111,6 +126,9 @@ export default class Uploader extends Component {
     const classNames = classnames('upload-area', {
       'drag-on': entering,
     });
+    const inputProps = this.props.replacement
+      ? {}
+      : { multiple: 'multiple' };
 
     return (
       <div
@@ -128,8 +146,10 @@ export default class Uploader extends Component {
             <input
               ref="inputUpload"
               type="file"
+              accept="image/svg+xml"
               onChange={this.onFileInputChange}
-              className="click-upload" multiple="multiple"
+              className="click-upload"
+              {...inputProps}
             />
             OR 点此上传
           </a>

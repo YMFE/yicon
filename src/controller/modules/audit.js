@@ -38,15 +38,15 @@ function getBaseClassName(icons, transaction) {
     })
     .then(newCode => {
       newMaxCode = newCode || 0xE000;
-      let maxCode = 0xF000 - newMaxCode >= icons.length
+      const maxCode = 0xF000 - newMaxCode >= icons.length
         ? newMaxCode : oldMaxCode;
 
-      return icons.map(i => {
+      return icons.map((i, index) => {
         const pyName = py(i.name, { style: py.STYLE_NORMAL })
           .reduce((prev, next) => prev.concat(next), [])
           .join('')
           .replace(/[^\w]/g, '');
-        const code = maxCode++;
+        const code = maxCode + index;
         const hexCode = maxCode.toString(16);
         const fontClass = `${repoMap[i.repoId]}-${pyName}${hexCode}${i.fontClass}`;
 

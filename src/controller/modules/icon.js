@@ -4,7 +4,7 @@ import invariant from 'invariant';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion, User } from '../../model';
+import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
 
@@ -146,10 +146,11 @@ export function* uploadReplacingIcon(next) {
 
 /**
  * 将 A 替换为 B，逻辑是：
- * 1. 保存 A 的 path
- * 2. 将 B 的 path 赋值给 A
- * 3. 将 A 的全部信息赋值给 B （现在认为两者已替换）
- * 4. B 的 oldId 指向 A，A 的 newId 指向 B
+ * 1. 将 A 除 path 以外的全部信息赋值给 B
+ * 2. B 的 oldId 指向 A，A 的 newId 指向 B
+ * 3. 将 RepoVersion 关联表中所有 0.0.0 且有包含 A 的关联替换成 B
+ * 4. 将 ProjectVersion 关联表中所有 0.0.0 且有包含 A 的关联替换成 B
+ * 5. 更新大库的 updatedAt
  */
 export function* replaceIcon(next) {
   const { fromId, toId } = this.param;
@@ -172,25 +173,36 @@ export function* replaceIcon(next) {
     `被替换的图标 ${from.name} 竟然不属于任何一个大库`
   );
 
-  const newPath = to.path;
   const fromName = from.name;
   const toName = to.name;
-  const { name, fontClass, tags, path, createTime, applyTime } = from;
+  const { name, fontClass, code, tags } = from;
   const repoVersion = yield RepoVersion.findOne({ iconId: fromId });
 
   yield seq.transaction(transaction =>
-    to.update(
-      { name, fontClass, tags, path, createTime, applyTime, newId: fromId },
-      { transaction }
-    )
-    .then(() => from.update({ path: newPath, oldId: toId }, { transaction }))
+    to.update({
+      name,
+      fontClass,
+      tags,
+      code,
+      oldId: fromId,
+      applyTime: +new Date,
+      status: iconStatus.RESOLVED,
+    }, { transaction })
+    .then(() => from.update({
+      newId: toId, status: iconStatus.REPLACED,
+    }, { transaction }))
     .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
+    .then(() => RepoVersion.update({ iconId: toId }, {
+      where: { version: '0.0.0', iconId: fromId },
+    }))
+    .then(() => ProjectVersion.update({ iconId: toId }, {
+      where: { version: '0.0.0', iconId: fromId },
+    }))
     .then(() => {
       const log = {
-        // 注意，替换完之后 id 就换位了
         params: {
-          iconFrom: { id: toId, name: toName },
-          iconTo: { id: fromId, name: fromName },
+          iconFrom: { id: fromId, name: fromName },
+          iconTo: { id: toId, name: toName },
         },
         type: 'REPLACE',
         loggerId: repoVersion.repositoryId,
@@ -202,6 +214,9 @@ export function* replaceIcon(next) {
   yield next;
 }
 
+/**
+ * 提交图标至待审核状态
+ */
 export function* submitIcons(next) {
   const { repoId, icons } = this.param;
   const { userId } = this.state.user;
