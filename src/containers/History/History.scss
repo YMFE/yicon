@@ -1,0 +1,187 @@
+@charset "utf-8";
+
+.yicon-history {
+  &-info {
+    background-color: #fff;
+    border-bottom: 1px solid #dadcde;
+    box-shadow: 0 0 5px #dadcde;
+
+    &-container {
+      width: 1100px;
+      margin: 0 auto;
+      padding: 20px 0;
+
+      .options {
+        .title{
+          overflow: hidden;
+          margin:0 10px;
+          float: left;
+          display: inline-block;
+          >h2 {
+            font-size: 24px;
+            color: #344562;
+            float: left;
+          }
+        }
+        .slider{
+          margin-top: 0;
+        }
+      }
+
+    }
+
+  }
+  .panel{
+    background: #f9fafe;
+    overflow: hidden;
+  }
+  .global-content {
+    width: 1080px;
+    margin: 20px auto 0;
+    &-menu{
+      width: 216px;
+      overflow-X:hidden;
+      overflow-Y:auto;
+      min-height: 620px;
+      max-height: 620px;
+      padding:10px 0;
+      float: left;
+      li{
+        height: 50px;
+        line-height: 50px;
+        font-size:14px;
+        padding:0 0 0 34px;
+      }
+      li:hover,li.selected{
+        background-color: #657289;
+        a,a:hover{
+          color:#fff;
+        }
+      }
+    }
+    .yicon-myicon-main {
+      width: 864px;
+      float:right;
+      background: #fff;
+      min-height: 640px;
+      display: block;
+      .myicon-prj-info{
+        padding:20px 40px;
+        .prj-details{
+          overflow: hidden;
+          .title{
+            float: left;
+            >h3 {
+              font-size: 30px;
+              color: #344562;
+              float: left;
+              line-height: 40px;
+            }
+
+            .count {
+              font-size: 14px;
+              color: #616161;
+              padding-left: 10px;
+
+              .num {
+                font-size: 24px;
+                padding: 0 6px;
+              }
+
+            }
+
+            .powerby {
+              color: #9e9e9e;
+              padding-left: 14px;
+            }
+
+            .name {
+              color: #9e9e9e;
+              padding-left: 8px;
+            }
+            .tips{
+              font-size:20px;
+              line-height: 40px;
+              color:#344562;
+              padding-left: 8px;
+            }
+            .return{
+              font-size: 14px;
+              color:#008ed6;
+              line-height: 40px;
+              padding-left: 10px;
+            }
+
+          }
+        }
+        .options{
+          background: #f9fafb;
+          color:#008ed6;
+          height: 37px;
+          line-height: 37px;
+          margin-top: 15px;
+
+          span{
+            padding:0 15px;
+            font-size:14px;
+          }
+        }
+
+        .tools{
+          padding: 15px 0 24px;
+          overflow: hidden;
+          border-bottom:1px solid #d8d9d9;
+          .version{
+            height: 36px;
+            line-height: 36px;
+            float: left;
+            font-size: 14px;
+            color: #616161;
+          }
+          .options-btns{
+            float: left;
+            margin-right: 10px;
+            &:hover{
+              color: #3bbaff;
+              text-decoration: none;
+            }
+          }
+          .select-component{
+            float: left;
+            margin-right: 10px;
+            border:1px solid #dfdfdf;
+            height: 36px;
+            line-height: 36px;
+            color:#616161;
+            padding:0 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            .iconfont{
+              color:#929aac;
+            }
+            .rc-select{
+              width: 50px;
+              text-indent: 0;
+            }
+            .rc-select-arrow{
+              top: 0;
+            }
+            .rc-select-selection:focus{
+              outline: 0;
+            }
+          }
+          .fg{
+            background: #dfdfdf;
+            width:1px;
+            height: 38px;
+            float: left;
+            margin-right: 10px;
+          }
+        }
+      }
+      .myicon-list{
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

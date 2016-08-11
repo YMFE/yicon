@@ -1,8 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var assetsPath = path.resolve(__dirname, '../static/dist');
 var host = (process.env.HOST || 'localhost');
@@ -69,7 +67,6 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
-    new ExtractTextPlugin('style.css'),
     webpackIsomorphicToolsPlugin.development(),
   ]
 };
