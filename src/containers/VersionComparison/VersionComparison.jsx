@@ -24,9 +24,9 @@ export default class VersionComparison extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      defaultVersion: '0.0.0',
-      highVersion: '0.0.0',
-      lowVersion: '0.0.0',
+      defaultVersion: '0.0.1',
+      highVersion: '0.0.1',
+      lowVersion: '0.0.1',
       version: '0.0.0',
     };
   }
@@ -82,6 +82,7 @@ export default class VersionComparison extends Component {
     const deleteLength = this.props.comparisonResult.deleted.length;
     const addLength = this.props.comparisonResult.added.length;
     const replacedLength = this.props.comparisonResult.replaced.length;
+    const versions = this.props.projectInfo.versions.slice(1);
     return (
       <div className="yicon-main yicon-myicon yicon-myiconvs">
         <div>
@@ -123,7 +124,7 @@ export default class VersionComparison extends Component {
                     onSelect={this.selectHighVersion}
                   >
                   {
-                    this.props.projectInfo.versions.map((version, index) => (
+                    versions.map((version, index) => (
                       <Option
                         key={index}
                         value={version}
@@ -142,7 +143,7 @@ export default class VersionComparison extends Component {
                     onSelect={this.selectLowVersion}
                   >
                   {
-                    this.props.projectInfo.versions.map((version, index) => (
+                    versions.map((version, index) => (
                       <Option
                         key={index}
                         value={version}

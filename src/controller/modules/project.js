@@ -163,7 +163,18 @@ export function* generatorNewVersion(next) {
 
   const versions = yield ProjectVersion.findAll({
     where: { projectId, version: '0.0.0' },
+    order: 'iconId',
   });
+  const currentHighestVersion = yield ProjectVersion.findAll({
+    attributes: ['iconId'],
+    where: { projectId, version: versionFrom },
+    order: 'iconId',
+    raw: true,
+  });
+  const baseVersion = versions.map(v => ({ iconId: v.iconId }));
+  const isEqual = JSON.stringify(baseVersion) === JSON.stringify(currentHighestVersion);
+  if (isEqual && versionFrom !== 0) throw new Error('当前版本与最高版本一致，无需重新生成版本');
+
   const rawData = versions.map(v => ({
     ...v.get({ plain: true }), version: versionTo,
   }));
@@ -376,7 +387,10 @@ export function* diffVersion(next) {
         lvIcons.push(v);
       }
     });
-    result = diffArray(lvIcons, hvIcons, true);
+    // 此时diffArray：第一个参数为低版本数组，第二个为高版本数组，第三个为是否需要获取替换情况
+    // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
+    result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
+    // result = diffArray(lvIcons, hvIcons, true);
   }
   this.state.respond = this.state.respond || {};
   this.state.respond.deleted = result.deleted;
