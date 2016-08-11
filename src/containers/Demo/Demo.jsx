@@ -234,7 +234,7 @@ export default class Demo extends Component {
           <h2> 滚动单个item </h2>
         </div>
         <div>
-          <Loading visible={false} />
+          <Loading visible />
         </div>
       </div>
     );
