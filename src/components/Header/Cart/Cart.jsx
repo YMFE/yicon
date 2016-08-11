@@ -132,7 +132,10 @@ class Cart extends Component {
   }
   @autobind
   removeFromCart(e) {
-    this.props.deleteIconInLocalStorage(parseInt(e.currentTarget.dataset.id, 10), true);
+    this.props.deleteIconInLocalStorage(
+      parseInt(e.currentTarget.parentElement.parentElement.dataset.id, 10),
+      true
+    );
   }
   @autobind
   download() {
@@ -316,12 +319,11 @@ class Cart extends Component {
                   <li
                     key={icon.id}
                     className="icon"
-                    onClick={this.removeFromCart}
                     data-id={icon.id}
                   >
                     <span className="iconfont src_iconfont">
                       <Icon size={20} d={icon.path} fill="#555f6e" />
-                      <i className="iconfont delete">&#xf077;</i>
+                      <i className="iconfont delete" onClick={this.removeFromCart}>&#xf077;</i>
                     </span>
                   </li>
                 ))
