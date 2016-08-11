@@ -33,6 +33,9 @@
       .btns-blue:hover {
         color: #fff;
       }
+      .btns-default {
+        height: 34px;
+      }
       .ml10 {
         margin-left: 10px;
       }
@@ -45,5 +48,19 @@
   .yicon-detail-list{
     width:1136px;
     margin-left: -18px;
+  }
+}
+.repository.fixed {
+  .global-subtitle {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    .container {
+      padding-bottom: 6px;
+    }
+  }
+  .yicon-detail-main {
+    margin-top: 130px;
   }
 }

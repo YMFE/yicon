@@ -19,31 +19,30 @@ class Slider extends Component {
   constructor(props) {
     super(props);
 
-    const { min } = props;
-    const initialValue = min;
+    const { max } = props;
+    const initialValue = max;
     const defaultValue = ('defaultValue' in props ? props.defaultValue : initialValue);
     const value = (props.value !== undefined ? props.value : defaultValue);
 
     this.state = { bound: value };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { min } = nextProps;
-    const initialValue = min;
-    const defaultValue = ('defaultValue' in nextProps ? nextProps.defaultValue : initialValue);
-    const value = (nextProps.value !== undefined ? nextProps.value : defaultValue);
-
-    this.setState({
-      bound: value,
-    });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { min } = nextProps;
+  //   const initialValue = min;
+  //   const defaultValue = ('defaultValue' in nextProps ? nextProps.defaultValue : initialValue);
+  //   const value = (nextProps.value !== undefined ? nextProps.value : defaultValue);
+  //
+  //   this.setState({
+  //     bound: value,
+  //   });
+  // }
 
   onChange(value) {
-    const props = this.props;
     this.setState({
       bound: value,
     });
-    props.onChange(value);
+    this.props.onChange(value);
   }
 
   @autobind
@@ -150,8 +149,26 @@ class Slider extends Component {
 
   @autobind
   end() {
+    const { step } = this.props;
+    const value = this.state.bound;
+    const newValue = Math.round(value / step) * step;
+
+    this.setState({
+      bound: newValue,
+    });
     this.removeEvents();
     this.props.onAfterChange(this.getValue());
+  }
+
+  @autobind
+  reset() {
+    const { max } = this.props;
+    this.props.onBeforeChange(this.getValue());
+    this.setState({
+      bound: this.props.max,
+    });
+    this.props.onChange(max);
+    this.props.onAfterChange(max);
   }
 
   render() {
