@@ -35,6 +35,7 @@ const initialState = {
   comparisonResult: {
     deleted: [],
     added: [],
+    replaced: [],
   },
 };
 
@@ -145,6 +146,7 @@ export default (state = initialState, action) => {
         comparisonResult: {
           deleted: action.payload.data.deleted,
           added: action.payload.data.added,
+          replaced: action.payload.data.replaced,
         },
       };
     }
