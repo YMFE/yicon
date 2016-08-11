@@ -42,6 +42,10 @@ const reducers = combineReducers({
 
 export default (s, action) => {
   const state = s;
+  // 高层阻断，当数据返回错误时不遍历 reducer 和修改 state
+  if (action.error || (action.payload && action.payload.res === false)) {
+    return state;
+  }
   switch (action.type) {
     case LOGOUT_DESTORY:
       delete state.user;

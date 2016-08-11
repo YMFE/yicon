@@ -5,6 +5,9 @@
 			margin-top: 20px;
 			overflow: hidden;
 			line-height: 36px;
+			&:first-child{
+				margin-top: 10px;
+			}
 		}
 		.field-label{
 			width: 74px;

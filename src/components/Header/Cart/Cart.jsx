@@ -1,16 +1,14 @@
 import './Cart.scss';
-import Tool from './Tool.jsx';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Icon from '../../common/Icon/Icon.jsx';
 import { autobind } from 'core-decorators';
+import { push } from 'react-router-redux';
 import {
   getIconsInLocalStorage,
   getIconsInCart,
   deleteIconInLocalStorage,
   toggleCartListDisplay,
   dumpIconLocalStorage,
-  changeCartSaveType,
 } from '../../../actions/cart';
 import {
   getUsersProjectList,
@@ -21,12 +19,14 @@ import {
 import {
   downloadIcon,
 } from '../../../actions/icon';
+import Icon from '../../common/Icon/Icon.jsx';
+
 @connect(
   state => ({
+    userInfo: state.user.info,
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
     iconsInCart: state.cart.iconsInCart,
     isShowCart: state.cart.isShowCartList,
-    saveType: state.cart.saveType,
     projectList: state.project.usersProjectList,
     projectForSave: state.project.projectForSave,
   }),
@@ -38,10 +38,10 @@ import {
     dumpIconLocalStorage,
     choseProjectForSave,
     getUsersProjectList,
-    changeCartSaveType,
     saveToProject,
     saveToNewProject,
     downloadIcon,
+    push,
   }
 )
 
@@ -50,6 +50,8 @@ class Cart extends Component {
     super(props);
     this.state = {
       isShow: false,
+      projectListShow: false,
+      saveType: 'DEFAULT',
     };
   }
 
@@ -58,13 +60,67 @@ class Cart extends Component {
     this.props.getIconsInCart({
       icons: iconsInLocalStorage,
     });
-    this.props.getUsersProjectList();
+    if (this.props.userInfo.login) {
+      this.props.getUsersProjectList();
+    }
   }
 
   componentDidMount() {
     this.props.getIconsInLocalStorage();
   }
 
+  @autobind
+  onChoseProjectForSave(e) {
+    const target = e.currentTarget;
+    const targetData = target.dataset;
+    const project = {
+      id: targetData.id,
+      name: target.innerText,
+    };
+    this.props.choseProjectForSave(project);
+    this.toggleProjectList();
+  }
+
+  @autobind
+  onChangeCartSaveType(e) {
+    const saveType = e.currentTarget.dataset.type;
+    this.changeCartSaveType(saveType);
+  }
+  @autobind
+  onSaveToProject() {
+    const { projectForSave, iconsInCart } = this.props;
+    this.props.saveToProject(projectForSave, iconsInCart)
+      .then(data => {
+        if (data && data.payload.res) {
+          this.dumpIcon();
+          this.changeCartSaveType('DEFAULT');
+          this.props.push(`/user/projects/${projectForSave.id}`);
+          this.toggleProjectList();
+        }
+      });
+  }
+  @autobind
+  onSaveToNewProject() {
+    const { iconsInCart } = this.props;
+    const saveToProjectInput = this.saveToProjectInput.value;
+    this.props.saveToNewProject(saveToProjectInput, iconsInCart)
+      .then(data => {
+        if (data && data.payload.res) {
+          const targetUrl = data.payload.data.id ?
+            `/user/projects/${data.payload.data.id}` :
+            '/user/projects/';
+          this.dumpIcon();
+          this.changeCartSaveType('DEFAULT');
+          this.props.push(targetUrl);
+          this.toggleProjectList();
+        }
+      });
+  }
+  changeCartSaveType(saveType) {
+    this.setState({
+      saveType,
+    });
+  }
   @autobind
   shiftCartList(e, isOpen) {
     let isShow;
@@ -81,9 +137,150 @@ class Cart extends Component {
   }
   @autobind
   download() {
+    const icons = this.props.iconsInCart.map((item) => (item.id));
     this.props.downloadIcon({
-      icons: this.props.iconsInCart,
+      icons,
     });
+  }
+
+  @autobind
+  toggleProjectList() {
+    this.setState({ projectListShow: !this.state.projectListShow });
+  }
+  @autobind
+  dumpIcon() {
+    this.props.dumpIconLocalStorage();
+  }
+  @autobind
+  cancleSave() {
+    this.changeCartSaveType('DEFAULT');
+    // this.props.onCancelSave(null, false);
+  }
+  toolRender() {
+    // debugger
+    const { projectList } = this.props;
+    const { saveType, projectListShow } = this.state;
+    // const { projectListShow } = this.state;
+
+    switch (saveType) {
+      case 'SAVE_TO_PROJECT':
+        return (
+          <div className="font-cdn save-to-old-pjc">
+            <div
+              onClick={this.toggleProjectList}
+              className="font-project-name"
+            >
+              <input
+                type="text"
+                placeholder="请选择项目"
+                value={this.props.projectForSave && this.props.projectForSave.name}
+                disabled
+              />
+              <i className="iconfont">&#xf032;</i>
+              {projectListShow &&
+                <div className="save_to_pjc">
+                  <ul >
+                    {
+                      projectList.length > 0 ?
+                      projectList.map((item, index) =>
+                        (
+                        <li
+                          className="pjc-item"
+                          key={index}
+                          data-id={item.id}
+                          onClick={this.onChoseProjectForSave}
+                        >
+                        {item.name}
+                        </li>
+                        )
+                      ) :
+                        <li className="pjc-item" />
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+            <a className="button-icon" onClick={this.onSaveToProject}>确定</a>
+            <a
+              className="button-icon button-cancel"
+              onClick={this.cancleSave}
+            >
+              取消
+            </a>
+          </div>
+        );
+      case 'SAVE_TO_NEW_PROJECT':
+        return (
+          <div className="font-cdn">
+            <div className="font-project-name">
+              <input
+                type="text"
+                placeholder="请输入项目名称"
+                ref={(node) => {
+                  if (node) { this.saveToProjectInput = node; }
+                }}
+                autoComplete={false}
+              />
+            </div>
+            <a className="button-icon" onClick={this.onSaveToNewProject}>确定</a>
+            <a
+              className="button-icon button-cancel"
+              onClick={this.cancleSave}
+            >
+              取消
+            </a>
+          </div>
+        );
+      default:
+        return (
+          <div className="save_ct">
+            <div className="clear-car">
+              <a href="#" onClick={this.dumpIcon}>清空</a>
+            </div>
+            <div className="btn-download">
+              <div className="save_selection">
+                <a
+                  href="#"
+                  className="ibtn"
+                >
+                  <span>保存为项目 <i className="iconfont">&#xf032;</i></span>
+                </a>
+
+                <div className="save_selection_btns">
+                  <a
+                    href="#"
+                    className="ibtn"
+                    onClick={this.onChangeCartSaveType}
+                    data-type="SAVE_TO_NEW_PROJECT"
+                  >
+                    <span>
+                      保存为项目
+                      <i className="iconfont">&#xf032;</i>
+                    </span>
+                  </a>
+                  <div className="save-history">
+                    <a
+                      href="#"
+                      className="ibtn"
+                      data-type="SAVE_TO_PROJECT"
+                      onClick={this.onChangeCartSaveType}
+                    >
+                      <span>保存到已有项目</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="#"
+                className="ibtn ibtn-download"
+                onClick={this.download}
+              >
+              下载
+              </a>
+            </div>
+          </div>
+      );
+    }
   }
   render() {
     const {
@@ -137,21 +334,7 @@ class Cart extends Component {
           {
             iconsInCart.length > 0 ?
               <div className="clearfix user-car-opt">
-              {
-                <Tool
-                  iconsInCart={iconsInCart}
-                  saveType={this.props.saveType}
-                  onDumpIcon={this.props.dumpIconLocalStorage}
-                  onChangeSaveType={this.props.changeCartSaveType}
-                  onSaveToProject={this.props.saveToProject}
-                  onSaveToNewProject={this.props.saveToNewProject}
-                  onChoseProjectForSave={this.props.choseProjectForSave}
-                  projectForSave={this.props.projectForSave}
-                  projectList={this.props.projectList}
-                  onCancelSave={this.shiftCartList}
-                  download={this.download}
-                />
-              }
+              {this.toolRender()}
               </div> :
             null
           }
@@ -166,15 +349,11 @@ Cart.propTypes = {
   iconsInCart: PropTypes.array,
   getIconsInLocalStorage: PropTypes.func,
   downloadIcon: PropTypes.func,
+  push: PropTypes.func,
   getIconsInCart: PropTypes.func,
   deleteIconInLocalStorage: PropTypes.func,
   count: PropTypes.number,
   isShowCart: PropTypes.bool,
-  saveType: PropTypes.oneOf([
-    'SAVE_TO_PROJECT',
-    'SAVE_TO_NEW_PROJECT',
-    'DEFAULT',
-  ]),
   toggleCartListDisplay: PropTypes.func,
   dumpIconLocalStorage: PropTypes.func,
   changeCartSaveType: PropTypes.func,
@@ -190,6 +369,7 @@ Cart.propTypes = {
     }),
     PropTypes.Object,
   ]),
+  userInfo: PropTypes.object,
 };
 
 export default Cart;

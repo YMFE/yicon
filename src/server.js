@@ -106,6 +106,6 @@ app.listen(PORT, (err) => {
   if (err) {
     debug('error')(err);
   } else {
-    debug('server')('==> 🌞  Webpack development server listening on port %s', PORT);
+    debug('server')('==> 🌞 Server listening on port %s', PORT);
   }
 });

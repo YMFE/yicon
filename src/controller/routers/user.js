@@ -25,7 +25,7 @@ import {
 
 import { getUserByName } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
-import { getAllNotices, getOneNotice } from '../modules/notification';
+import { getAllNotices, getOneNotice, getUnreadCount } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
 
 const user = new Router();
@@ -56,6 +56,7 @@ user.get('/projects/:projectId/versions', getProjectVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:nId', getOneNotice);
+user.get('/unread/notifications', getUnreadCount);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
 

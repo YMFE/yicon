@@ -12,7 +12,6 @@ import {
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
 } from '../../constants/actionTypes';
-import { push } from 'react-router-redux';
 
 const initialState = {
   usersProjectList: [],
@@ -97,9 +96,10 @@ export default (state = initialState, action) => {
     }
 
     case SAVE_TO_NEW_PROJECT: {
+      const currentUserProjectInfo = action.payload.data;
       return {
         ...state,
-        usersProject: action.payload.data.organization,
+        currentUserProjectInfo,
       };
     }
 
@@ -112,7 +112,9 @@ export default (state = initialState, action) => {
 
     case DELETE_PROJECT: {
       if (action.payload.res) {
-        push('/user/project');
+        return {
+          ...state,
+        };
       }
       return state;
     }

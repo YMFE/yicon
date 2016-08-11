@@ -32,19 +32,16 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      // { test: /\.scss$/, loaders: [
-      //   'style',
-      //   'css' +
-      //     '?modules' +
-      //     '&localIdentName=[path][name]-[local]',
-      //   'postcss',
-      //   'sass' +
-      //     '?outputStyle=expanded',
-      // ] },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?minimize!postcss!sass?sourceMap')
-      },
+      { test: /\.scss$/, loaders: [
+        'style',
+        'css?localIdentName=[path][name]-[local]',
+        'postcss',
+        'sass?outputStyle=expanded',
+      ] },
+      // {
+      //   test: /\.scss$/,
+      //   loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
+      // },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead
@@ -55,7 +52,6 @@ module.exports = {
     ]
   },
   progress: true,
-  postcss: [autoprefixer],
   resolve: {
     modulesDirectories: [
       'src',
@@ -73,10 +69,7 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true
     }),
-    new ExtractTextPlugin(
-      'style@[contenthash:8].css',
-      { allChunks: false }
-    ),
+    new ExtractTextPlugin('style.css'),
     webpackIsomorphicToolsPlugin.development(),
   ]
 };
