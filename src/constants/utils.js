@@ -1,3 +1,6 @@
+import DesIcon from '../components/DesIcon';
+import React from 'react';
+
 export const iconStatus = {
   DELETE: -1,    // 逻辑删除
   UPLOADED: 0,   // 已上传
@@ -6,6 +9,20 @@ export const iconStatus = {
   REPLACING: 14, // 待替换
   REPLACED: 15,  // 被替换
   RESOLVED: 20,  // 线上生效图标
+};
+export const iconStateDescription = {
+  10: {
+    className: 'checking',
+    text: '待审核',
+  },
+  5: {
+    className: 'fault',
+    text: '审核失败',
+  },
+  20: {
+    className: 'passed',
+    text: '审核通过',
+  },
 };
 
 export const logTypes = {
@@ -32,3 +49,86 @@ export const InfoTypeDetail = [
   'PROJECT_DEL',
   'PROJECT_ADD',
 ];
+
+export const InfoTemplate = {
+  PROJECT_ADD: (data) => (
+    data.icons.icon.map((item, index) => (
+      <DesIcon
+        key={index}
+        className="detail-icon new"
+        name={item.name}
+        showCode={false}
+        iconPath={item.path}
+      >
+        <p className="tag">新</p>
+      </DesIcon>
+    ))
+  ),
+  PROJECT_DEL: (data) => (
+    data.icons.icon.map((item, index) => (
+      <DesIcon
+        key={index}
+        className="detail-icon"
+        name={item.name}
+        showCode={false}
+        iconPath={item.path}
+      >
+        <p className="tag">删</p>
+      </DesIcon>
+    ))
+  ),
+  UPLOAD: (data) => (
+    data.icons.icon.map((item, index) => {
+      const classlist = ['state'];
+      const staus = iconStateDescription[item.status];
+      classlist.push(staus.className);
+      return (
+        <DesIcon
+          key={index}
+          className="detail-icon"
+          name={item.name}
+          showCode={false}
+          iconPath={item.path}
+        >
+          <p className={classlist.join(' ')}>{staus.text}</p>
+        </DesIcon>
+      );
+    })
+  ),
+  AUDIT_OK: (data) => (
+    data.icons.icon.map((item, index) => {
+      const classlist = ['state'];
+      const staus = iconStateDescription[item.status];
+      classlist.push(staus.className);
+      return (
+        <DesIcon
+          key={index}
+          className="detail-icon"
+          name={item.name}
+          showCode={false}
+          iconPath={item.path}
+        >
+          <p className={classlist.join(' ')}>{staus.text}</p>
+        </DesIcon>
+      );
+    })
+  ),
+  AUDIT_FAILED: (data) => (
+    data.icons.icon.map((item, index) => {
+      const classlist = ['state'];
+      const staus = iconStateDescription[item.status];
+      classlist.push(staus.className);
+      return (
+        <DesIcon
+          key={index}
+          className="detail-icon"
+          name={item.name}
+          showCode={false}
+          iconPath={item.path}
+        >
+          <p className={classlist.join(' ')}>{staus.text}</p>
+        </DesIcon>
+      );
+    })
+  ),
+};

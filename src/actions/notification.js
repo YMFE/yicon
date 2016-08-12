@@ -56,7 +56,6 @@ export function fetchUnreadNotification() {
 export function getInfoDetail(id) {
   return {
     type: FETCH_INFO_DETAIL,
-    payload: fetch.get(`/user/notifications/${id}`),
-    id,
+    payload: fetch.get(`/notifications/${id}`),
   };
 }

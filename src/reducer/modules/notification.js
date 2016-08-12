@@ -103,12 +103,17 @@ export default (state = initialState, action) => {
       };
     }
     case FETCH_INFO_DETAIL: {
-      const infoDetail = Object.assign({}, state.infoDetail);
-      infoDetail[action.id] = action.payload.data;
-      return {
-        ...state,
-        infoDetail,
-      };
+      console.log(action.payload);
+      if (action.payload.res) {
+        const id = action.payload.data.id;
+        const infoDetail = Object.assign({}, state.infoDetail);
+        infoDetail[id] = action.payload.data;
+        return {
+          ...state,
+          infoDetail,
+        };
+      }
+      return state;
     }
     default:
       return state;

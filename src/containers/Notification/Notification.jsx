@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main, Timeline, InfoItem } from '../../components/';
 import { autobind } from 'core-decorators';
-// import { InfoTypeDetail } from '../../constants/utils.js';
+import { InfoTemplate } from '../../constants/utils.js';
 import {
   getInfo,
   getInfoDetail,
@@ -20,7 +20,7 @@ const scope = {
     all: state.user.notification.allInfo,
     system: state.user.notification.systemInfo,
     project: state.user.notification.projectInfo,
-    detailInfo: state.user.notification.detailInfo,
+    infoDetail: state.user.notification.infoDetail,
   }),
   {
     getInfo,
@@ -34,7 +34,7 @@ export default class Notification extends Component {
     all: PropTypes.object,
     system: PropTypes.object,
     project: PropTypes.object,
-    detailInfo: PropTypes.array,
+    infoDetail: PropTypes.object,
   }
 
   constructor(props) {
@@ -65,10 +65,20 @@ export default class Notification extends Component {
       tag: nextTag,
     });
   }
+  renderTimeItemDetail(item) {
+    const { infoDetail } = this.props;
+    if (infoDetail && infoDetail[item.id]) {
+      return (
+        <div className="detail">
+        {InfoTemplate[item.type](infoDetail[item.id])}
+        </div>
+      );
+    }
+    return null;
+  }
   renderTimeLine() {
     const attrName = this.state.tag;
     const infoList = (this.props[attrName] && this.props[attrName].list) || [];
-    const { detailInfo } = this.props;
     if (infoList.length <= 0) return null;
     const TiemlineEle = (
       <Timeline>
@@ -82,13 +92,9 @@ export default class Notification extends Component {
               item={item}
               isNew={item.userLog.unread}
               hasScope
-              onShowDetail={() => { this.onShowDetail(item.id); }}
+              onShowDetail={() => { this.onShowDetail(item.userLog.id); }}
             >
-            {
-              detailInfo && detailInfo[item.userLog.id] ?
-                <div className="detail">111</div> :
-                null
-              }
+            {this.renderTimeItemDetail(item)}
             </InfoItem>
           ))
         }

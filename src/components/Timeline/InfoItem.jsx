@@ -82,23 +82,17 @@ class InfoItem extends Component {
         prefix = <span>已删除项目：</span>;
       }
     }
-    let detailEle;
-    if (InfoTypeDetail.indexOf(type)) {
+    let detailEle = null;
+    if (InfoTypeDetail.indexOf(type) !== -1) {
       const classList = ['yo-ico'];
       if (detail) {
         classList.push('show');
-        detailEle = (
-          <span onClick={this.props.onShowDetail}>
-            <i className={classList}>&#xf032;</i>
-          </span>
-        );
-      } else {
-        detailEle = (
-          <span onClick={this.props.onShowDetail}>
-            <i className={classList}>&#xf032;</i>
-          </span>
-        );
       }
+      detailEle = (
+        <span onClick={this.props.onShowDetail}>
+          <i className={classList}>&#xf032;</i>
+        </span>
+      );
     }
     return <p className="title">{prefix}{content}{detailEle}</p>;
   }
@@ -124,6 +118,7 @@ class InfoItem extends Component {
         </dt>
         <dd className="content">
           {this.getTitle()}
+          {this.props.children}
         </dd>
       </dl>
     );
