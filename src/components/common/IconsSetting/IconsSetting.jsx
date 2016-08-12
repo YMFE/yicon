@@ -64,6 +64,7 @@ class IconsSetting extends Component {
 
   @autobind
   selectStyle(style) {
+    if (typeof style !== 'string') return;
     const { index, icons } = this.props;
     icons[index].fontClass = style;
     // this.props.updateWorkbench(icons.concat());
@@ -96,6 +97,10 @@ class IconsSetting extends Component {
     const iconDetail = icons[index];
     if (!iconDetail) {
       return null;
+    }
+    // 修复 placeholder 显示
+    if (typeof iconDetail.fontClass !== 'string') {
+      iconDetail.fontClass = undefined;
     }
 
     return (
