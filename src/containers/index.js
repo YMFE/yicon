@@ -9,6 +9,7 @@ import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
 import Replacement from './Replacement/Replacement';
+import RepWorkbench from './RepWorkbench/RepWorkbench';
 import Search from './Search/Search';
 import Notification from './Notification/Notification';
 import Transition from './Transition/Transition';
@@ -34,6 +35,7 @@ export {
   Project,
   Repository,
   Replacement,
+  RepWorkbench,
   Transition,
   Search,
   Notification,

@@ -80,16 +80,20 @@ export default class Audit extends Component {
   @autobind
   auditIcon(isPass) {
     const { index, icons } = this.props;
-    icons[index].passed = isPass;
+    if (icons[index].passed === isPass) {
+      icons[index].passed = '';
+    } else {
+      icons[index].passed = isPass;
+    }
     this.props.updateAuditIcons(icons.concat());
   }
 
   calcAuditDone() {
     const { icons } = this.props;
-    const submitIcons = [];
-    const notSubmitIcons = [];
+    const auditedIcons = [];
+    const notAuditedIcons = [];
     icons.forEach((icon) => {
-      if (icon.hasOwnProperty('passed')) {
+      if (typeof icon.passed === 'boolean') {
         const iconItem = {
           id: icon.id,
           fontClass: icon.fontClass,
@@ -99,30 +103,30 @@ export default class Audit extends Component {
           repoId: icon.repo.id,
           uploader: icon.uploader,
         };
-        submitIcons.push(iconItem);
+        auditedIcons.push(iconItem);
       } else {
-        notSubmitIcons.push(icon);
+        notAuditedIcons.push(icon);
       }
     });
-    return { submitIcons, notSubmitIcons };
+    return { auditedIcons, notAuditedIcons };
   }
 
   @autobind
   auditIconsSubmit() {
-    const { submitIcons, notSubmitIcons } = this.calcAuditDone();
-    this.props.auditIcons({ icons: submitIcons }).then((res) => {
+    const { auditedIcons, notAuditedIcons } = this.calcAuditDone();
+    this.props.auditIcons({ icons: auditedIcons }).then((res) => {
       if (res.payload.res) {
         this.props.selectIcon(0);
-        this.props.updateAuditIcons(notSubmitIcons);
+        this.props.updateAuditIcons(notAuditedIcons);
       }
     });
   }
 
   @autobind
   showSubmitDialog() {
-    const { submitIcons } = this.calcAuditDone();
+    const { auditedIcons } = this.calcAuditDone();
     const title = '提交审核';
-    const content = `已审核完成${submitIcons.length}枚图标，确认上传吗？`;
+    const content = `已审核完成${auditedIcons.length}枚图标，确认上传吗？`;
     dialog({
       title,
       content,
@@ -135,6 +139,8 @@ export default class Audit extends Component {
     if (!icons.length) {
       return null;
     }
+    const auditedNum = this.calcAuditDone().auditedIcons.length;
+    const icon = icons[index];
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-audit-container'}>
@@ -152,17 +158,21 @@ export default class Audit extends Component {
             isAudit
           />
           <div className="approval">
-            <button
-              className="aprv-btn pass"
+            <div
+              className={`aprv-btn pass ${icon.passed ? 'on' : ''}`}
               onClick={() => this.auditIcon(true)}
-            >审核通过</button>
-            <button
-              className="aprv-btn no-pass"
+            ><i className="iconfont tag">&#xf077;</i>审核通过</div>
+            <div
+              className={`aprv-btn no-pass ${icon.passed === false ? 'on' : ''}`}
               onClick={() => this.auditIcon(false)}
-            >审核不通过</button>
+            ><i className="iconfont tag">&#xf077;</i>审核不通过</div>
           </div>
           <div className="approval-submit">
-            <button className="submit" onClick={this.showSubmitDialog}>提交已通过审核图标生成字体</button>
+            <button
+              className={`submit ${auditedNum ? '' : 'disabled'}`}
+              disabled={auditedNum === 0}
+              onClick={this.showSubmitDialog}
+            >提交已审核图标</button>
           </div>
         </div>
       </div>
