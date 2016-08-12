@@ -3,6 +3,7 @@ import {
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
+  FETCH_INFO_DETAIL,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
     totalPage: 1,
     currentPage: 1,
   },
+  infoDetail: {},
 };
 
 function countUnreadItem(list) {
@@ -98,6 +100,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         unReadCount: action.payload.data,
+      };
+    }
+    case FETCH_INFO_DETAIL: {
+      const infoDetail = Object.assign({}, state.infoDetail);
+      infoDetail[action.id] = action.payload.data;
+      return {
+        ...state,
+        infoDetail,
       };
     }
     default:

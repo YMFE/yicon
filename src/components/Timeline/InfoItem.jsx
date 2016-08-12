@@ -3,7 +3,7 @@ import timer from '../../helpers/timer';
 import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
 // import { Icon } from '../../components/';
-
+import { InfoTypeDetail } from '../../constants/utils.js';
 class InfoItem extends Component {
 
   static propTypes = {
@@ -17,6 +17,7 @@ class InfoItem extends Component {
     timeString: PropTypes.string,
     children: PropTypes.element,
     hasScope: PropTypes.bool,
+    onShowDetail: PropTypes.func,
   }
 
   getTitle() {
@@ -31,7 +32,7 @@ class InfoItem extends Component {
   }
 
   @autobind
-  getDescribeForInfo({ operation, scope, project, repo }) {
+  getDescribeForInfo({ operation, scope, project, repo, type, detail }) {
     const regExp = /@([^@]+)@/g;
     let prefix = null;
     let result = regExp.exec(operation);
@@ -82,7 +83,25 @@ class InfoItem extends Component {
         prefix = <span>已删除项目：</span>;
       }
     }
-    return <p className="title">{prefix}{content}</p>;
+    let detailEle;
+    if (InfoTypeDetail.indexOf(type)) {
+      const classList = ['yo-ico'];
+      if (detail) {
+        classList.push('show');
+        detailEle = (
+          <span onClick={this.props.onShowDetail}>
+            <i className={classList}>&#xf032;</i>
+          </span>
+        );
+      } else {
+        detailEle = (
+          <span onClick={this.props.onShowDetail}>
+            <i className={classList}>&#xf032;</i>
+          </span>
+        );
+      }
+    }
+    return <p className="title">{prefix}{content}{detailEle}</p>;
   }
 
   render() {

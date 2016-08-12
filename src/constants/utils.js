@@ -23,3 +23,12 @@ export const logTypes = {
   REPO_ADMIN: '大库管理员从 @userFrom 变更为 @userTo',
   PROJECT_OWNER: '项目负责人从 @userFrom 变更为 @userTo',
 };
+
+export const InfoTypeDetail = [
+  'UPLOAD',
+  'AUDIT_OK',
+  'AUDIT_FAILED',
+  'REPLACE',
+  'PROJECT_DEL',
+  'PROJECT_ADD',
+];

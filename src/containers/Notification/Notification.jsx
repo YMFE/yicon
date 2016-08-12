@@ -3,8 +3,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main, Timeline, InfoItem } from '../../components/';
 import { autobind } from 'core-decorators';
+// import { InfoTypeDetail } from '../../constants/utils.js';
 import {
   getInfo,
+  getInfoDetail,
 } from '../../actions/notification';
 import Pager from '../../components/common/Pager/';
 
@@ -18,17 +20,21 @@ const scope = {
     all: state.user.notification.allInfo,
     system: state.user.notification.systemInfo,
     project: state.user.notification.projectInfo,
+    detailInfo: state.user.notification.detailInfo,
   }),
   {
     getInfo,
+    getInfoDetail,
   }
 )
 export default class Notification extends Component {
   static propTypes = {
     getInfo: PropTypes.func,
+    getInfoDetail: PropTypes.func,
     all: PropTypes.object,
     system: PropTypes.object,
     project: PropTypes.object,
+    detailInfo: PropTypes.array,
   }
 
   constructor(props) {
@@ -48,19 +54,53 @@ export default class Notification extends Component {
   }
 
   @autobind
+  onShowDetail(id) {
+    this.props.getInfoDetail(id);
+  }
+
+  @autobind
   changeTag(e) {
     const nextTag = e.currentTarget.dataset.tag;
     this.setState({
       tag: nextTag,
     });
   }
-
+  renderTimeLine() {
+    const attrName = this.state.tag;
+    const infoList = (this.props[attrName] && this.props[attrName].list) || [];
+    const { detailInfo } = this.props;
+    if (infoList.length <= 0) return null;
+    const TiemlineEle = (
+      <Timeline>
+        {
+          infoList.map((item, index) => (
+            <InfoItem
+              key={index}
+              tag={scope[item.scope]}
+              timeStr={item.createdAt}
+              showTitleHtml
+              item={item}
+              isNew={item.userLog.unread}
+              hasScope
+              onShowDetail={() => { this.onShowDetail(item.id); }}
+            >
+            {
+              detailInfo && detailInfo[item.userLog.id] ?
+                <div className="detail">111</div> :
+                null
+              }
+            </InfoItem>
+          ))
+        }
+      </Timeline>);
+    return TiemlineEle;
+  }
   render() {
     const attrName = this.state.tag;
-    const InfoList = (this.props[attrName] && this.props[attrName].list) || [];
+    const infoList = (this.props[attrName] && this.props[attrName].list) || [];
     const currentPage = this.props[attrName].currentPage;
     const totalPage = this.props[attrName].totalPage;
-    let mainClassList = InfoList.length === 0 ? 'empty-container' : '';
+    let mainClassList = infoList.length === 0 ? 'empty-container' : '';
     return (
       <div className="notification">
         <SubTitle tit={'我的消息'} />
@@ -107,26 +147,9 @@ export default class Notification extends Component {
             </li>
           </Menu>
           <Main extraClass={mainClassList} >
-            {
-              InfoList.length > 0 ?
-                <Timeline>
-                {InfoList.map(item => (
-                  <InfoItem
-                    key={item.id}
-                    tag={scope[item.scope]}
-                    timeStr={item.createdAt}
-                    showTitleHtml
-                    item={item}
-                    isNew={item.userLog.unread}
-                    hasScope
-                  />
-                  ))
-                }
-                </Timeline> :
-                null
-            }
+            {this.renderTimeLine()}
             <div className="pager-container">
-              {InfoList.length > 0 ?
+              {infoList.length > 0 ?
                 <Pager
                   defaultCurrent={currentPage}
                   pageSize={10}
