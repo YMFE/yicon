@@ -7,6 +7,7 @@ import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { iconStatus } from '../../constants/utils';
+import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
 export function* getById(next) {
   const { icons } = this.param;
@@ -22,8 +23,8 @@ export function* getById(next) {
 export function* getByCondition(next) {
   const { q } = this.param;
 
-  if (isPlainObject(this.query)) throw new Error('必须传入查询条件');
-  if (q === '') throw new Error('不支持传入空参数');
+  invariant(!isPlainObject(this.query), '必须传入查询条件');
+  invariant(q !== '', '参数 q 不能为空字符串');
 
   const regExp = /^&#x(e|f)[0-9a-f]{3};$/i;
   const query = decodeURIComponent(q);
@@ -153,7 +154,7 @@ export function* uploadReplacingIcon(next) {
  * 5. 更新大库的 updatedAt
  */
 export function* replaceIcon(next) {
-  const { fromId, toId } = this.param;
+  const { fromId, toId, name, tags } = this.param;
   const { userId } = this.state.user;
   // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOVLED 状态
   const from = yield Icon.findOne({ where: { id: fromId } });
@@ -172,10 +173,12 @@ export function* replaceIcon(next) {
     repos.length,
     `被替换的图标 ${from.name} 竟然不属于任何一个大库`
   );
+  invariant(ICON_NAME.reg.test(name), ICON_NAME.message);
+  invariant(ICON_TAG.reg.test(tags), ICON_TAG.message);
 
   const fromName = from.name;
   const toName = to.name;
-  const { name, fontClass, code, tags } = from;
+  const { code, fontClass } = from;
   const repoVersion = yield RepoVersion.findOne({ iconId: fromId });
 
   yield seq.transaction(transaction =>
@@ -311,7 +314,7 @@ export function* deleteIcons(next) {
   const { iconId } = this.param;
   const { userId } = this.state.user;
 
-  if (isNaN(iconId)) throw new Error('缺少图标id');
+  invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
   const iconInfo = yield Icon.findOne({
     attributes: ['status', 'uploader'],
     where: { id: iconId },

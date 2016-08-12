@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router';
 import {
-  fetchRepositoryData,
+  fetchRepository,
   changeIconSize,
   resetIconSize,
 } from '../../actions/repository';
@@ -12,6 +12,7 @@ import SliderSize from '../../components/SliderSize/SliderSize';
 import Pager from '../../components/common/Pager';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { SubTitle } from '../../components/';
 import { autobind } from 'core-decorators';
 
@@ -25,7 +26,7 @@ const pageSize = 64;
     currRepository: state.repository.currRepository,
   }),
   {
-    fetchRepositoryData,
+    fetchRepository,
     changeIconSize,
     resetIconSize,
     getIconDetail,
@@ -35,7 +36,7 @@ const pageSize = 64;
 export default class Repository extends Component {
 
   static propTypes = {
-    fetchRepositoryData: PropTypes.func,
+    fetchRepository: PropTypes.func,
     changeIconSize: PropTypes.func,
     resetIconSize: PropTypes.func,
     getIconDetail: PropTypes.func,
@@ -47,6 +48,7 @@ export default class Repository extends Component {
 
   state = {
     isShowDownloadDialog: false,
+    isShowLoading: false,
   }
 
   componentDidMount() {
@@ -57,7 +59,7 @@ export default class Repository extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
-      this.props.fetchRepositoryData(nextProps.params.id, 1);
+      this.fetchRepositoryByPage(1, nextProps.params.id);
       // this.props.resetIconSize();
       this.refs.myslider.getWrappedInstance().reset();
     }
@@ -78,9 +80,17 @@ export default class Repository extends Component {
   }
 
   @autobind
-  fetchRepositoryByPage(page) {
-    const { params: { id } } = this.props;
-    this.props.fetchRepositoryData(id, page);
+  fetchRepositoryByPage(page, currentId) {
+    let { params: { id } } = this.props;
+    if (currentId) id = currentId;
+
+    this.setState({
+      isShowLoading: true,
+    }, () => {
+      this.props.fetchRepository(id, page)
+        .then(() => this.setState({ isShowLoading: false }))
+        .catch(() => this.setState({ isShowLoading: false }));
+    });
   }
 
   @autobind
@@ -89,7 +99,7 @@ export default class Repository extends Component {
   }
 
   @autobind
-  clikIconDownloadBtn(iconId) {
+  clickIconDownloadBtn(iconId) {
     return () => {
       this.props.getIconDetail(iconId).then(() => {
         this.props.editIconStyle({ color: '#34475e', size: 255 });
@@ -163,7 +173,7 @@ export default class Repository extends Component {
                 <IconButton
                   icon={icon}
                   key={icon.id}
-                  download={this.clikIconDownloadBtn(icon.id)}
+                  download={this.clickIconDownloadBtn(icon.id)}
                   toolBtns={['copytip', 'copy', 'edit', 'download', 'cart']}
                 />
               ))
@@ -184,6 +194,7 @@ export default class Repository extends Component {
         >
           <DownloadDialog />
         </Dialog>
+        <Loading visible={this.state.isShowLoading} />
       </div>
     );
   }

@@ -33,10 +33,12 @@ const validate = (type, transition) => (nextState, replace, next) => {
       if (!data.res) replace(`/transition/${transition}`);
       next();
     })
-    .catch(() => next());
+    .catch(() => {
+      next();
+    });
 };
 
-export default (store) => {
+export default store => {
   // 处理权限校验
   const requireLogin = validate('login', 'no-login', store);
   const requireOwner = validate('owner', 'no-auth', store);
