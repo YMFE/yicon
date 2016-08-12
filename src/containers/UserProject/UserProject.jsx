@@ -207,9 +207,8 @@ class UserProject extends Component {
   @autobind
   downloadAllIcons() {
     const { id } = this.props.params;
-    const { version } = this.props.currentUserProjectInfo;
     axios
-      .post('/api/download/font', { type: 'project', id, version })
+      .post('/api/download/font', { type: 'project', id })
       .then(({ data }) => {
         if (data.res) {
           window.location.href = `/download/${data.data}`;

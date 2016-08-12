@@ -74,7 +74,10 @@ class SetTag extends Component {
     // };
     const tagArr = this.tagsToArr(this.state.tags);
     if (tagArr.length > 1) {
-      tagArr.splice(tagArr.indexOf(tag), 1);
+      const index = tagArr.indexOf(tag);
+      if (index !== -1) {
+        tagArr.splice(index, 1);
+      }
       const tags = tagArr.join(',');
       this.setState({
         tags,
@@ -105,10 +108,13 @@ class SetTag extends Component {
         </Input>
         <ul className="icon-tag-list">
           {
-            tagArr.map((tag, index) => (
+            tagArr.map((tag, index, arr) => (
               <li className="icon-tag" key={index}>
                 <span>{tag}</span>
-                <i className="iconfont delete" onClick={() => this.deleteTag(tag)}>&#xf077;</i>
+                <i
+                  className={`iconfont delete ${arr.length <= 1 ? 'hide' : ''}`}
+                  onClick={() => this.deleteTag(tag)}
+                >&#xf077;</i>
               </li>
             ))
           }

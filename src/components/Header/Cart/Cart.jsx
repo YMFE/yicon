@@ -68,6 +68,7 @@ class Cart extends Component {
   componentDidMount() {
     this.props.getIconsInLocalStorage();
   }
+
   @autobind
   onChoseProjectForSave(e) {
     const target = e.currentTarget;

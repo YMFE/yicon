@@ -67,7 +67,7 @@ export default (store) => {
           <Route path="projects/:id/logs" component={ProjectLog} />
           <Route path="icons" component={Uploaded} />
           <Route path="projects/:id/comparison" component={VersionComparison} />
-          <Route path="user/projects/:id/history" component={History} />
+          <Route path="projects/:id/history" component={History} />
         </Route>
 
         {/* 库管用户路由 */}

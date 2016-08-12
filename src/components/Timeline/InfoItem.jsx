@@ -56,12 +56,11 @@ class InfoItem extends Component {
       const keys = Object.keys(data);
       // 我们一般只有一个 key
       const firstKey = keys[0];
-      if (keys.indexOf('icon') > -1 || keys.indexOf('user') > -1) {
+      if (firstKey.indexOf('icon') > -1 || firstKey.indexOf('user') > -1) {
         text = data[firstKey].name;
       } else {
         text = data[firstKey];
       }
-
       content.push(<span key={index} className="key">{text}</span>);
       result = regExp.exec(operation);
     }
@@ -124,10 +123,7 @@ class InfoItem extends Component {
           <p className="tag">{this.props.tag}</p>
         </dt>
         <dd className="content">
-          {
-            this.getTitle()
-          }
-          {this.props.children}
+          {this.getTitle()}
         </dd>
       </dl>
     );

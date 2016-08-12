@@ -1,30 +1,35 @@
 import React, { Component, PropTypes } from 'react';
-const defaultProps = {
-  title: '',
-  visible: false,
-  zIndex: 1000,
-  onOk: () => {},
-  onCancel: () => {},
-  empty: false,
-  getShow(val) { return val; },
-};
-
-const propTypes = {
-  title: PropTypes.string,
-  visible: PropTypes.bool,
-  zIndex: PropTypes.number,
-  onOk: PropTypes.func,
-  onCancel: PropTypes.func,
-  empty: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
-  getShow: PropTypes.func,
-};
 
 export default class Modal extends Component {
+  static defaultProps = {
+    title: '',
+    visible: false,
+    zIndex: 1000,
+    onOk: () => {},
+    onCancel: () => {},
+    confrimText: '确定',
+    cancelText: '取消',
+    empty: false,
+    getShow(val) { return val; },
+  };
+
+  static propTypes = {
+    title: PropTypes.string,
+    visible: PropTypes.bool,
+    zIndex: PropTypes.number,
+    onOk: PropTypes.func,
+    onCancel: PropTypes.func,
+    confrimText: PropTypes.string,
+    cancelText: PropTypes.string,
+    empty: PropTypes.bool,
+    children: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.element),
+    ]),
+    getShow: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     this.state = { show: props.visible };
@@ -40,7 +45,7 @@ export default class Modal extends Component {
     this.props.onCancel();
   }
   render() {
-    const { title, zIndex, onOk, onCancel, empty } = this.props;
+    const { title, zIndex, onOk, onCancel, empty, confrimText, cancelText } = this.props;
     document.body.style = this.state.show ? 'overflow: hidden' : '';
     return (
       <div
@@ -61,8 +66,8 @@ export default class Modal extends Component {
               {this.props.children}
             </div>
             <div className="myicon-dialog-foot">
-              <a href="#" className="options-btns btns-default" onClick={onCancel}>取消</a>
-              <a href="#" className="options-btns btns-blue" onClick={onOk}>确定</a>
+              <button className="options-btns btns-default" onClick={onCancel}>{cancelText}</button>
+              <button className="options-btns btns-blue" onClick={onOk}>{confrimText}</button>
             </div>
           </div>
         </div>
@@ -70,6 +75,3 @@ export default class Modal extends Component {
     );
   }
 }
-
-Modal.defaultProps = defaultProps;
-Modal.propTypes = propTypes;

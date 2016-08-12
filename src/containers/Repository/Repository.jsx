@@ -23,7 +23,6 @@ const pageSize = 64;
 @connect(
   state => ({
     currRepository: state.repository.currRepository,
-    iconSize: state.repository.iconSize,
   }),
   {
     fetchRepositoryData,
@@ -41,7 +40,6 @@ export default class Repository extends Component {
     resetIconSize: PropTypes.func,
     getIconDetail: PropTypes.func,
     editIconStyle: PropTypes.func,
-    iconSize: PropTypes.number,
     currRepository: PropTypes.object,
     params: PropTypes.object,
     push: PropTypes.func,
@@ -54,12 +52,28 @@ export default class Repository extends Component {
   componentDidMount() {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.props.fetchRepositoryData(nextProps.params.id, 1);
-      this.props.resetIconSize();
+      // this.props.resetIconSize();
+      this.refs.myslider.getWrappedInstance().reset();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  @autobind
+  handleScroll(event) {
+    const scrollTop = event.srcElement.body.scrollTop;
+    if (scrollTop >= 64) {
+      this.refs.repo.className = 'repository fixed';
+    } else {
+      this.refs.repo.className = 'repository';
     }
   }
 
@@ -114,10 +128,10 @@ export default class Repository extends Component {
       admin = user.name;
     }
     return (
-      <div className="repository">
+      <div className="repository" ref="repo">
         <SubTitle tit={`${name || ''}图标库`}>
           <div className="sub-title-chil">
-            <span className="count"><b className="num">{totalPage}</b>icons</span>
+            <span className="count"><b className="num">{totalPage || 0}</b>icons</span>
             <span className="powerby">管理员:</span>
             <span className="name">{admin}</span>
             <div className="tool-content">
@@ -138,7 +152,7 @@ export default class Repository extends Component {
                   查看日志
                 </Link>
               </div>
-              <SliderSize />
+              <SliderSize ref="myslider" />
             </div>
           </div>
         </SubTitle>
