@@ -21,7 +21,7 @@ export function fetchReplaceIcon(iconId) {
   };
 }
 
-export function repUpdateIcon(icon) {
+export function replUpdateIcon(icon) {
   return {
     type: REPL_UPDATE_ICON,
     payload: icon,

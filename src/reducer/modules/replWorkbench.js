@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
     case REPL_UPDATE_ICON: {
       return {
         ...state,
-        currIcon: action.payload.data,
+        currIcon: action.payload,
       };
     }
     default:

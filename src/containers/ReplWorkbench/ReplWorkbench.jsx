@@ -52,16 +52,16 @@ export default class ReplWorkbench extends Component {
 
   @autobind
   blur(val) {
-    const { currIcon } = this.props.currIcon;
+    const { currIcon } = this.props;
     currIcon.name = val;
-    this.props.replUpdateIcon(currIcon.concat());
+    this.props.replUpdateIcon(Object.assign({}, currIcon));
   }
 
   @autobind
   saveTags(tags) {
-    const { currIcon } = this.props.currIcon;
+    const { currIcon } = this.props;
     currIcon.tags = tags;
-    this.props.replUpdateIcon(currIcon.concat());
+    this.props.replUpdateIcon(Object.assign({}, currIcon));
   }
 
   @autobind
