@@ -114,8 +114,8 @@ class IconButton extends Component {
           key="download"
         >&#xf50b;</i>,
       edit:
-        <Link to={`/replacement?fromId=${icon.id}`}>
-          <i className={"tool-item iconfont edit"} title="图标替换" key="edit">&#xf515;</i>
+        <Link to={`/replacement?fromId=${icon.id}`} key="edit">
+          <i className={"tool-item iconfont edit"} title="图标替换">&#xf515;</i>
         </Link>,
       copy:
         <ClipboardButton

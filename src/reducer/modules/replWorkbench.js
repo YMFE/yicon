@@ -1,7 +1,7 @@
 import {
   FETCH_CURR_ICON,
   FETCH_REPLACE_ICON,
-  REP_UPDATE_ICON,
+  REPL_UPDATE_ICON,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
         currIcon: action.payload.data,
       };
     }
-    case REP_UPDATE_ICON: {
+    case REPL_UPDATE_ICON: {
       return {
         ...state,
         currIcon: action.payload.data,

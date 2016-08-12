@@ -3,7 +3,7 @@ import {
   FETCH_CURR_ICON,
   FETCH_REPLACE_ICON,
   SUBMIT_REPLACE_ICON,
-  REP_UPDATE_ICON,
+  REPL_UPDATE_ICON,
 } from '../constants/actionTypes';
 const fetch = isonFetch.create({ baseURL: '/api' });
 
@@ -23,7 +23,7 @@ export function fetchReplaceIcon(iconId) {
 
 export function repUpdateIcon(icon) {
   return {
-    type: REP_UPDATE_ICON,
+    type: REPL_UPDATE_ICON,
     payload: icon,
   };
 }

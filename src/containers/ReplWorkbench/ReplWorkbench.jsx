@@ -1,4 +1,4 @@
-import './RepWorkbench.scss';
+import './ReplWorkbench.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
@@ -7,9 +7,9 @@ import SetTag from '../../components/common/SetTag/SetTag.jsx';
 import {
   fetchCurrIcon,
   fetchReplaceIcon,
-  repUpdateIcon,
+  replUpdateIcon,
   submitReplaceIcon,
-} from '../../actions/repWorkbench.js';
+} from '../../actions/replWorkbench.js';
 // import { push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
@@ -21,24 +21,24 @@ const propTypes = {
   params: PropTypes.object,
   fetchCurrIcon: PropTypes.func,
   fetchReplaceIcon: PropTypes.func,
-  repUpdateIcon: PropTypes.func,
+  replUpdateIcon: PropTypes.func,
   submitReplaceIcon: PropTypes.func,
   push: PropTypes.func,
 };
 
 @connect(
   state => ({
-    currIcon: state.repWorkbench.currIcon,
-    repIcon: state.repWorkbench.repIcon,
+    currIcon: state.replWorkbench.currIcon,
+    repIcon: state.replWorkbench.repIcon,
   }),
   {
     fetchCurrIcon,
     fetchReplaceIcon,
-    repUpdateIcon,
+    replUpdateIcon,
     submitReplaceIcon,
   }
 )
-export default class RepWorkbench extends Component {
+export default class ReplWorkbench extends Component {
 
   state = {
     isShowDialog: false,
@@ -54,14 +54,14 @@ export default class RepWorkbench extends Component {
   blur(val) {
     const { currIcon } = this.props.currIcon;
     currIcon.name = val;
-    this.props.repUpdateIcon(currIcon.concat());
+    this.props.replUpdateIcon(currIcon.concat());
   }
 
   @autobind
   saveTags(tags) {
     const { currIcon } = this.props.currIcon;
     currIcon.tags = tags;
-    this.props.repUpdateIcon(currIcon.concat());
+    this.props.replUpdateIcon(currIcon.concat());
   }
 
   @autobind
@@ -182,5 +182,5 @@ export default class RepWorkbench extends Component {
     );
   }
 }
-RepWorkbench.defaultProps = defaultProps;
-RepWorkbench.propTypes = propTypes;
+ReplWorkbench.defaultProps = defaultProps;
+ReplWorkbench.propTypes = propTypes;
