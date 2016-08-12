@@ -14,7 +14,7 @@ export default class Replacement extends Component {
     return (
       <div className="yicon-upload-icon">
         <Uploader
-          fromId={fromId}
+          fromId={+fromId}
           replacement
         />
         <Footer />
