@@ -161,7 +161,7 @@ export default class Audit extends Component {
             <div
               className={`aprv-btn pass ${icon.passed ? 'on' : ''}`}
               onClick={() => this.auditIcon(true)}
-            ><i className="iconfont tag">&#xf077;</i>审核通过</div>
+            ><i className="iconfont tag">&#xf078;</i>审核通过</div>
             <div
               className={`aprv-btn no-pass ${icon.passed === false ? 'on' : ''}`}
               onClick={() => this.auditIcon(false)}

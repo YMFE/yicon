@@ -174,7 +174,7 @@ export default class ReplWorkbench extends Component {
         >
           <div className="clearfix">
             {currIcon.path && <IconBgGrid iconPath={currIcon.path} />}
-            <div className="replace-icon"><i className="iconfont"></i></div>
+            <div className="replace-icon"><i className="iconfont repl-icon">&#xf0f8;</i></div>
             {repIcon.path && <IconBgGrid iconPath={repIcon.path} />}
           </div>
         </Dialog>
