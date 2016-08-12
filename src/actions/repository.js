@@ -3,7 +3,6 @@ import {
   FETCH_HOME_DATA,
   FETCH_TINY_REPOSITORY,
   FETCH_REPOSITORY_DATA,
-  CLEAR_REPOSITORY_DATA,
   CHANGE_ICON_SIZE,
   RESET_ICON_SIZE,
   FETCH_REPOSITORY_LOG,
@@ -20,7 +19,7 @@ export function fetchHomeData() {
   };
 }
 
-function fetchRepository(id, currentPage) {
+export function fetchRepository(id, currentPage) {
   return {
     type: FETCH_REPOSITORY_DATA,
     payload: fetch.get(`/repositories/${id}?currentPage=${currentPage}&pageSize=64`),
@@ -31,20 +30,6 @@ export function fetchTinyRepository() {
   return {
     type: FETCH_TINY_REPOSITORY,
     payload: fetch.get('/tiny/repositories'),
-  };
-}
-
-export function clearRepositoryData() {
-  return {
-    type: CLEAR_REPOSITORY_DATA,
-  };
-}
-
-export function fetchRepositoryData(id, currentPage) {
-  return (dispatch, getState) => {
-    const repoId = getState().repository.currRepository.id;
-    if (+repoId !== +id) dispatch(clearRepositoryData());
-    dispatch(fetchRepository(id, currentPage));
   };
 }
 

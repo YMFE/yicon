@@ -19,7 +19,7 @@ class UnLogin extends Component {
 }
 
 const Name = (props) => (
-  <span className="avatar" href="#">
+  <span className="avatar">
     <i className="iconfont">&#xf50e;</i>
     {props.name}
     <i className="iconfont">&#xf032;</i>
