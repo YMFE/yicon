@@ -55,7 +55,7 @@ user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVe
 user.get('/projects/:projectId/versions', getProjectVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
-user.get('/notifications/:nId', getOneNotice);
+user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications', getUnreadCount);
 
 user.get('/log/projects/:projectId', pagination, getLogList);

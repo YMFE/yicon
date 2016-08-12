@@ -97,6 +97,7 @@ class IconsSetting extends Component {
     if (!iconDetail) {
       return null;
     }
+
     return (
       <div>
         <h2 className="upload-title">{title}</h2>
@@ -136,12 +137,12 @@ class IconsSetting extends Component {
               />
             </div>
             <div className="setting-opt">
-              <label htmlFor="set-icon-style" className="set-opt-name">图标风格<span
-                className="require"
-              >*</span></label>
+              <label htmlFor="set-icon-style" className="set-opt-name">
+                图标风格
+                <span className="require">*</span>
+              </label>
               <div className="set-input-wrap setting-opt-select">
                 <Select
-                  placeholder="请输选择"
                   value={iconDetail.fontClass}
                   className="info_error"
                   onChange={this.selectStyle}

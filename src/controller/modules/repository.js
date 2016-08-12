@@ -1,66 +1,71 @@
+import invariant from 'invariant';
+
 import { Repo, Icon, User, RepoVersion } from '../../model';
 import { seq } from '../../model/tables/_db';
 import { iconStatus } from '../../constants/utils';
 import { logRecorder } from './log';
 
 // 为了提高查询效率，我们设置默认版本为 0.0.0
-function getRepoByVersion({
+function* getRepoByVersion({
   repoId,
   version = '0.0.0',
   limit,
   pageMixin,
 }) {
   const mixIn = pageMixin || { offset: 0, limit };
-  let result;
 
-  return RepoVersion.findAll({
+  const versionData = yield RepoVersion.findAll({
     attributes: ['iconId'],
     where: { repositoryId: repoId },
     order: 'iconId',
     ...mixIn,
-  })
-  .then(data => data.map(d => d.iconId))
-  .then(iconIds => Repo.findOne({
-    where: { id: repoId },
-    include: [{
-      model: Icon,
-      attributes: ['id', 'name', 'code', 'path'],
-      where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
-      on: { version },
-      required: false,
-    }, User],
-  }))
-  .then(repo => {
-    if (!repo) throw new Error(`id 为 ${repoId} 的大库不存在`);
-    return repo.get({ plain: true });
-  })
-  .then(res => {
-    result = res;
-    return Icon.count({
-      where: { status: iconStatus.RESOLVED },
-      include: [{
-        model: Repo,
-        where: { id: repoId },
-        on: { version },
-      }],
-    });
-  })
-  .then(count => {
-    result.iconCount = count;
-    return result;
   });
+  const iconIds = versionData.map(d => d.iconId);
+  const repo = yield Repo.findOne({
+    where: { id: repoId },
+    include: [User],
+  });
+
+  invariant(repo, `id 为 ${repoId} 的大库不存在`);
+  const icons = yield repo.getIcons({
+    attributes: ['id', 'name', 'code', 'path'],
+    where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
+    on: { version },
+    required: false,
+    order: 'id',
+  });
+
+  const result = repo.get({ plain: true });
+  result.icons = icons;
+
+  const count = yield Icon.count({
+    where: { status: iconStatus.RESOLVED },
+    include: [{
+      model: Repo,
+      where: { id: repoId },
+      on: { version },
+    }],
+  });
+
+  result.iconCount = count;
+  return result;
 }
 
 export function* list(next) {
   const repoList = yield Repo.findAll({
     attributes: ['id'],
   });
+  const result = [];
+  let i = 0;
 
-  const queue = repoList.map(repo => getRepoByVersion({
-    repoId: repo.id, limit: 15,
-  }));
+  for (; i < repoList.length; i++) {
+    const repo = yield getRepoByVersion({
+      repoId: repoList[i].id, limit: 15,
+    });
+    result.push(repo);
+  }
 
-  this.state.respond = yield Promise.all(queue);
+  this.state.respond = result;
 
   yield next;
 }

@@ -57,9 +57,8 @@ export function* getAllNotices(next) {
 }
 
 export function* getOneNotice(next) {
-  const { nId } = this.param;
-  const notice = yield Notification.findOne({ where: { id: nId } });
-  const detail = yield Log.findOne({ where: { id: notice.logId }, raw: true });
+  const { logId } = this.param;
+  const detail = yield Log.findOne({ where: { id: logId }, raw: true });
   const logData = analyzeLog(detail.type, detail.operation);
   const isIcon = /@icon/.test(logTypes[detail.type]);
 
