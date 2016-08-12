@@ -251,11 +251,13 @@ class UserProject extends Component {
   @autobind
   downloadAndGenerateVersion() {
     // 生成版本
+    const id = this.props.currentUserProjectInfo.id;
     this.props.generateVersion({
-      id: this.props.currentUserProjectInfo.id,
+      id,
       versionType: this.state.generateVersion,
     }).then(() => {
       // 下载字体
+      this.props.fetchAllVersions(id);
       this.downloadAllIcons();
     });
     // 关闭dialog
