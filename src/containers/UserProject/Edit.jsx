@@ -94,28 +94,6 @@ class EditProject extends Component {
                 </Select>
               </div>
             </li>
-            <li className="field">
-              <label htmlFor="project-type" className="field-label">项目性质</label>
-              <div className="field-set">
-                <label>
-                  <input
-                    name="personal"
-                    type="radio"
-                    checked={!this.state.isPublic}
-                    onChange={() => { this.onProjectTypeChange(false); }}
-                  /> 私密
-                </label>
-                <label>
-                  <input
-                    name="public"
-                    type="radio"
-                    checked={this.state.isPublic}
-                    onChange={() => { this.onProjectTypeChange(true); }}
-                  />
-                   公开
-                </label>
-              </div>
-            </li>
           </ul>
         </form>
       </Dialog>

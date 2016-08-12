@@ -138,7 +138,7 @@ const Download = (props) => {
       </ul>
       <ul>
         <li>当前最高版本为：{props.currenthighestVersion}</li>
-        <li>生成的新版本为：{props.nextVersion}</li>
+        <li>生成的新版本为：<i style={{ fontWeight: 600 }}>{props.nextVersion}</i></li>
       </ul>
     </form>
   </Dialog>);

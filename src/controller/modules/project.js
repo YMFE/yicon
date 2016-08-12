@@ -406,6 +406,7 @@ export function* getProjectVersion(next) {
   const version = yield ProjectVersion.findAll({
     attributes: [[seq.literal('distinct `version`'), 'version']],
     where: { projectId },
+    order: 'version',
   }).map(v => v.version);
   this.state.respond = { project, version };
   yield next;

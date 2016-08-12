@@ -24,16 +24,22 @@ export default class VersionComparison extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      defaultVersion: '0.0.1',
-      highVersion: '0.0.1',
-      lowVersion: '0.0.1',
+      defaultVersion: '0.0.0',
+      highVersion: '0.0.0',
+      lowVersion: '0.0.0',
       version: '0.0.0',
     };
   }
 
   componentWillMount() {
     this.props.fetchAllProjects();
-    this.props.fetchAllVersions(this.props.params.id);
+    this.props.fetchAllVersions(this.props.params.id).then(ret => {
+      const version = ret.payload.data.version;
+      this.setState({
+        highVersion: version[version.length - 1],
+        lowVersion: version[version.length - 1],
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -82,7 +88,7 @@ export default class VersionComparison extends Component {
     const deleteLength = this.props.comparisonResult.deleted.length;
     const addLength = this.props.comparisonResult.added.length;
     const replacedLength = this.props.comparisonResult.replaced.length;
-    const versions = this.props.projectInfo.versions.slice(1);
+    const versions = this.props.projectInfo.versions.slice(1).reverse();
     return (
       <div className="yicon-main yicon-myicon yicon-myiconvs">
         <div>
@@ -119,7 +125,7 @@ export default class VersionComparison extends Component {
                 <div className="tools">
                   <Select
                     className="select-component"
-                    defaultValue={this.state.defaultVersion}
+                    defaultValue={versions[0]}
                     style={{ width: 50, textIndent: 0, outline: 0 }}
                     onSelect={this.selectHighVersion}
                   >
@@ -138,7 +144,7 @@ export default class VersionComparison extends Component {
                   <i className="vs" style={{ float: 'left' }}>VS</i>
                   <Select
                     className="select-component"
-                    defaultValue={this.state.defaultVersion}
+                    defaultValue={versions[0]}
                     style={{ width: 50, textIndent: 0 }}
                     onSelect={this.selectLowVersion}
                   >
@@ -173,7 +179,7 @@ export default class VersionComparison extends Component {
                       <div className="icon-detail-item" key={index}>
                         <DesIcon
                           name={icon.name}
-                          code={`&#${icon.code.toString(16)}`}
+                          code={`&#x${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
                           iconSize={this.props.iconSize}
@@ -196,7 +202,7 @@ export default class VersionComparison extends Component {
                       <div className="icon-detail-item" key={index}>
                         <DesIcon
                           name={icon.name}
-                          code={`&#${icon.code.toString(16)}`}
+                          code={`&#x${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
                           iconSize={this.props.iconSize}
@@ -220,7 +226,7 @@ export default class VersionComparison extends Component {
                         <div className="icon-detail-item">
                           <DesIcon
                             name={icon.old.name}
-                            code={`&#${icon.old.code.toString(16)}`}
+                            code={`&#x${icon.old.code.toString(16)}`}
                             showCode
                             iconPath={icon.old.path}
                             iconSize={this.props.iconSize}
@@ -232,7 +238,7 @@ export default class VersionComparison extends Component {
                         <div className="icon-detail-item">
                           <DesIcon
                             name={icon.new.name}
-                            code={`&#${icon.new.code.toString(16)}`}
+                            code={`&#x${icon.new.code.toString(16)}`}
                             showCode
                             iconPath={icon.new.path}
                             iconSize={this.props.iconSize}

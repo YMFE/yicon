@@ -2,14 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
-import { SubTitle, Content, Menu, Main } from '../../components/';
+import { SubTitle, Content, Menu, Main, DesIcon } from '../../components/';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import Select from '../../components/common/Select/index';
-import IconButton from '../../components/common/IconButton/IconButton.jsx';
-import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
-import Dialog from '../../components/common/Dialog/Index.jsx';
-import { fetchAllProjects, fetchAllVersions, getUserProjectInfo } from '../../actions/project';
-import { getIconDetail, editIconStyle } from '../../actions/icon';
+import { fetchAllProjects, fetchAllVersions, fetchHistoryProject } from '../../actions/project';
 
 import './History.scss';
 
@@ -18,49 +14,29 @@ const Option = Select.Option;
 @connect(
   state => ({
     myProjects: state.project.myProjects,
-    currentUserProjectInfo: state.project.currentUserProjectInfo,
+    historyProject: state.project.historyProject,
     projectInfo: state.project.projectInfo,
+    iconSize: state.repository.iconSize,
   }), {
     fetchAllProjects,
     fetchAllVersions,
-    getUserProjectInfo,
-    getIconDetail,
-    editIconStyle,
+    fetchHistoryProject,
   }
 )
 
 export default class History extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShowDownloadDialog: false,
-    };
-  }
-
   componentWillMount() {
     this.props.fetchAllProjects();
     this.props.fetchAllVersions(this.props.params.id).then(ret => {
       const version = ret.payload.data.version;
       const length = version.length;
-      this.props.getUserProjectInfo(this.props.params.id, version[length - 1]);
+      this.props.fetchHistoryProject(this.props.params.id, version[length - 1]);
     });
   }
 
   @autobind
   onSelect(value) {
-    this.props.getUserProjectInfo(this.props.params.id, value);
-  }
-
-  @autobind
-  handleSingleIconDownload(iconId) {
-    return () => {
-      this.props.getIconDetail(iconId).then(() => {
-        this.props.editIconStyle({ color: '#34475e', size: 255 });
-        this.setState({
-          isShowDownloadDialog: true,
-        });
-      });
-    };
+    this.props.fetchHistoryProject(this.props.params.id, value);
   }
 
   render() {
@@ -128,25 +104,21 @@ export default class History extends Component {
             </div>
             <div className="clearfix myicon-list">
               {
-                this.props.currentUserProjectInfo.icons.map((v, index) => (
-                  <IconButton
-                    icon={v}
-                    key={index}
-                    toolBtns={['cart', 'copy', 'download', 'copytip']}
-                    download={this.handleSingleIconDownload(v.id)}
-                  />
+                this.props.historyProject.icons.map((icon, index) => (
+                  <div className="icon-detail-item" key={index}>
+                    <DesIcon
+                      name={icon.name}
+                      code={`&#x${icon.code.toString(16)}`}
+                      showCode
+                      iconPath={icon.path}
+                      iconSize={this.props.iconSize}
+                    />
+                  </div>
                 ))
               }
             </div>
           </Main>
         </Content>
-        <Dialog
-          empty
-          visible={this.state.isShowDownloadDialog}
-          getShow={this.dialogUpdateShow}
-        >
-          <DownloadDialog />
-        </Dialog>
       </div>
     );
   }
@@ -156,10 +128,9 @@ History.propTypes = {
   params: PropTypes.object,
   fetchAllProjects: PropTypes.func,
   fetchAllVersions: PropTypes.func,
-  getIconDetail: PropTypes.func,
-  editIconStyle: PropTypes.func,
-  getUserProjectInfo: PropTypes.func,
+  fetchHistoryProject: PropTypes.func,
   myProjects: PropTypes.object,
-  currentUserProjectInfo: PropTypes.object,
+  historyProject: PropTypes.object,
   projectInfo: PropTypes.object,
+  iconSize: PropTypes.number,
 };

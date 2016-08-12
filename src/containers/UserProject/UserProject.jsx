@@ -254,9 +254,10 @@ class UserProject extends Component {
     this.props.generateVersion({
       id: this.props.currentUserProjectInfo.id,
       versionType: this.state.generateVersion,
+    }).then(() => {
+      // 下载字体
+      this.downloadAllIcons();
     });
-    // 下载字体
-    this.downloadAllIcons();
     // 关闭dialog
     this.shiftDownloadDialog();
   }
@@ -350,6 +351,7 @@ class UserProject extends Component {
     const versions = this.props.projectInfo.versions;
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
+    const owner = current.projectOwner || { name: '' };
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
@@ -375,8 +377,9 @@ class UserProject extends Component {
           </Menu>
           <Main>
             <div className="UserProject-info">
-              <header>
+              <header className="clearfix">
                 <h3>{current.name}</h3>
+                <div className="powerby">负责人：{owner.name}</div>
               </header>
               {current.isOwner ?
                 <menu className="options">
