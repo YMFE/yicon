@@ -30,7 +30,7 @@ export default class Select extends Component {
     showSearch: PropTypes.bool,
     optionLabelProp: PropTypes.string,
     notFoundContent: PropTypes.string,
-    combobox: PropTypes.string,
+    combobox: PropTypes.bool,
   }
   render() {
     let { notFoundContent, optionLabelProp } = this.props;

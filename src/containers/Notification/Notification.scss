@@ -42,6 +42,10 @@
       color: $text-grey;
       text-align: center;
     }
+    .pager-container{
+      border-top:0;
+      padding:0;
+    }
   }
   .check{
     display: inline-block;
