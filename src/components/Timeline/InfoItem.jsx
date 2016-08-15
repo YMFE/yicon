@@ -3,7 +3,8 @@ import timer from '../../helpers/timer';
 import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
 // import { Icon } from '../../components/';
-
+import { InfoTypeDetail } from '../../constants/utils.js';
+import ReactCSSTransitionsGrop from 'react-addons-css-transition-group';
 class InfoItem extends Component {
 
   static propTypes = {
@@ -17,6 +18,8 @@ class InfoItem extends Component {
     timeString: PropTypes.string,
     children: PropTypes.element,
     hasScope: PropTypes.bool,
+    showDetail: PropTypes.bool,
+    onShowDetail: PropTypes.func,
   }
 
   getTitle() {
@@ -31,7 +34,7 @@ class InfoItem extends Component {
   }
 
   @autobind
-  getDescribeForInfo({ operation, scope, project, repo }) {
+  getDescribeForInfo({ operation, scope, project, repo, type }) {
     const regExp = /@([^@]+)@/g;
     let prefix = null;
     let result = regExp.exec(operation);
@@ -81,7 +84,19 @@ class InfoItem extends Component {
         prefix = <span>已删除项目：</span>;
       }
     }
-    return <p className="title">{prefix}{content}</p>;
+    let detailEle = null;
+    if (InfoTypeDetail.indexOf(type) !== -1) {
+      const classList = ['iconfont', 'switch'];
+      if (this.props.showDetail) {
+        classList.push('show');
+      }
+      detailEle = (
+        <span onClick={this.props.onShowDetail}>
+          <i className={classList.join(' ')}>&#xf032;</i>
+        </span>
+      );
+    }
+    return <p className="title">{prefix}{content}{detailEle}</p>;
   }
 
   render() {
@@ -105,6 +120,13 @@ class InfoItem extends Component {
         </dt>
         <dd className="content">
           {this.getTitle()}
+          <ReactCSSTransitionsGrop
+            transitionName="timeline-content-detail"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {this.props.children}
+          </ReactCSSTransitionsGrop>
         </dd>
       </dl>
     );

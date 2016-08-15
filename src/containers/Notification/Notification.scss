@@ -42,6 +42,10 @@
       color: $text-grey;
       text-align: center;
     }
+    .pager-container{
+      border-top:0;
+      padding:0;
+    }
   }
   .check{
     display: inline-block;
@@ -54,10 +58,11 @@
     border-top: 1px solid #d8dbdd;
     padding: 25px 40px;
   }
-  .empty-container{
-    .pager-container{
-      border-top:0;
-      padding:0;
+  .detail-icon{
+    width: 84px;
+    margin: 12px 50px 12px 0;
+    .tag{
+      line-height: 20px;
     }
   }
 }

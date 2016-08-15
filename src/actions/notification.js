@@ -4,6 +4,7 @@ import {
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
+  FETCH_INFO_DETAIL,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
@@ -50,5 +51,11 @@ export function fetchUnreadNotification() {
   return {
     type: FETCH_UNREAD_COUNT,
     payload: fetch.get('/unread/notifications'),
+  };
+}
+export function getInfoDetail(id) {
+  return {
+    type: FETCH_INFO_DETAIL,
+    payload: fetch.get(`/notifications/${id}`),
   };
 }

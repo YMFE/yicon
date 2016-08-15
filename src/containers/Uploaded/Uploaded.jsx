@@ -113,17 +113,18 @@ const TimelineList = (props) => {
                     <p className={iconClasslist.join(' ')}>
                         {statusMap[icon.status].text}
                     </p>
+                    <p className="tool" data-id={icon.id}>
                     {
                       icon.status === iconStatus.UPLOADED || icon.status === iconStatus.REJECTED ?
-                        <p className="tool" data-id={icon.id}>
-                          <i
-                            className="tool-item iconfont delete"
-                            title="删除"
-                            onClick={props.onDeleteIcon}
-                          >&#xf513;</i>
-                        </p> :
-                        null
+                        <i
+                          className="tool-item iconfont delete"
+                          title="删除"
+                          onClick={props.onDeleteIcon}
+                        >&#xf513;</i>
+                       :
+                      null
                     }
+                    </p>
                   </DesIcon>
                 );
               }

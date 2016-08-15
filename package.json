@@ -125,6 +125,7 @@
     "rc-notification": "^1.3.5",
     "rc-select": "^6.4.7",
     "react": "^15.1.0",
+    "react-addons-css-transition-group": "^15.3.0",
     "react-clipboard.js": "^0.2.4",
     "react-dom": "^15.1.0",
     "react-engine": "^3.4.1",

@@ -45,14 +45,42 @@
         background-color: $split-grey;
         border-radius: 50%
       }
+      .timeline-content-detail-enter {
+        opacity: 0.01;
+      }
+
+      .timeline-content-detail-enter.timeline-content-detail-enter-active {
+        opacity: 1;
+        transition: opacity 500ms ease-in;
+      }
+
+      .timeline-content-detail-leave {
+        opacity: 1;
+      }
+
+      .timeline-content-detail-leave.timeline-content-detail-leave-active {
+        opacity: 0.01;
+        transition: opacity 300ms ease-in;
+      }
     }
     .title{
       font-size: 16px;
-      line-height: 24px;
+      line-height: 32px;
       color: $text-tag;
+      padding-right: 20px;
     }
     .key{
       color: $text-key;
+    }
+    .switch{
+      position: relative;
+      transform: rotate(180deg);
+      top: -1px;
+      transition: transform ease-in-out .5s;
+      cursor: pointer;
+    }
+    .show{
+      transform: rotate(0deg);
     }
   }
   .new{
@@ -64,7 +92,7 @@
   }
   dd{
     .detail{
-      margin: 30px 0 20px;
+      margin-top: 22px;
       transition: height .5s ease-in;
     }
   }
