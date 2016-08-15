@@ -81,7 +81,7 @@ class EditProject extends Component {
               <label htmlFor="project-author" className="field-label">项目管理员</label>
               <div className="field-set">
                 <Select
-                  className={"project-author"}
+                  className="project-author"
                   optionLabelProp="children"
                   optionFilterProp="text"
                   onChange={this.onOwnerChange}

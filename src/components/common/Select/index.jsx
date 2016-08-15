@@ -10,10 +10,6 @@ import './Select.scss';
  * @autor leila.wang
  */
 
-Option.propTypes.value = PropTypes.oneOfType([
-  PropTypes.string, PropTypes.number,
-]);
-
 export {
   Option,
 };
