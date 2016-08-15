@@ -12,6 +12,7 @@ import {
   ProjectLog,
   Repository,
   Replacement,
+  ReplWorkbench,
   Transition,
   Search,
   Notification,
@@ -75,7 +76,7 @@ export default store => {
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
           <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
-          <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
+          <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> {/* 替换页面 */}
           <Route path="auditing" component={Audit} /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>
