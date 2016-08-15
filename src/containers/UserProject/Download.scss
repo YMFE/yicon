@@ -1,0 +1,34 @@
+.Download{
+  width: 460px;
+  .icon-title{
+    font-size: 16px;
+    color: #616161;
+    line-height: 36px;
+    .iconfont{
+      font-size: 18px;
+      vertical-align: top;
+      line-height: 2;
+    }
+  }
+  .icon-item{
+    width: 32px;
+    margin: 7px 7px 0;
+    display: inline-block;
+    float: left;
+  }
+  .operate-icon{
+    line-height: 44px;
+    float: left;
+    font-size: 18px;
+  }
+  li {
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    margin-right: 25px;
+    input{
+      margin-left: 5px;
+      margin-bottom: 3px;
+    }
+  }
+}
