@@ -9,6 +9,11 @@ import './Select.scss';
  * @description 模拟select。
  * @autor leila.wang
  */
+
+Option.propTypes.value = PropTypes.oneOfType([
+  PropTypes.string, PropTypes.number,
+]);
+
 export {
   Option,
 };
@@ -31,6 +36,8 @@ export default class Select extends Component {
     optionLabelProp: PropTypes.string,
     notFoundContent: PropTypes.string,
     combobox: PropTypes.bool,
+    value: PropTypes.any,
+    defaultValue: PropTypes.any,
   }
   render() {
     let { notFoundContent, optionLabelProp } = this.props;

@@ -63,13 +63,19 @@ export function* getCurrentUser(next) {
     userId: this.session.userId,
     // userId: 113,
   };
-  const { projectId } = this.param;
   const user = yield User.findOne({
     where: { id: this.state.user.userId },
   });
 
   if (!user) throw new Error('获取用户信息失败，请重新登录');
   this.state.user.model = user;
+
+  yield next;
+}
+
+export function* isProjectMember(next) {
+  const { projectId } = this.param;
+  const user = this.state.user.model;
 
   if (!isNaN(projectId)) {
     const project = yield Project.findOne({

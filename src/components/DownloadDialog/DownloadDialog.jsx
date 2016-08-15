@@ -5,7 +5,7 @@ import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
 import Input from '../common/Input/Index.jsx';
 import SetTag from '../common/SetTag/SetTag.jsx';
-import Select from '../common/Select/index';
+import Select from '../common/Select';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 import axios from 'axios';
@@ -20,7 +20,7 @@ import axios from 'axios';
     editIconStyle,
   }
 )
-class DownloadDial extends Component {
+class DownloadDialog extends Component {
 
   constructor(props) {
     super(props);
@@ -113,17 +113,15 @@ class DownloadDial extends Component {
         status = 3;
       }
     }
-    const options = [];
-    const setSizeArr = [16, 32, 64, 255];
-    for (let i = 0, len = setSizeArr.length; i < len; i++) {
-      options.push(
-        <Option
-          value={setSizeArr[i]}
-          className={'select-narrow-menu'}
-          key={i}
-        >{setSizeArr[i]}</Option>
-      );
-    }
+    const options = [32, 64, 128, 256].map((size, i) => (
+      <Option
+        value={size}
+        className="select-narrow-menu"
+        key={i}
+      >
+        {size}
+      </Option>
+    ));
 
     return (
       <div className="tan-container">
@@ -182,7 +180,7 @@ class DownloadDial extends Component {
               <div className="color-show" style={{ background: iconDetail.iconStyle.color }}></div>
             </div>
             <Select
-              defaultValue={255}
+              defaultValue={256}
               onChange={this.changeIconSize}
               className={'set-size'}
             >
@@ -200,11 +198,11 @@ class DownloadDial extends Component {
   }
 }
 
-DownloadDial.propTypes = {
+DownloadDialog.propTypes = {
   iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
   editIcon: PropTypes.func,
   editIconStyle: PropTypes.func,
 };
 
-export default DownloadDial;
+export default DownloadDialog;

@@ -26,7 +26,7 @@ import {
 import { getUserByName } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
 import { getAllNotices, getOneNotice, getUnreadCount } from '../modules/notification';
-import { getCurrentUser, pagination, isProjectOwner } from './middlewares';
+import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
 
 const user = new Router();
 const storage = multer.memoryStorage();
@@ -45,9 +45,9 @@ user.get('/projects', getAllProjects);
 user.post('/projects', createProject);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
-user.post('/projects/:projectId/update', generatorNewVersion, recordLog);
-user.post('/projects/:projectId/icons', addProjectIcon, recordLog);
-user.delete('/projects/:projectId/icons', deleteProjectIcon, recordLog);
+user.post('/projects/:projectId/update', isProjectMember, generatorNewVersion, recordLog);
+user.post('/projects/:projectId/icons', isProjectMember, addProjectIcon, recordLog);
+user.delete('/projects/:projectId/icons', isProjectMember, deleteProjectIcon, recordLog);
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
 user.delete('/projects/:projectId', isProjectOwner, deleteProject);
