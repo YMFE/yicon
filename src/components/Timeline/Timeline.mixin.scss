@@ -78,6 +78,7 @@
       top: -1px;
       transition: transform ease-in-out .5s;
       cursor: pointer;
+      user-select:none;
     }
     .show{
       transform: rotate(0deg);
