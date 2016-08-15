@@ -76,7 +76,8 @@ export default class ReplWorkbench extends Component {
         this.setState({
           isShowDialog: false,
         });
-        this.props.push(`/repositories/${currIcon.repo.id}`);
+        // this.props.push(`/repositories/${currIcon.repo.id}`);
+        // this.props.push(`/transition`)
       }
     });
   }
@@ -153,7 +154,7 @@ export default class ReplWorkbench extends Component {
           onOk={this.submitReplaceIcon}
           onCancel={this.cancel}
         >
-          <div className="clearfix">
+          <div className="clearfix" style={{ width: 647 }}>
             {currIcon.path && <IconBgGrid iconPath={currIcon.path} />}
             <div className="replace-icon"><i className="iconfont repl-icon">&#xf0f8;</i></div>
             {repIcon.path && <IconBgGrid iconPath={repIcon.path} />}

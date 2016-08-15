@@ -10,10 +10,11 @@
     height: 50px;
     line-height: 50px;
     font-size:14px;
-    padding:0 0 0 34px;
     color: #344562;
     cursor: pointer;
     > a{
+      display: block;
+      padding:0 0 0 34px;
       color: #344562;
     }
   }

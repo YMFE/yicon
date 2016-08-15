@@ -18,7 +18,10 @@ export default class Transition extends Component {
   componentDidMount() {
     const { type } = this.props.params;
     if (type === 'no-auth') {
-      this.backToHome();
+      this.backToPage('/');
+    }
+    if (type === 'icon-repl') {
+      this.backToPage(`/repositories/${this.props.params.repoId}`);
     }
   }
 
@@ -26,7 +29,7 @@ export default class Transition extends Component {
     window.QSSO.auth('/api/login');
   }
 
-  backToHome() {
+  backToPage() {
     const intervalId = setInterval(() => {
       this.setState({
         second: this.state.second - 1,
