@@ -3,12 +3,20 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import classnames from 'classnames';
 import { fetchRepositoryLogs } from '../../actions/repository';
-import { SubTitle, Content, Timeline, InfoItem } from '../../components/';
+import { SubTitle, Content } from '../../components/';
+import TimelineList from './TimelineList.jsx';
 import Pager from '../../components/common/Pager/';
+import {
+  getInfoDetail,
+} from '../../actions/notification';
+
 
 @connect(
-  state => ({ ...state.log.repo }),
-  { fetchRepositoryLogs }
+  state => ({
+    ...state.log.repo,
+    infoDetail: state.user.notification.infoDetail,
+  }),
+  { fetchRepositoryLogs, getInfoDetail }
 )
 class Log extends Component {
 
@@ -18,6 +26,8 @@ class Log extends Component {
     currentPage: PropTypes.number,
     totalCount: PropTypes.number,
     fetchRepositoryLogs: PropTypes.func,
+    infoDetail: PropTypes.object,
+    getInfoDetail: PropTypes.func,
   }
 
   componentDidMount() {
@@ -32,7 +42,7 @@ class Log extends Component {
   }
 
   render() {
-    const { list, currentPage, totalCount } = this.props;
+    const { list, currentPage, totalCount, infoDetail } = this.props;
     const mainClass = classnames({
       'empty-content': !list.length,
     });
@@ -42,7 +52,11 @@ class Log extends Component {
         <SubTitle tit="图标库日志" />
         <Content>
           <div className={mainClass} style={{ width: '100%' }}>
-            <TimelineList list={list} />
+            <TimelineList
+              list={list}
+              infoDetail={infoDetail}
+              getInfoDetail={this.props.getInfoDetail}
+            />
             <div className="pager-container">
               {list.length ?
                 <Pager
@@ -59,23 +73,5 @@ class Log extends Component {
     );
   }
 }
-
-const TimelineList = props => (
-  <Timeline>
-    {props.list.map(item => (
-      <InfoItem
-        key={item.id}
-        tag={item.logCreator.name}
-        timeStr={item.createdAt}
-        showTitleHtml
-        item={item}
-      />
-    ))}
-  </Timeline>
-);
-
-TimelineList.propTypes = {
-  list: PropTypes.array,
-};
 
 export default Log;

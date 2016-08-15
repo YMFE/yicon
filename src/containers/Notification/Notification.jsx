@@ -41,6 +41,7 @@ export default class Notification extends Component {
     super(props);
     this.state = {
       tag: 'all',
+      infoState: {},
     };
   }
 
@@ -54,8 +55,20 @@ export default class Notification extends Component {
   }
 
   @autobind
-  onShowDetail(id) {
-    this.props.getInfoDetail(id);
+  onShowDetail(e, item) {
+    const id = item.id;
+    const infoState = Object.assign({}, this.state.infoState);
+    if (this.props.infoDetail[id]) {
+      infoState[id].isShow = !infoState[id].isShow;
+    } else {
+      this.props.getInfoDetail(id);
+      infoState[id] = {
+        isShow: true,
+      };
+    }
+    this.setState({
+      infoState,
+    });
   }
 
   @autobind
@@ -78,6 +91,8 @@ export default class Notification extends Component {
   }
   renderTimeLine() {
     const attrName = this.state.tag;
+    const { infoDetail } = this.props;
+    const { infoState } = this.state;
     const infoList = (this.props[attrName] && this.props[attrName].list) || [];
     if (infoList.length <= 0) return null;
     const TiemlineEle = (
@@ -92,9 +107,16 @@ export default class Notification extends Component {
               item={item}
               isNew={item.userLog.unread}
               hasScope
-              onShowDetail={() => { this.onShowDetail(item.userLog.id); }}
+              onShowDetail={(e) => { this.onShowDetail(e, item); }}
+              showDetail={
+                infoDetail && infoDetail[item.id] && infoState[item.id] && infoState[item.id].isShow
+              }
             >
-            {this.renderTimeItemDetail(item)}
+            {
+              infoState[item.id] && infoState[item.id].isShow
+              ? this.renderTimeItemDetail(item)
+              : null
+            }
             </InfoItem>
           ))
         }
