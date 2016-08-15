@@ -73,7 +73,7 @@ export function* downloadFont(next) {
         : ProjectVersion.max('version', { where: { projectId: id } });
       version = yield getVersion;
     } else {
-      version = '0.0.0';
+      version = 0;
     }
 
     invariant(instance, `不存在 id 为 ${id} 的 ${isRepo ? '大库' : '项目'}`);
