@@ -10,7 +10,7 @@ import {
   replUpdateIcon,
   submitReplaceIcon,
 } from '../../actions/replWorkbench.js';
-// import { push } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
 
@@ -36,6 +36,7 @@ const propTypes = {
     fetchReplaceIcon,
     replUpdateIcon,
     submitReplaceIcon,
+    push,
   }
 )
 export default class ReplWorkbench extends Component {
@@ -70,11 +71,13 @@ export default class ReplWorkbench extends Component {
     this.props.submitReplaceIcon(fromId, toId, {
       name: currIcon.name,
       tags: currIcon.tags,
-    }).then(() => {
-      // console.log(res);
-      this.setState({
-        isShowDialog: false,
-      });
+    }).then((data) => {
+      if (data.payload.res) {
+        this.setState({
+          isShowDialog: false,
+        });
+        this.props.push(`/repositories/${currIcon.repo.id}`);
+      }
     });
   }
 
