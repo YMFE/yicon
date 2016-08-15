@@ -20,6 +20,7 @@ import {
   FETCH_ALL_PROJECT,
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
+  FETCH_HISTORY_PROJECT,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -126,20 +127,11 @@ export function choseProjectForSave(project) {
   };
 }
 export function generateVersion(project) {
-  return (dispatch) => {
-    dispatch({
-      type: POST_GENERATE_VERSION,
-      payload: fetch.post(`/user/projects/${project.id}/update`, {
-        versionType: project.versionType,
-      }).then(
-        responese => {
-          if (responese.res) {
-            dispatch(getUserProjectInfo(project.id));
-          }
-        }
-      ),
-      project,
-    });
+  return {
+    type: POST_GENERATE_VERSION,
+    payload: fetch.post(`/user/projects/${project.id}/update`, {
+      versionType: project.versionType,
+    }),
   };
 }
 
@@ -207,5 +199,13 @@ export function compareProjectVersion(projectId, highVersion, lowVersion) {
   return {
     type: COMPARE_PROJECT_VERSION,
     payload: fetch.get(`/user/projects/${projectId}/version/${highVersion}/version/${lowVersion}`),
+  };
+}
+
+export function fetchHistoryProject(id, version) {
+  const v = version ? `/version/${version}` : '';
+  return {
+    type: FETCH_HISTORY_PROJECT,
+    payload: fetch.get(`/user/projects/${id}${v}`),
   };
 }

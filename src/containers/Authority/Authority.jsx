@@ -19,7 +19,7 @@ import {
   searchProjects,
 } from '../../actions/admin';
 import { fetchMemberSuggestList } from '../../actions/project';
-
+import { fetchHomeData, fetchTinyRepository } from '../../actions/repository';
 
 import './Authority.scss';
 
@@ -40,6 +40,8 @@ import './Authority.scss';
     searchRepos,
     searchProjects,
     fetchMemberSuggestList,
+    fetchHomeData,
+    fetchTinyRepository,
   }
 )
 
@@ -119,6 +121,8 @@ export default class Authority extends Component {
       param.admin = this.state.admin;
       this.props.createRepo(param).then(() => {
         this.fetchByType(type, this.state.currentPage);
+        this.props.fetchHomeData();
+        this.props.fetchTinyRepository();
       });
     }
     if (type === 'project') {
@@ -465,6 +469,8 @@ Authority.propTypes = {
   createProject: PropTypes.func,
   searchRepos: PropTypes.func,
   searchProjects: PropTypes.func,
+  fetchHomeData: PropTypes.func,
+  fetchTinyRepository: PropTypes.func,
   suggestList: PropTypes.array,
   repo: PropTypes.array,
   project: PropTypes.array,
