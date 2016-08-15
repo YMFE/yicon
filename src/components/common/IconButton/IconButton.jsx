@@ -1,4 +1,5 @@
 import './IconButton.scss';
+import { Link } from 'react-router';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
@@ -112,7 +113,10 @@ class IconButton extends Component {
           onClick={download}
           key="download"
         >&#xf50b;</i>,
-      edit: <i className={"tool-item iconfont edit"} title="图标替换" key="edit">&#xf515;</i>,
+      edit:
+        <Link to={`/replacement?fromId=${icon.id}`} key="edit">
+          <i className={"tool-item iconfont edit"} title="图标替换">&#xf515;</i>
+        </Link>,
       copy:
         <ClipboardButton
           component="i"

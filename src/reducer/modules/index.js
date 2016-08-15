@@ -11,6 +11,7 @@ import user from './user';
 import icon from './icon';
 import log from './log';
 import workbench from './workbench';
+import replWorkbench from './replWorkbench';
 import audit from './audit';
 import admin from './admin';
 
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   icon,
   log,
   workbench,
+  replWorkbench,
   audit,
 
   // TODO: 其实没啥用，因为登出的时候直接跳页就行了。。。。

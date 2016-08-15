@@ -31,29 +31,18 @@ class SetTag extends Component {
     // tags必须为非空字符串
     return /\S+/.test(tags);
   }
-  filter(tags) {
-    // 过滤首尾空白字符
-    return tags.replace(/^\s*|\s*$/g, '');
+  trim(tags) {
+    // 过滤首尾空白字符或逗号
+    return tags.replace(/^[\s|,]*|[\s|,]*$/g, '');
   }
   @autobind
   addTag(e, tag) {
-    // if (e.keyCode === 13) {
-    //   const target = e.target;
-    //   const { iconDetail } = this.props;
-    //   const tag = target.value;
-    //   if (this.validate(this.filter(tag))) {
-    //     const tags = iconDetail.tags ? `${iconDetail.tags},${tag}` : tag;
-    //     this.props.editIcon(iconDetail.id, { tags }).then(() => {
-    //       target.value = '';
-    //       this.props.afterAdd();
-    //     });
-    //   }
-    // }
     if (e.keyCode === 13) {
       const { tags } = this.state;
-      const tagsTrim = this.filter(tag);
+      const tagsTrim = this.trim(tag);
       if (this.validate(tagsTrim)) {
-        const newTags = tags ? `${tags},${tagsTrim}` : tagsTrim;
+        let newTags = tags ? `${tags},${tagsTrim}` : tagsTrim;
+        newTags = this.tagsToArr(newTags).join(',');
         this.setState({
           tags: newTags,
         });
@@ -63,15 +52,6 @@ class SetTag extends Component {
   }
 
   deleteTag(tag) {
-    // return () => {
-    //   const { iconDetail } = this.props;
-    //   const tagArr = this.tagsToArr(iconDetail.tags);
-    //   tagArr.splice(tagArr.indexOf(tag), 1);
-    //   const tags = tagArr.join(',');
-    //   this.props.editIcon(iconDetail.id, { tags }).then(() => {
-    //     this.props.afterDelete();
-    //   });
-    // };
     const tagArr = this.tagsToArr(this.state.tags);
     if (tagArr.length > 1) {
       const index = tagArr.indexOf(tag);
@@ -87,7 +67,7 @@ class SetTag extends Component {
   }
 
   tagsToArr(tags) {
-    return tags ? tags.split(/[,| ]+/) : [];
+    return tags ? tags.split(/[\s|,]+/) : [];
   }
 
   render() {
