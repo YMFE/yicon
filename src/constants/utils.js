@@ -23,6 +23,10 @@ export const iconStateDescription = {
     className: 'passed',
     text: '审核通过',
   },
+  '-1': {
+    className: 'fault',
+    text: '已删除',
+  },
 };
 
 export const logTypes = {
@@ -49,6 +53,14 @@ export const InfoTypeDetail = [
   'PROJECT_DEL',
   'PROJECT_ADD',
 ];
+
+const prohibitIcon = {
+  path: ' M512,928 Q335,924 217.5,806.5 Q100,'
+  + '689 96,512 Q100,335 217.5,217.5 Q335,100 512,96 Q689,'
+  + '100 806.5,217.5 Q924,335 928,512 Q924,689 806.5,806.5 Q689,924 512,928 M745,'
+  + '228 L228,745 Q251,773 279,796 L796,279 Q773,251 745,228',
+  name: '禁止',
+};
 
 export const InfoTemplate = {
   PROJECT_ADD: (data) => (
@@ -115,6 +127,19 @@ export const InfoTemplate = {
   ),
   AUDIT_FAILED: (data) => (
     data.icons.icon.map((item, index) => {
+      if (item.status === -1) {
+        return (
+          <DesIcon
+            key={index}
+            className="detail-icon"
+            name={item.name}
+            showCode={false}
+            iconPath={prohibitIcon.path}
+          >
+            <p className="state fault">已删除</p>
+          </DesIcon>
+        );
+      }
       const classlist = ['state'];
       const staus = iconStateDescription[item.status];
       classlist.push(staus.className);
