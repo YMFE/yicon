@@ -132,28 +132,6 @@ export default class ReplWorkbench extends Component {
                   ref="myInput"
                 />
               </div>
-              {
-              // <div className="setting-opt">
-              //   <label htmlFor="set-icon-style" className="set-opt-name">图标风格<span
-              //     className="require"
-              //   >*</span></label>
-              //   <div className="set-input-wrap setting-opt-select">
-              //     <Select
-              //       placeholder="请输选择"
-              //       value={currIcon.fontClass}
-              //       className="info_error"
-              //       onChange={this.selectStyle}
-              //     >
-              //       <Option value="-f">线性图标</Option>
-              //       <Option value="-o">填色图标</Option>
-              //     </Select>
-              //     <div className={`error-info ${currIcon.fontClass ? 'hide' : ''}`}>
-              //       请选择图标风格
-              //     </div>
-              //   </div>
-              // </div>
-              }
-
               <div className="setting-opt">
                 <label htmlFor="set-icon-tag" className="set-opt-name">图标标签&nbsp;&nbsp;</label>
                 <SetTag

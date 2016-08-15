@@ -162,21 +162,21 @@ export const InfoTemplate = {
       <div>
         <DesIcon
           key={1}
-          className="detail-icon new"
+          className="detail-icon old"
           name={icons.iconFrom.name}
           showCode={false}
           iconPath={icons.iconFrom.path}
         >
-          <p className="tag">新</p>
+          <p className="tag">旧</p>
         </DesIcon>
         <DesIcon
           key={2}
-          className="detail-icon old"
+          className="detail-icon new"
           name={icons.iconTo.name}
           showCode={false}
           iconPath={icons.iconTo.path}
         >
-          <p className="tag">旧</p>
+          <p className="tag">新</p>
         </DesIcon>
       </div>
     );
