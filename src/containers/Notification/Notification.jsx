@@ -107,8 +107,8 @@ export default class Notification extends Component {
             </li>
           </Menu>
           <Main extraClass={mainClassList} >
-            {
-              InfoList.length > 0 ?
+            {InfoList.length > 0 ?
+              <div>
                 <Timeline>
                 {InfoList.map(item => (
                   <InfoItem
@@ -122,20 +122,18 @@ export default class Notification extends Component {
                   />
                   ))
                 }
-                </Timeline> :
-                null
+                </Timeline>
+                <div className="pager-container">
+                  <Pager
+                    defaultCurrent={currentPage}
+                    pageSize={10}
+                    totalCount={totalPage}
+                    onClick={this.onChangePage}
+                  />
+                </div>
+              </div>
+              : null
             }
-            <div className="pager-container">
-              {InfoList.length > 0 ?
-                <Pager
-                  defaultCurrent={currentPage}
-                  pageSize={10}
-                  totalCount={totalPage}
-                  onClick={this.onChangePage}
-                /> :
-                null
-              }
-            </div>
           </Main>
         </Content>
       </div>
