@@ -60,7 +60,6 @@ export default class Repository extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.fetchRepositoryByPage(1, nextProps.params.id);
-      // this.props.resetIconSize();
       this.refs.myslider.getWrappedInstance().reset();
     }
   }
