@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import RcSelect, { Option, OptGroup } from 'rc-select';
-// import '../../rc-select/assets/index.css';
 import './Select.scss';
-// console.log('Option',Option);
 /**
  * 评分组件
  *
@@ -15,7 +13,6 @@ export {
   Option,
 };
 export default class Select extends Component {
-    //  es7  写法
   static Option = Option;
   static OptGroup = OptGroup;
 
@@ -33,12 +30,9 @@ export default class Select extends Component {
     showSearch: PropTypes.bool,
     optionLabelProp: PropTypes.string,
     notFoundContent: PropTypes.string,
-    combobox: PropTypes.string,
+    combobox: PropTypes.bool,
   }
   render() {
-    // let {
-    //   size, className, combobox, notFoundContent, prefixCls, showSearch, optionLabelProp,
-    // } = this.props;
     let { notFoundContent, optionLabelProp } = this.props;
     const { combobox } = this.props;
     const { antLocale } = this.context;
@@ -55,6 +49,7 @@ export default class Select extends Component {
     return (
       <RcSelect
         {...this.props}
+        placeholder="请选择"
         optionLabelProp={optionLabelProp || 'children'}
         notFoundContent={notFoundContent}
       />

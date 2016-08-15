@@ -1,0 +1,40 @@
+.replacement {
+  .icon-big-img {
+    margin-left: 132px;
+  }
+  .replace-submit {
+    padding: 35px 36px;
+    background: #f9fafe;
+    height: 40px;
+    .submit {
+      float: right;
+      height: 40px;
+      width: 193px;
+      outline: none;
+      border: 0;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 2px;
+      background: #008ed6;
+    }
+    .submit:hover {
+      background: #009be9;
+    }
+    .submit.disabled {
+      background: #e8e8e8;
+    }
+  }
+}
+.m-dialog {
+  .replace-icon {
+    float: left;
+    width: 37px;
+    height: 305px;
+    text-align: center;
+    line-height: 305px;
+    .repl-icon {
+      font-size: 28px;
+      color: #6f6f6f;
+    }
+  }
+}

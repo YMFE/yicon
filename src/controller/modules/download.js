@@ -4,6 +4,7 @@ import invariant from 'invariant';
 import fontBuilder from 'iconfont-builder';
 
 import { iconStatus } from '../../constants/utils';
+import { versionTools } from '../../helpers/utils';
 import { Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
 import { ensureCachesExist, getModifyTime, buildSVG, buildPNG } from '../../helpers/fs';
 
@@ -40,7 +41,8 @@ export function* downloadSingleIcon(next) {
  *
  */
 export function* downloadFont(next) {
-  const { type, id, version = '0.0.0', icons } = this.param;
+  const { type, id, icons } = this.param;
+  let { version } = this.param;
   let { fontName } = this.param;
   let iconData;
   let foldName;
@@ -64,6 +66,16 @@ export function* downloadFont(next) {
     const throughModel = isRepo ? RepoVersion : ProjectVersion;
     const instance = yield model.findOne({ where: { id } });
 
+    // 仅对项目进行处理，迫使每次下载都是最新版本
+    if (!isRepo) {
+      const getVersion = version
+        ? Promise.resolve(version)
+        : ProjectVersion.max('version', { where: { projectId: id } });
+      version = yield getVersion;
+    } else {
+      version = 0;
+    }
+
     invariant(instance, `不存在 id 为 ${id} 的 ${isRepo ? '大库' : '项目'}`);
 
     iconData = yield instance.getIcons({
@@ -79,7 +91,7 @@ export function* downloadFont(next) {
       where: { status: iconStatus.RESOLVED },
       raw: true,
     });
-    foldName = `${type}-${instance.id}-${version}`;
+    foldName = `${type}-${instance.id}-${versionTools.n2v(version)}`;
     fontName = fontName || (isRepo ? `iconfont${instance.id}` : instance.name);
     if (isRepo) {
       lastModify = +new Date(instance.updatedAt);

@@ -11,6 +11,7 @@ import {
   FETCH_ALL_PROJECT,
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
+  FETCH_HISTORY_PROJECT,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -35,6 +36,10 @@ const initialState = {
   comparisonResult: {
     deleted: [],
     added: [],
+    replaced: [],
+  },
+  historyProject: {
+    icons: [],
   },
 };
 
@@ -145,7 +150,15 @@ export default (state = initialState, action) => {
         comparisonResult: {
           deleted: action.payload.data.deleted,
           added: action.payload.data.added,
+          replaced: action.payload.data.replaced,
         },
+      };
+    }
+
+    case FETCH_HISTORY_PROJECT: {
+      return {
+        ...state,
+        historyProject: action.payload.data,
       };
     }
 

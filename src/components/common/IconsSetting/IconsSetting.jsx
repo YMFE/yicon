@@ -64,6 +64,7 @@ class IconsSetting extends Component {
 
   @autobind
   selectStyle(style) {
+    if (typeof style !== 'string') return;
     const { index, icons } = this.props;
     icons[index].fontClass = style;
     // this.props.updateWorkbench(icons.concat());
@@ -97,6 +98,11 @@ class IconsSetting extends Component {
     if (!iconDetail) {
       return null;
     }
+    // 修复 placeholder 显示
+    if (typeof iconDetail.fontClass !== 'string') {
+      iconDetail.fontClass = undefined;
+    }
+
     return (
       <div>
         <h2 className="upload-title">{title}</h2>
@@ -136,12 +142,12 @@ class IconsSetting extends Component {
               />
             </div>
             <div className="setting-opt">
-              <label htmlFor="set-icon-style" className="set-opt-name">图标风格<span
-                className="require"
-              >*</span></label>
+              <label htmlFor="set-icon-style" className="set-opt-name">
+                图标风格
+                <span className="require">*</span>
+              </label>
               <div className="set-input-wrap setting-opt-select">
                 <Select
-                  placeholder="请输选择"
                   value={iconDetail.fontClass}
                   className="info_error"
                   onChange={this.selectStyle}

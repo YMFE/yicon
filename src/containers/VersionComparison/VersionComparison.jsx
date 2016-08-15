@@ -33,7 +33,13 @@ export default class VersionComparison extends Component {
 
   componentWillMount() {
     this.props.fetchAllProjects();
-    this.props.fetchAllVersions(this.props.params.id);
+    this.props.fetchAllVersions(this.props.params.id).then(ret => {
+      const version = ret.payload.data.version;
+      this.setState({
+        highVersion: version[version.length - 1],
+        lowVersion: version[version.length - 1],
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -81,6 +87,8 @@ export default class VersionComparison extends Component {
   render() {
     const deleteLength = this.props.comparisonResult.deleted.length;
     const addLength = this.props.comparisonResult.added.length;
+    const replacedLength = this.props.comparisonResult.replaced.length;
+    const versions = this.props.projectInfo.versions.slice(1).reverse();
     return (
       <div className="yicon-main yicon-myicon yicon-myiconvs">
         <div>
@@ -117,12 +125,12 @@ export default class VersionComparison extends Component {
                 <div className="tools">
                   <Select
                     className="select-component"
-                    defaultValue={this.state.defaultVersion}
+                    defaultValue={versions[0]}
                     style={{ width: 50, textIndent: 0, outline: 0 }}
                     onSelect={this.selectHighVersion}
                   >
                   {
-                    this.props.projectInfo.versions.map((version, index) => (
+                    versions.map((version, index) => (
                       <Option
                         key={index}
                         value={version}
@@ -136,12 +144,12 @@ export default class VersionComparison extends Component {
                   <i className="vs" style={{ float: 'left' }}>VS</i>
                   <Select
                     className="select-component"
-                    defaultValue={this.state.defaultVersion}
+                    defaultValue={versions[0]}
                     style={{ width: 50, textIndent: 0 }}
                     onSelect={this.selectLowVersion}
                   >
                   {
-                    this.props.projectInfo.versions.map((version, index) => (
+                    versions.map((version, index) => (
                       <Option
                         key={index}
                         value={version}
@@ -158,47 +166,84 @@ export default class VersionComparison extends Component {
                   >版本对比</button>
                 </div>
               </div>
-              <div style={{ display: `${deleteLength || addLength ? 'block' : 'none'}` }}>
+              <div style={{ display: `${deleteLength ? 'block' : 'none'}` }}>
                 <div className="yicon-myiconvs-title">
                   <i className="iconfont">&#xf513;</i>
                   <span> 高版本{this.state.version}删除了
-                    <em className="count">{this.props.comparisonResult.deleted.length}</em>
+                    <em className="count">{deleteLength}</em>
                   个图标</span>
                 </div>
                 <div className="clearfix yicon-myiconvs-info">
-                  <div className="icon-detail-item">
                   {
                     this.props.comparisonResult.deleted.map((icon, index) => (
-                      <DesIcon
-                        key={index}
-                        name={icon.name}
-                        code={`&#${icon.code.toString(16)}`}
-                        showCode
-                        iconPath={icon.path}
-                        iconSize={this.props.iconSize}
-                      />
+                      <div className="icon-detail-item" key={index}>
+                        <DesIcon
+                          name={icon.name}
+                          code={`&#x${icon.code.toString(16)}`}
+                          showCode
+                          iconPath={icon.path}
+                          iconSize={this.props.iconSize}
+                        />
+                      </div>
                     ))
                   }
-                  </div>
                 </div>
+              </div>
+              <div style={{ display: `${addLength ? 'block' : 'none'}` }}>
                 <div className="yicon-myiconvs-title">
                   <i className="iconfont">&#xf515;</i>
                   <span> 高版本{this.state.version}增加了
-                    <em className="count">{this.props.comparisonResult.added.length}</em>
+                    <em className="count">{addLength}</em>
                   个图标</span>
                 </div>
                 <div className="clearfix yicon-myiconvs-info">
                   {
                     this.props.comparisonResult.added.map((icon, index) => (
-                      <div className="icon-detail-item">
+                      <div className="icon-detail-item" key={index}>
                         <DesIcon
-                          key={index}
                           name={icon.name}
-                          code={`&#${icon.code.toString(16)}`}
+                          code={`&#x${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
                           iconSize={this.props.iconSize}
                         />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <div style={{ display: `${replacedLength ? 'block' : 'none'}` }}>
+                <div className="yicon-myiconvs-title">
+                  <i className="iconfont">&#xf515;</i>
+                  <span> 高版本{this.state.version}替换了
+                    <em className="count">{replacedLength}</em>
+                  个图标</span>
+                </div>
+                <div className="clearfix yicon-myiconvs-info">
+                  {
+                    this.props.comparisonResult.replaced.map((icon, index) => (
+                      <div className="options" key={index}>
+                        <div className="icon-detail-item">
+                          <DesIcon
+                            name={icon.old.name}
+                            code={`&#x${icon.old.code.toString(16)}`}
+                            showCode
+                            iconPath={icon.old.path}
+                            iconSize={this.props.iconSize}
+                          />
+                        </div>
+                        <div className="operate-icon">
+                          <i className="iconfont">&#xf0f8;</i>
+                        </div>
+                        <div className="icon-detail-item">
+                          <DesIcon
+                            name={icon.new.name}
+                            code={`&#x${icon.new.code.toString(16)}`}
+                            showCode
+                            iconPath={icon.new.path}
+                            iconSize={this.props.iconSize}
+                          />
+                        </div>
                       </div>
                     ))
                   }

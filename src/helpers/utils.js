@@ -1,12 +1,15 @@
 import { logTypes } from '../constants/utils';
+import { VERSION } from '../constants/validate';
 import invariant from 'invariant';
 
 export const versionTools = {
   v2n(version) {
+    invariant(VERSION.reg.test(version), `传入的版本号 ${version} 不合法`);
     return version.split('.')
       .reduce((p, n, i) => p + n * Math.pow(1000, 2 - i), 0);
   },
   n2v(num) {
+    invariant(!isNaN(num), `传入的数字 ${num} 不合法`);
     return (num / 1000000000)
       .toFixed(9).match(/\d{3}/g).map(d => +d)
       .join('.');
@@ -56,9 +59,20 @@ export function has(Arr, o) {
   return Arr.some(v => v === o);
 }
 
-export function diffArray(oldArr, newArr) {
+export function diffArray(oldArr, newArr, getReplaced = false) {
+  const replaced = [];
   const deleted = oldArr.filter(v => !has(newArr, v));
-  const added = newArr.filter(v => !has(oldArr, v));
+  const added = newArr.filter(v => {
+    if (getReplaced) {
+      oldArr.forEach(value => {
+        if (v.oldId === value.id) {
+          replaced.push({ old: value, new: v });
+        }
+      });
+    }
+    return !has(oldArr, v);
+  });
+  if (getReplaced) return { deleted, added, replaced };
   return { deleted, added };
 }
 

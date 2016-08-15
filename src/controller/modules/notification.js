@@ -1,6 +1,7 @@
 import { Icon, Repo, Project, Log, Notification } from '../../model';
 import { analyzeLog } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
+import invariant from 'invariant';
 
 export function* getUnreadCount(next) {
   const { model } = this.state.user;
@@ -57,9 +58,11 @@ export function* getAllNotices(next) {
 }
 
 export function* getOneNotice(next) {
-  const { nId } = this.param;
-  const notice = yield Notification.findOne({ where: { id: nId } });
-  const detail = yield Log.findOne({ where: { id: notice.logId }, raw: true });
+  const { logId } = this.param;
+  const detail = yield Log.findOne({ where: { id: logId }, raw: true });
+
+  invariant(detail, `未找到 id 为 ${logId} 的日志`);
+
   const logData = analyzeLog(detail.type, detail.operation);
   const isIcon = /@icon/.test(logTypes[detail.type]);
 

@@ -12,6 +12,7 @@ import {
   ProjectLog,
   Repository,
   Replacement,
+  ReplWorkbench,
   Transition,
   Search,
   Notification,
@@ -21,6 +22,7 @@ import {
   Uploaded,
   VersionComparison,
   Authority,
+  History,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -32,10 +34,12 @@ const validate = (type, transition) => (nextState, replace, next) => {
       if (!data.res) replace(`/transition/${transition}`);
       next();
     })
-    .catch(() => next());
+    .catch(() => {
+      next();
+    });
 };
 
-export default (store) => {
+export default store => {
   // 处理权限校验
   const requireLogin = validate('login', 'no-login', store);
   const requireOwner = validate('owner', 'no-auth', store);
@@ -66,12 +70,13 @@ export default (store) => {
           <Route path="projects/:id/logs" component={ProjectLog} />
           <Route path="icons" component={Uploaded} />
           <Route path="projects/:id/comparison" component={VersionComparison} />
+          <Route path="projects/:id/history" component={History} />
         </Route>
 
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
           <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
-          <Route path="replacement/icon/:fromId...:toId" /> {/* 替换页面 */}
+          <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> {/* 替换页面 */}
           <Route path="auditing" component={Audit} /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>

@@ -11,6 +11,7 @@ import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
+import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
   getUserProjectInfo,
@@ -20,6 +21,8 @@ import {
   generateVersion,
   deleteProject,
   deletePorjectIcon,
+  fetchAllVersions,
+	compareProjectVersion,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -27,13 +30,15 @@ import {
 } from '../../actions/icon';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
-import GenerateVersion from './GenerateVersion.jsx';
+import Download from './Download.jsx';
 
 @connect(
   state => ({
     usersProjectList: state.project.usersProjectList,
     currentUserProjectInfo: state.project.currentUserProjectInfo,
     suggestList: state.project.memberSuggestList,
+    projectInfo: state.project.projectInfo,
+    comparisonResult: state.project.comparisonResult,
   }),
   {
     getUsersProjectList,
@@ -44,6 +49,8 @@ import GenerateVersion from './GenerateVersion.jsx';
     generateVersion,
     deleteProject,
     deletePorjectIcon,
+    fetchAllVersions,
+    compareProjectVersion,
     replace,
     getIconDetail,
     editIconStyle,
@@ -60,11 +67,15 @@ class UserProject extends Component {
     getUserProjectInfo: PropTypes.func,
     deleteProject: PropTypes.func,
     deletePorjectIcon: PropTypes.func,
+    fetchAllVersions: PropTypes.func,
+    compareProjectVersion: PropTypes.func,
     patchUserProject: PropTypes.func,
     patchProjectMemeber: PropTypes.func,
     editIconStyle: PropTypes.func,
     getIconDetail: PropTypes.func,
     suggestList: PropTypes.array,
+    projectInfo: PropTypes.object,
+    comparisonResult: PropTypes.object,
     generateVersion: PropTypes.func,
     replace: PropTypes.func,
   }
@@ -78,10 +89,13 @@ class UserProject extends Component {
       showEditProject: false,
       showManageMember: false,
       showGenerateVersion: false,
+      showDownloadDialog: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
       generateVersion: 'revision',
     };
+    this.highestVersion = '0.0.0';
+    this.nextVersion = '0.0.1';
   }
   componentDidMount() {
     this.props.getUsersProjectList().then(action => {
@@ -96,6 +110,7 @@ class UserProject extends Component {
       }
       if (!current || id !== +current.id) {
         this.props.getUserProjectInfo(id);
+        this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();
     });
@@ -118,8 +133,23 @@ class UserProject extends Component {
     }
     if (nextId !== this.props.params.id) {
       this.props.getUserProjectInfo(nextId);
+      this.props.fetchAllVersions(nextId);
+      this.highestVersion = '0.0.0';
+      this.nextVersion = '0.0.1';
+      this.props.compareProjectVersion(nextId, '0.0.0', '0.0.0');
     }
   }
+
+  @autobind
+  compareVersion(callback) {
+    const id = this.props.params.id;
+    const versions = this.props.projectInfo.versions;
+    const high = versions[versions.length - 1];
+    const low = '0.0.0';
+    this.highestVersion = high;
+    this.props.compareProjectVersion(id, high, low).then(callback);
+  }
+
   @autobind
   handleSingleIconDownload(iconId) {
     return () => {
@@ -171,11 +201,27 @@ class UserProject extends Component {
     this.shiftShowManageMembers();
   }
   @autobind
-  shiftShowGenerateVersion(isShow = false) {
-    this.setState({
-      showGenerateVersion: isShow,
-    });
+  shiftDownloadDialog(isShow = false) {
+    const length = this.props.projectInfo.versions.length;
+    if (isShow && length > 1) {
+      this.compareVersion(ret => {
+        const { deleted, added } = ret.payload.data;
+        if (deleted.length || added.length) {
+          this.setState({
+            showDownloadDialog: isShow,
+          });
+        } else {
+          this.downloadAllIcons();
+          return;
+        }
+      });
+    } else {
+      this.setState({
+        showDownloadDialog: isShow,
+      });
+    }
   }
+
   @autobind
   shiftShowManageMembers(isShow = false) {
     this.setState({
@@ -184,30 +230,38 @@ class UserProject extends Component {
   }
   @autobind
   changeGenerateVersion(e) {
-    const version = e.currentTarget.querySelector('input').value;
+    const type = e.currentTarget.querySelector('input').value;
     this.setState({
-      generateVersion: version,
+      generateVersion: type,
     });
   }
-  @autobind
-  generateVersion() {
-    this.props.generateVersion({
-      id: this.props.currentUserProjectInfo.id,
-      versionType: this.state.generateVersion,
-    });
-    this.shiftShowGenerateVersion();
-  }
+
   @autobind
   downloadAllIcons() {
     const { id } = this.props.params;
-    const { version } = this.props.currentUserProjectInfo;
     axios
-      .post('/api/download/font', { type: 'project', id, version })
+      .post('/api/download/font', { type: 'project', id })
       .then(({ data }) => {
         if (data.res) {
           window.location.href = `/download/${data.data}`;
         }
       });
+  }
+
+  @autobind
+  downloadAndGenerateVersion() {
+    // 生成版本
+    const id = this.props.currentUserProjectInfo.id;
+    this.props.generateVersion({
+      id,
+      versionType: this.state.generateVersion,
+    }).then(() => {
+      // 下载字体
+      this.props.fetchAllVersions(id);
+      this.downloadAllIcons();
+    });
+    // 关闭dialog
+    this.shiftDownloadDialog();
   }
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
@@ -234,6 +288,7 @@ class UserProject extends Component {
   renderDialogList() {
     const current = this.props.currentUserProjectInfo;
     let dialogList = null;
+    this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
     if (current.name) {
       dialogList = [
         <EditProject
@@ -267,13 +322,17 @@ class UserProject extends Component {
             }
           }
         />,
-        <GenerateVersion
+        <Download
           key={3}
-          onOk={this.generateVersion}
-          onCancel={this.shiftShowGenerateVersion}
+          currenthighestVersion={this.highestVersion}
+          nextVersion={this.nextVersion}
+          comparison={this.props.comparisonResult}
+          onOk={this.downloadAndGenerateVersion}
+          onCancel={this.shiftDownloadDialog}
           onChange={this.changeGenerateVersion}
           value={this.state.generateVersion}
-          showGenerateVersion={this.state.showGenerateVersion}
+          confrimText={'生成版本并下载'}
+          showDownloadDialog={this.state.showDownloadDialog}
         />,
         <Dialog
           key={4}
@@ -291,8 +350,10 @@ class UserProject extends Component {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
     const id = this.props.params.id;
+    const versions = this.props.projectInfo.versions;
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
+    const owner = current.projectOwner || { name: '' };
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
@@ -318,8 +379,9 @@ class UserProject extends Component {
           </Menu>
           <Main>
             <div className="UserProject-info">
-              <header>
+              <header className="clearfix">
                 <h3>{current.name}</h3>
+                <div className="powerby">负责人：{owner.name}</div>
               </header>
               {current.isOwner ?
                 <menu className="options">
@@ -346,16 +408,10 @@ class UserProject extends Component {
               <div className="tool">
                 <button
                   className="options-btns btns-blue"
-                  onClick={this.downloadAllIcons}
+                  onClick={() => { this.shiftDownloadDialog(true); }}
                 >
                   <i className="iconfont">&#xf50a;</i>
                   下载全部图标
-                </button>
-                <button
-                  className="options-btns btns-blue"
-                  onClick={() => { this.shiftShowGenerateVersion(true); }}
-                >
-                  生成版本
                 </button>
                 <Link
                   to={`/user/projects/${id}/logs`}
@@ -364,10 +420,12 @@ class UserProject extends Component {
                   操作日志
                 </Link>
                 <Link
-                  to={`/user/projects/${id}/comparison`}
-                  className="options-btns btns-default"
+                  to={`/user/projects/${id}/history`}
+                  className={
+                    `options-btns btns-default ${versions.length <= 1 ? 'btn-history-hidden' : ''}`
+                  }
                 >
-                  版本对比
+                  历史版本
                 </Link>
               </div>
             </div>

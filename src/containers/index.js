@@ -9,6 +9,7 @@ import Project from './Project/Project';
 import NoMatch from './NoMatch/NoMatch';
 import Repository from './Repository/Repository';
 import Replacement from './Replacement/Replacement';
+import ReplWorkbench from './ReplWorkbench/ReplWorkbench';
 import Search from './Search/Search';
 import Notification from './Notification/Notification';
 import Transition from './Transition/Transition';
@@ -18,6 +19,7 @@ import Log from './Log/Log';
 import ProjectLog from './Log/ProjectLog';
 import VersionComparison from './VersionComparison/VersionComparison';
 import Authority from './Authority/Authority';
+import History from './History/History';
 
 export {
   App,
@@ -33,6 +35,7 @@ export {
   Project,
   Repository,
   Replacement,
+  ReplWorkbench,
   Transition,
   Search,
   Notification,
@@ -40,4 +43,5 @@ export {
   UserProject,
   VersionComparison,
   Authority,
+  History,
 };

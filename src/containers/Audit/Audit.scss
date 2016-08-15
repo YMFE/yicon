@@ -40,23 +40,31 @@
     }
   }
   .approval {
-    height: 115px;
+    height: 38px;
     background: #fff;
     .aprv-btn {
-      width: 108px;
-      height: 40px;
-      outline: none;
-      border: 0;
+      float: left;
+      text-align: center;
+      line-height: 34px;
+      height: 34px;
+      background: #fff;
+      border: 2px solid #dfdfdf;
+      border-radius: 19px;
       font-size: 14px;
-      color: #fff;
-      border-radius: 2px;
+      color: #9e9e9e;
+      cursor: pointer;
+      padding: 0 17px;
+      margin-top: -25px;
+      .tag {
+        margin-right: 8px;
+      }
+    }
+    .aprv-btn.on {
+      border: 2px solid #4bb052;
+      color: #4bb052;
     }
     .pass {
-      margin: 0 8px 0 531px;
-      background: #4bb052;
-    }
-    .no-pass {
-      background: #ff7474;
+      margin: -25px 10px 0 531px;
     }
   }
   .approval-submit {
@@ -73,6 +81,12 @@
       color: #fff;
       border-radius: 2px;
       background: #008ed6;
+    }
+    .submit:hover {
+      background: #009be9;
+    }
+    .submit.disabled {
+      background: #e8e8e8;
     }
   }
   .setting-opt{

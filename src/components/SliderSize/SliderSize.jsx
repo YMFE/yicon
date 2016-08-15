@@ -8,19 +8,41 @@ import {
 import { autobind } from 'core-decorators';
 
 @connect(
-  state => ({
-    iconSize: state.repository.iconSize,
-  }),
-  { changeIconSize }
+  null,
+  { changeIconSize },
+  null,
+  { withRef: true }
 )
 class SliderSize extends Component {
+
+  constructor(props) {
+    super(props);
+    // const { iconSize } = props;
+
+    this.state = {
+      sizeTxt: 64,
+    };
+  }
+
+  @autobind
+  onChange(value) {
+    this.setState({
+      sizeTxt: value,
+    });
+  }
+
   @autobind
   changeSize(value) {
     this.props.changeIconSize(value);
   }
 
+  @autobind
+  reset() {
+    this.refs.slider.reset();
+  }
+
   render() {
-    const { iconSize } = this.props;
+    // const { iconSize } = this.props;
     return (
       <div style={{ float: 'right' }}>
         <div style={{ width: 216, padding: 11, float: 'left' }}>
@@ -28,9 +50,9 @@ class SliderSize extends Component {
             min={16}
             max={64}
             step={1}
-            defaultValue={64}
-            value={iconSize}
-            onChange={this.changeSize}
+            onAfterChange={this.changeSize}
+            onChange={this.onChange}
+            ref="slider"
           />
         </div>
         <span
@@ -40,7 +62,7 @@ class SliderSize extends Component {
             fontSize: 16,
             lineHeight: '38px',
           }}
-        >{iconSize}px</span>
+        >{this.state.sizeTxt}px</span>
       </div>
     );
   }

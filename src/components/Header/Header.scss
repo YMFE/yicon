@@ -17,10 +17,12 @@ $iconColor:#555f6e;
 .global-header {
     width: 100%;
     height: 64px;
-    z-index: 99;
-    background: #000c15 url("#{$imgUrl}global-header-bg.jpg") center bottom no-repeat;
     &.main {
-        padding-top: 36px;
+        height: 100px;
+        .header-fixed {
+          padding-top: 36px;
+          height: 64px;
+        }
     }
     &:after {
         clear: both;
@@ -29,7 +31,15 @@ $iconColor:#555f6e;
         height: 0;
         overflow: hidden;
     }
-    > .container {
+    .header-fixed {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 64px;
+      z-index: 99;
+      background: #000c15 url("#{$imgUrl}global-header-bg.jpg") center bottom no-repeat;
+    }
+    .container {
         width: 1100px;
         margin: 0 auto;
         height: 64px;
