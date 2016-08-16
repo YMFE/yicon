@@ -8,8 +8,8 @@ class RepoSection extends Component {
     const { id, name, iconCount, icons, user } = this.props;
 
     return (
-      <dl className="global-list-prj-item">
-        <Link to={`/repositories/${id}`}>
+      <Link to={`/repositories/${id}`}>
+        <dl className="global-list-prj-item">
           <dt>
             <h2>{name}</h2>
             <p>
@@ -28,8 +28,8 @@ class RepoSection extends Component {
               }
             </ul>
           </dd>
-        </Link>
-      </dl>
+        </dl>
+      </Link>
     );
   }
 }

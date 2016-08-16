@@ -1,4 +1,9 @@
+import PrettyError from 'pretty-error';
 import { User, Repo, Project } from '../../model';
+
+const pe = new PrettyError();
+pe.skipNodeFiles();
+pe.skipPackage('koa');
 
 export function* mergeParams(next) {
   this.param = {
@@ -28,7 +33,7 @@ export function* responder(next) {
     };
     if (__DEVELOPMENT__) {
       /* eslint-disable no-console */
-      console.log(`[Error] ${e.stack}`);
+      console.log(pe.render(e));
       /* eslint-enable no-console */
     }
     // this.app.emit('error', e, this);

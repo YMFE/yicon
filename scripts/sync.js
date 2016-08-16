@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { exec } from 'child_process';
+import path from 'path';
 
-const localPath = './';
+const localPath = path.join(__dirname);
 const serverPath = 'l-iconfont1.h.dev.cn0:/home/q/www/yicon.qunar.com/webapp';
 const options = '-rzxv --timeout=10 --chmod=\'a=rX,u+w\' --rsync-path=\'sudo rsync\'';
 const syncCommand = `rsync ${options} ${localPath} ${serverPath}`;

@@ -12,6 +12,7 @@ import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import createStore from './reducer';
 import Html from './helpers/Html';
+// import { getPageTitle } from './helpers/utils';
 import { router, down } from './controller';
 import isomFetch from 'isom-fetch';
 
@@ -47,6 +48,7 @@ const getRouteContext = (ctx, store) =>
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
         };
+
         // 使用 div 包裹是为了前端的 devTools 的渲染
         const component = (
           <Provider store={store} key="provider">
@@ -69,6 +71,7 @@ const getRouteContext = (ctx, store) =>
             admin: sess.actor === 2,
           },
         });
+        // const title = getPageTitle(renderProps.components);
 
         const render = (fetchedURLs) => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
@@ -77,6 +80,7 @@ const getRouteContext = (ctx, store) =>
               component={component}
               store={store}
               urls={fetchedURLs}
+              title="yicon - 矢量图标库"
               authType="qsso"
             />
         )}`;

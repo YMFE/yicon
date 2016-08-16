@@ -33,3 +33,5 @@ export default class NoMatch extends Component {
     );
   }
 }
+
+NoMatch.appPageTitle = 'yicon - 未找到页面';

@@ -39,7 +39,6 @@ const iconManageList = [
     fetchTinyRepository,
   }
 )
-
 class Header extends Component {
   componentWillMount() {
     this.props.fetchTinyRepository();

@@ -12,12 +12,15 @@ import { Content } from '../../components/';
   { fetchHomeData }
 )
 class Home extends Component {
-  componentWillMount() {
-    // hack
-    // if (typeof document !== 'object') {
-    this.props.fetchHomeData();
-    // }
+  static propTypes = {
+    list: PropTypes.array,
+    fetchHomeData: PropTypes.func,
   }
+
+  componentWillMount() {
+    this.props.fetchHomeData();
+  }
+
   render() {
     const { list } = this.props;
     return (
@@ -40,10 +43,5 @@ class Home extends Component {
     );
   }
 }
-
-Home.propTypes = {
-  list: PropTypes.array,
-  fetchHomeData: PropTypes.func,
-};
 
 export default Home;

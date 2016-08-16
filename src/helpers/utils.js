@@ -116,3 +116,16 @@ export function analyzeLog(type, logString) {
   logs[key] = logArr.map(v => JSON.parse(v)[key]);
   return logs;
 }
+
+export function getPageTitle(components) {
+  let title = 'yicon - 矢量图标字体库';
+  components.some(c => {
+    if (typeof c.appPageTitle === 'string') {
+      title = c.appPageTitle;
+      return true;
+    }
+    return false;
+  });
+
+  return title;
+}

@@ -4,7 +4,7 @@ import serialize from 'serialize-javascript';
 import { getURLStateName } from 'isom-fetch';
 
 const Html = (props) => {
-  const { assets, component, store, urls, authType } = props;
+  const { assets, component, store, urls, authType, title } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
   const serverTime = +new Date();
 
@@ -23,7 +23,7 @@ const Html = (props) => {
             type="text/css"
           />)
         }
-        <title>qicon</title>
+        <title>{title}</title>
       </head>
       <body>
         <div
@@ -31,13 +31,11 @@ const Html = (props) => {
           dangerouslySetInnerHTML={{ __html: content }}
         >
         </div>
-        {
-          authType === 'qsso' &&
-            <script
-              src="https://qsso.corp.qunar.com/lib/qsso-auth.js"
-              charSet="utf-8"
-            >
-            </script>
+        {authType === 'qsso' &&
+          <script
+            src="https://qsso.corp.qunar.com/lib/qsso-auth.js"
+            charSet="utf-8"
+          />
         }
         <script
           charSet="utf-8"
@@ -61,6 +59,7 @@ Html.propTypes = {
   store: PropTypes.object,
   urls: PropTypes.object,
   authType: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default Html;
