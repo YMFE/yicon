@@ -18,12 +18,28 @@ export default class Transition extends Component {
 
   componentDidMount() {
     const { type } = this.props.params;
-    if (type === 'no-auth') {
-      this.backToPage('/');
-    }
-    if (type === 'repl-icon') {
-      const { repoId } = this.props.location.query;
-      this.backToPage(`/repositories/${repoId}`);
+    switch (type) {
+      case 'no-auth': {
+        this.backToPage('/');
+        break;
+      }
+      case 'repl-icon': {
+        const { repoId } = this.props.location.query;
+        this.backToPage(`/repositories/${repoId}`);
+        break;
+      }
+      case 'audit-icon': {
+        this.backToPage('/');
+        break;
+      }
+      case 'upload-icon': {
+        this.backToPage('/upload');
+        break;
+      }
+      default: {
+        this.backToPage('/');
+        break;
+      }
     }
   }
 
@@ -94,6 +110,40 @@ export default class Transition extends Component {
       </div>
     );
 
+    const auditIconHTML = (
+      <div>
+        <div className="no-auth-tips">
+          <p>没有待审核图标</p>
+          <p>{this.state.second} 秒之后跳转至首页</p>
+        </div>
+        <p>
+          <button
+            className="no-auth-login"
+            onClick={() => this.immedBackToPage('/')}
+          >
+            点击跳转
+          </button>
+        </p>
+      </div>
+    );
+
+    const uploadIconHTML = (
+      <div>
+        <div className="no-auth-tips">
+          <p>没有上传的图标</p>
+          <p>{this.state.second} 秒之后跳转至图标上传页</p>
+        </div>
+        <p>
+          <button
+            className="no-auth-login"
+            onClick={() => this.immedBackToPage('/upload')}
+          >
+            点击跳转
+          </button>
+        </p>
+      </div>
+    );
+
     return (
       <div>
         <div className="no-auth">
@@ -101,6 +151,8 @@ export default class Transition extends Component {
           {type === 'no-auth' && transHTML}
           {type === 'no-login' && noLoginHTML}
           {type === 'repl-icon' && replIconHTML}
+          {type === 'audit-icon' && auditIconHTML}
+          {type === 'upload-icon' && uploadIconHTML}
         </div>
       </div>
     );
