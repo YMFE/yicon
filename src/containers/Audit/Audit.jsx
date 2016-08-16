@@ -126,10 +126,9 @@ export default class Audit extends Component {
     const { auditedIcons, notAuditedIcons } = this.calcAuditDone();
     this.props.auditIcons({ icons: auditedIcons }).then((res) => {
       if (res.payload.res) {
-        if (notAuditedIcons.length) {
-          this.props.selectIcon(0);
-          this.props.updateAuditIcons(notAuditedIcons);
-        } else {
+        this.props.selectIcon(0);
+        this.props.updateAuditIcons(notAuditedIcons);
+        if (!notAuditedIcons.length) {
           this.props.push('transition/audit-icon');
         }
       }

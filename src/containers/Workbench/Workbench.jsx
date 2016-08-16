@@ -122,11 +122,10 @@ export default class Workbench extends Component {
       const noDone = this.props.icons.filter((icon) => (
         !(icon.name && icon.fontClass)
       ));
+      this.props.selectEdit(0);
+      this.props.updateWorkbench(noDone);
       if (!noDone.length) {
         this.props.push('transition/upload-icon');
-      } else {
-        this.props.selectEdit(0);
-        this.props.updateWorkbench(noDone);
       }
     });
   }
