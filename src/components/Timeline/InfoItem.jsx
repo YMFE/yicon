@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
 // import { Icon } from '../../components/';
 import { InfoTypeDetail } from '../../constants/utils.js';
+import classnames from 'classnames';
 import ReactCSSTransitionsGrop from 'react-addons-css-transition-group';
 class InfoItem extends Component {
 
@@ -100,14 +101,13 @@ class InfoItem extends Component {
   }
 
   render() {
-    let classList = [];
-    if (this.isNew) classList.push('new');
-    if (this.props.extraClass) classList.push(this.props.extraClass);
-    classList = classList.join(' ');
+    const classList = classnames({
+      new: this.props.isNew,
+      [this.props.extraClass]: this.props.extraClass,
+    });
+
     return (
-      <dl
-        className={classList}
-      >
+      <dl className={classList}>
         <dt className="description">
           <p className="time">
           {

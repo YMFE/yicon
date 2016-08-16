@@ -79,7 +79,7 @@ class DownloadDialog extends Component {
 
   @autobind
   changeIconSize(size) {
-    this.props.editIconStyle({ size });
+    this.props.editIconStyle({ size: +size });
   }
 
   tagsToArr(tags) {
@@ -115,7 +115,7 @@ class DownloadDialog extends Component {
     }
     const options = [32, 64, 128, 256].map((size, i) => (
       <Option
-        value={size}
+        value={`${size}`}
         className="select-narrow-menu"
         key={i}
       >
@@ -180,9 +180,9 @@ class DownloadDialog extends Component {
               <div className="color-show" style={{ background: iconDetail.iconStyle.color }}></div>
             </div>
             <Select
-              defaultValue={256}
+              defaultValue="256"
               onChange={this.changeIconSize}
-              className={'set-size'}
+              className="set-size"
             >
               {options}
             </Select>

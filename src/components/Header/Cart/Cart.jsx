@@ -238,20 +238,16 @@ class Cart extends Component {
         return (
           <div className="save_ct">
             <div className="clear-car">
-              <a href="#" onClick={this.dumpIcon}>清空</a>
+              <span onClick={this.dumpIcon}>清空</span>
             </div>
             <div className="btn-download">
               <div className="save_selection">
-                <a
-                  href="#"
-                  className="ibtn"
-                >
+                <a className="ibtn">
                   <span>保存为项目 <i className="iconfont">&#xf032;</i></span>
                 </a>
 
                 <div className="save_selection_btns">
                   <a
-                    href="#"
                     className="ibtn"
                     onClick={this.onChangeCartSaveType}
                     data-type="SAVE_TO_NEW_PROJECT"
@@ -263,7 +259,6 @@ class Cart extends Component {
                   </a>
                   <div className="save-history">
                     <a
-                      href="#"
                       className="ibtn"
                       data-type="SAVE_TO_PROJECT"
                       onClick={this.onChangeCartSaveType}
@@ -274,11 +269,10 @@ class Cart extends Component {
                 </div>
               </div>
               <a
-                href="#"
                 className="ibtn ibtn-download"
                 onClick={this.download}
               >
-              下载
+                下载
               </a>
             </div>
           </div>
