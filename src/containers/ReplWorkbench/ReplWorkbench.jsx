@@ -77,7 +77,7 @@ export default class ReplWorkbench extends Component {
           isShowDialog: false,
         });
         // this.props.push(`/repositories/${currIcon.repo.id}`);
-        // this.props.push(`/transition`)
+        this.props.push(`/transition/repl-icon?repoId=${currIcon.repo.id}`);
       }
     });
   }

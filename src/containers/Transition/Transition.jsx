@@ -7,6 +7,7 @@ import './Transition.scss';
 export default class Transition extends Component {
   static propTypes = {
     params: PropTypes.object,
+    location: PropTypes.object,
     type: PropTypes.string,
     dispatch: PropTypes.func,
   }
@@ -20,8 +21,9 @@ export default class Transition extends Component {
     if (type === 'no-auth') {
       this.backToPage('/');
     }
-    if (type === 'icon-repl') {
-      this.backToPage(`/repositories/${this.props.params.repoId}`);
+    if (type === 'repl-icon') {
+      const { repoId } = this.props.location.query;
+      this.backToPage(`/repositories/${repoId}`);
     }
   }
 
@@ -29,21 +31,28 @@ export default class Transition extends Component {
     window.QSSO.auth('/api/login');
   }
 
-  backToPage() {
-    const intervalId = setInterval(() => {
+  intervalId = '';
+  backToPage(url) {
+    this.intervalId = setInterval(() => {
       this.setState({
         second: this.state.second - 1,
       }, () => {
         if (this.state.second <= 0) {
-          clearInterval(intervalId);
-          this.props.dispatch(replace('/'));
+          clearInterval(this.intervalId);
+          this.props.dispatch(replace(url));
         }
       });
     }, 1000);
   }
 
+  immedBackToPage(url) {
+    clearInterval(this.intervalId);
+    this.props.dispatch(replace(url));
+  }
+
   render() {
     const { type } = this.props.params;
+    const { repoId } = this.props.location.query;
     const noLoginHTML = (
       <div>
         <div className="no-auth-tips">
@@ -67,12 +76,31 @@ export default class Transition extends Component {
       </div>
     );
 
+    const replIconHTML = (
+      <div>
+        <div className="no-auth-tips">
+          <p>替换成功</p>
+          <p>{this.state.second} 秒之后跳转至图标库页</p>
+          <p>替换图标位于库的最后</p>
+        </div>
+        <p>
+          <button
+            className="no-auth-login"
+            onClick={() => this.immedBackToPage(`/repositories/${repoId}`)}
+          >
+            点击跳转
+          </button>
+        </p>
+      </div>
+    );
+
     return (
       <div>
         <div className="no-auth">
           <div className="no-auth-logo"></div>
           {type === 'no-auth' && transHTML}
           {type === 'no-login' && noLoginHTML}
+          {type === 'repl-icon' && replIconHTML}
         </div>
       </div>
     );
