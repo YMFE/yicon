@@ -78,6 +78,7 @@ class UserProject extends Component {
     comparisonResult: PropTypes.object,
     generateVersion: PropTypes.func,
     replace: PropTypes.func,
+    hideLoading: PropTypes.func,
   }
 
   static defaultProps ={
@@ -102,7 +103,9 @@ class UserProject extends Component {
       const id = this.props.projectId;
       const current = this.props.currentUserProjectInfo;
       if (!current || id !== +current.id) {
-        this.props.getUserProjectInfo(id);
+        this.props.getUserProjectInfo(id)
+          .then(() => this.props.hideLoading())
+          .catch(() => this.props.hideLoading());
         this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();

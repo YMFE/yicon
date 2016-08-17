@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { autobind } from 'core-decorators';
 import UserProject from '../UserProject/UserProject';
 import History from '../History/History';
 import Loading from '../../components/common/Loading/Loading.jsx';
@@ -15,24 +16,27 @@ export default class PublicProject extends Component {
   state = {
     isShowLoading: false,
   }
+
   componentWillMount() {
+    this.setState({ isShowLoading: true });
     if (!this.props.params.id && this.props.user.login) {
-      this.setState({ isShowLoading: true });
-      this.props.getUsersProjectList().then(() => {
-        this.setState({ isShowLoading: false });
-      }).catch(() => {});
+      this.props.getUsersProjectList();
     }
   }
 
+  @autobind
+  hideLoading() {
+    this.setState({ isShowLoading: false });
+  }
 
   renderContent(id) {
     if (!id) return null;
     let content;
     const isBelong = this.props.userProject.some(v => v.id === +id);
     if (this.props.user.login && isBelong) {
-      content = <UserProject projectId={id} />;
+      content = <UserProject projectId={id} hideLoading={this.hideLoading} />;
     } else {
-      content = <History projectId={id} isHidden />;
+      content = <History projectId={id} isHidden hideLoading={this.hideLoading} />;
     }
     return content;
   }

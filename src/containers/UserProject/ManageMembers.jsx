@@ -129,7 +129,7 @@ class ManageMembers extends Component {
               }}
             >
               <div className="field-btn">
-                <div
+                <button
                   type="button"
                   className="add-collaborators"
                   onClick={() => {
@@ -140,7 +140,7 @@ class ManageMembers extends Component {
                   }}
                 >
                   添加新成员
-                </div>
+                </button>
               </div>
             </SearchList>
           </ul>

@@ -79,7 +79,7 @@ function editProjectMember(project) {
 
 export function patchProjectMemeber(project) {
   return (dispatch) => {
-    dispatch(editProjectMember).then(() => {
+    dispatch(editProjectMember(project)).then(() => {
       dispatch(getUserProjectInfo(project.id));
     });
   };

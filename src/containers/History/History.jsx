@@ -35,7 +35,9 @@ export default class History extends Component {
     this.props.fetchAllVersions(id).then(ret => {
       const version = ret.payload.data.version;
       const length = version.length;
-      this.props.fetchHistoryProject(id, version[length - 1]);
+      this.props.fetchHistoryProject(id, version[length - 1])
+        .then(() => this.props.hideLoading())
+        .catch(() => this.props.hideLoading());
     }).catch(() => {});
   }
 
@@ -163,4 +165,5 @@ History.propTypes = {
   historyProject: PropTypes.object,
   projectInfo: PropTypes.object,
   iconSize: PropTypes.number,
+  hideLoading: PropTypes.func,
 };
