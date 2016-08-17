@@ -1,5 +1,6 @@
 import './Audit.scss';
 import React, { Component, PropTypes } from 'react';
+import { push } from 'react-router-redux';
 import { connect } from 'react-redux';import {
   fetchAuditIcons,
   updateAuditIcons,
@@ -18,6 +19,7 @@ const propTypes = {
   updateAuditIcons: PropTypes.func,
   auditIcons: PropTypes.func,
   selectIcon: PropTypes.func,
+  push: PropTypes.func,
 };
 @connect(
   state => ({
@@ -29,6 +31,7 @@ const propTypes = {
     updateAuditIcons,
     auditIcons,
     selectIcon,
+    push,
   }
 )
 export default class Audit extends Component {
@@ -44,7 +47,14 @@ export default class Audit extends Component {
   defaultProps = {}
 
   componentWillMount() {
-    this.props.fetchAuditIcons();
+    this.props.fetchAuditIcons().then(() => {
+      const { icons } = this.props;
+      if (icons.length) {
+        this.props.selectIcon(0);
+      } else {
+        this.props.push('transition/audit-icon');
+      }
+    });
   }
 
   @autobind
@@ -118,6 +128,9 @@ export default class Audit extends Component {
       if (res.payload.res) {
         this.props.selectIcon(0);
         this.props.updateAuditIcons(notAuditedIcons);
+        if (!notAuditedIcons.length) {
+          this.props.push('transition/audit-icon');
+        }
       }
     });
   }
@@ -136,11 +149,11 @@ export default class Audit extends Component {
 
   render() {
     const { index, icons } = this.props;
-    if (!icons.length) {
+    const icon = icons[index];
+    if (!icons.length || !icon) {
       return null;
     }
     const auditedNum = this.calcAuditDone().auditedIcons.length;
-    const icon = icons[index];
     return (
       <div className={'yicon-main yicon-upload'}>
         <div className={'yicon-audit-container'}>

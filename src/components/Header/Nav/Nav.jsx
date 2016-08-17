@@ -21,7 +21,10 @@ class Nav extends Component {
         (item.auth === 'owner' && userInfo.repoAdmin && userInfo.repoAdmin.length)) {
         return (
           <li key={index}>
-            <Link to={item.href}>
+            <Link
+              to={item.href}
+              style={{ display: 'block', padding: '0 20px' }}
+            >
               {item.name}
             </Link>
           </li>

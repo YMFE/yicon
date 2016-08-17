@@ -59,12 +59,16 @@
         margin-right: 8px;
       }
     }
-    .aprv-btn.on {
+    .pass.on {
       border: 2px solid #4bb052;
       color: #4bb052;
     }
     .pass {
       margin: -25px 10px 0 531px;
+    }
+    .no-pass.on {
+      border: 2px solid #ff7474;
+      color: #ff7474;
     }
   }
   .approval-submit {

@@ -7,16 +7,17 @@
   // max-height: 620px;
   padding:10px 0 0;
   li {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     height: 50px;
     line-height: 50px;
     font-size:14px;
-    padding:0 34px;
     color: #344562;
     cursor: pointer;
-    > a{
+    > a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      padding:0 34px;
       color: #344562;
     }
   }
