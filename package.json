@@ -13,7 +13,8 @@
     "db:sync": "better-npm-run database:sync",
     "db:force": "better-npm-run database:force",
     "test": "karma start",
-    "build": "better-npm-run build"
+    "build": "better-npm-run build",
+    "sync": "better-npm-run build && node scripts"
   },
   "betterScripts": {
     "client": {
