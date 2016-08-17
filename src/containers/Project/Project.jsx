@@ -55,7 +55,7 @@ export default class Project extends Component {
       if (!id && organization) {
         const [firstProject] = organization;
         if (firstProject && firstProject.id) {
-          this.props.push(`/user/projects/${firstProject.id}`);
+          this.props.push(`/projects/${firstProject.id}`);
         }
       }
       if (!current || id !== +current.id) {

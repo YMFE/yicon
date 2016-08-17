@@ -25,98 +25,126 @@ const Option = Select.Option;
 )
 
 export default class History extends Component {
+  defaultProps = {
+    isHidden: false,
+  }
+
   componentWillMount() {
-    this.props.fetchAllProjects();
-    this.props.fetchAllVersions(this.props.params.id).then(ret => {
+    const id = this.props.projectId || this.props.params.id;
+    if (!this.props.isHidden) this.props.fetchAllProjects();
+    this.props.fetchAllVersions(id).then(ret => {
       const version = ret.payload.data.version;
       const length = version.length;
-      this.props.fetchHistoryProject(this.props.params.id, version[length - 1]);
-    });
+      this.props.fetchHistoryProject(id, version[length - 1]);
+    }).catch(() => {});
   }
 
   @autobind
   onSelect(value) {
-    this.props.fetchHistoryProject(this.props.params.id, value);
+    const id = this.props.projectId || this.props.params.id;
+    this.props.fetchHistoryProject(id, value);
   }
 
   render() {
-    const id = this.props.params.id;
+    const id = this.props.projectId || this.props.params.id;
     const versions = this.props.projectInfo.versions.slice(1).reverse();
     return (
       <div className="yicon-main yicon-myicon yicon-history">
-        <SubTitle tit={'我的图标项目'}>
+        <SubTitle tit={this.props.isHidden ? '图标项目' : '我的图标项目'}>
           <SliderSize />
         </SubTitle>
         <Content>
-          <Menu>
-            {
-              this.props.myProjects.organization.map((project, index) => (
-                <li
-                  key={index}
-                  className={+project.id === +this.props.params.id ? 'selected' : ''}
-                >
-                  <Link to={`/user/projects/${project.id}`}>{project.name}</Link>
-                </li>
-              ))
-            }
-          </Menu>
-          <Main extraClass="yicon-myicon-main">
-            <div className="myicon-prj-info">
-              <div className="prj-details">
-                <div className="title">
-                  <h3>{this.props.projectInfo.name} </h3>
-                  <span className="tips">历史版本</span>
-                  <Link
-                    className="return"
-                    to={`/user/projects/${this.props.params.id}`}
-                  >
-                    &lt;返回项目
-                  </Link>
-                </div>
-              </div>
-              <div className="tools">
-                <div className="version">版本：</div>
-                <Select
-                  className="select-component"
-                  defaultValue={versions[0]}
-                  style={{ width: 50, textIndent: 0, outline: 0 }}
-                  onSelect={this.onSelect}
-                >
+          {
+            !this.props.isHidden &&
+              <Menu>
                 {
-                  versions.map((version, index) => (
-                    <Option
+                  this.props.myProjects.organization.map((project, index) => (
+                    <li
                       key={index}
-                      value={version}
-                      className="version-item"
+                      className={+project.id === +id ? 'selected' : ''}
                     >
-                      {version}
-                    </Option>
+                      <Link to={`/projects/${project.id}`}>{project.name}</Link>
+                    </li>
                   ))
                 }
-                </Select>
-                <Link
-                  to={`/user/projects/${id}/comparison`}
-                  className="options-btns btns-default"
-                >
-                  版本对比
-                </Link>
+              </Menu>
+          }
+          <Main extraClass="yicon-myicon-main">
+            <div style={{ display: `${this.props.historyProject.name ? 'block' : 'none'}` }}>
+              <div className="myicon-prj-info">
+                <div className="prj-details">
+                  <div className="title">
+                    <h3>{this.props.projectInfo.name} </h3>
+                    <span className="tips">{this.props.isHidden ? '' : '历史版本'}</span>
+                    {
+                      !this.props.isHidden &&
+                        <Link
+                          className="return"
+                          to={`/projects/${id}`}
+                        >
+                          &lt;返回项目
+                        </Link>
+                    }
+                  </div>
+                </div>
+                <div className="tools" style={{ display: `${versions.length ? 'block' : 'none'}` }}>
+                  <div className="version">版本：</div>
+                  <Select
+                    className="select-component"
+                    defaultValue={versions[0]}
+                    style={{ width: 50, textIndent: 0, outline: 0 }}
+                    onSelect={this.onSelect}
+                  >
+                  {
+                    versions.map((version, index) => (
+                      <Option
+                        key={index}
+                        value={version}
+                        className="version-item"
+                      >
+                        {version}
+                      </Option>
+                    ))
+                  }
+                  </Select>
+                  {
+                    !this.props.isHidden &&
+                      <Link
+                        to={`/projects/${id}/comparison`}
+                        className="options-btns btns-default"
+                      >
+                        版本对比
+                      </Link>
+                  }
+                </div>
+                <div
+                  className="tools"
+                  style={{
+                    color: '#f00',
+                    display: `${!versions.length ? 'block' : 'none'}`,
+                  }}
+                >当前项目尚未生成稳定版本</div>
+              </div>
+              <div className="clearfix myicon-list">
+                {
+                  this.props.historyProject.icons.map((icon, index) => (
+                    <div className="icon-detail-item" key={index}>
+                      <DesIcon
+                        name={icon.name}
+                        code={`&#x${icon.code.toString(16)}`}
+                        showCode
+                        iconPath={icon.path}
+                        iconSize={this.props.iconSize}
+                      />
+                    </div>
+                  ))
+                }
               </div>
             </div>
-            <div className="clearfix myicon-list">
-              {
-                this.props.historyProject.icons.map((icon, index) => (
-                  <div className="icon-detail-item" key={index}>
-                    <DesIcon
-                      name={icon.name}
-                      code={`&#x${icon.code.toString(16)}`}
-                      showCode
-                      iconPath={icon.path}
-                      iconSize={this.props.iconSize}
-                    />
-                  </div>
-                ))
-              }
-            </div>
+            <div
+              className="empty-container"
+              style={{ display: `${this.props.historyProject.name ? 'none' : 'block'}` }}
+            ></div>
           </Main>
         </Content>
       </div>
@@ -126,6 +154,8 @@ export default class History extends Component {
 
 History.propTypes = {
   params: PropTypes.object,
+  isHidden: PropTypes.bool,
+  projectId: PropTypes.string,
   fetchAllProjects: PropTypes.func,
   fetchAllVersions: PropTypes.func,
   fetchHistoryProject: PropTypes.func,

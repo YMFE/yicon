@@ -157,7 +157,7 @@ export function fetchProjectLogs(id, page) {
 export function fetchProjectVersions(id) {
   return {
     type: TETCH_PROJECT_VERSION,
-    payload: fetch.get(`/user/projects/${id}/versions`),
+    payload: fetch.get(`/projects/${id}/versions`),
   };
 }
 
@@ -186,7 +186,7 @@ export function fetchAllProjects() {
 export function fetchAllVersions(id) {
   return {
     type: FETCH_ALL_VERSION,
-    payload: fetch.get(`/user/projects/${id}/versions`),
+    payload: fetch.get(`/projects/${id}/versions`),
   };
 }
 
@@ -201,6 +201,6 @@ export function fetchHistoryProject(id, version) {
   const v = version ? `/version/${version}` : '';
   return {
     type: FETCH_HISTORY_PROJECT,
-    payload: fetch.get(`/user/projects/${id}${v}`),
+    payload: fetch.get(`/projects/${id}${v}`),
   };
 }
