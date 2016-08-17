@@ -28,6 +28,7 @@ import {
   getIconDetail,
   editIconStyle,
 } from '../../actions/icon';
+import { resetIconSize } from '../../actions/repository';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
@@ -54,6 +55,7 @@ import Download from './Download.jsx';
     replace,
     getIconDetail,
     editIconStyle,
+    resetIconSize,
   }
 )
 class UserProject extends Component {
@@ -61,7 +63,6 @@ class UserProject extends Component {
     projectId: PropTypes.string,
     usersProjectList: PropTypes.array,
     currentUserProjectInfo: PropTypes.object,
-    currentUserProjectVersions: PropTypes.array,
     getUsersProjectList: PropTypes.func,
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
@@ -73,6 +74,7 @@ class UserProject extends Component {
     patchProjectMemeber: PropTypes.func,
     editIconStyle: PropTypes.func,
     getIconDetail: PropTypes.func,
+    resetIconSize: PropTypes.func,
     suggestList: PropTypes.array,
     projectInfo: PropTypes.object,
     comparisonResult: PropTypes.object,
@@ -99,6 +101,7 @@ class UserProject extends Component {
     this.nextVersion = '0.0.1';
   }
   componentDidMount() {
+    this.props.resetIconSize();
     this.props.getUsersProjectList().then(() => {
       const id = this.props.projectId;
       const current = this.props.currentUserProjectInfo;
@@ -359,7 +362,7 @@ class UserProject extends Component {
     const owner = current.projectOwner || { name: '' };
     return (
       <div className="UserProject">
-        <SubTitle tit="d我的项目">
+        <SubTitle tit="我的项目">
           <SliderSize />
         </SubTitle>
         <Content>

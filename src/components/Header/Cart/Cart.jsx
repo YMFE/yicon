@@ -94,7 +94,7 @@ class Cart extends Component {
         if (data && data.payload.res) {
           this.dumpIcon();
           this.changeCartSaveType('DEFAULT');
-          this.props.push(`/user/projects/${projectForSave.id}`);
+          this.props.push(`/projects/${projectForSave.id}`);
           this.toggleProjectList();
         }
       });
@@ -107,8 +107,8 @@ class Cart extends Component {
       .then(data => {
         if (data && data.payload.res) {
           const targetUrl = data.payload.data.id ?
-            `/user/projects/${data.payload.data.id}` :
-            '/user/projects/';
+            `/projects/${data.payload.data.id}` :
+            '/projects/';
           this.dumpIcon();
           this.changeCartSaveType('DEFAULT');
           this.props.push(targetUrl);
