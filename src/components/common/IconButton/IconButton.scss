@@ -29,6 +29,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
       cursor: default;
     }
     .code{
@@ -94,7 +98,7 @@
     }
   }
 }
-.icon-detail-item:hover{  
+.icon-detail-item:hover{
   .tool-item{
     display: inline-block;
   }

@@ -113,6 +113,7 @@ export default class Transition extends Component {
     const auditIconHTML = (
       <div>
         <div className="no-auth-tips">
+          <p>所有图标审核完成</p>
           <p>没有待审核图标</p>
           <p>{this.state.second} 秒之后跳转至首页</p>
         </div>
@@ -130,7 +131,8 @@ export default class Transition extends Component {
     const uploadIconHTML = (
       <div>
         <div className="no-auth-tips">
-          <p>没有上传的图标</p>
+          <p>所有图标上传完成</p>
+          <p>没有待上传的图标</p>
           <p>{this.state.second} 秒之后跳转至图标上传页</p>
         </div>
         <p>
