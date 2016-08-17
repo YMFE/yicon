@@ -75,7 +75,7 @@ class InfoItem extends Component {
       const scopeData = scope === 'project' ? project : repo;
       if (scopeData) {
         const link = scope === 'project'
-          ? `/user/projects/${scopeData.id}`
+          ? `/projects/${scopeData.id}`
           : `/repositories/${scopeData.id}`;
 
         prefix = (

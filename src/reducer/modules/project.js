@@ -7,7 +7,6 @@ import {
   SAVE_TO_NEW_PROJECT,
   DELETE_PROJECT,
   FETCH_MEMBERS_SUGGEST_LIST,
-  TETCH_PROJECT_VERSION,
   FETCH_ALL_PROJECT,
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
@@ -20,7 +19,6 @@ const initialState = {
   currentUserProjectInfo: {},
   memberSuggestList: [],
   currentPublicProjectInfo: {},
-  currentUserProjectVersions: [],
   projectForSave: {
     id: 0,
     name: '',
@@ -86,15 +84,6 @@ export default (state = initialState, action) => {
         return {
           ...state,
           currentPublicProjectInfo: action.payload.data,
-        };
-      }
-      return state;
-    }
-    case TETCH_PROJECT_VERSION: {
-      if (action.payload.res) {
-        return {
-          ...state,
-          currentUserProjectVersions: action.payload.data.version,
         };
       }
       return state;

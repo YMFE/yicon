@@ -15,7 +15,6 @@ import {
   POST_GENERATE_VERSION,
   DELETE_PROJECT,
   FETCH_PROJECT_LOG,
-  TETCH_PROJECT_VERSION,
   DELETE_PROJECT_ICON,
   FETCH_ALL_PROJECT,
   FETCH_ALL_VERSION,
@@ -151,13 +150,6 @@ export function fetchProjectLogs(id, page) {
   return {
     type: FETCH_PROJECT_LOG,
     payload: fetch.get(`/user/log/projects/${id}?currentPage=${page}`),
-  };
-}
-
-export function fetchProjectVersions(id) {
-  return {
-    type: TETCH_PROJECT_VERSION,
-    payload: fetch.get(`/projects/${id}/versions`),
   };
 }
 
