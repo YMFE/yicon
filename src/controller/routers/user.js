@@ -11,7 +11,6 @@ import {
   updateProjectInfo,
   updateProjectMember,
   diffVersion,
-  getProjectVersion,
   deleteProject,
 } from '../modules/project';
 import {
@@ -52,7 +51,6 @@ user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
 user.delete('/projects/:projectId', isProjectOwner, deleteProject);
 user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
-user.get('/projects/:projectId/versions', getProjectVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);

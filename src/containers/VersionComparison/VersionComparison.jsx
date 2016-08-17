@@ -103,7 +103,7 @@ export default class VersionComparison extends Component {
                     key={index}
                     className={+project.id === +this.props.params.id ? 'selected' : ''}
                   >
-                    <Link to={`/user/projects/${project.id}`}>{project.name}</Link>
+                    <Link to={`/projects/${project.id}`}>{project.name}</Link>
                   </li>
                 ))
               }
@@ -116,7 +116,7 @@ export default class VersionComparison extends Component {
                     <span className="tips">版本对比</span>
                     <Link
                       className="return"
-                      to={`/user/projects/${this.props.params.id}`}
+                      to={`/projects/${this.props.params.id}`}
                     >
                       &gt;返回项目
                     </Link>

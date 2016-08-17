@@ -58,7 +58,7 @@ import Download from './Download.jsx';
 )
 class UserProject extends Component {
   static propTypes = {
-    params: PropTypes.object,
+    projectId: PropTypes.string,
     usersProjectList: PropTypes.array,
     currentUserProjectInfo: PropTypes.object,
     currentUserProjectVersions: PropTypes.array,
@@ -98,16 +98,9 @@ class UserProject extends Component {
     this.nextVersion = '0.0.1';
   }
   componentDidMount() {
-    this.props.getUsersProjectList().then(action => {
-      const { organization } = action.payload.data;
-      const id = this.props.params.id ? +this.props.params.id : '';
+    this.props.getUsersProjectList().then(() => {
+      const id = this.props.projectId;
       const current = this.props.currentUserProjectInfo;
-      if (!id && organization) {
-        const [firstProject] = organization;
-        if (firstProject && firstProject.id) {
-          this.props.replace(`/user/projects/${firstProject.id}`);
-        }
-      }
       if (!current || id !== +current.id) {
         this.props.getUserProjectInfo(id);
         this.props.fetchAllVersions(id);
@@ -117,7 +110,7 @@ class UserProject extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const current = nextProps.currentUserProjectInfo;
-    const nextId = nextProps.params.id;
+    const nextId = nextProps.projectId;
     if (current) {
       this.setState({
         name: current.name,
@@ -128,10 +121,10 @@ class UserProject extends Component {
       });
     }
     if (!nextId && this.props.usersProjectList[0]) {
-      this.props.replace(`/user/projects/${this.props.usersProjectList[0].id}`);
+      this.props.replace(`/projects/${this.props.usersProjectList[0].id}`);
       return;
     }
-    if (nextId !== this.props.params.id) {
+    if (nextId !== this.props.projectId) {
       this.props.getUserProjectInfo(nextId);
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
@@ -142,7 +135,7 @@ class UserProject extends Component {
 
   @autobind
   compareVersion(callback) {
-    const id = this.props.params.id;
+    const id = this.props.projectId;
     const versions = this.props.projectInfo.versions;
     const high = versions[versions.length - 1];
     const low = '0.0.0';
@@ -223,6 +216,13 @@ class UserProject extends Component {
   }
 
   @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowDownloadDialog: isShow,
+    });
+  }
+
+  @autobind
   shiftShowManageMembers(isShow = false) {
     this.setState({
       showManageMember: isShow,
@@ -238,7 +238,7 @@ class UserProject extends Component {
 
   @autobind
   downloadAllIcons() {
-    const { id } = this.props.params;
+    const id = this.props.projectId;
     axios
       .post('/api/download/font', { type: 'project', id })
       .then(({ data }) => {
@@ -349,7 +349,7 @@ class UserProject extends Component {
   render() {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
-    const id = this.props.params.id;
+    const id = this.props.projectId;
     const versions = this.props.projectInfo.versions;
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
@@ -373,7 +373,7 @@ class UserProject extends Component {
                     : null
                   }
                 >
-                  <Link to={`/user/projects/${item.id}`}>{item.name}</Link>
+                  <Link to={`/projects/${item.id}`}>{item.name}</Link>
                 </li>
               ))
             }
@@ -415,13 +415,13 @@ class UserProject extends Component {
                   下载全部图标
                 </button>
                 <Link
-                  to={`/user/projects/${id}/logs`}
+                  to={`/projects/${id}/logs`}
                   className="options-btns btns-default"
                 >
                   操作日志
                 </Link>
                 <Link
-                  to={`/user/projects/${id}/history`}
+                  to={`/projects/${id}/history`}
                   className={
                     `options-btns btns-default ${versions.length <= 1 ? 'btn-history-hidden' : ''}`
                   }
