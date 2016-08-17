@@ -38,7 +38,7 @@ class EditProject extends Component {
       value = e;
     }
     this.props.members.some(item => {
-      if (item.id === value) {
+      if (+item.id === +value) {
         this.setState({
           owner: item,
         });
@@ -81,16 +81,21 @@ class EditProject extends Component {
               <label htmlFor="project-author" className="field-label">项目管理员</label>
               <div className="field-set">
                 <Select
-                  className={"project-author"}
+                  className="project-author"
                   optionLabelProp="children"
                   optionFilterProp="text"
                   onChange={this.onOwnerChange}
-                  value={this.state.owner.id}
+                  value={`${this.state.owner.id}`}
                 >
                   {this.props.members.map((item, index) => (
-                    <Option value={item.id} text={item.name} key={index}>{item.name}</Option>
-                    ))
-                  }
+                    <Option
+                      value={`${item.id}`}
+                      text={item.name}
+                      key={index}
+                    >
+                      {item.name}
+                    </Option>
+                  ))}
                 </Select>
               </div>
             </li>

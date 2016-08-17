@@ -366,6 +366,7 @@ class UserProject extends Component {
                 <li
                   key={index}
                   data-id={item.id}
+                  title={item.name}
                   className={
                     item.id === this.props.currentUserProjectInfo.id
                     ? 'selected'

@@ -17,7 +17,6 @@ import isomFetch from 'isom-fetch';
 
 const app = new Koa();
 const { PORT } = process.env;
-const store = createStore();
 
 app.keys = [
   'WinterIsComing',
@@ -31,7 +30,7 @@ app.use(serve(path.join(__dirname, '../static')));
 app.use(router.routes());
 app.use(down.routes());
 
-const getRouteContext = (ctx) =>
+const getRouteContext = (ctx, store) =>
   new Promise(resolve => {
     match({
       routes: routes(store),
@@ -95,8 +94,9 @@ app.use(function* s() {
   if (__DEVELOPMENT__) {
     webpackIsomorphicTools.refresh();
   }
+  const store = createStore();
   isomFetch.use(this, router);
-  const result = yield getRouteContext(this);
+  const result = yield getRouteContext(this, store);
   if (result !== 'NOT_MATCH') {
     this.body = result;
   }

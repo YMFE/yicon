@@ -47,19 +47,18 @@ export function getUserProjectInfo(id, version) {
   };
 }
 
+function editUserProject(detail) {
+  return {
+    type: PATCH_USERS_PROJECT_DETAIL,
+    payload: fetch.patch(`/user/projects/${detail.id}`, detail),
+  };
+}
+
 export function patchUserProject(detail) {
   return (dispatch) => {
-    dispatch({
-      type: PATCH_USERS_PROJECT_DETAIL,
-      payload: fetch.patch(`/user/projects/${detail.id}`, detail).then(
-        responese => {
-          if (responese.res) {
-            dispatch(getUserProjectInfo(detail.id));
-            dispatch(getUsersProjectList());
-          }
-        }
-      ),
-      project: detail,
+    dispatch(editUserProject(detail)).then(() => {
+      dispatch(getUserProjectInfo(detail.id));
+      dispatch(getUsersProjectList());
     });
   };
 }
@@ -71,18 +70,17 @@ export function fetchMemberSuggestList(value) {
   };
 }
 
+function editProjectMember(project) {
+  return {
+    type: PATCH_PROJECT_MEMBERS,
+    payload: fetch.patch(`/user/projects/${project.id}/members`, project),
+  };
+}
+
 export function patchProjectMemeber(project) {
   return (dispatch) => {
-    dispatch({
-      type: PATCH_PROJECT_MEMBERS,
-      payload: fetch.patch(`/user/projects/${project.id}/members`, project).then(
-        (responese) => {
-          if (responese.res) {
-            dispatch(getUserProjectInfo(project.id));
-          }
-        }
-      ),
-      project,
+    dispatch(editProjectMember).then(() => {
+      dispatch(getUserProjectInfo(project.id));
     });
   };
 }
@@ -163,20 +161,17 @@ export function fetchProjectVersions(id) {
   };
 }
 
-export function deletePorjectIcon(id, icon) {
-  const obj = {
-    icons: icon,
+function delProjectIcon(id, icons) {
+  return {
+    type: DELETE_PROJECT_ICON,
+    payload: fetch.delete(`/user/projects/${id}/icons`, { data: { icons } }),
   };
+}
+
+export function deletePorjectIcon(id, icon) {
   return (dispatch) => {
-    dispatch({
-      type: DELETE_PROJECT_ICON,
-      payload: fetch.delete(`/user/projects/${id}/icons`, {
-        data: obj,
-      }).then((response) => {
-        if (response.res) {
-          dispatch(getUserProjectInfo(id));
-        }
-      }),
+    dispatch(delProjectIcon(id, icon)).then(() => {
+      dispatch(getUserProjectInfo(id));
     });
   };
 }

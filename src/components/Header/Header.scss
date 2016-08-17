@@ -15,136 +15,137 @@ $btnHoverColor:#00b7ee;
 $iconColor:#555f6e;
 
 .global-header {
+  width: 100%;
+  height: 64px;
+  transition: padding-top 2s;
+  &.main {
+    height: 100px;
+    .header-fixed {
+      padding-top: 36px;
+      height: 64px;
+    }
+  }
+  &:after {
+    clear: both;
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+  .header-fixed {
+    position: fixed;
+    top: 0;
     width: 100%;
     height: 64px;
-    &.main {
-        height: 100px;
-        .header-fixed {
-          padding-top: 36px;
-          height: 64px;
-        }
+    z-index: 99;
+    background: #000c15 url("#{$imgUrl}global-header-bg.jpg") center bottom no-repeat;
+  }
+  .container {
+    width: 1100px;
+    margin: 0 auto;
+    height: 64px;
+    position: relative;
+    >.nav {
+      left: 195px;
+      font-size: 16px;
+      position: absolute;
+      line-height: 64px;
+      ul{
+        list-style: none;
+        padding:0;
+      }
+
     }
-    &:after {
-        clear: both;
-        content: "\0020";
-        display: block;
+  }
+  .tools {
+    float: right;
+    margin-right: 10px;
+  }
+  .quick-menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    /*line-height: 64px;*/
+    .lists {
+      float: left;
+      margin-right: 20px;
+      position: relative;
+      z-index: 20;
+      .name_arrow {
+        width: 0;
         height: 0;
-        overflow: hidden;
-    }
-    .header-fixed {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 64px;
-      z-index: 99;
-      background: #000c15 url("#{$imgUrl}global-header-bg.jpg") center bottom no-repeat;
-    }
-    .container {
-        width: 1100px;
-        margin: 0 auto;
-        height: 64px;
-        position: relative;
-        >.nav {
-            left: 195px;
-            font-size: 16px;
-            position: absolute;
-            line-height: 64px;
-            ul{
-              list-style: none;
-              padding:0;
-            }
-
-        }
-    }
-    .tools {
-        float: right;
-        margin-right: 10px;
-    }
-    .quick-menu {
+        border: 5px solid;
+        border-color: #b9b9c3 transparent transparent transparent;
+        border-style: solid dashed dashed dashed;
         position: absolute;
-        right: 0;
-        top: 0;
-        /*line-height: 64px;*/
-        .lists {
-            float: left;
-            margin-right: 20px;
-            position: relative;
-            z-index: 20;
-            .name_arrow {
-                width: 0;
-                height: 0;
-                border: 5px solid;
-                border-color: #b9b9c3 transparent transparent transparent;
-                border-style: solid dashed dashed dashed;
-                position: absolute;
-                top: 30px;
-                right: -15px;
-            }
-            .up {
-                .name_arrow {
-                    border-color: transparent transparent #b9b9c3 transparent;
-                    border-style: dashed dashed solid dashed;
-                    top: 0;
-                }
-            }
+        top: 30px;
+        right: -15px;
+      }
+      .up {
+        .name_arrow {
+          border-color: transparent transparent #b9b9c3 transparent;
+          border-style: dashed dashed solid dashed;
+          top: 0;
         }
+      }
     }
+  }
 
 
 
-    .nav-menu-info {
-        .iconfont {
-            font-size: 22px;
-        }
-        .lists {
-            .avatar,
-            .nav-car,
-            .nav-message,
-            .nologin,
-            .upload {
-                color: #929aac;
-                line-height: 64px;
-                font-size: 14px;
-                cursor: pointer;
-            }
-            /* 权限管理下拉 */
-            .user-dropdown {
-                position: relative;
-                width: 90px;
-                background-color: #fff;
-                position: absolute;
-                border: 1px solid #c9d0d5;
-                border-top: none;
-                z-index: 9;
-                top: 55px;
-                left: 0;
-                padding: 5px 0;
-                text-align: center;
-                box-shadow: 0 0 5px #e2e4e7;
-                li {
-                    line-height: 23px;
-                    padding: 0 10px;
-                }
-                li:hover {
-                    background-color: #eff0f4;
-                }
-                li a {
-                    color: $fontTitleColor;
-                }
-                li:hover a {
-                    color: $fontTitleColor;
-                }
-                .arrow {
-                    width: 0;
-                    height: 0;
-                    border: 6px solid;
-                    border-color: transparent transparent #fff transparent;
-                    border-style: dashed dashed solid dashed;
-                    position: absolute;
-                    top: -12px;
-                    left: 40px;
-                }
-            }
-        }
+  .nav-menu-info {
+    .iconfont {
+      font-size: 22px;
     }
+    .lists {
+      .avatar,
+      .nav-car,
+      .nav-message,
+      .nologin,
+      .upload {
+        color: #929aac;
+        line-height: 64px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      /* 权限管理下拉 */
+      .user-dropdown {
+        position: relative;
+        width: 90px;
+        background-color: #fff;
+        position: absolute;
+        border: 1px solid #c9d0d5;
+        border-top: none;
+        z-index: 9;
+        top: 55px;
+        left: 0;
+        padding: 5px 0;
+        text-align: center;
+        box-shadow: 0 0 5px #e2e4e7;
+        li {
+          line-height: 23px;
+          padding: 0 10px;
+        }
+        li:hover {
+          background-color: #eff0f4;
+        }
+        li a {
+          color: $fontTitleColor;
+        }
+        li:hover a {
+          color: $fontTitleColor;
+        }
+        .arrow {
+          width: 0;
+          height: 0;
+          border: 6px solid;
+          border-color: transparent transparent #fff transparent;
+          border-style: dashed dashed solid dashed;
+          position: absolute;
+          top: -12px;
+          left: 40px;
+        }
+      }
+    }
+  }
 }
