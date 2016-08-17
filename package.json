@@ -193,6 +193,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
+    "webpack-hot-middleware": "^2.12.2",
     "webpack-isomorphic-tools": "^2.3.0"
   }
 }

@@ -1,5 +1,6 @@
 import invariant from 'invariant';
 
+import { PROJECT_NAME } from '../../constants/validate';
 import { User, Project, UserProject, ProjectVersion } from '../../model';
 import { versionTools, has, diffArray } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
@@ -30,6 +31,7 @@ export function* createProject(next) {
   let projectId;
 
   invariant(icons.length, '传入的图标数组不应为空');
+  invariant(PROJECT_NAME.reg.test(projectName), PROJECT_NAME.message);
 
   icons.forEach(icon => {
     invariant(

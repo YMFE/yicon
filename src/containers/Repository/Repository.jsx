@@ -9,6 +9,7 @@ import {
 } from '../../actions/repository';
 import { getIconDetail, editIconStyle } from '../../actions/icon';
 import SliderSize from '../../components/SliderSize/SliderSize';
+import Footer from '../../components/Footer/Footer';
 import Pager from '../../components/common/Pager';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
@@ -186,6 +187,7 @@ export default class Repository extends Component {
             />
           }
         </div>
+        <Footer />
         <Dialog
           empty
           visible={this.state.isShowDownloadDialog}

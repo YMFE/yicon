@@ -14,7 +14,7 @@ const defaultProps = {
 };
 
 const propTypes = {
-  regExp: PropTypes.string,
+  regExp: PropTypes.any,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
   errMsg: PropTypes.string,
@@ -51,7 +51,12 @@ export default class Input extends Component {
   }
 
   validate(val) {
-    const regExp = new RegExp(this.props.regExp);
+    let regExp;
+    if (this.props.regExp instanceof RegExp) {
+      regExp = this.props.regExp;
+    } else {
+      regExp = new RegExp(this.props.regExp);
+    }
     this.setState({
       value: val,
     });

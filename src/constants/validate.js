@@ -11,3 +11,8 @@ export const VERSION = {
   reg: /\d{1,3}\.\d{1,3}\.\d{1,3}/,
   message: '',
 };
+
+export const PROJECT_NAME = {
+  reg: /\w{1,30}/,
+  message: '图标名称长度为 1-30，只能有英文、数字和下划线；推荐以部门开头，项目名结束',
+};

@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { push } from 'react-router-redux';
+
+import { PROJECT_NAME } from '../../../constants/validate';
 import {
   getIconsInLocalStorage,
   getIconsInCart,
@@ -19,6 +21,7 @@ import {
 import {
   downloadIcon,
 } from '../../../actions/icon';
+import Input from '../../common/Input/Index.jsx';
 import Icon from '../../common/Icon/Icon.jsx';
 
 @connect(
@@ -216,13 +219,13 @@ class Cart extends Component {
         return (
           <div className="font-cdn">
             <div className="font-project-name">
-              <input
-                type="text"
+              <Input
+                regExp={PROJECT_NAME.reg}
+                errMsg={PROJECT_NAME.message}
                 placeholder="请输入项目名称"
                 ref={(node) => {
                   if (node) { this.saveToProjectInput = node; }
                 }}
-                autoComplete={false}
               />
             </div>
             <a className="button-icon" onClick={this.onSaveToNewProject}>确定</a>

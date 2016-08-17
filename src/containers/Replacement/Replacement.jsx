@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
 import '../Upload/Upload.scss';
-import Footer from '../Upload/Footer';
+import Tips from '../Upload/Tips';
 import Uploader from '../Upload/Uploader';
+import Footer from '../../components/Footer/Footer';
 
 export default class Replacement extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ export default class Replacement extends Component {
           fromId={+fromId}
           replacement
         />
+        <Tips />
         <Footer />
       </div>
     );
