@@ -87,21 +87,22 @@ export function* createProject(next) {
 
 export function* getOneProject(next) {
   const { projectId } = this.param;
-  const { userId, model } = this.state.user;
+  let userId = null;
   let { version = '0.0.0' } = this.param;
 
   version = versionTools.v2n(version);
 
   invariant(!isNaN(projectId), `项目应该传入合法 id，目前传入的是 ${projectId}`);
 
-  const projects = yield model.getProjects({
+  if (this.state.user) {
+    userId = this.state.user.userId;
+  }
+
+  const project = yield Project.findOne({
     where: { id: projectId },
     include: [{ model: User, as: 'projectOwner' }],
   });
-
-  invariant(projects.length, '未找到项目或当前用户不是项目成员');
-
-  const project = projects[0];
+  if (!project) throw new Error(`编号${projectId}的项目不存在`);
   const result = project.dataValues;
 
   result.version = versionTools.n2v(version);

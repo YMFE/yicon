@@ -20,6 +20,7 @@ import ProjectLog from './Log/ProjectLog';
 import VersionComparison from './VersionComparison/VersionComparison';
 import Authority from './Authority/Authority';
 import History from './History/History';
+import PublicProject from './PublicProject/PublicProject';
 
 export {
   App,
@@ -44,4 +45,5 @@ export {
   VersionComparison,
   Authority,
   History,
+  PublicProject,
 };

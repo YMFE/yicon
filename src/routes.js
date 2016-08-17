@@ -15,13 +15,13 @@ import {
   Transition,
   Search,
   Notification,
-  UserProject,
   Upload,
   Workbench,
   Uploaded,
   VersionComparison,
   Authority,
   History,
+  PublicProject,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -51,6 +51,7 @@ export default store => {
 
       {/* Routes */}
       <Route path="repositories/:id" component={Repository} />
+      <Route path="projects/:id" component={PublicProject} />
       <Route path="transition/:type" component={Transition} /> {/* 跳转页面 */}
       <Route path="search" component={Search} /> {/* 搜索结果 */}
       <Route path="demo" component={Demo} /> {/* demo */}
@@ -59,15 +60,14 @@ export default store => {
       <Route onEnter={requireLogin}>
         <Route path="upload" component={Upload} /> {/* 上传图标 */}
         <Route path="workbench" component={Workbench} /> {/* 工作台 */}
+        <Route path="projects" component={PublicProject} />
+        <Route path="projects/:id/logs" component={ProjectLog} />
+        <Route path="projects/:id/comparison" component={VersionComparison} />
+        <Route path="projects/:id/history" component={History} />
 
         <Route path="user">
           <Route path="notifications" component={Notification} /> {/* 通知页面 */}
-          <Route path="projects" component={UserProject} />
-          <Route path="projects/:id(/version/:version)" component={UserProject} />
-          <Route path="projects/:id/logs" component={ProjectLog} />
           <Route path="icons" component={Uploaded} />
-          <Route path="projects/:id/comparison" component={VersionComparison} />
-          <Route path="projects/:id/history" component={History} />
         </Route>
 
         {/* 库管用户路由 */}
@@ -80,8 +80,6 @@ export default store => {
 
         {/* 超管用户路由 */}
         <Route path="admin" onEnter={requireAdmin}>
-          <Route path="repositories" /> {/* 大库管理 */}
-          <Route path="projects" /> {/* 项目管理 */}
           <Route path="authority/:type" component={Authority} /> {/* 权限设置 */}
         </Route>
       </Route>
