@@ -54,7 +54,7 @@ export default class Workbench extends Component {
       if (icons.length) {
         this.props.selectEdit(0);
       } else {
-        this.props.push('/upload');
+        this.props.push('transition/upload-icon');
       }
     });
   }
@@ -78,7 +78,7 @@ export default class Workbench extends Component {
     this.props.selectEdit(index);
     this.props.deleteIcon(id, icons);
     if (!icons.length) {
-      this.props.push('/upload');
+      this.props.push('transition/upload-icon');
     }
   }
 
@@ -122,11 +122,10 @@ export default class Workbench extends Component {
       const noDone = this.props.icons.filter((icon) => (
         !(icon.name && icon.fontClass)
       ));
+      this.props.selectEdit(0);
+      this.props.updateWorkbench(noDone);
       if (!noDone.length) {
-        this.props.push('/upload');
-      } else {
-        this.props.selectEdit(0);
-        this.props.updateWorkbench(noDone);
+        this.props.push('transition/upload-icon');
       }
     });
   }
@@ -150,7 +149,7 @@ export default class Workbench extends Component {
   render() {
     const { index, icons, allRepoList, repoId } = this.props;
     const doneNum = this.calcDone().length;
-    if (!icons.length) {
+    if (!icons.length || !icons[index]) {
       return null;
     }
     return (
