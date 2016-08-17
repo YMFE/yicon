@@ -8,7 +8,6 @@ import { getUsersProjectList } from '../../actions/project';
 
 @connect((state) => ({
   user: state.user.info,
-  userProject: state.project.usersProjectList,
   usersProjectList: state.project.usersProjectList,
 }), { getUsersProjectList })
 
@@ -32,7 +31,7 @@ export default class PublicProject extends Component {
   renderContent(id) {
     if (!id) return null;
     let content;
-    const isBelong = this.props.userProject.some(v => v.id === +id);
+    const isBelong = this.props.usersProjectList.some(v => v.id === +id);
     if (this.props.user.login && isBelong) {
       content = <UserProject projectId={id} hideLoading={this.hideLoading} />;
     } else {
@@ -61,6 +60,5 @@ PublicProject.propTypes = {
   params: PropTypes.object,
   getUsersProjectList: PropTypes.func,
   user: PropTypes.object,
-  userProject: PropTypes.array,
   usersProjectList: PropTypes.array,
 };

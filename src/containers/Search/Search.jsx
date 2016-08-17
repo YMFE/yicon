@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { fetchSearchData } from '../../actions/search';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
-import { getIconDetail, editIconStyle } from '../../actions/icon';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
+import { getIconDetail, editIconStyle } from '../../actions/icon';
+import { resetIconSize } from '../../actions/repository';
 
 import './Search.scss';
 
@@ -20,6 +21,7 @@ import './Search.scss';
     fetchSearchData,
     getIconDetail,
     editIconStyle,
+    resetIconSize,
   }
 )
 
@@ -32,6 +34,7 @@ export default class Search extends Component {
   componentWillMount() {
     const query = encodeURIComponent(this.props.location.query.q);
     this.props.fetchSearchData(query);
+    this.props.resetIconSize();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -127,6 +130,7 @@ Search.propTypes = {
   queryKey: PropTypes.string,
   getIconDetail: PropTypes.func,
   editIconStyle: PropTypes.func,
+  resetIconSize: PropTypes.func,
   totalCount: PropTypes.number,
   list: PropTypes.array,
 };

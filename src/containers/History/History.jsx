@@ -25,8 +25,24 @@ const Option = Select.Option;
 )
 
 export default class History extends Component {
-  defaultProps = {
+
+  static propTypes = {
+    params: PropTypes.object,
+    isHidden: PropTypes.bool,
+    projectId: PropTypes.string,
+    fetchAllProjects: PropTypes.func,
+    fetchAllVersions: PropTypes.func,
+    fetchHistoryProject: PropTypes.func,
+    myProjects: PropTypes.object,
+    historyProject: PropTypes.object,
+    projectInfo: PropTypes.object,
+    iconSize: PropTypes.number,
+    hideLoading: PropTypes.func,
+  }
+
+  static defaultProps = {
     isHidden: false,
+    hideLoading: () => {},
   }
 
   componentWillMount() {
@@ -153,17 +169,3 @@ export default class History extends Component {
     );
   }
 }
-
-History.propTypes = {
-  params: PropTypes.object,
-  isHidden: PropTypes.bool,
-  projectId: PropTypes.string,
-  fetchAllProjects: PropTypes.func,
-  fetchAllVersions: PropTypes.func,
-  fetchHistoryProject: PropTypes.func,
-  myProjects: PropTypes.object,
-  historyProject: PropTypes.object,
-  projectInfo: PropTypes.object,
-  iconSize: PropTypes.number,
-  hideLoading: PropTypes.func,
-};
