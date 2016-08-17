@@ -6,8 +6,8 @@ import Notification from 'rc-notification';
 // 构建一个 Notification 的单例
 let messageInstance;
 // 默认配置项
-let defaultTop = 40;
-let defaultDuration = 1.5;
+let defaultTop = 13;
+let defaultDuration = 3;
 
 const prefixCls = 'g-message';
 

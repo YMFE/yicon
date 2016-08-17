@@ -28,7 +28,8 @@ module.exports = {
     loaders: [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader/webpack', 'babel']
+        // react-hot-loader 好像有问题，暂时先不处理
+        loader: 'babel'
       },
       { test: /\.scss$/, loaders: [
         'style',
@@ -36,10 +37,6 @@ module.exports = {
         'postcss',
         'sass?outputStyle=expanded',
       ] },
-      // {
-      //   test: /\.scss$/,
-      //   loader: ExtractTextPlugin.extract('style', 'css!postcss?autoprefixer!sass?sourceMap')
-      // },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         loader: 'url-loader?limit=10240', // any image below or equal to 10K will be converted to inline base64 instead

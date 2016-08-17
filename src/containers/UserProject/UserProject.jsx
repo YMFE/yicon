@@ -356,7 +356,7 @@ class UserProject extends Component {
     const owner = current.projectOwner || { name: '' };
     return (
       <div className="UserProject">
-        <SubTitle tit="我的项目">
+        <SubTitle tit="d我的项目">
           <SliderSize />
         </SubTitle>
         <Content>
