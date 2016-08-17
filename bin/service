@@ -6,7 +6,7 @@ export PATH=/home/q/node/bin:$PATH
 
 start() {
 echo -n $"Starting $prog: "
-exec /bin/su $USER -c "NODE_ENV=production forever start -s /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js"
+exec /bin/su $USER -c "NODE_ENV=production PORT=8003 NODE_PATH=/home/q/www/yicon.corp.qunar.com/webapp/src forever start /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js"
 
 if [[ $? -eq 0 ]]; then
 return 0
@@ -17,7 +17,7 @@ fi
 
 stop() {
 echo -n $"Stopping $prog: "
-huixian=$(ps aux|grep 'node /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js' | grep -v grep)
+huixian=$(ps aux|grep '/home/q/www/yicon.corp.qunar.com/webapp/bin/server.js' | grep -v grep)
 if [ -n "$huixian" ]; then
 sleep 10
 exec /bin/su $USER -c "forever stop /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js"

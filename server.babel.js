@@ -1,6 +1,8 @@
 var fs = require('fs');
+var path = require('path');
+var rootDir = path.resolve(__dirname);
 
-var babelrc = fs.readFileSync('./.babelrc');
+var babelrc = fs.readFileSync(path.join(rootDir, '.babelrc'));
 var config;
 
 try {

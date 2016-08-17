@@ -4,7 +4,7 @@ import path from 'path';
 
 const localPath = path.join(__dirname, '../');
 console.log(localPath);
-const serverPath = 'l-iconfont1.h.dev.cn0:/home/q/www/yicon.qunar.com/webapp';
+const serverPath = 'l-iconfont1.h.dev.cn0:/home/q/www/yicon.corp.qunar.com/webapp';
 const options = '-rzxvt --timeout=10 --chmod=\'a=rX,u+w\' --rsync-path=\'sudo rsync\'';
 const syncCommand = `rsync ${options} ${localPath} ${serverPath}`;
 console.log(syncCommand);
