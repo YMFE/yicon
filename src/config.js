@@ -1,14 +1,12 @@
+import path from 'path';
+const logPath = path.join(__dirname, '../../logs/log');
+
 const common = {
   path: {
     caches: '../caches',
     font: 'download/font',
     svg: 'download/svg',
     png: 'download/png',
-  },
-  log: {
-    appenders: [
-      { category: 'normal', type: 'console' },
-    ],
   },
 };
 
@@ -23,6 +21,11 @@ const env = {
       host: '10.86.43.48',
     },
     port: 3000,
+    log: {
+      appenders: [
+        { category: 'normal', type: 'console' },
+      ],
+    },
   },
   // 开发机
   dev: {
@@ -35,9 +38,31 @@ const env = {
       host: '10.86.43.48',
     },
     port: 3000,
+    log: {
+      appenders: [
+        {
+          category: 'normal',
+          type: 'dateFile',
+          filename: logPath,
+          alwaysIncludePattern: true,
+          pattern: '-yyyy-MM-dd.log',
+        },
+      ],
+    },
   },
   // beta 机器
   beta: {
+    log: {
+      appenders: [
+        {
+          category: 'normal',
+          type: 'dateFile',
+          filename: logPath,
+          alwaysIncludePattern: true,
+          pattern: '-yyyy-MM-dd.log',
+        },
+      ],
+    },
   },
   // 线上机器
   production: {
@@ -51,6 +76,17 @@ const env = {
       host: '10.86.43.48',
     },
     port: 3000,
+    log: {
+      appenders: [
+        {
+          category: 'normal',
+          type: 'dateFile',
+          filename: logPath,
+          alwaysIncludePattern: true,
+          pattern: '-yyyy-MM-dd.log',
+        },
+      ],
+    },
   },
 };
 

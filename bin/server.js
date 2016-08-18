@@ -10,9 +10,6 @@ global.__SERVER__ = true;
 global.__DISABLE_SSR__ = false;
 global.__DEVELOPMENT__ = process.env.NODE_ENV === 'development';
 
-var logger = require('../src/logger');
-console.log('🐸  🐸  🐸   dev-env: ', __DEVELOPMENT__);
-
 // for material-ui
 global.navigator = { userAgent: 'all' };
 
