@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router';
@@ -25,6 +26,7 @@ const pageSize = 64;
 @connect(
   state => ({
     currRepository: state.repository.currRepository,
+    userInfo: state.user.info,
   }),
   {
     fetchRepository,
@@ -43,6 +45,7 @@ export default class Repository extends Component {
     getIconDetail: PropTypes.func,
     editIconStyle: PropTypes.func,
     currRepository: PropTypes.object,
+    userInfo: PropTypes.object,
     params: PropTypes.object,
     push: PropTypes.func,
   }
@@ -72,10 +75,13 @@ export default class Repository extends Component {
   @autobind
   handleScroll(event) {
     const scrollTop = event.srcElement.body.scrollTop;
+    const element = findDOMNode(this.refs.repo);
     if (scrollTop >= 64) {
-      this.refs.repo.className = 'repository fixed';
+      // this.refs.repo.className = 'repository fixed';
+      element.setAttribute('class', 'repository fixed');
     } else {
-      this.refs.repo.className = 'repository';
+      // this.refs.repo.className = 'repository';
+      element.setAttribute('class', 'repository');
     }
   }
 
@@ -131,11 +137,19 @@ export default class Repository extends Component {
 
   render() {
     const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
-    // 待解决：initialState已经写为'{}', 不知道为啥初始user还是为undefined
-    const { id } = this.props.params;
+    const userInfo = this.props.userInfo;
+    const { id: repoId } = this.props.params;
     let admin = '';
     if (user) {
       admin = user.name;
+    }
+    // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
+    let status = 1;
+    if (userInfo.login) {
+      status = 2;
+      if (userInfo.admin || userInfo.repoAdmin.indexOf(repoId) !== -1) {
+        status = 3;
+      }
     }
     return (
       <div className="repository" ref="repo">
@@ -155,12 +169,14 @@ export default class Repository extends Component {
                 >
                   <i className="iconfont">&#xf50b;</i>下载全部图标
                 </button>
-                <Link
-                  to={`/repositories/${id}/logs`}
-                  className="options-btns btns-default"
-                >
-                  查看日志
-                </Link>
+                {status === 3 &&
+                  <Link
+                    to={`/repositories/${repoId}/logs`}
+                    className="options-btns btns-default"
+                  >
+                    查看日志
+                  </Link>
+                }
               </div>
               <SliderSize ref="myslider" />
             </div>

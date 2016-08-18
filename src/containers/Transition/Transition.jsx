@@ -37,7 +37,6 @@ export default class Transition extends Component {
         break;
       }
       default: {
-        this.backToPage('/');
         break;
       }
     }

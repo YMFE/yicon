@@ -105,7 +105,10 @@ class Cart extends Component {
   @autobind
   onSaveToNewProject() {
     const { iconsInCart } = this.props;
-    const saveToProjectInput = this.saveToProjectInput.value;
+    if (this.saveToProjectInput.isError()) {
+      return;
+    }
+    const saveToProjectInput = this.saveToProjectInput.getVal();
     this.props.saveToNewProject(saveToProjectInput, iconsInCart)
       .then(data => {
         if (data && data.payload.res) {
@@ -156,6 +159,7 @@ class Cart extends Component {
   @autobind
   dumpIcon() {
     this.props.dumpIconLocalStorage();
+    this.shiftCartList(null, false);
   }
   @autobind
   cancleSave() {
@@ -218,16 +222,15 @@ class Cart extends Component {
       case 'SAVE_TO_NEW_PROJECT':
         return (
           <div className="font-cdn">
-            <div className="font-project-name">
-              <Input
-                regExp={PROJECT_NAME.reg}
-                errMsg={PROJECT_NAME.message}
-                placeholder="请输入项目名称"
-                ref={(node) => {
-                  if (node) { this.saveToProjectInput = node; }
-                }}
-              />
-            </div>
+            <Input
+              extraClass="font-project-name"
+              regExp={PROJECT_NAME.reg}
+              errMsg={PROJECT_NAME.message}
+              placeholder="请输入项目名称"
+              ref={(node) => {
+                if (node) { this.saveToProjectInput = node; }
+              }}
+            />
             <a className="button-icon" onClick={this.onSaveToNewProject}>确定</a>
             <a
               className="button-icon button-cancel"

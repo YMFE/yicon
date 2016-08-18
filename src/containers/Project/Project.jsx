@@ -159,7 +159,7 @@ export default class Project extends Component {
                   onClick={this.downloadAllIcons}
                   className="options-btns btns-blue"
                 >
-                  <i className="iconfont">&#xf50a;</i>
+                  <i className="iconfont">&#xf50b;</i>
                   下载全部图标
                 </button>
               </div>

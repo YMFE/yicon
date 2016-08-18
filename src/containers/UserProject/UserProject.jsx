@@ -417,7 +417,7 @@ class UserProject extends Component {
                   className="options-btns btns-blue"
                   onClick={() => { this.shiftDownloadDialog(true); }}
                 >
-                  <i className="iconfont">&#xf50a;</i>
+                  <i className="iconfont">&#xf50b;</i>
                   下载全部图标
                 </button>
                 <Link
