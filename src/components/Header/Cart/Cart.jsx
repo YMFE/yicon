@@ -159,6 +159,7 @@ class Cart extends Component {
   @autobind
   dumpIcon() {
     this.props.dumpIconLocalStorage();
+    this.shiftCartList(null, false);
   }
   @autobind
   cancleSave() {
