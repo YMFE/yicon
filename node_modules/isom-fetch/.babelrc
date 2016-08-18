@@ -1,0 +1,11 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-object-rest-spread",
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
+  ]
+}

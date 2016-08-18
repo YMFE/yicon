@@ -52,6 +52,15 @@ const env = {
   },
   // beta 机器
   beta: {
+    model: {
+      database: 'iconfont-dev',
+      username: 'root',
+      password: 'odmMj7H6x2IaACrs',
+      dialect: 'mysql',
+      port: '3306',
+      host: '10.86.43.48',
+    },
+    port: 3000,
     log: {
       appenders: [
         {

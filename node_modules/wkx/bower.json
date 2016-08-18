@@ -1,0 +1,30 @@
+{
+  "name": "wkx",
+  "version": "0.2.0",
+  "description": "A WKT/WKB/EWKT/EWKB/TWKB/GeoJSON parser and serializer",
+  "homepage": "https://github.com/cschwarz/wkx",
+  "authors": [
+    "Christian Schwarz <christian.schwarz@refactory.at>"
+  ],
+  "main": "dist/wkx.min.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "wkt",
+    "wkb",
+    "ewkt",
+    "ewkb",
+    "twkb",
+    "geojson",
+    "ogc",
+    "geometry",
+    "geography",
+    "spatial"
+  ]
+}

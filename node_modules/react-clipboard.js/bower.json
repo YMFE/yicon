@@ -1,0 +1,23 @@
+{
+  "name": "react-clipboard",
+  "description": "Clipboard.js wrapper for ReactJS",
+  "main": "dist/react-clipboard.js",
+  "authors": [
+    "Nihey Takizawa <nihey.takizawa@gmail.com>"
+  ],
+  "license": "CC0",
+  "keywords": [
+    "clipboard",
+    "react",
+    "react-component"
+  ],
+  "homepage": "https://github.com/nihey/react-clipboard",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

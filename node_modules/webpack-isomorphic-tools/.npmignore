@@ -1,0 +1,30 @@
+# git
+.gitignore
+
+# testing package
+/webpack-isomorphic-tools-*.tgz
+
+# Travis CI
+.travis.yml
+
+# test coverage folder
+/coverage/
+
+# npm errors
+npm-debug.log
+
+# github pages
+/gh-pages/
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# NUL
+/NUL
+
+# project specific
+/scripts/
+/test/
+
+.babelrc
+webpack.config.js

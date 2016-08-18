@@ -1,0 +1,10 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": ".",
+			"folder_exclude_patterns": ["require-hacker/node_modules", "require-hacker/coverage", "require-hacker/build", "require-hacker/babel-transpiled-modules", "require-hacker/project.sublime-workspace"]
+		}
+	]
+}
