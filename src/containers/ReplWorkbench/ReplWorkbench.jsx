@@ -10,6 +10,7 @@ import {
   replUpdateIcon,
   submitReplaceIcon,
 } from '../../actions/replWorkbench.js';
+import { ICON_NAME } from '../../constants/validate';
 import { push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
@@ -128,8 +129,8 @@ export default class ReplWorkbench extends Component {
                   placeholder="请输入图标名称"
                   extraClass="edit-name"
                   blur={this.blur}
-                  regExp="\S+"
-                  errMsg="名字不能为空"
+                  regExp={ICON_NAME.reg}
+                  errMsg={ICON_NAME.message}
                   ref="myInput"
                 />
               </div>

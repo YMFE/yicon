@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
+import { ICON_NAME } from '../../constants/validate';
 import Input from '../common/Input/Index.jsx';
 import SetTag from '../common/SetTag/SetTag.jsx';
 import Select from '../common/Select';
@@ -51,6 +52,9 @@ class DownloadDialog extends Component {
   @autobind
   save(e) {
     if (e.type === 'click' || +e.keyCode === +13) {
+      if (this.refs.myInput.isError()) {
+        return;
+      }
       const name = this.refs.myInput.getVal();
       if (this.validate(this.filter(name))) {
         this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
@@ -146,8 +150,8 @@ class DownloadDialog extends Component {
                 defaultValue={iconDetail.name}
                 extraClass="edit-name"
                 keyDown={this.save}
-                regExp="\S+"
-                errMsg="名字不能为空"
+                regExp={ICON_NAME.reg}
+                errMsg={ICON_NAME.message}
                 ref="myInput"
               />
               <button className="save" onClick={this.save}>保存</button>

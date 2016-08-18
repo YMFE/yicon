@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router';
@@ -72,10 +73,13 @@ export default class Repository extends Component {
   @autobind
   handleScroll(event) {
     const scrollTop = event.srcElement.body.scrollTop;
+    const element = findDOMNode(this.refs.repo);
     if (scrollTop >= 64) {
-      this.refs.repo.className = 'repository fixed';
+      // this.refs.repo.className = 'repository fixed';
+      element.setAttribute('class', 'repository fixed');
     } else {
-      this.refs.repo.className = 'repository';
+      // this.refs.repo.className = 'repository';
+      element.setAttribute('class', 'repository');
     }
   }
 

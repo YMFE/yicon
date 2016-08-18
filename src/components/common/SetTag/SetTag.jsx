@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { editIcon } from '../../../actions/icon';
 import Input from '../../common/Input/Index.jsx';
+import { ICON_TAG } from '../../../constants/validate';
 import { autobind } from 'core-decorators';
 
 @connect(
@@ -79,8 +80,8 @@ class SetTag extends Component {
           placeholder="添加图标标签，回车提交，可多次提交"
           extraClass="edit-name"
           keyDown={this.addTag}
-          regExp="\S+"
-          errMsg="tag不能为空"
+          regExp={ICON_TAG.reg}
+          errMsg={ICON_TAG.message}
           ref="myInput"
           disabled={disabled}
         >

@@ -5,6 +5,7 @@ import Slick from '../Slick/index.jsx';
 import IconBgGrid from '../IconBgGrid/IconBgGrid';
 import Input from '../Input/Index.jsx';
 import SetTag from '../SetTag/SetTag.jsx';
+import { ICON_NAME } from '../../../constants/validate';
 import Select from '../../common/Select/';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
@@ -136,8 +137,8 @@ class IconsSetting extends Component {
                 placeholder="请输入图标名称"
                 extraClass="edit-name"
                 blur={this.blur}
-                regExp="\S+"
-                errMsg="名字不能为空"
+                regExp={ICON_NAME.reg}
+                errMsg={ICON_NAME.message}
                 ref="myInput"
               />
             </div>

@@ -47,7 +47,11 @@ export default class Input extends Component {
   }
 
   getVal() {
-    return this.refs.input.value;
+    return this.state.value;
+  }
+
+  isError() {
+    return this.state.error;
   }
 
   validate(val) {
@@ -78,11 +82,16 @@ export default class Input extends Component {
   blur() {
     if (!this.state.error) {
       this.props.blur(this.getVal());
+    } else {
+      this.reset();
     }
   }
 
   reset() {
-    this.refs.input.value = '';
+    this.setState({
+      error: false,
+      value: this.props.defaultValue,
+    });
   }
 
   render() {

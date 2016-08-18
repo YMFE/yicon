@@ -116,16 +116,24 @@
           height: 28px;
           line-height: 28px;
           float: left;
-          border: 1px solid #dfdfdf;
           background-color: #fff;
           position: relative;
+          margin-left: 0;
 
-          input {
+          .input, input {
             width: 210px;
             float: left;
-            line-height: 26px;
+            line-height: 28px;
             text-indent: 10px;
+            margin-left: 0;
             border: none;
+          }
+
+
+          .error-info {
+            top: 28px;
+            width: 206px;
+            line-height: 24px;
           }
 
           .iconfont {
@@ -246,6 +254,7 @@
             height: 28px;
             line-height: 28px;
             margin-left: 10px;
+            cursor: pointer;
 
             a {
               color: $fontTitleColor;
@@ -270,6 +279,7 @@
               text-align: center;
               vertical-align: top;
               border-radius: 3px;
+              cursor: pointer;
             }
 
             .ibtn:hover {}
