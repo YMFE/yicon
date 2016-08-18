@@ -1,8 +1,7 @@
 import Sequelize from 'sequelize';
 import config from '../../config';
-import debugTool from 'debug';
+import logger from '../../logger';
 
-const debug = debugTool('database');
 const { model } = config;
 
 const sequelize = new Sequelize(
@@ -21,10 +20,10 @@ const sequelize = new Sequelize(
 
 sequelize.authenticate()
   .then(() =>
-    debug('Connection has been established successfully.')
+    logger.info('Connection has been established successfully.')
   )
   .catch(err =>
-    debug('Unable to connect to the database:', err)
+    logger.error('Unable to connect to the database:', err)
   );
 
 export { sequelize as seq };

@@ -1,7 +1,6 @@
 import Koa from 'koa';
 import React from 'react';
 import path from 'path';
-import debug from 'debug';
 import routes from './routes';
 import ReactDOM from 'react-dom/server';
 import compress from 'koa-compress';
@@ -106,10 +105,4 @@ app.use(function* s() {
   }
 });
 
-app.listen(PORT, (err) => {
-  if (err) {
-    debug('error')(err);
-  } else {
-    debug('server')('==> 🌞 Server listening on port %s', PORT);
-  }
-});
+app.listen(PORT);

@@ -1,4 +1,5 @@
 import PrettyError from 'pretty-error';
+import logger from '../../logger';
 import { User, Repo, Project } from '../../model';
 
 const pe = new PrettyError();
@@ -31,12 +32,7 @@ export function* responder(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
-    if (__DEVELOPMENT__) {
-      /* eslint-disable no-console */
-      console.log(pe.render(e));
-      /* eslint-enable no-console */
-    }
-    // this.app.emit('error', e, this);
+    logger.error(pe.render(e));
     return;
   }
 }
