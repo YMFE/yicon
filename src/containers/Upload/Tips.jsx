@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default () => (
   <div className="upload-notes">
@@ -6,10 +7,10 @@ export default () => (
       <h3 className="note-title">图标制作注意事项</h3>
       <a href="/resource/template.ai" className="download">下载AI模板</a>
       <div className="to-detail">
-        <a className="to-detail-link" href="#">
+        <Link className="to-detail-link" to="/help">
           查看详细说明
           <i className="iconfont to-detail-arr">&#xf50f;</i>
-        </a>
+        </Link>
       </div>
     </div>
     <ul className="note-list">

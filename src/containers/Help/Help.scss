@@ -1,0 +1,75 @@
+.yicon-spec-title {
+  height: 60px;
+  color: #344562;
+  font-size: 24px;
+  line-height: 60px;
+  background: #fff;
+  .txt {
+    margin: 0 auto;
+    width: 1080px;
+  }
+}
+
+.yicon-spec {
+  margin: 22px auto 0 auto;
+  width: 1080px;
+  background: #f9fafe;
+  .menu {
+    float: left;
+    width: 220px;
+    .menu-item {
+      height: 50px;
+      line-height: 50px;
+      padding-left: 32px;
+      font-size: 14px;
+      color: #6c7689;
+      cursor: pointer;
+    }
+    .menu-item.on {
+      background: #657289;
+      color: #fff;
+    }
+  }
+  .spec-content {
+    display: none;
+    float: left;
+    width: 800px;
+    padding: 0 30px;
+    background: #fff;
+    color: #555;
+    .content-title {
+      height: 148px;
+      text-align: center;
+      line-height: 148px;
+      font-size: 36px;
+    }
+    .spec-detail {
+      .item {
+        border-top: 1px solid #f2f2f2;
+        height: 244px;
+        padding: 40px 0;
+        .spec-info {
+          float: left;
+          width: 186px;
+          font-size: 14px;
+          .info-title {
+            font-size: 30px;
+          }
+        }
+        .spec-img-box {
+          float: left;
+          margin-left: 26px;
+          width: 244px;
+          height: 244px;
+          background: #89d6ff;
+        }
+        .spec-img-box.width {
+          width: 514px;
+        }
+      }
+    }
+  }
+  .spec-content.on {
+    display: block;
+  }
+}
