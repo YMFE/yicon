@@ -43,6 +43,3 @@ public/
 
 # webpack-assets
 webpack-assets.json
-
-# asserts
-/static/dist
