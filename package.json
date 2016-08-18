@@ -12,6 +12,7 @@
     "prd": "concurrently --kill-others \"npm run build\" \"npm run start:prd\"",
     "db:sync": "better-npm-run database:sync",
     "db:force": "better-npm-run database:force",
+    "db-dev:force": "better-npm-run database-dev:force",
     "test": "karma start",
     "build": "better-npm-run build",
     "sync": "better-npm-run build && node scripts"
@@ -61,8 +62,17 @@
         "PORT": 3000
       }
     },
+    "database-dev:force": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "SEQUELIZE_SYNC": "SYNC_FORCE",
+        "NODE_PATH": "./src",
+        "NODE_ENV": "dev",
+        "PORT": 3000
+      }
+    },
     "build": {
-      "command": "webpack --verbose --colors --display-error-details --config webpack/prd.config.js",
+      "command": "webpack --config webpack/prd.config.js",
       "env": {
         "NODE_ENV": "production"
       }

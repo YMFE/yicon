@@ -30,7 +30,7 @@ DevToolsContainer.propTypes = {
   devTools: PropTypes.bool,
 };
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   window.React = React; // enable debugger
 }
 

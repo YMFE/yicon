@@ -23,10 +23,4 @@ var app = new Koa();
 app.use(require('koa-webpack-dev-middleware')(compiler, serverOptions));
 app.use(require('koa-webpack-hot-middleware')(compiler));
 
-app.listen(port, function onAppListening(err) {
-  if (err) {
-    console.error(err);
-  } else {
-    console.info('==> 🌞  Webpack development server listening on port %s', port);
-  }
-});
+app.listen(port);

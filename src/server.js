@@ -14,6 +14,7 @@ import Html from './helpers/Html';
 // import { getPageTitle } from './helpers/utils';
 import { router, down } from './controller';
 import isomFetch from 'isom-fetch';
+import logger from './logger';
 
 const app = new Koa();
 const { PORT } = process.env;
@@ -105,4 +106,10 @@ app.use(function* s() {
   }
 });
 
-app.listen(PORT);
+app.listen(PORT, (err) => {
+  if (err) {
+    logger.error(err);
+  } else {
+    logger.info('==> 🐸  Server listening on port %s', PORT);
+  }
+});

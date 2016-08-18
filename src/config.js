@@ -5,6 +5,11 @@ const common = {
     svg: 'download/svg',
     png: 'download/png',
   },
+  log: {
+    appenders: [
+      { category: 'normal', type: 'console' },
+    ],
+  },
 };
 
 const env = {
@@ -18,11 +23,6 @@ const env = {
       host: '10.86.43.48',
     },
     port: 3000,
-    log: {
-      appenders: [
-        { category: 'normal', type: 'console' },
-      ],
-    },
   },
   // 开发机
   dev: {
@@ -35,45 +35,22 @@ const env = {
       host: '10.86.43.48',
     },
     port: 3000,
-    log: {
-      appenders: [
-        {
-          category: 'normal',
-          type: 'dateFile',
-          filename: 'log',
-          alwaysIncludePattern: true,
-          pattern: '-yyyy-MM-dd.log',
-        },
-      ],
-    },
   },
   // beta 机器
   beta: {
-    log: {
-      appenders: [
-        {
-          category: 'normal',
-          type: 'dateFile',
-          filename: 'log',
-          alwaysIncludePattern: true,
-          pattern: '-yyyy-MM-dd.log',
-        },
-      ],
-    },
   },
   // 线上机器
   production: {
-    log: {
-      appenders: [
-        {
-          category: 'normal',
-          type: 'dateFile',
-          filename: 'log',
-          alwaysIncludePattern: true,
-          pattern: '-yyyy-MM-dd.log',
-        },
-      ],
+    // 暂时写这个
+    model: {
+      database: 'iconfont-dev',
+      username: 'root',
+      password: 'odmMj7H6x2IaACrs',
+      dialect: 'mysql',
+      port: '3306',
+      host: '10.86.43.48',
     },
+    port: 3000,
   },
 };
 

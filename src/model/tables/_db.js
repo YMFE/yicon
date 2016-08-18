@@ -15,6 +15,8 @@ const sequelize = new Sequelize(
       charset: 'utf8',
       timestamps: false,
     },
+    /* eslint-disable no-console */
+    logging: __DEVELOPMENT__ ? logger.info.bind(logger) : false,
   }
 );
 

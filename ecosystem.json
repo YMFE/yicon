@@ -1,0 +1,15 @@
+{
+  "apps": [{
+    "name": "yicon",
+    "max_memory_restart": "1024M",
+    "log_date_format": "YYYY-MM-DD HH:mm:ss SSS",
+    "script": "/home/q/www/yicon.corp.qunar.com/webapp/bin/server.js",
+    "out_file": "/var/log/yicon/app.log",
+    "error_file": "/var/log/yicon/err.log",
+    "port": "3000",
+    "env": {
+      "NODE_ENV": "dev",
+      "PORT": "3000"
+    }
+  }]
+}

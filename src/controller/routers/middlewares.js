@@ -32,7 +32,8 @@ export function* responder(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
-    logger.error(pe.render(e));
+    const error = __DEVELOPMENT__ ? pe.render(e) : e;
+    logger.error(error);
     return;
   }
 }
