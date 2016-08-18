@@ -22,6 +22,7 @@ import {
   Authority,
   History,
   PublicProject,
+  Help,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -54,6 +55,7 @@ export default store => {
       <Route path="projects/:id" component={PublicProject} />
       <Route path="transition/:type" component={Transition} /> {/* 跳转页面 */}
       <Route path="search" component={Search} /> {/* 搜索结果 */}
+      <Route path="help" component={Help} /> {/* 帮助中心 */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>

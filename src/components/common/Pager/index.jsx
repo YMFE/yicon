@@ -28,9 +28,9 @@ export default class Pager extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultCurrent !== this.state.currentPage) {
-      this.state = {
-        currentPage: this.props.defaultCurrent,
-      };
+      this.setState({
+        currentPage: nextProps.defaultCurrent,
+      });
     }
   }
 
