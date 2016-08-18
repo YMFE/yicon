@@ -40,6 +40,3 @@ ios/build/
 
 # ignore public
 public/
-
-# webpack-assets
-webpack-assets.json
