@@ -12,6 +12,14 @@ import { getUsersProjectList } from '../../actions/project';
 }), { getUsersProjectList })
 
 export default class PublicProject extends Component {
+
+  static propTypes = {
+    params: PropTypes.object,
+    getUsersProjectList: PropTypes.func,
+    user: PropTypes.object,
+    usersProjectList: PropTypes.array,
+  };
+
   state = {
     isShowLoading: false,
   }
@@ -55,10 +63,3 @@ export default class PublicProject extends Component {
     );
   }
 }
-
-PublicProject.propTypes = {
-  params: PropTypes.object,
-  getUsersProjectList: PropTypes.func,
-  user: PropTypes.object,
-  usersProjectList: PropTypes.array,
-};

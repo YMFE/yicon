@@ -116,7 +116,10 @@ export function* updateRepoOwner(next) {
 
 export function* addRepo(next) {
   const { name, alias, admin } = this.param;
-  if (!(name && alias && admin)) throw new Error('name、alias和admin参数不可缺少');
+  if (!(name && alias)) throw new Error('name和alias参数不可缺少');
+  if (!admin) throw new Error('域名称缺少、不完整或者错误');
+  const repoInfo = yield Repo.findAll({ where: { $or: [{ name }, { alias }] } });
+  if (repoInfo.length) throw new Error('大库name或alias已被其他库占用，请修改');
   const user = yield User.findOne({ where: { id: admin } });
   if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
 
@@ -129,7 +132,7 @@ export function* appointRepoOwner(next) {
   const { repoId, name } = this.param;
   const { userId } = this.state.user;
   if (isNaN(repoId)) throw new Error('缺少大库id');
-  if (!name) throw new Error('缺少指定的大库管理员name');
+  if (!name) throw new Error('大库管理员name缺少、不完整或错误');
 
   const adminId = yield Repo.findOne({ attributes: ['admin'], where: { id: repoId } });
   const adminInfo = yield adminId.getUser();

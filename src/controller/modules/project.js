@@ -433,7 +433,10 @@ export function* deleteProject(next) {
 
 export function* addProject(next) {
   const { name, owner } = this.param;
-  if (!(name && owner)) throw new Error('name和owner参数不可缺少');
+  if (!name) throw new Error('name参数不可缺少');
+  if (!owner) throw new Error('owner缺少、不完整或错误');
+  const projectInfo = yield Project.findOne({ where: { name } });
+  if (projectInfo) throw new Error('项目name已被占用，请修改');
   const user = yield User.findOne({ where: { id: owner } });
   if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
 
@@ -449,7 +452,7 @@ export function* appointProjectOwner(next) {
   const { projectId, name } = this.param;
   const { userId } = this.state.user;
   if (isNaN(projectId)) throw new Error('缺少项目id');
-  if (!name) throw new Error('缺少指定的项目管理员name');
+  if (!name) throw new Error('项目管理员name缺少、不完整或错误');
 
   const allMembers = [];
   const project = yield Project.findOne({ where: { id: projectId } });

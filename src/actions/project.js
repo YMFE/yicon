@@ -139,7 +139,7 @@ export function deleteProject(project) {
       payload: fetch.delete(`/user/projects/${project.id}`).then((data) => {
         if (data.res) {
           dispatch(getUsersProjectList());
-          dispatch(replace('/user/projects/'));
+          dispatch(replace('/projects/'));
         }
       }),
     });

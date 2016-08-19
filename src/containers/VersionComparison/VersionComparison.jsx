@@ -32,6 +32,9 @@ export default class VersionComparison extends Component {
   }
 
   componentWillMount() {
+    const _tempHigh = this.state.defaultVersion;
+    const _tempLow = this.state.defaultVersion;
+    this.props.compareProjectVersion(this.props.params.id, _tempHigh, _tempLow);
     this.props.fetchAllProjects();
     this.props.fetchAllVersions(this.props.params.id).then(ret => {
       const version = ret.payload.data.version;
@@ -191,7 +194,7 @@ export default class VersionComparison extends Component {
               </div>
               <div style={{ display: `${addLength ? 'block' : 'none'}` }}>
                 <div className="yicon-myiconvs-title">
-                  <i className="iconfont">&#xf515;</i>
+                  <i className="iconfont">&#xf470;</i>
                   <span> 高版本{this.state.version}增加了
                     <em className="count">{addLength}</em>
                   个图标</span>
