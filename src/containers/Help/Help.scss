@@ -1,3 +1,4 @@
+
 .yicon-spec-title {
   height: 60px;
   color: #344562;
@@ -44,6 +45,7 @@
       font-size: 36px;
     }
     .spec-detail {
+      $imgurl: '../../../static/images/';
       .item {
         border-top: 1px solid #f2f2f2;
         height: 244px;
@@ -61,10 +63,48 @@
           margin-left: 26px;
           width: 244px;
           height: 244px;
-          background: #89d6ff;
+          background-image:url("#{$imgurl}helpIconStyle01.jpg");
+          background-repeat:no-repeat;
         }
         .spec-img-box.width {
           width: 514px;
+        }
+
+        .spec-img-box05,.spec-img-box06,.spec-img-box07,.spec-img-box08,.spec-img-box09,.spec-img-box10{
+          background-image:url("#{$imgurl}helpIconStyle02.jpg");
+        }
+        .spec-img-draw01,.spec-img-draw02,.spec-img-draw03,.spec-img-draw04{
+          background-image:url("#{$imgurl}helpIconDraw01.jpg");
+        }
+        .spec-img-draw05,.spec-img-draw06,.spec-img-draw07,.spec-img-draw08{
+          background-image:url("#{$imgurl}helpIconDraw02.jpg");
+        }
+        .spec-img-draw09,.spec-img-draw10,.spec-img-draw11{
+          background-image:url("#{$imgurl}helpIconDraw03.jpg");
+        }
+        .spec-img-box01,.spec-img-box05,.spec-img-draw01,.spec-img-draw05,.spec-img-draw09{
+          background-position: 0 0;
+        }
+        .spec-img-box02,.spec-img-box06,.spec-img-draw02,.spec-img-draw06{
+          background-position: -245px 0;
+        }
+        .spec-img-box03,.spec-img-box07,.spec-img-draw03,.spec-img-draw10{
+          background-position: 0 -245px;
+        }
+        .spec-img-box04,.spec-img-box08,.spec-img-draw04,.spec-img-draw11{
+          background-position: -245px -245px;
+        }
+        .spec-img-box09{
+          background-position: 0 -492px;
+        }
+        .spec-img-box10{
+          background-position: -245px -492px;
+        }
+        .spec-img-draw07{
+            background-position: 0 -246px;
+        }
+        .spec-img-draw08{
+            background-position: 0 -493px;
         }
       }
     }
