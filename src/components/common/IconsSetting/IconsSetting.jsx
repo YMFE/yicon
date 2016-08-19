@@ -163,7 +163,9 @@ class IconsSetting extends Component {
             </div>
 
             <div className="setting-opt">
-              <label htmlFor="set-icon-tag" className="set-opt-name">图标标签&nbsp;&nbsp;</label>
+              <label htmlFor="set-icon-tag" className="set-opt-name">图标标签<span
+                className="require"
+              >*</span></label>
               <SetTag
                 onTagChange={this.saveTags}
                 tags={iconDetail.tags || ''}

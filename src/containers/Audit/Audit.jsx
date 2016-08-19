@@ -96,6 +96,8 @@ export default class Audit extends Component {
       icons[index].passed = isPass;
     }
     this.props.updateAuditIcons(icons.concat());
+    const newIndex = index < icons.length - 1 ? index + 1 : index;
+    this.props.selectIcon(newIndex);
   }
 
   calcAuditDone() {

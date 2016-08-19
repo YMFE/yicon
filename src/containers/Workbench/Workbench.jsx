@@ -91,7 +91,7 @@ export default class Workbench extends Component {
   calcDone() {
     const { icons } = this.props;
     const doneArr = icons.filter((icon) => (
-      icon.name && icon.fontClass
+      icon.name && icon.fontClass && icon.tags
     ));
     return doneArr;
   }
