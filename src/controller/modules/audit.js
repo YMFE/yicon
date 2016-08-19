@@ -37,7 +37,7 @@ function getBaseClassName(icons, transaction) {
       });
     })
     .then(newCode => {
-      newMaxCode = newCode || 0xE000;
+      newMaxCode = newCode || (0xE000 - 1);
       const maxCode = 0xF000 - newMaxCode >= icons.length
         ? newMaxCode : oldMaxCode;
 
@@ -46,7 +46,7 @@ function getBaseClassName(icons, transaction) {
           .reduce((prev, next) => prev.concat(next), [])
           .join('')
           .replace(/[^\w]/g, '');
-        const code = maxCode + index;
+        const code = maxCode + index + 1;
         const hexCode = maxCode.toString(16);
         const fontClass = `${repoMap[i.repoId]}-${pyName}${hexCode}${i.fontClass}`;
 

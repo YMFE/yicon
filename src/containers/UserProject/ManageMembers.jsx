@@ -17,6 +17,7 @@ class ManageMembers extends Component {
     onOk: PropTypes.func,
     onCancel: PropTypes.func,
     onChange: PropTypes.func,
+    owner: PropTypes.object,
   }
   static defaultProps ={
     members: [],
@@ -33,21 +34,10 @@ class ManageMembers extends Component {
     // console.log(nextProps.suggestList);
   // }
   componentWillReceiveProps(props) {
-    if (this.props.id === props.id) {
-      props.members.forEach(item => {
-        const notExist = this.state.members.every(itm =>
-          (parseInt(itm.id, 10) !== parseInt(item.id, 10))
-        );
-        if (notExist) {
-          this.members.push(item);
-        }
-      });
-    } else {
-      this.members = props.members.slice(0);
-      this.setState({
-        members: this.members,
-      });
-    }
+    this.members = props.members.slice(0);
+    this.setState({
+      members: this.members,
+    });
     // console.log(`this.members:${this.members}`);
   }
   componentDidUpdate() {
@@ -104,8 +94,9 @@ class ManageMembers extends Component {
     }
   }
   render() {
-    const members = this.state.members;
+    const { members } = this.state;
     const { suggestList } = this.props;
+    const { name } = this.props.owner;
     // console.log(`suggestList:${suggestList}`);
     // console.log(`members:${members}`);
     return (
@@ -148,16 +139,20 @@ class ManageMembers extends Component {
             <p className="collaborators-title">项目成员</p>
             <ul className="collaborators-list">
               {
-                members && members.length > 0 && members.map((item, index) => (
+                members.length > 0 && members.map((item, index) => (
                   <li
                     data-id={item.id}
                     key={index}
                     onClick={(e) => {
                       this.deleteMember(e);
                     }}
+                    title={item.name === name ? '管理员' : ''}
                   >
+                    {item.name === name && <i className="iconfont">&#xf50e;</i>}
                     {item.name}
-                    <i className="iconfont" title="删除成员">&#xf077;</i>
+                    {item.name !== name &&
+                      <i className="iconfont pointer" title="删除成员">&#xf077;</i>
+                    }
                   </li>
                 ))
               }

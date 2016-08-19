@@ -399,7 +399,7 @@ export function* getUploadedIcons(next) {
   yield next;
 }
 
-// 这个是获取已经提交的、上传的、被拒绝的图标
+// 这个是获取已经提交的、上传的、被拒绝的图标，也就是上传历史
 export function* getSubmittedIcons(next) {
   const { userId } = this.state.user;
   const { pageMixin } = this.state;
