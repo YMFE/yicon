@@ -51,10 +51,11 @@ export default class History extends Component {
     this.props.fetchAllVersions(id).then(ret => {
       const version = ret.payload.data.version;
       const length = version.length;
-      this.props.fetchHistoryProject(id, version[length - 1])
-        .then(() => this.props.hideLoading())
-        .catch(() => this.props.hideLoading());
-    }).catch(() => {});
+      this.props.hideLoading();
+      this.props.fetchHistoryProject(id, version[length - 1]);
+    }).catch(() => {
+      this.props.hideLoading();
+    });
   }
 
   @autobind
