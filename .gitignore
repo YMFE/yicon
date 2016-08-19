@@ -35,14 +35,15 @@ Thumbs.db
 # *.tar
 # *.tar.gz
 
-# Node
-node_modules/
 
 # iOS
 ios/build/
 
 # ignore public
 public/
+
+# Node
+node_modules/
 
 # webpack-assets
 webpack-assets.json
