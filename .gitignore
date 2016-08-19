@@ -41,5 +41,6 @@ ios/build/
 # ignore public
 public/
 
-# ignore webpack-asset.json
+# ignore deploy files
 webpack-assets.json
+static/dist/
