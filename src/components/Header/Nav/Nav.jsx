@@ -33,16 +33,18 @@ class Nav extends Component {
       return null;
     }).filter(v => v !== null);
 
-    if (!navList.length) return null;
-    return <ul className="quick-menu-sub">{navList}</ul>;
+    return navList;
   }
 
   render() {
     const { name } = this.props;
+    const list = this.getNavList();
+    if (!list.length) return null;
+
     return (
       <li className="global-header-Nav">
         <a>{name}</a>
-        {this.getNavList()}
+        <ul className="quick-menu-sub">{list}</ul>
       </li>
     );
   }

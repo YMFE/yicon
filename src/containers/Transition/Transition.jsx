@@ -42,11 +42,14 @@ export default class Transition extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   qssoLogin() {
     window.QSSO.auth('/api/login');
   }
 
-  intervalId = '';
   backToPage(url) {
     this.intervalId = setInterval(() => {
       this.setState({
