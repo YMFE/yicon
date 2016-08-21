@@ -58,7 +58,7 @@ const env = {
       password: 'odmMj7H6x2IaACrs',
       dialect: 'mysql',
       port: '3306',
-      host: '10.86.43.48',
+      host: '10.90.184.130',
     },
     port: 3000,
     log: {
