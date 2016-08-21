@@ -53,7 +53,7 @@ const env = {
   // beta 机器
   beta: {
     model: {
-      database: 'iconfont-dev',
+      database: 'iconfont',
       username: 'root',
       password: 'odmMj7H6x2IaACrs',
       dialect: 'mysql',
