@@ -70,7 +70,7 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: true
+        warnings: false
       }
     }),
     webpackIsomorphicToolsPlugin,
