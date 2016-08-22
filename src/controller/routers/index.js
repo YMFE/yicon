@@ -21,7 +21,7 @@ const router = new Router({ prefix: '/api' });
 const down = new Router();
 
 // 下载比较特殊，单独写吧
-down.get('/download/:filename', function* loadFile() {
+down.get('/download/:filename', function* f() {
   const { caches } = config.path;
   const { filename } = this.params;
   const reg = /\.(\w+)$/;
