@@ -3,8 +3,12 @@ import Q from 'q';
 import fs from 'fs';
 import path from 'path';
 
+import SVGO from 'svgo';
 import { render } from 'svgexport';
 import svgBuilder from './svgTemplate';
+
+const svgo = new SVGO;
+const optimize = content => new Promise(resolve => svgo.optimize(content, resolve));
 
 const { caches, font, svg, png } = config.path;
 const downPath = path.join(caches, 'download');
@@ -53,8 +57,9 @@ export function* getModifyTime(foldName, pos, type) {
 export function* buildSVG(name, svgPath, color, size) {
   yield ensureCachesExist('hodor', 'svg');
   const svgContent = svgBuilder(size, color, svgPath);
+  const optContent = yield optimize(svgContent);
   const filePath = path.join(downloadPath.svg, `${name}.svg`);
-  yield Q.nfcall(fs.writeFile, filePath, svgContent);
+  yield Q.nfcall(fs.writeFile, filePath, optContent.data);
   return filePath;
 }
 

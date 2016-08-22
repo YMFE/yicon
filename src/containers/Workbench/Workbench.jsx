@@ -172,14 +172,14 @@ export default class Workbench extends Component {
               <p className={'upload-submit-tips'}>
                 {
                   icons.length - doneNum ?
-                  `你还有${icons.length - doneNum}枚图标未设置未完成!` :
+                  `你还有 ${icons.length - doneNum} 枚图标未设置未完成!` :
                   '全部设置完成!'
                 }
               </p>
             </div>
             <div className={'upload-submit-setting'}>
               <span className={'submit-info'}>
-                共上传<span className={'icon-num'}>{doneNum}</span>枚图标至
+                共上传 <span className={'icon-num'}>{doneNum}</span> 枚图标至
               </span>
               <div className={'select-repository'}>
                 <Select
