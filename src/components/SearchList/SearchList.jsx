@@ -25,6 +25,7 @@ class SearchList extends Component {
   static defaultProps = {
     noFoundTip: '没有符合的结果',
     placeholder: '请输入成员名称',
+    onChoseError: () => {},
   }
   constructor(props) {
     super(props);

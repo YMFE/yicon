@@ -249,7 +249,10 @@ class Cart extends Component {
             <div className="btn-download">
               <div className="save_selection">
                 <a className="ibtn">
-                  <span>保存为项目 <i className="iconfont">&#xf032;</i></span>
+                  <span>
+                    保存为项目
+                    <i className="iconfont">&#xf032;</i>
+                  </span>
                 </a>
 
                 <div className="save_selection_btns">

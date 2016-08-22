@@ -9,7 +9,7 @@ export default () => (
       <div className="to-detail">
         <Link className="to-detail-link" to="/help">
           查看详细说明
-          <i className="iconfont to-detail-arr">&#xf50f;</i>
+          <i className="iconfont to-detail-arr">&#xf1c1;</i>
         </Link>
       </div>
     </div>

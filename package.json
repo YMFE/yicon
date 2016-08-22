@@ -144,6 +144,7 @@
     "sequelize": "^3.23.2",
     "serialize-javascript": "^1.3.0",
     "svgexport": "^0.3.2",
+    "svgo": "^0.6.6",
     "zip-dir": "^1.0.2"
   },
   "pre-commit": [
