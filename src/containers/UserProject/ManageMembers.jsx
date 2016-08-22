@@ -33,11 +33,13 @@ class ManageMembers extends Component {
   // componentWillReceiveProps(nextProps) {
     // console.log(nextProps.suggestList);
   // }
-  componentWillReceiveProps(props) {
-    this.members = props.members.slice(0);
-    this.setState({
-      members: this.members,
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.showManageMember !== this.props.showManageMember) {
+      this.members = nextProps.members.slice(0);
+      this.setState({
+        members: this.members,
+      });
+    }
     // console.log(`this.members:${this.members}`);
   }
   componentDidUpdate() {
