@@ -11,6 +11,7 @@ import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -85,6 +86,7 @@ class UserProject extends Component {
 
   static defaultProps ={
     generateVersion: 'revision',
+    showLoading: false,
   }
   constructor(props) {
     super(props);
@@ -100,7 +102,8 @@ class UserProject extends Component {
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
   }
-  componentDidMount() {
+  componentWillMount() {
+    this.setState({ showLoading: true });
     this.props.resetIconSize();
     this.props.getUsersProjectList().then(() => {
       const id = this.props.projectId;
@@ -112,9 +115,11 @@ class UserProject extends Component {
         this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();
+      this.setState({ showLoading: false });
     });
   }
   componentWillReceiveProps(nextProps) {
+    this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
     const nextId = nextProps.projectId;
     if (current) {
@@ -131,11 +136,15 @@ class UserProject extends Component {
       return;
     }
     if (nextId !== this.props.projectId) {
-      this.props.getUserProjectInfo(nextId);
+      this.props.getUserProjectInfo(nextId).then(() =>
+        this.setState({ showLoading: false })
+      );
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
       this.nextVersion = '0.0.1';
       this.props.compareProjectVersion(nextId, '0.0.0', '0.0.0');
+    } else {
+      this.setState({ showLoading: false });
     }
   }
 
@@ -442,6 +451,7 @@ class UserProject extends Component {
             </div>
           </Main>
         </Content>
+        <Loading visible={this.state.showLoading} />
         {dialogList}
       </div>
     );

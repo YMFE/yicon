@@ -7,6 +7,9 @@
       units-per-em="1024" ascent="1024"
       descent="0" />
     <missing-glyph horiz-adv-x="0" />
+    <glyph glyph-name="qunar-angle_up"
+      unicode="&#xF028;"
+      horiz-adv-x="1024" d=" M671.721 416.687L735.514 480.479L512.015 703.9780000000001L287.532 479.494L351.323 415.703L512.015 576.396z" />
     <glyph glyph-name="qunar-angle_down"
       unicode="&#xF032;"
       horiz-adv-x="1024" d=" M512.007 447.6190000000001L351.315 608.312L287.524 544.521L512.007 320.038L735.506 543.537L671.713 607.329z" />
