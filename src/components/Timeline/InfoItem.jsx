@@ -93,7 +93,7 @@ class InfoItem extends Component {
       }
       detailEle = (
         <span onClick={this.props.onShowDetail}>
-          <i className={classList.join(' ')}>&#xf032;</i>
+          <i className={classList.join(' ')}>&#xf028;</i>
         </span>
       );
     }

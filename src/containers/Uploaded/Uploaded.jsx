@@ -69,7 +69,7 @@ class Uploaded extends Component {
     let mainClassList = (list instanceof Array && list.length === 0) ? 'empty-container' : '';
     return (
       <div className="uploaded">
-        <SubTitle tit="我上传的图标" />
+        <SubTitle tit="图标上传历史" />
         <Content extraClass={mainClassList}>
           {
             list && list.length > 0

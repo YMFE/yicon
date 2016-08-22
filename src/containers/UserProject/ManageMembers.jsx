@@ -33,11 +33,13 @@ class ManageMembers extends Component {
   // componentWillReceiveProps(nextProps) {
     // console.log(nextProps.suggestList);
   // }
-  componentWillReceiveProps(props) {
-    this.members = props.members.slice(0);
-    this.setState({
-      members: this.members,
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.showManageMember !== this.props.showManageMember) {
+      this.members = nextProps.members.slice(0);
+      this.setState({
+        members: this.members,
+      });
+    }
     // console.log(`this.members:${this.members}`);
   }
   componentDidUpdate() {
@@ -63,20 +65,34 @@ class ManageMembers extends Component {
       members: this.state.members,
     };
   }
+
   @autobind
-  deleteMember(e) {
-    const id = parseInt(e.currentTarget.dataset.id, 10);
-    this.members.some((item, index) => {
-      if (item.id === id) {
-        this.members.splice(index, 1);
-        return true;
-      }
-      return false;
-    });
-    this.setState({
-      members: this.members.slice(0),
-    });
+  getMemberItem(isOwner, item, index) {
+    return isOwner ? (
+      <li
+        data-id={item.id}
+        key={index}
+        title="管理员"
+      >
+        <i className="iconfont">&#xf50e;</i>
+        {item.name}
+      </li>
+    ) : (
+      <li
+        data-id={item.id}
+        key={index}
+        onClick={(e) => {
+          this.deleteMember(e);
+        }}
+      >
+        {item.name}
+        {item.name !== name &&
+          <i className="iconfont pointer" title="删除成员">&#xf077;</i>
+        }
+      </li>
+    );
   }
+
   @autobind
   addNewMember(item) {
     // console.log(`handle choseMembers${item}`);
@@ -93,6 +109,22 @@ class ManageMembers extends Component {
       });
     }
   }
+
+  @autobind
+  deleteMember(e) {
+    const id = parseInt(e.currentTarget.dataset.id, 10);
+    this.members.some((item, index) => {
+      if (item.id === id) {
+        this.members.splice(index, 1);
+        return true;
+      }
+      return false;
+    });
+    this.setState({
+      members: this.members.slice(0),
+    });
+  }
+
   render() {
     const { members } = this.state;
     const { suggestList } = this.props;
@@ -139,22 +171,9 @@ class ManageMembers extends Component {
             <p className="collaborators-title">项目成员</p>
             <ul className="collaborators-list">
               {
-                members.length > 0 && members.map((item, index) => (
-                  <li
-                    data-id={item.id}
-                    key={index}
-                    onClick={(e) => {
-                      this.deleteMember(e);
-                    }}
-                    title={item.name === name ? '管理员' : ''}
-                  >
-                    {item.name === name && <i className="iconfont">&#xf50e;</i>}
-                    {item.name}
-                    {item.name !== name &&
-                      <i className="iconfont pointer" title="删除成员">&#xf077;</i>
-                    }
-                  </li>
-                ))
+                members.length > 0 && members.map((item, index) =>
+                  this.getMemberItem(item.name === name, item, index)
+                )
               }
             </ul>
           </div>

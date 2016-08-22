@@ -59,21 +59,23 @@ class Log extends Component {
         <SubTitle tit="项目日志" />
         <Content>
           <div className={mainClass} style={{ width: '100%' }}>
-            <TimelineList
-              list={list}
-              infoDetail={infoDetail}
-              getInfoDetail={this.props.getInfoDetail}
-            />
-            <div className="pager-container">
-              {list.length ?
-                <Pager
-                  defaultCurrent={currentPage}
-                  totalCount={totalCount}
-                  onClick={this.onChangePage}
-                /> :
-                null
-              }
-            </div>
+            {list.length ?
+              <div>
+                <TimelineList
+                  list={list}
+                  infoDetail={infoDetail}
+                  getInfoDetail={this.props.getInfoDetail}
+                />
+                <div className="pager-container">
+                  <Pager
+                    defaultCurrent={currentPage}
+                    totalCount={totalCount}
+                    onClick={this.onChangePage}
+                  />
+                </div>
+              </div>
+              : null
+            }
           </div>
         </Content>
       </div>
