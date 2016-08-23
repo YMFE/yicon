@@ -50,6 +50,7 @@ class SliderSize extends Component {
             min={16}
             max={64}
             step={1}
+            defaultValue={32}
             onAfterChange={this.changeSize}
             onChange={this.onChange}
             ref="slider"

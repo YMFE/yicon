@@ -162,13 +162,13 @@ class Slider extends Component {
 
   @autobind
   reset() {
-    const { max } = this.props;
+    const defaultValue = this.props.defaultValue || this.props.max;
     this.props.onBeforeChange(this.getValue());
     this.setState({
-      bound: this.props.max,
+      bound: defaultValue,
     });
-    this.props.onChange(max);
-    this.props.onAfterChange(max);
+    this.props.onChange(defaultValue);
+    this.props.onAfterChange(defaultValue);
   }
 
   render() {
