@@ -116,7 +116,7 @@ class UserProject extends Component {
       }
       this.props.fetchMemberSuggestList();
       this.setState({ showLoading: false });
-    });
+    }).catch(() => this.setState({ showLoading: false }));
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ showLoading: true });
@@ -138,7 +138,7 @@ class UserProject extends Component {
     if (nextId !== this.props.projectId) {
       this.props.getUserProjectInfo(nextId).then(() =>
         this.setState({ showLoading: false })
-      );
+      ).catch(() => this.setState({ showLoading: false }));
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
       this.nextVersion = '0.0.1';

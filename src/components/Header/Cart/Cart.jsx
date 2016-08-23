@@ -112,8 +112,8 @@ class Cart extends Component {
     this.props.saveToNewProject(saveToProjectInput, iconsInCart)
       .then(data => {
         if (data && data.payload.res) {
-          const targetUrl = data.payload.data.id ?
-            `/projects/${data.payload.data.id}` :
+          const targetUrl = data.payload.data.projectId ?
+            `/projects/${data.payload.data.projectId}` :
             '/projects/';
           this.dumpIcon();
           this.changeCartSaveType('DEFAULT');
