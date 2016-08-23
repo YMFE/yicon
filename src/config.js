@@ -13,7 +13,7 @@ const common = {
 const env = {
   development: {
     model: {
-      database: 'iconfont',
+      database: 'iconfont-dev',
       username: 'root',
       password: 'odmMj7H6x2IaACrs',
       dialect: 'mysql',

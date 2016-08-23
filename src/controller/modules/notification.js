@@ -1,4 +1,4 @@
-import { Icon, Repo, Project, Log, Notification } from '../../model';
+import { Icon, Repo, Project, Log, Notification, User } from '../../model';
 import { analyzeLog } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
 import invariant from 'invariant';
@@ -24,26 +24,22 @@ export function* getAllNotices(next) {
   const user = model;
   if (type === 'all') {
     notice = yield user.getLogs({
-      include: [{
-        model: Repo,
-        as: 'repo',
-      }, {
-        model: Project,
-        as: 'project',
-      }],
+      include: [
+        { model: Repo, as: 'repo' },
+        { model: Project, as: 'project' },
+        { model: User, as: 'logCreator' },
+      ],
       order: 'updatedAt DESC',
       ...pageMixin,
     });
     this.state.page.totalCount = yield user.countLogs();
   } else {
     notice = yield user.getLogs({
-      include: [{
-        model: Repo,
-        as: 'repo',
-      }, {
-        model: Project,
-        as: 'project',
-      }],
+      include: [
+        { model: Repo, as: 'repo' },
+        { model: Project, as: 'project' },
+        { model: User, as: 'logCreator' },
+      ],
       where: { scope: type === 'system' ? 'repo' : 'project' },
       order: 'updatedAt DESC',
       ...pageMixin,
