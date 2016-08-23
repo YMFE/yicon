@@ -12,6 +12,10 @@ class Nav extends Component {
     userInfo: PropTypes.object,
   }
 
+  state = {
+    isShow: false,
+  }
+
   @autobind
   getNavList() {
     const { list, userInfo } = this.props;
@@ -22,6 +26,7 @@ class Nav extends Component {
         return (
           <li key={index}>
             <Link
+              onClick={() => this.toggleMenuShow(false)}
               to={item.href}
               style={{ display: 'block', padding: '0 20px' }}
             >
@@ -36,15 +41,25 @@ class Nav extends Component {
     return navList;
   }
 
+  toggleMenuShow(isShow) {
+    this.setState({
+      isShow,
+    });
+  }
+
   render() {
     const { name } = this.props;
     const list = this.getNavList();
     if (!list.length) return null;
 
     return (
-      <li className="global-header-Nav">
+      <li
+        onMouseOver={() => this.toggleMenuShow(true)}
+        onMouseOut={() => this.toggleMenuShow(false)}
+        className={`global-header-Nav ${this.state.isShow ? 'hover' : ''}`}
+      >
         <a>{name}</a>
-        <ul className="quick-menu-sub">{list}</ul>
+        <ul className="quick-menu-sub" >{list}</ul>
       </li>
     );
   }
