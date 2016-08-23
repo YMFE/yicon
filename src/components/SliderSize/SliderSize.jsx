@@ -20,7 +20,7 @@ class SliderSize extends Component {
     // const { iconSize } = props;
 
     this.state = {
-      sizeTxt: 64,
+      sizeTxt: 32,
     };
   }
 

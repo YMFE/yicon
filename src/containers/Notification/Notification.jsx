@@ -59,6 +59,7 @@ export default class Notification extends Component {
     const id = item.id;
     const infoState = Object.assign({}, this.state.infoState);
     if (this.props.infoDetail[id]) {
+      infoState[id] = infoState[id] || {};
       infoState[id].isShow = !infoState[id].isShow;
     } else {
       this.props.getInfoDetail(id);

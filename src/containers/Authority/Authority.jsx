@@ -310,6 +310,13 @@ export default class Authority extends Component {
       this.fetchByType(type, 1);
     }
   }
+
+  @autobind
+  searchByEnter(e) {
+    if (e.keyCode === 13) {
+      this.search();
+    }
+  }
   /* end */
 
   render() {
@@ -344,11 +351,10 @@ export default class Authority extends Component {
               <div className="myicon-prj-right">
                 <div className="yicon-authority-info">
                   <div className="tools">
-                    <a
-                      href="#"
+                    <button
                       className="options-btns btns-blue"
                       onClick={this.createRepoOrProject}
-                    >新建{btnName}</a>
+                    >新建{btnName}</button>
                     <div className="authority-search">
                       <input
                         type="text"
@@ -356,8 +362,9 @@ export default class Authority extends Component {
                         value={this.state.searchValue}
                         onChange={this.handleSearchChange}
                         placeholder="请输入大库或项目名称"
+                        onKeyDown={this.searchByEnter}
                       />
-                      <a href="#" className="options-btns btns-blue" onClick={this.search}>搜索</a>
+                      <button className="options-btns btns-blue" onClick={this.search}>搜索</button>
                     </div>
                   </div>
                 </div>
