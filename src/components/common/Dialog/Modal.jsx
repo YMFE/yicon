@@ -46,7 +46,7 @@ export default class Modal extends Component {
   }
   render() {
     const { title, zIndex, onOk, onCancel, empty, confrimText, cancelText } = this.props;
-    document.body.style = this.state.show ? 'overflow: hidden' : '';
+    document.body.style.cssText = this.state.show ? 'overflow: hidden' : '';
     return (
       <div
         style={{

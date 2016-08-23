@@ -1,12 +1,12 @@
 #!/bin/bash
 
 prog="forever"
-USER="tomcat"
+USER="root"
 export PATH=/home/q/node/bin:$PATH
 
 start() {
 echo -n $"Starting $prog: "
-exec /bin/su $USER -c "NODE_ENV=production PORT=8003 NODE_PATH=/home/q/www/yicon.corp.qunar.com/webapp/src forever start /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js"
+exec /bin/su $USER -c "NODE_ENV=beta PORT=8003 forever -l /home/q/www/yicon.corp.qunar.com/foreve-log -a start /home/q/www/yicon.corp.qunar.com/webapp/bin/server.js"
 
 if [[ $? -eq 0 ]]; then
 return 0
@@ -26,6 +26,7 @@ fi
 if [[ $? -eq 0 ]]; then
 return 0
 else
+
 return 1
 fi
 }

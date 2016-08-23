@@ -79,7 +79,7 @@ class SearchList extends Component {
   }
   onShow() {
     if (this.inputEle) {
-      this.inputLocation = this.inputEle.getBoundingClientRect();
+      // this.inputLocation = this.inputEle.getBoundingClientRect();
     }
   }
 
