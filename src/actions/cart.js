@@ -84,17 +84,24 @@ export function dumpIconLocalStorage() {
   };
 }
 
+
+function toggleDiplay(dispatch, isShowCartList) {
+  dispatch({
+    type: TOGGLE_CART_LIST_DISPLAY,
+    payload: {
+      isShowCartList,
+    },
+  });
+}
 export function toggleCartListDisplay(isShowCartList) {
   return (dispatch) => {
     const iconIds = Array.from(ls.cartIconIds);
     if (isShowCartList) {
-      dispatch(getIconsInCart({ icons: iconIds }));
+      dispatch(getIconsInCart({ icons: iconIds })).then(() => {
+        toggleDiplay(dispatch, isShowCartList);
+      });
+    } else {
+      toggleDiplay(dispatch, isShowCartList);
     }
-    dispatch({
-      type: TOGGLE_CART_LIST_DISPLAY,
-      payload: {
-        isShowCartList,
-      },
-    });
   };
 }
