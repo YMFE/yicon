@@ -59,38 +59,46 @@ class IconButton extends Component {
     iconCopy.style.cssText += `
       top: ${iconNode.offsetTop}px;
       left: ${iconNode.offsetLeft}px;
-      transition: transform 0.25s ease-in;
+      transition: transform 0.3s ease-in, opacity 0.2s linear 0.3s;
       position: absolute;
       z-index: 1000;
     `;
     iconCopy.getElementsByTagName('path')[0].style.fill = '#008ed6';
+    const cartLeft = (window.innerWidth - 1100) / 2 + 766.5;
     document.body.appendChild(iconCopy);
     setTimeout(() => {
-      iconCopy.style.transform = `translate(${917 - screenLeft}px, ${10 - screenTop}px)`;
+      iconCopy.style.cssText += `
+        transform: translate(${cartLeft - screenLeft}px, ${15 - screenTop}px);
+        opacity: 0;
+      `;
     }, 0);
     setTimeout(() => {
       iconCopy.remove();
-    }, 400);
+    }, 1000);
   }
 
   removeCartAnim() {
     const iconNode = findDOMNode(this.refs.icon);
     const { scrollTop, scrollLeft } = document.body;
     const iconCopy = iconNode.cloneNode(true);
+    const cartLeft = (window.innerWidth - 1100) / 2 + 766.5;
     iconCopy.style.cssText += `
-      top: ${scrollTop + 20}px;
-      left: ${scrollLeft + 915}px;
-      transition: transform 0.25s ease-in;
+      top: ${scrollTop + 15}px;
+      left: ${scrollLeft + cartLeft}px;
+      transition: transform 0.25s ease-in, opacity 0.2s linear;
       position: absolute;
       z-index: 1000;
     `;
     document.body.appendChild(iconCopy);
     setTimeout(() => {
-      iconCopy.style.transform = 'translate(-100px, -100px)';
+      iconCopy.style.cssText += `
+        transform: translate(-100px, -100px);
+        opacity: 0;
+      `;
     }, 0);
     setTimeout(() => {
       iconCopy.remove();
-    }, 400);
+    }, 350);
   }
 
   @autobind
