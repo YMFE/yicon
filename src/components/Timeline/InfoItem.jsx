@@ -24,6 +24,10 @@ class InfoItem extends Component {
     onShowDetail: PropTypes.func,
   }
 
+  static defaultProps = {
+    logCreator: {},
+  };
+
   getTitle() {
     const { item, showTitleHtml, tit } = this.props;
     if (showTitleHtml) {
