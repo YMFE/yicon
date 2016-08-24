@@ -1,6 +1,7 @@
 import './IconButton.scss';
 import { Link } from 'react-router';
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { addIconToLocalStorage, deleteIconInLocalStorage } from '../../../actions/cart';
 import Icon from '../Icon/Icon.jsx';
@@ -33,6 +34,63 @@ class IconButton extends Component {
       copyError: false,
       showDownLoadDial: false,
     };
+  }
+
+  getScreenDist(element) {
+    let actualLeft = element.offsetLeft;
+    let actualTop = element.offsetTop;
+    let current = element.offsetParent;
+    while (current !== null) {
+      actualLeft += current.offsetLeft;
+      actualTop += current.offsetTop;
+      current = current.offsetParent;
+    }
+    const { scrollTop, scrollLeft } = document.body;
+    return {
+      screenLeft: actualLeft - scrollLeft,
+      screenTop: actualTop - scrollTop,
+    };
+  }
+
+  addCartAnim() {
+    const iconNode = findDOMNode(this.refs.icon);
+    const { screenLeft, screenTop } = this.getScreenDist(iconNode);
+    const iconCopy = iconNode.cloneNode(true);
+    iconCopy.style.cssText += `
+      top: ${iconNode.offsetTop}px;
+      left: ${iconNode.offsetLeft}px;
+      transition: transform 0.25s ease-in;
+      position: absolute;
+      z-index: 1000;
+    `;
+    iconCopy.getElementsByTagName('path')[0].style.fill = '#008ed6';
+    document.body.appendChild(iconCopy);
+    setTimeout(() => {
+      iconCopy.style.transform = `translate(${917 - screenLeft}px, ${10 - screenTop}px)`;
+    }, 0);
+    setTimeout(() => {
+      iconCopy.remove();
+    }, 400);
+  }
+
+  removeCartAnim() {
+    const iconNode = findDOMNode(this.refs.icon);
+    const { scrollTop, scrollLeft } = document.body;
+    const iconCopy = iconNode.cloneNode(true);
+    iconCopy.style.cssText += `
+      top: ${scrollTop + 20}px;
+      left: ${scrollLeft + 915}px;
+      transition: transform 0.25s ease-in;
+      position: absolute;
+      z-index: 1000;
+    `;
+    document.body.appendChild(iconCopy);
+    setTimeout(() => {
+      iconCopy.style.transform = 'translate(-100px, -100px)';
+    }, 0);
+    setTimeout(() => {
+      iconCopy.remove();
+    }, 400);
   }
 
   @autobind
@@ -68,8 +126,10 @@ class IconButton extends Component {
     return () => {
       if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
         this.props.deleteIconInLocalStorage(id);
+        this.removeCartAnim();
       } else {
         this.props.addIconToLocalStorage(id);
+        this.addCartAnim();
       }
     };
   }
@@ -155,7 +215,11 @@ class IconButton extends Component {
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className={"info"}>
           <div className={"icon"} onClick={this.selectIcon(icon.id)}>
-            <Icon size={this.props.iconSize} fill={fill} d={icon.path} />
+            <Icon
+              size={this.props.iconSize}
+              fill={fill} d={icon.path}
+              ref="icon"
+            />
           </div>
           <div className={"name"} title={icon.name}>{icon.name}</div>
           <div className={"code"}>{`&#x${icon.code.toString(16)};`}</div>
