@@ -1,4 +1,5 @@
 import axios from 'axios';
+import invariant from 'invariant';
 import { User, Repo } from '../../model';
 
 // suggest 获取用户名称
@@ -86,4 +87,27 @@ export function* validateAuth(next) {
   this.state.respond = '校验成功';
   yield next;
   return;
+}
+
+// ========== 超管添加与删除  ========== //
+
+export function* listAdmin(next) {
+  this.state.respond = yield User.findAll({ where: { actor: 2 } });
+  yield next;
+}
+
+export function* addAdmin(next) {
+  const { userId } = this.param;
+  yield User.update({ actor: 2 }, { where: { id: userId } });
+  this.state.respond = yield User.findAll({ where: { actor: 2 } });
+  yield next;
+}
+
+export function* delAdmin(next) {
+  const { userId } = this.param;
+  const count = yield User.count({ where: { actor: 2 } });
+  invariant(count > 1, '删除之后系统将没有超管，不可删除');
+  yield User.update({ actor: 0 }, { where: { id: userId } });
+  this.state.respond = yield User.findAll({ where: { actor: 2 } });
+  yield next;
 }

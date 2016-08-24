@@ -12,6 +12,7 @@ import {
   addProject,
   searchProjects,
 } from '../modules/project';
+import { listAdmin, addAdmin, delAdmin } from '../modules/user';
 import { getCurrentUser, isAdmin, pagination } from './middlewares';
 
 const admin = new Router();
@@ -30,5 +31,9 @@ admin.get('/projects/all', pagination, getAdminProjects);
 admin.get('/projects/all/:name', pagination, searchProjects);
 admin.patch('/projects/:projectId/peoject', appointProjectOwner);
 admin.post('/projects', addProject);
+
+admin.get('/list', listAdmin);
+admin.post('/:userId', addAdmin);
+admin.delete('/:userId', delAdmin);
 
 export default admin;

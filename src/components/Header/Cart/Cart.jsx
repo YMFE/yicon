@@ -1,5 +1,6 @@
 import './Cart.scss';
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { push } from 'react-router-redux';
@@ -70,6 +71,18 @@ class Cart extends Component {
 
   componentDidMount() {
     this.props.getIconsInLocalStorage();
+    this.clickOutsideHandler = document.addEventListener('click', this.onDocumentClick);
+  }
+
+  componentWillUpdate(_, nextState) {
+    if (this.state.isShow !== nextState.isShow) {
+      this.props.toggleCartListDisplay(nextState.isShow);
+    }
+  }
+
+  componentWillUnmount() {
+    this.clickOutsideHandler.remove();
+    this.clickOutsideHandler = null;
   }
 
   @autobind
@@ -112,8 +125,8 @@ class Cart extends Component {
     this.props.saveToNewProject(saveToProjectInput, iconsInCart)
       .then(data => {
         if (data && data.payload.res) {
-          const targetUrl = data.payload.data.id ?
-            `/projects/${data.payload.data.id}` :
+          const targetUrl = data.payload.data.projectId ?
+            `/projects/${data.payload.data.projectId}` :
             '/projects/';
           this.dumpIcon();
           this.changeCartSaveType('DEFAULT');
@@ -122,6 +135,25 @@ class Cart extends Component {
         }
       });
   }
+  @autobind
+  onDocumentClick(event) {
+    const target = event.target;
+    const cartNode = findDOMNode(this);
+    if (!this.contains(cartNode, target)) {
+      this.shiftCartList(null, false);
+    }
+  }
+  contains(root, n) {
+    let node = n;
+    while (node) {
+      if (node === root) {
+        return true;
+      }
+      node = node.parentNode;
+    }
+
+    return false;
+  }
   changeCartSaveType(saveType) {
     this.setState({
       saveType,
@@ -129,13 +161,18 @@ class Cart extends Component {
   }
   @autobind
   shiftCartList(e, isOpen) {
-    let isShow;
     if (isOpen !== undefined) {
-      isShow = isOpen;
+      this.setState({
+        isShow: isOpen,
+      });
     } else {
-      isShow = e.type === 'mouseenter';
+      e.nativeEvent.stopImmediatePropagation();
+      if (!this.contains(findDOMNode(this.refs.carBox), e.target)) {
+        this.setState({
+          isShow: !this.state.isShow,
+        });
+      }
     }
-    this.props.toggleCartListDisplay(isShow);
   }
   @autobind
   removeFromCart(e) {
@@ -171,6 +208,12 @@ class Cart extends Component {
     const { projectList } = this.props;
     const { saveType, projectListShow } = this.state;
     // const { projectListShow } = this.state;
+
+    // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
+    let status = 1;
+    if (this.props.userInfo.login) {
+      status = 2;
+    }
 
     switch (saveType) {
       case 'SAVE_TO_PROJECT':
@@ -247,36 +290,38 @@ class Cart extends Component {
               <span onClick={this.dumpIcon}>清空</span>
             </div>
             <div className="btn-download">
-              <div className="save_selection">
-                <a className="ibtn">
-                  <span>
-                    保存为项目
-                    <i className="iconfont">&#xf032;</i>
-                  </span>
-                </a>
-
-                <div className="save_selection_btns">
-                  <a
-                    className="ibtn"
-                    onClick={this.onChangeCartSaveType}
-                    data-type="SAVE_TO_NEW_PROJECT"
-                  >
+              {status >= 2 &&
+                <div className="save_selection">
+                  <a className="ibtn">
                     <span>
                       保存为项目
                       <i className="iconfont">&#xf032;</i>
                     </span>
                   </a>
-                  <div className="save-history">
+
+                  <div className="save_selection_btns">
                     <a
                       className="ibtn"
-                      data-type="SAVE_TO_PROJECT"
                       onClick={this.onChangeCartSaveType}
+                      data-type="SAVE_TO_NEW_PROJECT"
                     >
-                      <span>保存到已有项目</span>
+                      <span>
+                        保存为项目
+                        <i className="iconfont">&#xf032;</i>
+                      </span>
                     </a>
+                    <div className="save-history">
+                      <a
+                        className="ibtn"
+                        data-type="SAVE_TO_PROJECT"
+                        onClick={this.onChangeCartSaveType}
+                      >
+                        <span>保存到已有项目</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
+              }
               <a
                 className="ibtn ibtn-download"
                 onClick={this.download}
@@ -299,8 +344,7 @@ class Cart extends Component {
     return (
       <li
         className="lists global-header-cart"
-        onMouseEnter={this.shiftCartList}
-        onMouseLeave={this.shiftCartList}
+        onClick={this.shiftCartList}
       >
 
         <span className="nav-car" href="#">
@@ -312,7 +356,7 @@ class Cart extends Component {
           }
         </span>
 
-        <div className="user-car" id="J_user_car" style={style}>
+        <div className="user-car" id="J_user_car" ref="carBox" style={style}>
           <span className="arrow"></span>
 
           {iconsInCart.length > 0 ?
@@ -334,7 +378,7 @@ class Cart extends Component {
               }
               </ul>
             </div> :
-            <p className="car_info">您的暂存架为空，请添加图标。</p>
+            <p className="car_info">您的小车为空，请添加图标。</p>
           }
           {
             iconsInCart.length > 0 ?

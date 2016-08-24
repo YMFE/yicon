@@ -117,9 +117,12 @@ export default class Repository extends Component {
 
   @autobind
   dialogUpdateShow(isShow) {
+    const { params: { id } } = this.props;
+    const { currentPage } = this.props.currRepository;
     this.setState({
       isShowDownloadDialog: isShow,
     });
+    this.props.fetchRepository(id, currentPage);
   }
 
   @autobind

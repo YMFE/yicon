@@ -13,7 +13,7 @@ export default seq.define('logs', {
     type: Seq.INTEGER,
   },
   operation: {
-    type: Seq.STRING(1000),
+    type: Seq.STRING(3000),
     allowNull: false,
   },
 }, {

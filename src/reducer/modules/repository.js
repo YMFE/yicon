@@ -7,6 +7,8 @@ import {
   FETCH_TINY_REPOSITORY,
 } from '../../constants/actionTypes';
 
+const defaultSize = 32;
+
 const initialState = {
   allReposotoryList: [],
   homeRepository: [],
@@ -17,7 +19,7 @@ const initialState = {
     user: { name: '' },
     id: 0,
   },
-  iconSize: 64,
+  iconSize: defaultSize,
 };
 
 export default (state = initialState, action) => {
@@ -61,7 +63,7 @@ export default (state = initialState, action) => {
     case RESET_ICON_SIZE: {
       return {
         ...state,
-        iconSize: 64,
+        iconSize: defaultSize,
       };
     }
     default:
