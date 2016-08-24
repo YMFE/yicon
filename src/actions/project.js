@@ -132,16 +132,20 @@ export function generateVersion(project) {
   };
 }
 
+function delProject(project) {
+  return {
+    type: DELETE_PROJECT,
+    payload: fetch.delete(`/user/projects/${project.id}`),
+  };
+}
+
 export function deleteProject(project) {
   return (dispatch) => {
-    dispatch({
-      type: DELETE_PROJECT,
-      payload: fetch.delete(`/user/projects/${project.id}`).then((data) => {
-        if (data.res) {
-          dispatch(getUsersProjectList());
-          dispatch(replace('/projects/'));
-        }
-      }),
+    dispatch(delProject(project)).then(data => {
+      if (data.payload.res) {
+        dispatch(getUsersProjectList());
+        dispatch(replace('/projects/'));
+      }
     });
   };
 }

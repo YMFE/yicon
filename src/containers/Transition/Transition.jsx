@@ -74,7 +74,7 @@ export default class Transition extends Component {
     const noLoginHTML = (
       <div>
         <div className="no-auth-tips">
-          这是一个需要登录的页面，请你手动点一下登录进行登录
+          该页面需要登录
         </div>
         <div className="no-auth-tools">
           <button
@@ -115,7 +115,6 @@ export default class Transition extends Component {
     const auditIconHTML = (
       <div>
         <div className="no-auth-tips">
-          <p>所有图标审核完成</p>
           <p>没有待审核图标</p>
           <p>{this.state.second} 秒之后跳转至首页</p>
         </div>
@@ -133,7 +132,6 @@ export default class Transition extends Component {
     const uploadIconHTML = (
       <div>
         <div className="no-auth-tips">
-          <p>所有图标上传完成</p>
           <p>没有待上传的图标</p>
           <p>{this.state.second} 秒之后跳转至图标上传页</p>
         </div>

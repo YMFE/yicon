@@ -10,6 +10,7 @@ class InfoItem extends Component {
 
   static propTypes = {
     tag: PropTypes.string,
+    logCreator: PropTypes.object,
     tit: PropTypes.string,
     showTitleHtml: PropTypes.bool,
     item: PropTypes.object,
@@ -22,6 +23,10 @@ class InfoItem extends Component {
     showDetail: PropTypes.bool,
     onShowDetail: PropTypes.func,
   }
+
+  static defaultProps = {
+    logCreator: {},
+  };
 
   getTitle() {
     const { item, showTitleHtml, tit } = this.props;
@@ -105,7 +110,7 @@ class InfoItem extends Component {
       new: this.props.isNew,
       [this.props.extraClass]: this.props.extraClass,
     });
-
+    const { name } = this.props.logCreator;
     return (
       <dl className={classList}>
         <dt className="description">
@@ -116,7 +121,7 @@ class InfoItem extends Component {
             timer(this.props.timeStr)
           }
           </p>
-          <p className="tag">{this.props.tag}</p>
+          <p className="tag">{name || this.props.tag}</p>
         </dt>
         <dd className="content">
           {this.getTitle()}

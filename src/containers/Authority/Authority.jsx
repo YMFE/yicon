@@ -6,7 +6,8 @@ import { SubTitle, Content, Menu, Main, Panel } from '../../components/';
 import SearchList from '../../components/SearchList/SearchList';
 import Pager from '../../components/common/Pager';
 import Dialog from '../../components/common/Dialog/Index';
-// import Message from '../../components/common/Message/Message';
+import Message from '../../components/common/Message/Message';
+import confirm from '../../components/common/Dialog/Confirm.jsx';
 
 import {
   fetchAllRepo,
@@ -17,6 +18,9 @@ import {
   createProject,
   searchRepos,
   searchProjects,
+  fetchSuperManager,
+  createSuperManager,
+  deleteSuperManager,
 } from '../../actions/admin';
 import { fetchMemberSuggestList } from '../../actions/project';
 import { fetchHomeData, fetchTinyRepository } from '../../actions/repository';
@@ -27,6 +31,7 @@ import './Authority.scss';
   state => ({
     repo: state.user.admin.repo,
     project: state.user.admin.project,
+    manager: state.user.admin.manager,
     page: state.user.admin.page,
     updateResult: state.user.admin.updateResult,
     suggestList: state.project.memberSuggestList,
@@ -42,10 +47,37 @@ import './Authority.scss';
     fetchMemberSuggestList,
     fetchHomeData,
     fetchTinyRepository,
+    fetchSuperManager,
+    createSuperManager,
+    deleteSuperManager,
   }
 )
 
 export default class Authority extends Component {
+
+  static propTypes = {
+    params: PropTypes.object,
+    fetchMemberSuggestList: PropTypes.func,
+    fetchAllRepo: PropTypes.func,
+    fetchAllProject: PropTypes.func,
+    updateRepoOwner: PropTypes.func,
+    updateProjectOwner: PropTypes.func,
+    createRepo: PropTypes.func,
+    createProject: PropTypes.func,
+    searchRepos: PropTypes.func,
+    searchProjects: PropTypes.func,
+    fetchHomeData: PropTypes.func,
+    fetchTinyRepository: PropTypes.func,
+    fetchSuperManager: PropTypes.func,
+    createSuperManager: PropTypes.func,
+    deleteSuperManager: PropTypes.func,
+    suggestList: PropTypes.array,
+    repo: PropTypes.array,
+    project: PropTypes.array,
+    manager: PropTypes.array,
+    page: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -59,6 +91,7 @@ export default class Authority extends Component {
       alias: '',
       admin: '',
       owner: '',
+      manager: '',
       currentPage: 1,
     };
   }
@@ -82,9 +115,11 @@ export default class Authority extends Component {
         alias: '',
         admin: '',
         owner: '',
+        manager: '',
         currentPage: 1,
       });
       this.fetchByType(nextProps.params.type, 1);
+      this.superSearchList.clearInput();
     }
   }
 
@@ -97,6 +132,9 @@ export default class Authority extends Component {
     }
     if (type === 'project') {
       this.props.fetchAllProject(page, 15);
+    }
+    if (type === 'manager') {
+      this.props.fetchSuperManager();
     }
   }
 
@@ -130,6 +168,13 @@ export default class Authority extends Component {
       this.props.createProject(param).then(() => {
         this.fetchByType(type, this.state.currentPage);
       });
+    }
+    if (type === 'manager') {
+      if (!this.state.manager) {
+        Message.error('域名称缺少、不完整或错误，请检查');
+        return;
+      }
+      this.props.createSuperManager(this.state.manager);
     }
   }
 
@@ -254,6 +299,11 @@ export default class Authority extends Component {
             owner: data[0].id,
           });
         }
+        if (type === 'manager') {
+          this.setState({
+            manager: data[0].id,
+          });
+        }
       }
     });
   }
@@ -319,8 +369,55 @@ export default class Authority extends Component {
   }
   /* end */
 
+  /* 超管增删管理
+  * start
+  */
+  @autobind
+  addSuperManager() {
+    const { type } = this.props.params;
+    this.createByType(type);
+    this.superSearchList.clearInput();
+  }
+
+  @autobind
+  removeSuperManager(e) {
+    const id = parseInt(e.currentTarget.dataset.id, 10);
+    confirm({
+      content: '是否确定删除超管，请慎重操作！',
+      title: '删除超管',
+      onOk: () => {
+        if (this.props.manager.length === 1) {
+          Message.error('无法删除最后一位超管');
+          return;
+        }
+        this.props.deleteSuperManager(id);
+      },
+      onCancel: () => {},
+    });
+  }
+
+  @autobind
+  renderManagerItem(item, index) {
+    return this.props.manager.length === 1 ? (
+      <li data-id={item.id} key={index}>{item.name}</li>
+    ) : (
+      <li
+        data-id={item.id}
+        key={index}
+        onClick={this.removeSuperManager}
+      >
+        {item.name}
+        {item.name !== name &&
+          <i className="iconfont pointer" title="删除超管">&#xf077;</i>
+        }
+      </li>
+    );
+  }
+
+  /* end */
+
   render() {
-    const type = this.props.params && this.props.params.type;
+    const { type } = this.props.params;
     let btnName = '';
     let data = [];
     let isShow = false;
@@ -346,9 +443,15 @@ export default class Authority extends Component {
               <li className={type === 'project' ? 'selected' : ''}>
                 <Link to="/admin/authority/project">项目权限设置</Link>
               </li>
+              <li className={type === 'manager' ? 'selected' : ''}>
+                <Link to="/admin/authority/manager">超管增删管理</Link>
+              </li>
             </Menu>
             <Main extraClass="yicon-myicon-main">
-              <div className="myicon-prj-right">
+              <div
+                className="myicon-prj-right"
+                style={{ display: `${type !== 'manager' ? 'block' : 'none'}` }}
+              >
                 <div className="yicon-authority-info">
                   <div className="tools">
                     <button
@@ -390,6 +493,51 @@ export default class Authority extends Component {
                       totalPage={Math.ceil(this.props.page.totalCount / this.props.page.pageSize)}
                     />
                   }
+                </div>
+              </div>
+              <div
+                className="myicon-prj-right super-manager"
+                style={{ display: `${type === 'manager' ? 'block' : 'none'}` }}
+              >
+                <div className="myicon-prj-info">
+                  <div className="prj-details">
+                    <div className="title">
+                      <h3>超管增删管理</h3>
+                    </div>
+                  </div>
+                  <div className="add-manager">
+                    <ul className="clearfix">
+                      <SearchList
+                        showSearchList={this.props.suggestList.length > 0}
+                        placeholder="请输入需要添加超管域账号"
+                        onChange={this.userChange}
+                        suggestList={this.props.suggestList}
+                        ref={(node) => {
+                          if (node) this.superSearchList = node;
+                        }}
+                      >
+                        <div className="field-btn">
+                          <button
+                            type="button"
+                            className="add-collaborators"
+                            onClick={this.addSuperManager}
+                          >
+                            添加新超管
+                          </button>
+                        </div>
+                      </SearchList>
+                    </ul>
+                  </div>
+                </div>
+                <div className="clearfix collaborators">
+                  <p className="collaborators-title">超管列表</p>
+                  <ul className="collaborators-list">
+                    {
+                      this.props.manager.length > 0 && this.props.manager.map((item, index) =>
+                        this.renderManagerItem(item, index)
+                      )
+                    }
+                  </ul>
                 </div>
               </div>
             </Main>
@@ -464,22 +612,3 @@ export default class Authority extends Component {
     );
   }
 }
-
-Authority.propTypes = {
-  params: PropTypes.object,
-  fetchMemberSuggestList: PropTypes.func,
-  fetchAllRepo: PropTypes.func,
-  fetchAllProject: PropTypes.func,
-  updateRepoOwner: PropTypes.func,
-  updateProjectOwner: PropTypes.func,
-  createRepo: PropTypes.func,
-  createProject: PropTypes.func,
-  searchRepos: PropTypes.func,
-  searchProjects: PropTypes.func,
-  fetchHomeData: PropTypes.func,
-  fetchTinyRepository: PropTypes.func,
-  suggestList: PropTypes.array,
-  repo: PropTypes.array,
-  project: PropTypes.array,
-  page: PropTypes.object,
-};

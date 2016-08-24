@@ -7,9 +7,12 @@ import {
   CREATE_PROJECT,
   FETCH_SEARCH_REPOS,
   FETCH_SEARCH_PROJECTS,
+  FETCH_SUPER_MANAGER,
+  CREATE_SUPER_MANAGER,
+  DELETE_SUPER_MANAGER,
 } from '../../constants/actionTypes';
 
-const initialState = { repo: [], project: [], page: {}, updateResult: false };
+const initialState = { repo: [], project: [], page: {}, manager: [], updateResult: false };
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -61,6 +64,24 @@ export default (state = initialState, action) => {
         ...state,
         project: action.payload.data,
         page: action.payload.page,
+      };
+    }
+    case FETCH_SUPER_MANAGER: {
+      return {
+        ...state,
+        manager: action.payload.data,
+      };
+    }
+    case CREATE_SUPER_MANAGER: {
+      return {
+        ...state,
+        manager: action.payload.data,
+      };
+    }
+    case DELETE_SUPER_MANAGER: {
+      return {
+        ...state,
+        manager: action.payload.data,
       };
     }
     default:
