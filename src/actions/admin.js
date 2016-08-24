@@ -8,6 +8,9 @@ import {
   CREATE_PROJECT,
   FETCH_SEARCH_REPOS,
   FETCH_SEARCH_PROJECTS,
+  FETCH_SUPER_MANAGER,
+  CREATE_SUPER_MANAGER,
+  DELETE_SUPER_MANAGER,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -66,5 +69,26 @@ export function searchProjects(name, pageNum, pageSize) {
     type: FETCH_SEARCH_PROJECTS,
     payload:
       fetch.get(`/admin/projects/all/${name}/?currentPage=${pageNum}&pageSize=${pageSize}`),
+  };
+}
+
+export function fetchSuperManager() {
+  return {
+    type: FETCH_SUPER_MANAGER,
+    payload: fetch.get('/admin/list'),
+  };
+}
+
+export function createSuperManager(id) {
+  return {
+    type: CREATE_SUPER_MANAGER,
+    payload: fetch.post(`/admin/${id}`),
+  };
+}
+
+export function deleteSuperManager(id) {
+  return {
+    type: DELETE_SUPER_MANAGER,
+    payload: fetch.delete(`/admin/${id}`),
   };
 }

@@ -31,6 +31,12 @@ export default class PublicProject extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.id !== nextProps.params.id && this.props.user.login) {
+      this.props.getUsersProjectList();
+    }
+  }
+
   @autobind
   hideLoading() {
     this.setState({ isShowLoading: false });

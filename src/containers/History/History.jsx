@@ -111,6 +111,7 @@ export default class History extends Component {
                   <Select
                     className="select-component"
                     defaultValue={versions[0]}
+                    value={versions}
                     style={{ width: 50, textIndent: 0, outline: 0 }}
                     onSelect={this.onSelect}
                   >

@@ -104,6 +104,7 @@ export default class Notification extends Component {
               key={index}
               tag={scope[item.scope]}
               timeStr={item.createdAt}
+              logCreator={item.logCreator}
               showTitleHtml
               item={item}
               isNew={item.userLog.unread}
