@@ -64,7 +64,8 @@ class IconButton extends Component {
       z-index: 1000;
     `;
     iconCopy.getElementsByTagName('path')[0].style.fill = '#008ed6';
-    const cartLeft = (window.innerWidth - 1100) / 2 + 766.5;
+    const winWidth = window.innerWidth > 1100 ? window.innerWidth : 1100;
+    const cartLeft = (winWidth - 1100) / 2 + 766.5;
     document.body.appendChild(iconCopy);
     setTimeout(() => {
       iconCopy.style.cssText += `
@@ -81,7 +82,8 @@ class IconButton extends Component {
     const iconNode = findDOMNode(this.refs.icon);
     const { scrollTop, scrollLeft } = document.body;
     const iconCopy = iconNode.cloneNode(true);
-    const cartLeft = (window.innerWidth - 1100) / 2 + 766.5;
+    const winWidth = window.innerWidth > 1100 ? window.innerWidth : 1100;
+    const cartLeft = (winWidth - 1100) / 2 + 766.5;
     iconCopy.style.cssText += `
       top: ${scrollTop + 15}px;
       left: ${scrollLeft + cartLeft}px;
