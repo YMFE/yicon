@@ -100,7 +100,7 @@ class IconButton extends Component {
     }, 0);
     setTimeout(() => {
       iconCopy.remove();
-    }, 350);
+    }, 500);
   }
 
   @autobind
