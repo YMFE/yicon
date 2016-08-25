@@ -12,11 +12,13 @@ import { autobind } from 'core-decorators';
 
 const defaultProps = {
   title: '',
+  doneArr: [],
 };
 
 const propTypes = {
   title: PropTypes.string,
   icons: PropTypes.array,
+  doneArr: PropTypes.array,
   index: PropTypes.number,
   onClick: PropTypes.func,
   onDelete: PropTypes.func,
@@ -94,7 +96,7 @@ class IconsSetting extends Component {
   }
 
   render() {
-    const { title, icons, index, isAudit } = this.props;
+    const { title, icons, index, isAudit, doneArr } = this.props;
     const iconDetail = icons[index];
     if (!iconDetail) {
       return null;
@@ -109,6 +111,7 @@ class IconsSetting extends Component {
         <h2 className="upload-title">{title}</h2>
         <Slick
           itemData={icons}
+          doneArr={doneArr}
           defaultCurrent={index}
           onClick={this.select}
           onDelete={this.delete}

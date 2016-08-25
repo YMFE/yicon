@@ -147,6 +147,7 @@ export default class Workbench extends Component {
           <IconsSetting
             title="上传图标设置"
             icons={icons}
+            doneArr={this.calcDone()}
             index={index}
             onClick={this.select}
             onDelete={this.delete}

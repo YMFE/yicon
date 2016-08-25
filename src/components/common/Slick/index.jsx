@@ -7,6 +7,7 @@ export default class Slick extends Component {
   static defaultProps = {
     defaultTranslateX: 0,
     step: 84 * 12,
+    doneArr: [],
   }
 
   static propTypes = {
@@ -19,6 +20,7 @@ export default class Slick extends Component {
     // iconItemListPos: PropTypes.object,
     step: PropTypes.number,
     itemData: PropTypes.array,
+    doneArr: PropTypes.array,
     noRemoveIcon: PropTypes.bool,
   }
 
@@ -116,14 +118,16 @@ export default class Slick extends Component {
   render() {
     const itemArr = [];
     // iconItemListPos
-    const { itemData, noRemoveIcon } = this.props;
+    const { itemData, noRemoveIcon, doneArr } = this.props;
     const scrollAreaWidth = 84 * itemData.length;
     const { currentItem, defaultTranslateX } = this.state;
     // const { itemData } = this.props;
     itemData.forEach((item, i) => {
+      const onClass = currentItem === i ? 'on' : '';
+      const doneClass = doneArr.indexOf(item) !== -1 ? 'done' : '';
       itemArr.push(<li
         key={`item_${i}`}
-        className={currentItem === i ? 'upload-icon-item on' : 'upload-icon-item'}
+        className={`upload-icon-item ${onClass} ${doneClass}`}
         onClick={(evt) => this.handleClick({ type: 'item', index: i }, evt)}
       >
         {noRemoveIcon ||
@@ -132,7 +136,12 @@ export default class Slick extends Component {
             onClick={(evt) => this.deleteSingleClick({ index: i }, evt)}
           >&#xf077;</i>
         }
-        <Icon className={'iconfont upload-icon'} d={item.path} size={60} />
+        <Icon
+          className={'iconfont upload-icon'}
+          d={item.path}
+          size={60}
+          fill={currentItem === i ? '#008ed6' : '#555f6e'}
+        />
         <div className={`pass-tag ${item.passed ? '' : 'hide'}`}>通过</div>
         <div className={`no-pass-tag ${item.passed === false ? '' : 'hide'}`}>不通过</div>
       </li>);
