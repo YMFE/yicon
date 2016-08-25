@@ -45,6 +45,10 @@ export default class History extends Component {
     hideLoading: () => {},
   }
 
+  state = {
+    version: '',
+  };
+
   componentWillMount() {
     const id = this.props.projectId || this.props.params.id;
     if (!this.props.isHidden) this.props.fetchAllProjects();
@@ -53,6 +57,7 @@ export default class History extends Component {
       const length = version.length;
       this.props.hideLoading();
       this.props.fetchHistoryProject(id, version[length - 1]);
+      this.setState({ version: version[length - 1] });
     }).catch(() => {
       this.props.hideLoading();
     });
@@ -62,6 +67,7 @@ export default class History extends Component {
   onSelect(value) {
     const id = this.props.projectId || this.props.params.id;
     this.props.fetchHistoryProject(id, value);
+    this.setState({ version: value });
   }
 
   render() {
@@ -110,8 +116,7 @@ export default class History extends Component {
                   <div className="version">版本：</div>
                   <Select
                     className="select-component"
-                    defaultValue={versions[0]}
-                    value={versions}
+                    value={this.state.version}
                     style={{ width: 50, textIndent: 0, outline: 0 }}
                     onSelect={this.onSelect}
                   >
