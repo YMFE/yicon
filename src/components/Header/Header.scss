@@ -124,12 +124,13 @@ $iconColor:#555f6e;
         box-shadow: 0 0 5px #e2e4e7;
         li {
           line-height: 23px;
-          padding: 0 10px;
         }
         li:hover {
           background-color: #eff0f4;
         }
         li a {
+          display: block;
+          padding: 0 10px;
           color: $fontTitleColor;
         }
         li:hover a {

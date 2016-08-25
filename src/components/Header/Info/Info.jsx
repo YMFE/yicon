@@ -42,7 +42,7 @@ class Info extends Component {
       <li className="lists">
         <Link to="/user/notifications" className="nav-message">
           <i className="iconfont">&#xf50d;</i>
-          {countNum}
+          {countNum < 100 ? countNum : '99+'}
         </Link>
       </li>
     );
