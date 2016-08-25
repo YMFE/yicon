@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
-import { ICON_NAME } from '../../constants/validate';
+import { ICON_NAME, COLOR } from '../../constants/validate';
 import Input from '../common/Input/Index.jsx';
 import SetTag from '../common/SetTag/SetTag.jsx';
 import Select from '../common/Select';
@@ -75,10 +75,10 @@ class DownloadDialog extends Component {
   }
 
   @autobind
-  changeIconColor(color) {
-    return () => {
+  changeIconColor(color, isError) {
+    if (!isError) {
       this.props.editIconStyle({ color });
-    };
+    }
   }
 
   @autobind
@@ -173,14 +173,20 @@ class DownloadDialog extends Component {
                   <li
                     className="color-item"
                     style={{ background: color }}
-                    onClick={this.changeIconColor(color)}
+                    onClick={() => this.changeIconColor(color)}
                     key={index}
                   ></li>
                 ))
               }
             </ul>
             <div className="color-select-box">
-              <span>{iconDetail.iconStyle.color}</span>
+              <Input
+                defaultValue={iconDetail.iconStyle.color}
+                regExp={COLOR.reg}
+                onChange={this.changeIconColor}
+                strict
+                ref="colorInput"
+              />
               <div className="color-show" style={{ background: iconDetail.iconStyle.color }}></div>
             </div>
             <Select

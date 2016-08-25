@@ -117,12 +117,13 @@
         height: 40px;
         border: 1px solid #dfdfdf;
         border-top: 0;
+        margin-left: 0;
         .icon-tag {
           float: left;
           padding: 3px;
           margin: 8px 7px 0 0;
           font-size: 12px;
-          border-radius: 6px;
+          border-radius: 4px;
           background: #f1f3f6;
           color: #787979;
           .delete {
@@ -150,15 +151,30 @@
         width: 96px;
         height: 36px;
         line-height: 36px;
-        text-align: center;
         border: 1px solid #dfdfdf;
         font-size: 14px;
         color: #616161;
         cursor: pointer;
+        .input-wrap {
+          margin-left: 0;
+          display: inline-block;
+          vertical-align: top;
+          width: 63px;
+          height: 35px;
+          border: 0;
+          .input {
+            margin-left: 5px;
+            width: 57px;
+            line-height: normal;
+          }
+          .error-info {
+            display: none;
+          }
+        }
         .color-show {
           display: inline-block;
           vertical-align: middle;
-          margin-left: 7px;
+          margin-left: 9px;
           width: 18px;
           height: 18px;
         }

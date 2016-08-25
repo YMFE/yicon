@@ -66,15 +66,6 @@ export default class Workbench extends Component {
 
   @autobind
   delete(icons, index, id) {
-    // const { icons } = this.props;
-    // const selcIndex = this.props.index;
-    // const id = icons[index].id;
-    // icons.splice(index, 1);
-    // this.props.deleteIcon(id, icons);
-    // if (selcIndex >= index) {
-    //   const newIndex = selcIndex - 1 < 0 ? 0 : selcIndex - 1;
-    //   this.props.selectEdit(newIndex);
-    // }
     this.props.selectEdit(index);
     this.props.deleteIcon(id, icons);
     if (!icons.length) {
@@ -84,8 +75,6 @@ export default class Workbench extends Component {
 
   @autobind
   updateIcons(icons) {
-    // const { index, icons } = this.props;
-    // icons[index].name = val;
     this.props.updateWorkbench(icons);
   }
 

@@ -58,6 +58,7 @@ export default class Repository extends Component {
     this.fetchRepositoryByPage(1);
     this.props.resetIconSize();
     window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,14 +73,12 @@ export default class Repository extends Component {
   }
 
   @autobind
-  handleScroll(event) {
-    const scrollTop = event.srcElement.body.scrollTop;
+  handleScroll() {
+    const scrollTop = document.body.scrollTop;
     const element = findDOMNode(this.refs.repo);
     if (scrollTop >= 64) {
-      // this.refs.repo.className = 'repository fixed';
       element.setAttribute('class', 'repository fixed');
     } else {
-      // this.refs.repo.className = 'repository';
       element.setAttribute('class', 'repository');
     }
   }
