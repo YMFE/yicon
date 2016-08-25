@@ -1,0 +1,26 @@
+.set-tag {
+  display: inline-block;
+}
+.set-tag-icon {
+  color: #6f6f6f;
+}
+.icon-tag-list {
+  padding: 0 10px;
+  width: 318px;
+  height: 96px;
+  border: 1px solid #dfdfdf;
+  border-top: 0;
+  margin-left: 5px;
+  .icon-tag {
+    float: left;
+    padding: 6px;
+    margin: 12px 8px 0 0;
+    font-size: 12px;
+    border-radius: 4px;
+    background: #f1f3f6;
+    color: #787979;
+    .delete {
+      cursor: pointer;
+    }
+  }
+}

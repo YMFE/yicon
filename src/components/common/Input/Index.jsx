@@ -8,6 +8,7 @@ const defaultProps = {
   defaultValue: '',
   extraClass: '',
   error: false,
+  strict: false,
   onChange: () => {},
   blur: () => {},
   keyDown: () => {},
@@ -17,6 +18,7 @@ const propTypes = {
   regExp: PropTypes.any,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
+  strict: PropTypes.bool,
   errMsg: PropTypes.string,
   defaultValue: PropTypes.string,
   onChange: PropTypes.func,
@@ -50,26 +52,34 @@ export default class Input extends Component {
     return this.state.value;
   }
 
+  @autobind
   isError() {
     return this.state.error;
   }
 
   validate(val) {
     let regExp;
+    let error;
     if (this.props.regExp instanceof RegExp) {
       regExp = this.props.regExp;
     } else {
       regExp = new RegExp(this.props.regExp);
     }
-    this.setState({
-      value: val,
-    });
-    this.props.onChange(val);
     if (!regExp.test(val)) {
-      this.setState({ error: true });
-      return;
+      error = true;
+    } else {
+      error = false;
     }
-    this.setState({ error: false });
+    if (!this.props.strict) {
+      this.setState({
+        error,
+        value: val,
+      }, this.props.onChange(val, error));
+    } else {
+      if (!error) {
+        this.setState({ value: val }, this.props.onChange(val, error));
+      }
+    }
   }
 
   @autobind
