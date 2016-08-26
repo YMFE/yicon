@@ -66,15 +66,18 @@ export default class Workbench extends Component {
   componentDidMount() {
     const { router, route } = this.props;
     router.setRouteLeaveHook(route, this.routerWillLeave);
+    window.onbeforeunload = () => '';
+  }
+
+  componentWillUnmount() {
+    window.onbeforeunload = () => {};
   }
 
   @autobind
-  routerWillLeave() {
-    const { length } = this.calcDone();
-    const rest = this.props.icons.length - length;
-    if (rest > 0) {
+  routerWillLeave(nextLocation) {
+    if (!nextLocation.pathname.includes('transition')) {
       /* eslint-disable no-alert */
-      return confirm('您设置的图标还未提交，是否离开本页面？');
+      return confirm('还未提交，您修改的信息将不会被保存，是否离开本页面？');
     }
     return true;
   }
