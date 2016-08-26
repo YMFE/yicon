@@ -35,7 +35,7 @@ class Info extends Component {
   render() {
     const { infoCount } = this.props;
     const countNum = infoCount
-      ? <i className="nav-message-count">{infoCount}</i>
+      ? <i className="nav-message-count">{infoCount < 100 ? infoCount : '99+'}</i>
       : null;
 
     return (

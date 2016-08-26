@@ -28,6 +28,8 @@ export default class VersionComparison extends Component {
       highVersion: '0.0.0',
       lowVersion: '0.0.0',
       version: '0.0.0',
+      leftVersion: '',
+      rightVersion: '',
     };
   }
 
@@ -41,6 +43,8 @@ export default class VersionComparison extends Component {
       this.setState({
         highVersion: version[version.length - 1],
         lowVersion: version[version.length - 1],
+        leftVersion: version[version.length - 1],
+        rightVersion: version[version.length - 1],
       });
     });
   }
@@ -60,6 +64,7 @@ export default class VersionComparison extends Component {
   selectHighVersion(v) {
     this.setState({
       highVersion: v,
+      leftVersion: v,
     });
   }
 
@@ -67,6 +72,7 @@ export default class VersionComparison extends Component {
   selectLowVersion(v) {
     this.setState({
       lowVersion: v,
+      rightVersion: v,
     });
   }
 
@@ -128,8 +134,7 @@ export default class VersionComparison extends Component {
                 <div className="tools">
                   <Select
                     className="select-component"
-                    defaultValue={versions[0]}
-                    value={versions}
+                    value={this.state.leftVersion}
                     style={{ width: 50, textIndent: 0, outline: 0 }}
                     onSelect={this.selectHighVersion}
                   >
@@ -148,8 +153,7 @@ export default class VersionComparison extends Component {
                   <i className="vs" style={{ float: 'left' }}>VS</i>
                   <Select
                     className="select-component"
-                    defaultValue={versions[0]}
-                    value={versions}
+                    value={this.state.rightVersion}
                     style={{ width: 50, textIndent: 0 }}
                     onSelect={this.selectLowVersion}
                   >

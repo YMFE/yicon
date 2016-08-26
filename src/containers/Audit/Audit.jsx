@@ -1,6 +1,7 @@
 import './Audit.scss';
 import React, { Component, PropTypes } from 'react';
 import { push } from 'react-router-redux';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';import {
   fetchAuditIcons,
   updateAuditIcons,
@@ -34,6 +35,7 @@ const propTypes = {
     push,
   }
 )
+@withRouter
 export default class Audit extends Component {
   static propTypes = {
     index: PropTypes.number,
@@ -42,6 +44,8 @@ export default class Audit extends Component {
     updateAuditIcons: PropTypes.func,
     auditIcons: PropTypes.func,
     selectIcon: PropTypes.func,
+    router: PropTypes.object,
+    route: PropTypes.object,
   }
 
   defaultProps = {}
@@ -55,6 +59,25 @@ export default class Audit extends Component {
         this.props.push('transition/audit-icon');
       }
     });
+  }
+
+  componentDidMount() {
+    const { router, route } = this.props;
+    router.setRouteLeaveHook(route, this.routerWillLeave);
+    window.onbeforeunload = () => '';
+  }
+
+  componentWillUnmount() {
+    window.onbeforeunload = () => {};
+  }
+
+  @autobind
+  routerWillLeave(nextLocation) {
+    if (!nextLocation.pathname.includes('transition')) {
+      /* eslint-disable no-alert */
+      return confirm('还未提交，您修改的信息将不会被保存，是否离开本页面？');
+    }
+    return true;
   }
 
   @autobind

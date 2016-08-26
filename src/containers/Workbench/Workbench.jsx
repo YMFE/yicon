@@ -1,6 +1,7 @@
 import './Workbench.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import {
   fetchWorkbench,
   uploadIcons,
@@ -16,20 +17,6 @@ import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx'
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 
-const defaultProps = {};
-const propTypes = {
-  index: PropTypes.number,
-  repoId: PropTypes.number,
-  icons: PropTypes.array,
-  allRepoList: PropTypes.array,
-  fetchWorkbench: PropTypes.func,
-  uploadIcons: PropTypes.func,
-  updateWorkbench: PropTypes.func,
-  deleteIcon: PropTypes.func,
-  selectEdit: PropTypes.func,
-  selectRepo: PropTypes.func,
-  push: PropTypes.func,
-};
 @connect(
   state => ({
     icons: state.workbench.icons,
@@ -47,7 +34,24 @@ const propTypes = {
     push,
   }
 )
+@withRouter
 export default class Workbench extends Component {
+  static propTypes = {
+    index: PropTypes.number,
+    repoId: PropTypes.number,
+    icons: PropTypes.array,
+    allRepoList: PropTypes.array,
+    fetchWorkbench: PropTypes.func,
+    uploadIcons: PropTypes.func,
+    updateWorkbench: PropTypes.func,
+    deleteIcon: PropTypes.func,
+    selectEdit: PropTypes.func,
+    selectRepo: PropTypes.func,
+    push: PropTypes.func,
+    router: PropTypes.object,
+    route: PropTypes.object,
+  }
+
   componentWillMount() {
     this.props.fetchWorkbench().then(() => {
       const { icons } = this.props;
@@ -57,6 +61,25 @@ export default class Workbench extends Component {
         this.props.push('transition/upload-icon');
       }
     });
+  }
+
+  componentDidMount() {
+    const { router, route } = this.props;
+    router.setRouteLeaveHook(route, this.routerWillLeave);
+    window.onbeforeunload = () => '';
+  }
+
+  componentWillUnmount() {
+    window.onbeforeunload = () => {};
+  }
+
+  @autobind
+  routerWillLeave(nextLocation) {
+    if (!nextLocation.pathname.includes('transition')) {
+      /* eslint-disable no-alert */
+      return confirm('还未提交，您修改的信息将不会被保存，是否离开本页面？');
+    }
+    return true;
   }
 
   @autobind
@@ -98,7 +121,7 @@ export default class Workbench extends Component {
 
   @autobind
   selectRepo(id) {
-    this.props.selectRepo(id);
+    this.props.selectRepo(+id);
   }
 
   @autobind
@@ -179,7 +202,12 @@ export default class Workbench extends Component {
                 >
                   {
                     allRepoList.map((repo) => (
-                      <Option value={repo.id} key={repo.id}>{repo.name}</Option>
+                      <Option
+                        value={`${repo.id}`}
+                        key={repo.id}
+                      >
+                        {repo.name}
+                      </Option>
                     ))
                   }
                 </Select>
@@ -196,5 +224,3 @@ export default class Workbench extends Component {
     );
   }
 }
-Workbench.defaultProps = defaultProps;
-Workbench.propTypes = propTypes;
