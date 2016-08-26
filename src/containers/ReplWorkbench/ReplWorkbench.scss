@@ -37,4 +37,15 @@
       color: #6f6f6f;
     }
   }
+  .repl-tip {
+    margin-top: -10px;
+    .repl-old {
+      display: inline-block;
+      margin-left: 132px;
+    }
+    .repl-new {
+      display: inline-block;
+      margin-left: 300px;
+    }
+  }
 }
