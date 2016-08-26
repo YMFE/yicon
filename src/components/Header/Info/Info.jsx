@@ -35,14 +35,14 @@ class Info extends Component {
   render() {
     const { infoCount } = this.props;
     const countNum = infoCount
-      ? <i className="nav-message-count">{infoCount}</i>
+      ? <i className="nav-message-count">{infoCount < 100 ? infoCount : '99+'}</i>
       : null;
 
     return (
       <li className="lists">
         <Link to="/user/notifications" className="nav-message">
           <i className="iconfont">&#xf50d;</i>
-          {countNum < 100 ? countNum : '99+'}
+          {countNum}
         </Link>
       </li>
     );
