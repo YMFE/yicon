@@ -155,6 +155,10 @@ export default class ReplWorkbench extends Component {
           onOk={this.submitReplaceIcon}
           onCancel={this.cancel}
         >
+          <div className="repl-tip">
+            <div className="repl-old">旧图标</div>
+            <div className="repl-new">新图标</div>
+          </div>
           <div className="clearfix" style={{ width: 647 }}>
             {currIcon.path && <IconBgGrid iconPath={currIcon.path} />}
             <div className="replace-icon"><i className="iconfont repl-icon">&#xf0f8;</i></div>
