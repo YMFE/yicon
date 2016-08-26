@@ -132,8 +132,10 @@ class IconButton extends Component {
     return false;
   }
 
+  @autobind
   selectIcon(id) {
-    return () => {
+    return (e) => {
+      if (e.target === this.refs.code) return;
       if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
         this.props.deleteIconInLocalStorage(id);
         this.removeCartAnim();
@@ -143,6 +145,12 @@ class IconButton extends Component {
       }
     };
   }
+
+  @autobind
+  preventSelect(e) {
+    e.nativeEvent.stopPropagation();
+  }
+
   @autobind
   deleteIcon() {
     const iconItem = {
@@ -223,16 +231,18 @@ class IconButton extends Component {
     });
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
-        <div className={"info"}>
-          <div className={"icon"} onClick={this.selectIcon(icon.id)}>
+        <div className="info" onClick={this.selectIcon(icon.id)}>
+          <div className="icon">
             <Icon
               size={this.props.iconSize}
               fill={fill} d={icon.path}
               ref="icon"
             />
           </div>
-          <div className={"name"} title={icon.name}>{icon.name}</div>
-          <div className={"code"}>{`&#x${icon.code.toString(16)};`}</div>
+          <div className="name" title={icon.name}>{icon.name}</div>
+          <div ref="code" className="code">
+            {`&#x${icon.code.toString(16)};`}
+          </div>
         </div>
         <div className="tool">
           {tools}
