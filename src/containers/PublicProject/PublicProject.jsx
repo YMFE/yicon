@@ -26,7 +26,7 @@ export default class PublicProject extends Component {
 
   componentWillMount() {
     this.setState({ isShowLoading: true });
-    if (!this.props.params.id && this.props.user.login) {
+    if (this.props.user.login) {
       this.props.getUsersProjectList();
     }
   }
