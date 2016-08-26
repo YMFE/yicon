@@ -112,6 +112,7 @@ export function* downloadFont(next) {
       icons: iconData,
       readFiles: false,
       dest: fontDest,
+      descent: 128,
       fontName,
     });
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });

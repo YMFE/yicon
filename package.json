@@ -109,7 +109,7 @@
     "css-loader": "^0.23.1",
     "dateformat": "^1.0.12",
     "history": "^2.1.1",
-    "iconfont-builder": "^2.2.1",
+    "iconfont-builder": "^2.2.2",
     "invariant": "^2.2.1",
     "isom-fetch": "^1.1.1",
     "koa": "^1.2.0",
