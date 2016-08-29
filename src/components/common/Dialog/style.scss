@@ -25,19 +25,29 @@
 }
 
 /*	弹层通用样式	*/
-.m-dialog{
-	position:fixed;
-	left: 50%;
-	top:50%;
-	-webkit-transform: translate(-50%, -50%);
-	-o-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	-moz-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	width:auto;
-	border:1px solid #cacacb;
-	box-shadow: 5px 5px 5px #ccc;
-	z-index: 99;
+.m-dialog-back {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  z-index: 1000;
+  .m-dialog {
+    display: inline-block;
+    text-align: initial;
+    width:auto;
+    border:1px solid #cacacb;
+    box-shadow: 5px 5px 5px #ccc;
+    vertical-align: middle;
+  }
+  &::after {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 100%;
+  }
 }
 /*	弹层通用头尾样式	*/
 .myicon-dialog{

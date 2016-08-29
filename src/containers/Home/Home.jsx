@@ -5,7 +5,7 @@ import {
   fetchHomeData,
 } from '../../actions/repository';
 import RepoSection from '../../components/RepoSection/RepoSection';
-import { Content } from '../../components/';
+import { Footer, Content } from '../../components/';
 
 @connect(
   state => ({ list: state.repository.homeRepository }),
@@ -39,6 +39,7 @@ class Home extends Component {
             ))
           }
         </Content>
+        <Footer />
       </div>
     );
   }

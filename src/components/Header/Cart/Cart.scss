@@ -96,26 +96,25 @@
 
         .src_iconfont {
           display: block;
-          font-size: 26px;
           position: relative;
           margin: 0 auto;
           color: $iconColor;
         }
 
         .code {
-          font-size: 9px;
+          font-size: 12px;
         }
 
       }
 
       .font-cdn {
         line-height: 28px;
+        display: flex;
 
         .font-project-name {
           width: 230px;
-          height: 28px;
+          height: 30px;
           line-height: 28px;
-          float: left;
           background-color: #fff;
           position: relative;
           margin-left: 0;
@@ -142,8 +141,13 @@
           }
         }
 
+        .button-wrapper {
+          flex: 1;
+          display: inline-flex;
+          justify-content: flex-end;
+        }
+
         .button-icon {
-          float: left;
           margin-left: 6px;
           padding: 0 16px;
           line-height: 28px;
@@ -155,6 +159,10 @@
           line-height: 26px;
           margin-left: 6px;
           background-color: #fff;
+        }
+
+        .button-icon.save-exsit {
+          padding: 0 6px;
         }
 
         .font-project-icons {
@@ -230,9 +238,8 @@
         .iconfont {
           color: #fff;
           display: inline-block;
-          line-height: 24px;
+          line-height: 28px;
         }
-
       }
 
       .font-project-icons {
@@ -247,59 +254,27 @@
         padding: 12px 11px;
         line-height: auto;
 
-        .save_ct {
-          display: flex;
-          .clear-car {
-            // float: left;
-            height: 28px;
-            line-height: 28px;
-            margin-left: 10px;
-            cursor: pointer;
+        .clear-car {
+          // float: left;
+          height: 30px;
+          line-height: 28px;
+          margin-left: 10px;
+          cursor: pointer;
 
-            a {
-              color: $fontTitleColor;
-            }
-
-          }
-
-          .btn-download {
-            // float: right;
-            flex: 1;
-            display: inline-flex;
-            justify-content: flex-end;
-            height: 28px;
-
-            .ibtn {
-              width: 106px;
-              display: block;
-              color: #fff;
-              height: 26px;
-              line-height: 28px;
-              text-decoration: none;
-              text-align: center;
-              vertical-align: top;
-              border-radius: 3px;
-              cursor: pointer;
-            }
-
-            .ibtn:hover {}
-
-            .ibtn-download {
-              width: 54px;
-              border: 1px solid #ccc;
-              color: $btnColor;
-              line-height: 26px;
-              float: right;
-              margin-left: 6 px;
-              background-color: #fff;
-            }
-
+          a {
+            color: $fontTitleColor;
           }
 
         }
 
+        .btn-download {
+          // float: right;
+          flex: 1;
+          display: inline-flex;
+          justify-content: flex-end;
+          height: 30px;
+        }
       }
-
     }
 
     .save_selection {
@@ -307,19 +282,12 @@
       display: inline-block;
       overflow: visible;
       line-height: 28px;
+      height: 30px;
       vertical-align: top;
       background: $btnColor;
-      width: 106px;
+      width: 130px;
       text-align: center;
-      margin-right: 10px;
-
-      .ibtn {
-        -webkit-transition: all 0s;
-        -moz-transition: all 0s;
-        -ms-transition: all 0s;
-        -o-transition: all 0s;
-        transition: all 0s;
-      }
+      border-radius: 2px;
 
       .save_selection_btns {
         display: none;

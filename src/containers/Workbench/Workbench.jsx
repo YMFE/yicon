@@ -197,7 +197,6 @@ export default class Workbench extends Component {
               <div className={'select-repository'}>
                 <Select
                   placeholder="选择图标库"
-                  value={repoId}
                   onChange={this.selectRepo}
                 >
                   {

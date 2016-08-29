@@ -27,6 +27,24 @@ if (process.browser) {
   }
 )
 class IconButton extends Component {
+
+  static defaultProps = {
+    delete: () => {},
+  };
+
+  static propTypes = {
+    icon: PropTypes.object,
+    userInfo: PropTypes.object,
+    iconSize: PropTypes.number,
+    repoId: PropTypes.number,
+    iconsInLocalStorage: PropTypes.array,
+    toolBtns: PropTypes.array,
+    deleteIconInLocalStorage: PropTypes.func,
+    addIconToLocalStorage: PropTypes.func,
+    download: PropTypes.func,
+    delete: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +53,25 @@ class IconButton extends Component {
       showDownLoadDial: false,
     };
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { props, state } = this;
+  //   const iconEqual = props.icon === nextProps.icon;
+  //   const userInfoEqual =  props.userInfo === nextProps.userInfo;
+  //   const iconSizeEqual = props.iconSize === nextProps.iconSize;
+  //   const repoIdEqual = props.repoId === nextProps.repoId;
+  //   const iconsInLocalStorageEqual = props.iconsInLocalStorage === nextProps.iconsInLocalStorage;
+  //   const stateEqual = state === nextState;
+  //   if (props.icon === nextProps.icon &&
+  //       props.userInfo === nextProps.userInfo &&
+  //       props.iconSize === nextProps.iconSize &&
+  //       props.repoId === nextProps.repoId &&
+  //       props.iconsInLocalStorage === nextProps.iconsInLocalStorage &&
+  //       state === nextState) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   getScreenDist(element) {
     let actualLeft = element.offsetLeft;
@@ -120,9 +157,11 @@ class IconButton extends Component {
   }
   @autobind
   copyEnd() {
-    this.setState({
-      copytipShow: false,
-    });
+    if (this.state.copytipShow) {
+      this.setState({
+        copytipShow: false,
+      });
+    }
   }
 
   isSelected(id) {
@@ -132,8 +171,10 @@ class IconButton extends Component {
     return false;
   }
 
+  @autobind
   selectIcon(id) {
-    return () => {
+    return (e) => {
+      if (e.target === this.refs.code) return;
       if (this.props.iconsInLocalStorage.indexOf(id) !== -1) {
         this.props.deleteIconInLocalStorage(id);
         this.removeCartAnim();
@@ -143,6 +184,12 @@ class IconButton extends Component {
       }
     };
   }
+
+  @autobind
+  preventSelect(e) {
+    e.nativeEvent.stopPropagation();
+  }
+
   @autobind
   deleteIcon() {
     const iconItem = {
@@ -223,16 +270,18 @@ class IconButton extends Component {
     });
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
-        <div className={"info"}>
-          <div className={"icon"} onClick={this.selectIcon(icon.id)}>
+        <div className="info" onClick={this.selectIcon(icon.id)}>
+          <div className="icon">
             <Icon
               size={this.props.iconSize}
               fill={fill} d={icon.path}
               ref="icon"
             />
           </div>
-          <div className={"name"} title={icon.name}>{icon.name}</div>
-          <div className={"code"}>{`&#x${icon.code.toString(16)};`}</div>
+          <div className="name" title={icon.name}>{icon.name}</div>
+          <div ref="code" className="code">
+            {`&#x${icon.code.toString(16)};`}
+          </div>
         </div>
         <div className="tool">
           {tools}
@@ -241,22 +290,5 @@ class IconButton extends Component {
     );
   }
 }
-
-IconButton.defaultProps = {
-  delete: () => {},
-};
-
-IconButton.propTypes = {
-  icon: PropTypes.object,
-  userInfo: PropTypes.object,
-  iconSize: PropTypes.number,
-  repoId: PropTypes.number,
-  iconsInLocalStorage: PropTypes.array,
-  toolBtns: PropTypes.array,
-  deleteIconInLocalStorage: PropTypes.func,
-  addIconToLocalStorage: PropTypes.func,
-  download: PropTypes.func,
-  delete: PropTypes.func,
-};
 
 export default IconButton;
