@@ -54,20 +54,24 @@ export default class Modal extends Component {
         }}
       >
         <div className="m-dialog-mask" style={{ zIndex: zIndex - 1 }}></div>
-        <div className={empty ? 'm-dialog m-dialog-simple' : 'm-dialog'} style={{ zIndex }}>
-          <div className="myicon-dialog">
-            <div className="myicon-dialog-title">
-              <h4>{title}</h4>
-              <span className="ibtns">
-                <i className="iconfont" onClick={() => this.close()}>&#xf077;</i>
-              </span>
-            </div>
-            <div className="myicon-dialog-content">
-              {this.props.children}
-            </div>
-            <div className="myicon-dialog-foot">
-              <button className="options-btns btns-default" onClick={onCancel}>{cancelText}</button>
-              <button className="options-btns btns-blue" onClick={onOk}>{confrimText}</button>
+        <div className="m-dialog-back">
+          <div className={empty ? 'm-dialog m-dialog-simple' : 'm-dialog'} style={{ zIndex }}>
+            <div className="myicon-dialog">
+              <div className="myicon-dialog-title">
+                <h4>{title}</h4>
+                <span className="ibtns">
+                  <i className="iconfont" onClick={() => this.close()}>&#xf077;</i>
+                </span>
+              </div>
+              <div className="myicon-dialog-content">
+                {this.props.children}
+              </div>
+              <div className="myicon-dialog-foot">
+                <button className="options-btns btns-default" onClick={onCancel}>
+                  {cancelText}
+                </button>
+                <button className="options-btns btns-blue" onClick={onOk}>{confrimText}</button>
+              </div>
             </div>
           </div>
         </div>
