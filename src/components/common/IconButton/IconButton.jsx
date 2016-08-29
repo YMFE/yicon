@@ -27,6 +27,24 @@ if (process.browser) {
   }
 )
 class IconButton extends Component {
+
+  static defaultProps = {
+    delete: () => {},
+  };
+
+  static propTypes = {
+    icon: PropTypes.object,
+    userInfo: PropTypes.object,
+    iconSize: PropTypes.number,
+    repoId: PropTypes.number,
+    iconsInLocalStorage: PropTypes.array,
+    toolBtns: PropTypes.array,
+    deleteIconInLocalStorage: PropTypes.func,
+    addIconToLocalStorage: PropTypes.func,
+    download: PropTypes.func,
+    delete: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +53,25 @@ class IconButton extends Component {
       showDownLoadDial: false,
     };
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { props, state } = this;
+  //   const iconEqual = props.icon === nextProps.icon;
+  //   const userInfoEqual =  props.userInfo === nextProps.userInfo;
+  //   const iconSizeEqual = props.iconSize === nextProps.iconSize;
+  //   const repoIdEqual = props.repoId === nextProps.repoId;
+  //   const iconsInLocalStorageEqual = props.iconsInLocalStorage === nextProps.iconsInLocalStorage;
+  //   const stateEqual = state === nextState;
+  //   if (props.icon === nextProps.icon &&
+  //       props.userInfo === nextProps.userInfo &&
+  //       props.iconSize === nextProps.iconSize &&
+  //       props.repoId === nextProps.repoId &&
+  //       props.iconsInLocalStorage === nextProps.iconsInLocalStorage &&
+  //       state === nextState) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   getScreenDist(element) {
     let actualLeft = element.offsetLeft;
@@ -120,9 +157,11 @@ class IconButton extends Component {
   }
   @autobind
   copyEnd() {
-    this.setState({
-      copytipShow: false,
-    });
+    if (this.state.copytipShow) {
+      this.setState({
+        copytipShow: false,
+      });
+    }
   }
 
   isSelected(id) {
@@ -241,22 +280,5 @@ class IconButton extends Component {
     );
   }
 }
-
-IconButton.defaultProps = {
-  delete: () => {},
-};
-
-IconButton.propTypes = {
-  icon: PropTypes.object,
-  userInfo: PropTypes.object,
-  iconSize: PropTypes.number,
-  repoId: PropTypes.number,
-  iconsInLocalStorage: PropTypes.array,
-  toolBtns: PropTypes.array,
-  deleteIconInLocalStorage: PropTypes.func,
-  addIconToLocalStorage: PropTypes.func,
-  download: PropTypes.func,
-  delete: PropTypes.func,
-};
 
 export default IconButton;
