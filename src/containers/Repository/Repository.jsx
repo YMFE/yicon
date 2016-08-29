@@ -96,6 +96,7 @@ export default class Repository extends Component {
     this.setState({
       isShowLoading: true,
     }, () => {
+      this.refs.myslider.getWrappedInstance().reset();
       this.props.fetchRepository(id, page)
         .then(() => this.setState({ isShowLoading: false }))
         .catch(() => this.setState({ isShowLoading: false }));
