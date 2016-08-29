@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/q-iconfont/iconfont-builder.svg?branch=master)](https://travis-ci.org/q-iconfont/iconfont-builder)
 
-[中文版](https://github.com/q-iconfont/iconfont-builder/blob/master/README_CN.md)
+[中文版](https://github.com/malcolmyu/iconfont-builder/blob/master/README_CN.md)
 
 ## Introduction
 
