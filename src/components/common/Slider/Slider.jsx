@@ -23,8 +23,8 @@ class Slider extends Component {
     const initialValue = max;
     const defaultValue = ('defaultValue' in props ? props.defaultValue : initialValue);
     const value = (props.value !== undefined ? props.value : defaultValue);
-
-    this.state = { bound: value };
+    const markValue = this.getMarkValue(value);
+    this.state = { bound: markValue };
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -42,7 +42,15 @@ class Slider extends Component {
     this.setState({
       bound: value,
     });
-    this.props.onChange(value);
+    if (this.props.mark) {
+      const currMark = this.currMark;
+      const markValue = this.getMarkValue(value);
+      if (markValue !== currMark) {
+        this.props.onChange(markValue);
+      }
+    } else {
+      this.props.onChange(value);
+    }
   }
 
   @autobind
@@ -85,6 +93,20 @@ class Slider extends Component {
     this.onStart(position);
     this.addDocumentEvents();
     pauseEvent(e);
+  }
+
+  getMarkValue(value) {
+    const { mark } = this.props;
+    if (mark) {
+      for (let i = 0; i < mark.length - 1; i++) {
+        if (value >= mark[i] && value <= mark[i + 1]) {
+          const middle = (mark[i] + mark[i + 1]) / 2;
+          this.currMark = value < middle ? mark[i] : mark[i + 1];
+          return this.currMark;
+        }
+      }
+    }
+    return value;
   }
 
   getValue() {
@@ -149,15 +171,23 @@ class Slider extends Component {
 
   @autobind
   end() {
-    const { step } = this.props;
-    const value = this.state.bound;
-    const newValue = Math.round(value / step) * step;
+    // const { step } = this.props;
+    // const value = this.state.bound;
+    // const newValue = Math.round(value / step) * step;
+    //
+    // this.setState({
+    //   bound: newValue,
+    // });
 
-    this.setState({
-      bound: newValue,
-    });
+    let value = this.getValue();
+    if (this.props.mark) {
+      this.setState({
+        bound: this.currMark,
+      });
+      value = this.currMark;
+    }
     this.removeEvents();
-    this.props.onAfterChange(this.getValue());
+    this.props.onAfterChange(value);
   }
 
   @autobind
@@ -201,6 +231,7 @@ Slider.propTypes = {
     PropTypes.arrayOf(PropTypes.number),
   ]),
   disabled: PropTypes.bool,
+  mark: PropTypes.array,
   onBeforeChange: React.PropTypes.func,
   onChange: React.PropTypes.func,
   onAfterChange: React.PropTypes.func,

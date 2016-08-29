@@ -29,12 +29,31 @@ class SliderSize extends Component {
     this.setState({
       sizeTxt: value,
     });
+    this.changeSize(value);
   }
 
   @autobind
   changeSize(value) {
-    this.props.changeIconSize(value);
+    // this.props.changeIconSize(value);
+    const iconsDom = this.props.getIconsDom();
+    for (let i = 0, len = iconsDom.length; i < len; i++) {
+      const iconDom = iconsDom[i];
+      const scale = value / 1024;
+      iconDom.style.width = `${value}px`;
+      iconDom.style.height = `${value}px`;
+      iconDom.getElementsByTagName('g')[1].setAttribute('transform', this.convert({
+        translate: { x: 0, y: value },
+        scale: { x: scale, y: -scale },
+      }));
+    }
   }
+
+  convert = (transform) =>
+  Object.keys(transform).map(key => {
+    const attr = Object.keys(transform[key]).map(k => transform[key][k]).join(',');
+    return `${key}(${attr})`;
+  }).join(' ');
+
 
   @autobind
   reset() {
@@ -50,8 +69,8 @@ class SliderSize extends Component {
             min={16}
             max={64}
             step={1}
+            mark={[16, 32, 48, 64]}
             defaultValue={32}
-            onAfterChange={this.changeSize}
             onChange={this.onChange}
             ref="slider"
           />
@@ -61,6 +80,7 @@ class SliderSize extends Component {
             float: 'left',
             color: '#616161',
             fontSize: 16,
+            width: '38px',
             lineHeight: '38px',
           }}
         >{this.state.sizeTxt}px</span>
@@ -72,6 +92,7 @@ class SliderSize extends Component {
 SliderSize.propTypes = {
   iconSize: PropTypes.number,
   changeIconSize: PropTypes.func,
+  getIconsDom: PropTypes.func,
 };
 
 export default SliderSize;

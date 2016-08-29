@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import {
   fetchRepository,
   changeIconSize,
-  resetIconSize,
+  // resetIconSize,
 } from '../../actions/repository';
 import { getIconDetail, editIconStyle } from '../../actions/icon';
 import SliderSize from '../../components/SliderSize/SliderSize';
@@ -30,7 +30,7 @@ const pageSize = 64;
   {
     fetchRepository,
     changeIconSize,
-    resetIconSize,
+    // resetIconSize,
     getIconDetail,
     editIconStyle,
   }
@@ -40,7 +40,7 @@ export default class Repository extends Component {
   static propTypes = {
     fetchRepository: PropTypes.func,
     changeIconSize: PropTypes.func,
-    resetIconSize: PropTypes.func,
+    // resetIconSize: PropTypes.func,
     getIconDetail: PropTypes.func,
     editIconStyle: PropTypes.func,
     currRepository: PropTypes.object,
@@ -56,7 +56,7 @@ export default class Repository extends Component {
 
   componentDidMount() {
     this.fetchRepositoryByPage(1);
-    this.props.resetIconSize();
+    // this.props.resetIconSize();
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }
@@ -70,6 +70,11 @@ export default class Repository extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
   }
 
   @autobind
@@ -179,12 +184,12 @@ export default class Repository extends Component {
                   </Link>
                 }
               </div>
-              <SliderSize ref="myslider" />
+              <SliderSize ref="myslider" getIconsDom={this.getIconsDom} />
             </div>
           </div>
         </SubTitle>
         <div className="yicon-detail-main">
-          <div className="yicon-detail-list clearfix">
+          <div className="yicon-detail-list clearfix" ref="iconsContainer">
             {
               icons.map((icon) => (
                 <IconButton

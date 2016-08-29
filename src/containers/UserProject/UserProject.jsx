@@ -2,6 +2,7 @@ import './UserProject.scss';
 import axios from 'axios';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
@@ -29,7 +30,7 @@ import {
   getIconDetail,
   editIconStyle,
 } from '../../actions/icon';
-import { resetIconSize } from '../../actions/repository';
+// import { resetIconSize } from '../../actions/repository';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
@@ -56,7 +57,7 @@ import Download from './Download.jsx';
     replace,
     getIconDetail,
     editIconStyle,
-    resetIconSize,
+    // resetIconSize,
   }
 )
 class UserProject extends Component {
@@ -75,7 +76,7 @@ class UserProject extends Component {
     patchProjectMemeber: PropTypes.func,
     editIconStyle: PropTypes.func,
     getIconDetail: PropTypes.func,
-    resetIconSize: PropTypes.func,
+    // resetIconSize: PropTypes.func,
     suggestList: PropTypes.array,
     projectInfo: PropTypes.object,
     comparisonResult: PropTypes.object,
@@ -104,7 +105,7 @@ class UserProject extends Component {
   }
   componentWillMount() {
     this.setState({ showLoading: true });
-    this.props.resetIconSize();
+    // this.props.resetIconSize();
     this.props.getUsersProjectList().then(() => {
       const id = this.props.projectId;
       const current = this.props.currentUserProjectInfo;
@@ -146,6 +147,11 @@ class UserProject extends Component {
     } else {
       this.setState({ showLoading: false });
     }
+  }
+
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
   }
 
   @autobind
@@ -373,7 +379,7 @@ class UserProject extends Component {
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
-          <SliderSize />
+          <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <Content>
           <Menu>
@@ -446,7 +452,7 @@ class UserProject extends Component {
                 </Link>
               </div>
             </div>
-            <div className="clearfix icon-list">
+            <div className="clearfix icon-list" ref="iconsContainer">
               {iconList}
             </div>
           </Main>

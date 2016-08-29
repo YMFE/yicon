@@ -1,6 +1,7 @@
 import './Project.scss';
 import axios from 'axios';
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
@@ -73,6 +74,12 @@ export default class Project extends Component {
       this.props.getPublicProjectInfo(nextId);
     }
   }
+
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
+  }
+
   @autobind
   handleSingleIconDownload(iconId) {
     return () => {
@@ -129,7 +136,7 @@ export default class Project extends Component {
     return (
       <div className="Project">
         <SubTitle tit="公开项目图标">
-          <SliderSize />
+          <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <Content>
           <Menu>
@@ -164,7 +171,7 @@ export default class Project extends Component {
                 </button>
               </div>
             </div>
-            <div className="clearfix icon-list">
+            <div className="clearfix icon-list" ref="iconsContainer">
               {iconList}
             </div>
           </Main>

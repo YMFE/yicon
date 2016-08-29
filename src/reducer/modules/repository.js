@@ -2,12 +2,12 @@ import {
   FETCH_HOME_DATA,
   FETCH_REPOSITORY_DATA,
   CLEAR_REPOSITORY_DATA,
-  CHANGE_ICON_SIZE,
-  RESET_ICON_SIZE,
+  // CHANGE_ICON_SIZE,
+  // RESET_ICON_SIZE,
   FETCH_TINY_REPOSITORY,
 } from '../../constants/actionTypes';
 
-const defaultSize = 32;
+// const defaultSize = 32;
 
 const initialState = {
   allReposotoryList: [],
@@ -19,7 +19,7 @@ const initialState = {
     user: { name: '' },
     id: 0,
   },
-  iconSize: defaultSize,
+  // iconSize: defaultSize,
 };
 
 export default (state = initialState, action) => {
@@ -54,18 +54,18 @@ export default (state = initialState, action) => {
         },
       };
     }
-    case CHANGE_ICON_SIZE: {
-      return {
-        ...state,
-        iconSize: action.payload,
-      };
-    }
-    case RESET_ICON_SIZE: {
-      return {
-        ...state,
-        iconSize: defaultSize,
-      };
-    }
+    // case CHANGE_ICON_SIZE: {
+    //   return {
+    //     ...state,
+    //     iconSize: action.payload,
+    //   };
+    // }
+    // case RESET_ICON_SIZE: {
+    //   return {
+    //     ...state,
+    //     iconSize: defaultSize,
+    //   };
+    // }
     default:
       return state;
   }
