@@ -12,6 +12,7 @@ const optimize = content => new Promise(resolve => svgo.optimize(content, resolv
 
 const { caches, font, svg, png } = config.path;
 const downPath = path.join(caches, 'download');
+const savePath = path.join(caches, 'save');
 const downloadPath = {
   font: path.join(caches, font),
   svg: path.join(caches, svg),
@@ -30,6 +31,8 @@ export function ensureCachesExist(name, pos) {
     .catch(() => Q.nfcall(fs.mkdir, caches))
     .then(() => Q.nfcall(fs.access, downPath))
     .catch(() => Q.nfcall(fs.mkdir, downPath))
+    .then(() => Q.nfcall(fs.access, savePath))
+    .catch(() => Q.nfcall(fs.mkdir, savePath))
     .then(() => Q.nfcall(fs.access, downloadPath[pos]))
     .catch(() => Q.nfcall(fs.mkdir, downloadPath[pos]))
     .then(() => path.join(caches, font, name));
@@ -52,6 +55,15 @@ export function* getModifyTime(foldName, pos, type) {
   } catch (e) {
     return null;
   }
+}
+
+export function* saveOriginalSVG(icons) {
+  yield ensureCachesExist('hodor', 'svg');
+  const stamp = +new Date;
+  return Promise.all(icons.map(({ name, buffer }) => {
+    const filePath = path.join(savePath, `${name}-${stamp}.svg`);
+    return Q.nfcall(fs.writeFile, filePath, buffer);
+  }));
 }
 
 export function* buildSVG(name, svgPath, color, size) {

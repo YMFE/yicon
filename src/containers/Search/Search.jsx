@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 import { fetchSearchData } from '../../actions/search';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
@@ -7,7 +8,7 @@ import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
 import { getIconDetail, editIconStyle } from '../../actions/icon';
-import { resetIconSize } from '../../actions/repository';
+// import { resetIconSize } from '../../actions/repository';
 
 import './Search.scss';
 
@@ -21,7 +22,7 @@ import './Search.scss';
     fetchSearchData,
     getIconDetail,
     editIconStyle,
-    resetIconSize,
+    // resetIconSize,
   }
 )
 
@@ -34,7 +35,7 @@ export default class Search extends Component {
   componentWillMount() {
     const query = encodeURIComponent(this.props.location.query.q);
     this.props.fetchSearchData(query);
-    this.props.resetIconSize();
+    // this.props.resetIconSize();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,7 +43,13 @@ export default class Search extends Component {
     const lastQuery = encodeURIComponent(this.props.location.query.q);
     if (nextQuery !== lastQuery) {
       this.props.fetchSearchData(nextQuery);
+      this.refs.myslider.getWrappedInstance().reset();
     }
+  }
+
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
   }
 
   @autobind
@@ -74,11 +81,11 @@ export default class Search extends Component {
                 共为您找到 <em className="search-result-count">{this.props.totalCount}</em> 个结果，
                 如需搜索编码，请输入完整的编码，例如"<code>&#xf407</code>;"
               </div>
-              <SliderSize />
+              <SliderSize ref="myslider" getIconsDom={this.getIconsDom} />
             </div>
           </div>
         </div>
-        <div className="yicon-search-main">
+        <div className="yicon-search-main" ref="iconsContainer">
           {
             this.props.list.map((repo) => (
               <div key={repo.id}>
@@ -130,7 +137,7 @@ Search.propTypes = {
   queryKey: PropTypes.string,
   getIconDetail: PropTypes.func,
   editIconStyle: PropTypes.func,
-  resetIconSize: PropTypes.func,
+  // resetIconSize: PropTypes.func,
   totalCount: PropTypes.number,
   list: PropTypes.array,
 };

@@ -18,7 +18,7 @@ export function* getAllNotices(next) {
   const { userId, model } = this.state.user;
   const { pageMixin } = this.state;
   const { type } = this.param;
-  if (!type) throw new Error('缺少参数');
+  invariant(type, '缺少参数');
 
   let notice = null;
   const user = model;

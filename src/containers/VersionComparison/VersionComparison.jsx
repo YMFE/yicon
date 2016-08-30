@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main, DesIcon } from '../../components/';
@@ -16,7 +17,7 @@ const Option = Select.Option;
     myProjects: state.project.myProjects,
     projectInfo: state.project.projectInfo,
     comparisonResult: state.project.comparisonResult,
-    iconSize: state.repository.iconSize,
+    // iconSize: state.repository.iconSize,
   }), { fetchAllProjects, fetchAllVersions, compareProjectVersion }
 )
 
@@ -53,6 +54,11 @@ export default class VersionComparison extends Component {
     const _tempHigh = this.state.defaultVersion;
     const _tempLow = this.state.defaultVersion;
     this.props.compareProjectVersion(this.props.params.id, _tempHigh, _tempLow);
+  }
+
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
   }
 
   v2n(version) {
@@ -100,9 +106,9 @@ export default class VersionComparison extends Component {
     const versions = this.props.projectInfo.versions.slice(1).reverse();
     return (
       <div className="yicon-main yicon-myicon yicon-myiconvs">
-        <div>
+        <div ref="iconsContainer">
           <SubTitle tit={'我的图标项目'}>
-            <SliderSize />
+            <SliderSize getIconsDom={this.getIconsDom} />
           </SubTitle>
           <Content>
             <Menu>
@@ -191,7 +197,7 @@ export default class VersionComparison extends Component {
                           code={`&#x${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
-                          iconSize={this.props.iconSize}
+                          // iconSize={this.props.iconSize}
                         />
                       </div>
                     ))
@@ -214,7 +220,7 @@ export default class VersionComparison extends Component {
                           code={`&#x${icon.code.toString(16)}`}
                           showCode
                           iconPath={icon.path}
-                          iconSize={this.props.iconSize}
+                          // iconSize={this.props.iconSize}
                         />
                       </div>
                     ))
@@ -238,7 +244,7 @@ export default class VersionComparison extends Component {
                             code={`&#x${icon.old.code.toString(16)}`}
                             showCode
                             iconPath={icon.old.path}
-                            iconSize={this.props.iconSize}
+                            // iconSize={this.props.iconSize}
                           />
                         </div>
                         <div className="operate-icon">
@@ -250,7 +256,7 @@ export default class VersionComparison extends Component {
                             code={`&#x${icon.new.code.toString(16)}`}
                             showCode
                             iconPath={icon.new.path}
-                            iconSize={this.props.iconSize}
+                            // iconSize={this.props.iconSize}
                           />
                         </div>
                       </div>
@@ -280,5 +286,5 @@ VersionComparison.propTypes = {
   myProjects: PropTypes.arrayOf(PropTypes.string),
   comparisonResult: PropTypes.object,
   params: PropTypes.object,
-  iconSize: PropTypes.number,
+  // iconSize: PropTypes.number,
 };

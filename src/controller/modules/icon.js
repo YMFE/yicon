@@ -6,6 +6,7 @@ import invariant from 'invariant';
 import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
+import { saveOriginalSVG } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
@@ -95,7 +96,7 @@ export function* uploadIcons(next) {
     writeFiles: false,
   };
 
-  // TODO: 保存一下源文件
+  yield saveOriginalSVG(param.icons);
   const icons = yield fontBuilder(param);
   const data = icons.map(icon => ({
     name: icon.name,
@@ -287,7 +288,7 @@ export function* submitIcons(next) {
 
 export function* getIconInfo(next) {
   const { iconId } = this.param;
-  if (isNaN(iconId)) throw new Error('不支持传入空参数');
+  invariant(!isNaN(iconId), '不支持传入空参数');
 
   const data = yield Icon.findOne({
     where: { id: iconId },
@@ -330,15 +331,12 @@ export function* deleteIcons(next) {
     iconInfo.status === iconStatus.UPLOADED,
     '只能删除审核未通过的图标或未上传的图标'
   );
-  const result = yield Icon.update(
+  yield Icon.update(
     { status: iconStatus.DELETE },
     { where: { id: iconId } },
   );
-  if (result) {
-    this.state.respond = '删除图标成功';
-  } else {
-    throw new Error('删除图标失败');
-  }
+
+  this.state.respond = '删除图标成功';
   yield next;
 }
 

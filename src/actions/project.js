@@ -164,7 +164,7 @@ function delProjectIcon(id, icons) {
   };
 }
 
-export function deletePorjectIcon(id, icon) {
+export function deleteProjectIcon(id, icon) {
   return (dispatch) => {
     dispatch(delProjectIcon(id, icon)).then(() => {
       dispatch(getUserProjectInfo(id));

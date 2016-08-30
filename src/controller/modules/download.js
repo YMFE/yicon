@@ -114,6 +114,7 @@ export function* downloadFont(next) {
       dest: fontDest,
       descent: 128,
       fontName,
+      translate: -128,
     });
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
   }

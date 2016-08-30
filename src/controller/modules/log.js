@@ -1,3 +1,5 @@
+import invariant from 'invariant';
+
 import { User, Repo, Log, Project, Notification } from '../../model';
 import { generateLog } from '../../helpers/utils';
 
@@ -44,7 +46,7 @@ function* recordSingleLog(oneLog, currentUser) {
   const operator = currentUser;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
   const log = generateLog(type, params);
-  if (!log) throw new Error('未能生成正确的日志内容');
+  invariant(log, '未能生成正确的日志内容');
   const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
   const logModel = yield Log.create({
     type,
@@ -59,7 +61,7 @@ function* recordSingleLog(oneLog, currentUser) {
 
     if (!isNaN(v)) userId = v;
     else if (!isNaN(v.id)) userId = v.id;
-    else throw new Error('未能获取用户 ID');
+    else invariant(false, '未能获取用户 ID');
 
     return {
       userId,
@@ -95,7 +97,7 @@ function singleLogRecorder(oneLog, transaction, operator) {
   const { params, loggerId, subscribers, type } = oneLog;
   // 处理一下参数，传入的以 icon/user 开头的数组，转化成数组对象
   const log = generateLog(type, params);
-  if (!log) throw new Error('日志内容错误');
+  invariant(log, '日志内容错误');
   const scope = /^PROJECT/.test(type) ? 'project' : 'repo';
   return Log.create({
     type,
@@ -111,7 +113,7 @@ function singleLogRecorder(oneLog, transaction, operator) {
 
           if (!isNaN(v)) userId = v;
           else if (!isNaN(v.id)) userId = v.id;
-          else throw new Error('未能获取用户 ID');
+          else invariant(false, '未能获取用户 ID');
 
           return {
             userId,
