@@ -18,7 +18,7 @@ if (process.browser) {
 @connect(
   state => ({
     iconsInLocalStorage: state.cart.iconsInLocalStorage,
-    iconSize: state.repository.iconSize,
+    // iconSize: state.repository.iconSize,
     userInfo: state.user.info,
   }),
   {
@@ -35,7 +35,7 @@ class IconButton extends Component {
   static propTypes = {
     icon: PropTypes.object,
     userInfo: PropTypes.object,
-    iconSize: PropTypes.number,
+    // iconSize: PropTypes.number,
     repoId: PropTypes.number,
     iconsInLocalStorage: PropTypes.array,
     toolBtns: PropTypes.array,
@@ -54,24 +54,26 @@ class IconButton extends Component {
     };
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { props, state } = this;
-  //   const iconEqual = props.icon === nextProps.icon;
-  //   const userInfoEqual =  props.userInfo === nextProps.userInfo;
-  //   const iconSizeEqual = props.iconSize === nextProps.iconSize;
-  //   const repoIdEqual = props.repoId === nextProps.repoId;
-  //   const iconsInLocalStorageEqual = props.iconsInLocalStorage === nextProps.iconsInLocalStorage;
-  //   const stateEqual = state === nextState;
-  //   if (props.icon === nextProps.icon &&
-  //       props.userInfo === nextProps.userInfo &&
-  //       props.iconSize === nextProps.iconSize &&
-  //       props.repoId === nextProps.repoId &&
-  //       props.iconsInLocalStorage === nextProps.iconsInLocalStorage &&
-  //       state === nextState) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
+  shouldComponentUpdate(nextProps, nextState) {
+    const { props, state } = this;
+    const iconId = props.icon.id;
+    const iconEqual = props.icon === nextProps.icon;
+    const userInfoEqual = props.userInfo === nextProps.userInfo;
+    // const iconSizeEqual = props.iconSize === nextProps.iconSize;
+    const repoIdEqual = props.repoId === nextProps.repoId;
+    const isSelectChange = nextProps.iconsInLocalStorage.includes(iconId) ===
+                           props.iconsInLocalStorage.includes(iconId);
+    const stateEqual = state === nextState;
+    if (iconEqual &&
+        userInfoEqual &&
+        // iconSizeEqual &&
+        repoIdEqual &&
+        isSelectChange &&
+        stateEqual) {
+      return false;
+    }
+    return true;
+  }
 
   getScreenDist(element) {
     let actualLeft = element.offsetLeft;
@@ -137,7 +139,7 @@ class IconButton extends Component {
     }, 0);
     setTimeout(() => {
       iconCopy.remove();
-    }, 500);
+    }, 1000);
   }
 
   @autobind
@@ -273,7 +275,7 @@ class IconButton extends Component {
         <div className="info" onClick={this.selectIcon(icon.id)}>
           <div className="icon">
             <Icon
-              size={this.props.iconSize}
+              size={32}
               fill={fill} d={icon.path}
               ref="icon"
             />

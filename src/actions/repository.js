@@ -3,8 +3,8 @@ import {
   FETCH_HOME_DATA,
   FETCH_TINY_REPOSITORY,
   FETCH_REPOSITORY_DATA,
-  CHANGE_ICON_SIZE,
-  RESET_ICON_SIZE,
+  // CHANGE_ICON_SIZE,
+  // RESET_ICON_SIZE,
   FETCH_REPOSITORY_LOG,
 } from '../constants/actionTypes';
 
@@ -33,16 +33,16 @@ export function fetchTinyRepository() {
   };
 }
 
-export function changeIconSize(size) {
-  return {
-    type: CHANGE_ICON_SIZE,
-    payload: size,
-  };
-}
-
-export function resetIconSize() {
-  return { type: RESET_ICON_SIZE };
-}
+// export function changeIconSize(size) {
+//   return {
+//     type: CHANGE_ICON_SIZE,
+//     payload: size,
+//   };
+// }
+//
+// export function resetIconSize() {
+//   return { type: RESET_ICON_SIZE };
+// }
 
 export function fetchRepositoryLogs(id, page) {
   return {
