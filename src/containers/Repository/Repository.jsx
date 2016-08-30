@@ -215,7 +215,7 @@ export default class Repository extends Component {
           visible={this.state.isShowDownloadDialog}
           getShow={this.dialogUpdateShow}
         >
-          <DownloadDialog />
+          <DownloadDialog type="repo" />
         </Dialog>
         <Loading visible={this.state.isShowLoading} />
       </div>

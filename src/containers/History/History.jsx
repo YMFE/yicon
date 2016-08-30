@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { findDOMNode } from 'react-dom';
 import { Link } from 'react-router';
 import { autobind } from 'core-decorators';
 import { SubTitle, Content, Menu, Main, DesIcon } from '../../components/';
@@ -16,7 +17,7 @@ const Option = Select.Option;
     myProjects: state.project.myProjects,
     historyProject: state.project.historyProject,
     projectInfo: state.project.projectInfo,
-    iconSize: state.repository.iconSize,
+    // iconSize: state.repository.iconSize,
   }), {
     fetchAllProjects,
     fetchAllVersions,
@@ -36,7 +37,7 @@ export default class History extends Component {
     myProjects: PropTypes.object,
     historyProject: PropTypes.object,
     projectInfo: PropTypes.object,
-    iconSize: PropTypes.number,
+    // iconSize: PropTypes.number,
     hideLoading: PropTypes.func,
   }
 
@@ -70,13 +71,18 @@ export default class History extends Component {
     this.setState({ version: value });
   }
 
+  @autobind
+  getIconsDom() {
+    return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
+  }
+
   render() {
     const id = this.props.projectId || this.props.params.id;
     const versions = this.props.projectInfo.versions.slice(1).reverse();
     return (
       <div className="yicon-main yicon-myicon yicon-history">
         <SubTitle tit={this.props.isHidden ? '图标项目' : '我的图标项目'}>
-          <SliderSize />
+          <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <Content>
           {
@@ -150,7 +156,7 @@ export default class History extends Component {
                   }}
                 >当前项目尚未生成稳定版本</div>
               </div>
-              <div className="clearfix myicon-list">
+              <div className="clearfix myicon-list" ref="iconsContainer">
                 {
                   this.props.historyProject.icons.map((icon, index) => (
                     <div className="icon-detail-item" key={index}>
@@ -159,7 +165,6 @@ export default class History extends Component {
                         code={`&#x${icon.code.toString(16)}`}
                         showCode
                         iconPath={icon.path}
-                        iconSize={this.props.iconSize}
                       />
                     </div>
                   ))

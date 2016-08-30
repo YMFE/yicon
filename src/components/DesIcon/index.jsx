@@ -56,7 +56,7 @@ DesIcon.propTypes = {
 };
 
 DesIcon.defaultProps = {
-  iconSize: 48,
+  iconSize: 32,
   iconFill: '#555f6e',
 };
 export default DesIcon;

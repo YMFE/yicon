@@ -107,7 +107,7 @@ class DownloadDialog extends Component {
   downloadPNG = this.download.bind(this, 'png')
 
   render() {
-    const { iconDetail, userInfo } = this.props;
+    const { iconDetail, userInfo, type } = this.props;
     const repoId = iconDetail.repo.id;
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
@@ -140,7 +140,7 @@ class DownloadDialog extends Component {
             <div className="icon-name">
               <span className="icon-name-txt">{iconDetail.name}</span>
               <button
-                className={`to-edit-name ${+status === +3 ? '' : 'hide'}`}
+                className={`to-edit-name ${(+status === +3 && type === 'repo') ? '' : 'hide'}`}
                 onClick={this.showNameEdit}
               >修改名称</button>
             </div>
@@ -209,6 +209,7 @@ class DownloadDialog extends Component {
 }
 
 DownloadDialog.propTypes = {
+  type: PropTypes.string,
   iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
   editIcon: PropTypes.func,
