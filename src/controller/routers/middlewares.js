@@ -66,7 +66,7 @@ export function* pagination(next) {
 export function* getCurrentUser(next) {
   this.state.user = {
     userId: this.session.userId,
-    // userId: 113,
+    // userId: 541,
   };
   const user = yield User.findOne({
     where: { id: this.state.user.userId },

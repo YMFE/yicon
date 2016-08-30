@@ -25,6 +25,7 @@ import {
   deleteProjectIcon,
   fetchAllVersions,
 	compareProjectVersion,
+  adjustBaseline,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -57,6 +58,7 @@ import Download from './Download.jsx';
     replace,
     getIconDetail,
     editIconStyle,
+    adjustBaseline,
     // resetIconSize,
   }
 )
@@ -83,6 +85,7 @@ class UserProject extends Component {
     generateVersion: PropTypes.func,
     replace: PropTypes.func,
     hideLoading: PropTypes.func,
+    adjustBaseline: PropTypes.func,
   }
 
   static defaultProps ={
@@ -299,6 +302,13 @@ class UserProject extends Component {
     // 关闭dialog
     this.shiftDownloadDialog();
   }
+
+  @autobind
+  adjustBaseline() {
+    const { projectId, currentUserProjectInfo } = this.props;
+    this.props.adjustBaseline(projectId, currentUserProjectInfo.baseline);
+  }
+
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
     if (!current) return null;
@@ -380,6 +390,7 @@ class UserProject extends Component {
     }
     return dialogList;
   }
+
   render() {
     const list = this.props.usersProjectList;
     const current = this.props.currentUserProjectInfo;
@@ -436,6 +447,17 @@ class UserProject extends Component {
                     }}
                   >
                     管理项目成员
+                  </span>
+                  <span
+                    onClick={this.adjustBaseline}
+                    title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"
+                    className="baseline-adjust"
+                  >
+                    {!current.baseline ?
+                      <i className="iconfont">&#xf35f;</i> :
+                      <i className="iconfont">&#xf496;</i>
+                    }
+                    调整基线
                   </span>
                 </menu>
               : null

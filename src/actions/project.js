@@ -20,6 +20,7 @@ import {
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
   FETCH_HISTORY_PROJECT,
+  SET_ADJUST_BASELINE,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -198,5 +199,12 @@ export function fetchHistoryProject(id, version) {
   return {
     type: FETCH_HISTORY_PROJECT,
     payload: fetch.get(`/projects/${id}${v}`),
+  };
+}
+
+export function adjustBaseline(id, baseline) {
+  return {
+    type: SET_ADJUST_BASELINE,
+    payload: fetch.patch(`/user/projects/${id}/baseline`, { baseline: !baseline }),
   };
 }

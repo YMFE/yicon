@@ -11,6 +11,7 @@ import {
   FETCH_ALL_VERSION,
   COMPARE_PROJECT_VERSION,
   FETCH_HISTORY_PROJECT,
+  SET_ADJUST_BASELINE,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -148,6 +149,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         historyProject: action.payload.data,
+      };
+    }
+
+    case SET_ADJUST_BASELINE: {
+      return {
+        ...state,
+        currentUserProjectInfo: {
+          ...state.currentUserProjectInfo,
+          baseline: action.payload.data.baseline,
+        },
       };
     }
 
