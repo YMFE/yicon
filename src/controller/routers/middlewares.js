@@ -65,8 +65,8 @@ export function* pagination(next) {
 // TODO: 将业务型的 middleware 移至对应的 controller 中
 export function* getCurrentUser(next) {
   this.state.user = {
-    // userId: this.session.userId,
-    userId: 541,
+    userId: this.session.userId,
+    // userId: 541,
   };
   const user = yield User.findOne({
     where: { id: this.state.user.userId },

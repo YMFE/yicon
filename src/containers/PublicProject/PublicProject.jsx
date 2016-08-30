@@ -1,3 +1,5 @@
+import './PublicProject.scss';
+
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
@@ -6,11 +8,27 @@ import History from '../History/History';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { getUsersProjectList } from '../../actions/project';
 
+/* eslint-disable react/no-multi-comp */
+class NoProject extends Component {
+  static propTypes = {
+    hideLoading: PropTypes.func,
+  }
+
+  componentDidMount() {
+    this.props.hideLoading();
+  }
+
+  render() {
+    return (
+      <div className="empty-project"></div>
+    );
+  }
+}
+
 @connect((state) => ({
   user: state.user.info,
   usersProjectList: state.project.usersProjectList,
 }), { getUsersProjectList })
-
 export default class PublicProject extends Component {
 
   static propTypes = {
@@ -43,7 +61,9 @@ export default class PublicProject extends Component {
   }
 
   renderContent(id) {
-    if (!id) return null;
+    if (!id) {
+      return <NoProject hideLoading={this.hideLoading} />;
+    }
     let content;
     const isBelong = this.props.usersProjectList.some(v => v.id === +id);
     if (this.props.user.login && isBelong) {
