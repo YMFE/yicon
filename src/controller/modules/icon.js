@@ -6,6 +6,7 @@ import invariant from 'invariant';
 import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
+import { saveOriginalSVG } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
@@ -95,7 +96,7 @@ export function* uploadIcons(next) {
     writeFiles: false,
   };
 
-  // TODO: 保存一下源文件
+  yield saveOriginalSVG(param.icons);
   const icons = yield fontBuilder(param);
   const data = icons.map(icon => ({
     name: icon.name,

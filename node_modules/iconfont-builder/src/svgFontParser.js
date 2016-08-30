@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var Q = require('q');
 var handlebars = require('handlebars');
+var svgp = require('svgpath');
 
 var sax = require('sax');
 var parser = require('sax').parser();
@@ -32,6 +33,13 @@ function getSvgIcon(options) {
   return Q.nfcall(fs.readFile, tmpPath, 'utf-8')
     .then(function(source) {
       var template = handlebars.compile(source);
+      // 在使用纯 path 写入 svg 时，支持进行字体偏移量调整
+      // 通过 buffer 和文件读入的就先不管了……
+      if (options.translate) {
+        options.icons.map(function(icon) {
+          icon.d = svgp(icon.d).translate(0, options.translate);
+        });
+      }
       return template(options);
     });
 }

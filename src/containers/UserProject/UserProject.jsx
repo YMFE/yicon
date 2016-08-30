@@ -22,7 +22,7 @@ import {
   patchProjectMemeber,
   generateVersion,
   deleteProject,
-  deletePorjectIcon,
+  deleteProjectIcon,
   fetchAllVersions,
 	compareProjectVersion,
 } from '../../actions/project';
@@ -51,7 +51,7 @@ import Download from './Download.jsx';
     patchProjectMemeber,
     generateVersion,
     deleteProject,
-    deletePorjectIcon,
+    deleteProjectIcon,
     fetchAllVersions,
     compareProjectVersion,
     replace,
@@ -69,7 +69,7 @@ class UserProject extends Component {
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
     deleteProject: PropTypes.func,
-    deletePorjectIcon: PropTypes.func,
+    deleteProjectIcon: PropTypes.func,
     fetchAllVersions: PropTypes.func,
     compareProjectVersion: PropTypes.func,
     patchUserProject: PropTypes.func,
@@ -207,6 +207,21 @@ class UserProject extends Component {
   }
 
   @autobind
+  deleteIcon(icons) {
+    confirm({
+      content: '确认从项目中删除图标吗？',
+      title: '删除确认',
+      onOk: () => {
+        this.props.deleteProjectIcon(
+          this.props.currentUserProjectInfo.id,
+          [icons]
+        );
+      },
+      onCancel: () => {},
+    });
+  }
+
+  @autobind
   updateManageMembers({ members }) {
     this.props.patchProjectMemeber({
       id: this.props.currentUserProjectInfo.id,
@@ -295,10 +310,7 @@ class UserProject extends Component {
           key={index}
           toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
           delete={(icons) => {
-            this.props.deletePorjectIcon(
-              this.props.currentUserProjectInfo.id,
-              [icons]
-            );
+            this.deleteIcon(icons);
           }}
           download={this.handleSingleIconDownload(item.id)}
         />
