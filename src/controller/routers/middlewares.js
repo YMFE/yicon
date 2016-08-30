@@ -33,7 +33,10 @@ export function* responder(next) {
       message: e.message || '服务器错误',
     };
     const error = __DEVELOPMENT__ ? pe.render(e) : e;
-    logger.error(error);
+    // 错误区分，如果是 invariant 认为是手动捕获的错误，无需记录日志
+    if (error.name !== 'Invariant Violation') {
+      logger.error(error);
+    }
     return;
   }
 }
