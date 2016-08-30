@@ -29,6 +29,7 @@ const iconManageList = [
 
 @connect(
   (state) => ({
+    isLoginUser: state.user.info.login,
     isShowCartList: state.cart.toggleCartListDisplay,
     searchValue: state.search.value,
     allReposotoryList: state.repository.allReposotoryList,
@@ -45,7 +46,7 @@ class Header extends Component {
     this.props.fetchTinyRepository();
   }
   render() {
-    const { allReposotoryList, extraClass } = this.props;
+    const { allReposotoryList, extraClass, isLoginUser } = this.props;
     const list = allReposotoryList.map(r => ({
       name: r.name, href: `/repositories/${r.id}`,
     }));
@@ -67,15 +68,17 @@ class Header extends Component {
             <div className="quick-menu nav-menu-info">
               <ul className="clearfix">
                 <ToolUserName />
-                <Info />
+                {isLoginUser && <Info />}
                 <Cart
                   isShowCart={this.props.isShowCartList}
                 />
-                <li className="lists">
-                  <Link to="/upload" className="upload">
-                    <i className="iconfont">&#xf50a;</i>
-                  </Link>
-                </li>
+                {isLoginUser &&
+                  <li className="lists">
+                    <Link to="/upload" className="upload">
+                      <i className="iconfont">&#xf50a;</i>
+                    </Link>
+                  </li>
+                }
                 <Search
                   defaultValue={this.props.searchValue}
                   onSubmit={this.props.fetchSearchResult}
@@ -90,6 +93,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+  isLoginUser: PropTypes.bool,
   iconDatabase: PropTypes.array,
   className: PropTypes.string,
   extraClass: PropTypes.string,

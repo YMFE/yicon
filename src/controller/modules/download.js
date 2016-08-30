@@ -47,6 +47,7 @@ export function* downloadFont(next) {
   let iconData;
   let foldName;
   let lastModify = null;
+  let baselineShouldBeAdjusted = true;
 
   const isRepo = type === 'repo';
   if (Array.isArray(icons) && icons.length) {
@@ -72,6 +73,7 @@ export function* downloadFont(next) {
         ? Promise.resolve(version)
         : ProjectVersion.max('version', { where: { projectId: id } });
       version = yield getVersion;
+      baselineShouldBeAdjusted = !!instance.baseline;
     } else {
       version = 0;
     }
@@ -114,7 +116,7 @@ export function* downloadFont(next) {
       dest: fontDest,
       descent: 128,
       fontName,
-      translate: -128,
+      translate: baselineShouldBeAdjusted ? -128 : 0,
     });
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
   }

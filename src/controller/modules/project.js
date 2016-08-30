@@ -16,6 +16,17 @@ function* listProjects(user) {
   };
 }
 
+export function* adjustBaseline() {
+  const { projectId, baseline } = this.param;
+
+  const project = yield Project.findOne({ where: { id: projectId } });
+
+  invariant(project, `未找到 id 为 ${projectId} 的项目`);
+  project.set('baseline', !!baseline);
+  yield project.save();
+  this.state.respond = { baseline: !!baseline };
+}
+
 export function* getAllProjects(next) {
   const { userId } = this.state.user;
 

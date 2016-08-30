@@ -12,6 +12,7 @@ import {
   updateProjectMember,
   diffVersion,
   deleteProject,
+  adjustBaseline,
 } from '../modules/project';
 import {
   uploadIcons,
@@ -50,6 +51,7 @@ user.delete('/projects/:projectId/icons', isProjectMember, deleteProjectIcon, re
 user.patch('/projects/:projectId', isProjectOwner, updateProjectInfo);
 user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, recordLog);
 user.delete('/projects/:projectId', isProjectOwner, deleteProject);
+user.patch('/projects/:projectId/baseline', isProjectOwner, adjustBaseline);
 user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);

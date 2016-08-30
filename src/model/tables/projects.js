@@ -13,4 +13,8 @@ export default seq.define('projects', {
     type: Seq.BOOLEAN,
     defaultValue: false,
   },
+  baseline: {
+    type: Seq.BOOLEAN,
+    defaultValue: false,
+  },
 });

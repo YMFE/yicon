@@ -42,10 +42,15 @@
       height: 37px;
       line-height: 37px;
       padding-left: 0;
-      span{
+      overflow: hidden;
+      span {
+        float: left;
         padding:0 15px;
         font-size:14px;
         cursor: pointer;
+      }
+      .baseline-adjust {
+        float: right;
       }
     }
     .tool{
