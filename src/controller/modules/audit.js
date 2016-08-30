@@ -80,8 +80,8 @@ export function* getAuditList(next) {
 
   if (model.actor === 1 && repoList && repoList.length) {
     whereMixin.where = { repositoryId: { $in: repoList } };
-  } else if (model.actor !== 2) {
-    throw new Error('您没有权限进行图标审核');
+  } else {
+    invariant(model.actor === 2, '您没有权限进行图标审核');
   }
 
   const auditData = yield Icon.findAll({

@@ -104,7 +104,7 @@ export function* getOneProject(next) {
     where: { id: projectId },
     include: [{ model: User, as: 'projectOwner' }],
   });
-  if (!project) throw new Error(`编号${projectId}的项目不存在`);
+  invariant(project, `编号${projectId}的项目不存在`);
   const result = project.dataValues;
 
   result.version = versionTools.n2v(version);
@@ -160,7 +160,7 @@ export function* generatorNewVersion(next) {
   const { versionType = 'build', projectId } = this.param;
   const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
 
-  if (isNaN(versionFrom)) throw new Error('空项目不可进行版本升级');
+  invariant(!isNaN(versionFrom), '空项目不可进行版本升级');
 
   const versionTo = versionTools.update(versionFrom, versionType);
 
@@ -176,7 +176,7 @@ export function* generatorNewVersion(next) {
   });
   const baseVersion = versions.map(v => ({ iconId: v.iconId }));
   const isEqual = JSON.stringify(baseVersion) === JSON.stringify(currentHighestVersion);
-  if (isEqual && versionFrom !== 0) throw new Error('当前版本与最高版本一致，无需重新生成版本');
+  invariant(!isEqual || versionFrom === 0, '当前版本与最高版本一致，无需重新生成版本');
 
   const rawData = versions.map(v => ({
     ...v.get({ plain: true }), version: versionTo,
@@ -260,7 +260,7 @@ export function* deleteProjectIcon(next) {
 }
 
 export function* updateProjectInfo(next) {
-  if (!this.state.user.isProjectOwner) throw new Error('普通成员无权限修改项目信息');
+  invariant(this.state.user.isProjectOwner, '普通成员无权限修改项目信息');
 
   const { projectId, info, name, owner, publicProject } = this.param;
   const data = { info, name, owner, public: publicProject };
@@ -272,7 +272,7 @@ export function* updateProjectInfo(next) {
     });
     if (existProject) {
       const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
-      throw new Error(`项目名已被使用，请更改，如有需要请联系 ${ownerName.name}`);
+      invariant(false, `项目名已被使用，请更改，如有需要请联系 ${ownerName.name}`);
     }
   }
   const key = Object.keys(data);
@@ -294,14 +294,14 @@ export function* updateProjectMember(next) {
   const { projectId, members } = this.param;
   this.state.log = [];
   if (isNaN(projectId) || members.length < 1) {
-    throw new Error('必须传入项目编号和具体成员信息');
+    invariant(false, '必须传入项目编号和具体成员信息');
   }
-  if (!this.state.user.isProjectOwner) throw new Error('普通成员没有权限');
+  invariant(this.state.user.isProjectOwner, '普通成员没有权限');
   if (!has(members, { id: this.state.user.ownerId })) {
-    throw new Error('项目管理员无法被删除');
+    invariant(false, '项目管理员无法被删除');
   }
   members.forEach(v => {
-    if (isNaN(v.id)) throw new Error('参数缺少id');
+    invariant(!isNaN(v.id), `项目成员 id 应为数字，您传入的是 ${v.id}`);
   });
   const project = yield Project.findOne({ where: { id: projectId } });
   const oldMembers = yield project.getUsers({ attributes: ['id', 'name'], raw: true });
@@ -357,12 +357,12 @@ export function* getAllPublicProjects(next) {
 export function* diffVersion(next) {
   const { projectId } = this.param;
   let { highVersion, lowVersion } = this.param;
-  if (isNaN(projectId)) throw new Error('缺少项目id参数');
+  invariant(projectId > 0, '缺少项目id参数');
 
   const project = yield Project.findOne({ where: { id: projectId } });
   const hVersion = versionTools.v2n(highVersion);
   const lVersion = versionTools.v2n(lowVersion);
-  if (isNaN(hVersion) && isNaN(lVersion)) throw new Error('缺少对比项目版本号');
+  if (isNaN(hVersion) && isNaN(lVersion)) invariant(false, '缺少对比项目版本号');
   if (hVersion < lVersion) {
     const temp = highVersion;
     highVersion = lowVersion;
@@ -404,7 +404,7 @@ export function* diffVersion(next) {
 
 export function* getProjectVersion(next) {
   const { projectId } = this.param;
-  if (isNaN(projectId)) throw new Error('缺少参数项目id');
+  invariant(projectId > 0, '缺少参数项目id');
   const project = yield Project.findOne({ attributes: ['name'], where: { id: projectId } });
   const version = yield ProjectVersion.findAll({
     attributes: [[seq.literal('distinct `version`'), 'version']],
@@ -418,7 +418,7 @@ export function* getProjectVersion(next) {
 export function* deleteProject(next) {
   const { projectId } = this.param;
   const { model } = this.state.user;
-  invariant(!isNaN(projectId), '缺少参数项目 id');
+  invariant(projectId > 0, '缺少参数项目 id');
   // TODO: 记录日志和发送通知
   const t = seq.transaction(transaction =>
     UserProject
@@ -433,12 +433,15 @@ export function* deleteProject(next) {
 
 export function* addProject(next) {
   const { name, owner } = this.param;
-  if (!name) throw new Error('name参数不可缺少');
-  if (!owner) throw new Error('owner缺少、不完整或错误');
+  invariant(
+    PROJECT_NAME.reg.test(name),
+    `项目名称长度为 1-30，只能有英文、数字和下划线，您输入的是 ${name}`
+  );
+  invariant(owner > 0, `管理员 id 期望输入数字，您输入的是 ${owner}`);
   const projectInfo = yield Project.findOne({ where: { name } });
-  if (projectInfo) throw new Error('项目name已被占用，请修改');
+  invariant(!projectInfo, `项目名称 ${name} 已被占用，请联系创建者`);
   const user = yield User.findOne({ where: { id: owner } });
-  if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
+  invariant(user && user.id > 0, '没有指定的用户信息');
 
   const project = yield Project.create({
     name,
@@ -451,8 +454,8 @@ export function* addProject(next) {
 export function* appointProjectOwner(next) {
   const { projectId, name } = this.param;
   const { userId } = this.state.user;
-  if (isNaN(projectId)) throw new Error('缺少项目id');
-  if (!name) throw new Error('项目管理员name缺少、不完整或错误');
+  invariant(projectId > 0, `项目 id 期望输入数字，您输入的是 ${projectId}`);
+  invariant(typeof name === 'string', `项目管理员名称应为字符串，您输入的是 ${name}`);
 
   const allMembers = [];
   const project = yield Project.findOne({ where: { id: projectId } });
@@ -467,8 +470,8 @@ export function* appointProjectOwner(next) {
     where: { name },
     raw: true,
   });
-  if (oldOwner === null || newOwner === null) throw new Error('没有指定的用户信息');
-  if (oldOwner.id === newOwner.id) throw new Error('指定的用户已是项目管理员');
+  if (oldOwner === null || newOwner === null) invariant(false, '没有指定的用户信息');
+  if (oldOwner.id === newOwner.id) invariant(false, '指定的用户已是项目管理员');
 
   const t = yield seq.transaction(transaction =>
       Promise.all([
@@ -514,7 +517,7 @@ export function* getAdminProjects(next) {
 export function* searchProjects(next) {
   const { name } = this.param;
   const { pageMixin } = this.state;
-  if (!name) throw new Error('请传入查询的项目名称name');
+  invariant(name, '请传入待查询的项目名称');
 
   const project = yield Project.findAndCountAll({
     attributes: ['id', 'name'],
