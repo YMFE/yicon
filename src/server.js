@@ -31,6 +31,18 @@ app.use(serve(path.join(__dirname, '../static')));
 app.use(router.routes());
 app.use(down.routes());
 
+function fetchServerData(props, { dispatch }) {
+  return props.components.map(c => {
+    if (!c) return null;
+    const fetchHandler = c.fetchServerData ||
+      (c.WrappedComponent && c.WrappedComponent.fetchServerData);
+    if (typeof fetchHandler === 'function') {
+      return fetchHandler(dispatch, props);
+    }
+    return null;
+  }).filter(v => v);
+}
+
 const getRouteContext = (ctx, store) =>
   new Promise(resolve => {
     match({
@@ -71,7 +83,7 @@ const getRouteContext = (ctx, store) =>
             admin: sess.actor === 2,
           },
         });
-        // const title = getPageTitle(renderProps.components);
+        const def = fetchServerData.call(ctx, renderProps, store);
 
         const render = (fetchedURLs) => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
@@ -80,29 +92,41 @@ const getRouteContext = (ctx, store) =>
               component={component}
               store={store}
               urls={fetchedURLs}
-              title="yicon - 矢量图标库"
+              title="呵呵"
               authType="qsso"
             />
         )}`;
 
-        resolve(render());
-        // render();
-        // fetch.all(() => resolve(render(fetch.urlCollection)));
+        if (def.length) {
+          Promise
+            .all(def)
+            .then(() => resolve(render()))
+            .catch(e => {
+              ctx.status(500).send(e.message);
+              resolve('NOT_MATCH');
+            });
+        } else {
+          resolve(render());
+        }
       } else {
         resolve('NOT_MATCH');
       }
     });
   });
 
-app.use(function* s() {
-  if (__DEVELOPMENT__) {
-    webpackIsomorphicTools.refresh();
-  }
-  const store = createStore();
-  isomFetch.use(this, router);
-  const result = yield getRouteContext(this, store);
-  if (result !== 'NOT_MATCH') {
-    this.body = result;
+app.use(function* s(next) {
+  if (/^\/api/.test(this.url)) {
+    yield next;
+  } else {
+    if (__DEVELOPMENT__) {
+      webpackIsomorphicTools.refresh();
+    }
+    const store = createStore();
+    isomFetch.use(this, router);
+    const result = yield getRouteContext(this, store);
+    if (result !== 'NOT_MATCH') {
+      this.body = result;
+    }
   }
 });
 
