@@ -1,5 +1,6 @@
 import PrettyError from 'pretty-error';
 import logger from '../../logger';
+import invariant from 'invariant';
 import { User, Repo, Project } from '../../model';
 
 const pe = new PrettyError();
@@ -37,14 +38,14 @@ export function* responder(next) {
     if (error.name !== 'Invariant Violation') {
       logger.error(error);
     }
-    return;
   }
 }
 
 export function* pagination(next) {
-  if (isNaN(+this.param.currentPage)) {
-    throw new Error('分页接口必须传入 currentPage 参数！');
-  }
+  invariant(
+    this.param.currentPage > 0,
+    `分页接口期望传入 currentPage，类型为数字，您传入的是 ${this.param.currentPage}`
+  );
 
   this.param.currentPage = +this.param.currentPage;
   this.param.pageSize = +this.param.pageSize || 10;
@@ -72,7 +73,7 @@ export function* getCurrentUser(next) {
     where: { id: this.state.user.userId },
   });
 
-  if (!user) throw new Error('获取用户信息失败，请重新登录');
+  invariant(user, '获取用户信息失败，请重新登录');
   this.state.user.model = user;
 
   yield next;
@@ -86,10 +87,10 @@ export function* isProjectMember(next) {
     const project = yield Project.findOne({
       where: { id: projectId },
     });
-    if (!project) throw new Error(`id 为 ${projectId} 的项目不存在`);
+    invariant(project, `id 为 ${projectId} 的项目不存在`);
     const hasUser = yield project.hasUser(user);
     if (!hasUser && user.actor < 2) {
-      throw new Error('当前用户不是该项目的项目成员');
+      invariant(false, '当前用户不是该项目的项目成员');
     }
   }
 
@@ -132,7 +133,7 @@ export function* isRepoOwner(next) {
   }
   // 强制让超管什么都能干
   repoOwner = repoOwner || this.session.actor >= 2;
-  if (!repoOwner) throw new Error('非大库管理员，没有权限');
+  invariant(repoOwner, '非大库管理员，没有权限');
   yield next;
 }
 
@@ -146,6 +147,6 @@ export function* isAdmin(next) {
     });
     admin = actor.actor === 2;
   }
-  if (!admin) throw new Error('非超管，没有权限');
+  invariant(admin, '非超管，没有权限');
   yield next;
 }

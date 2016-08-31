@@ -39,12 +39,12 @@ export default class History extends Component {
     projectInfo: PropTypes.object,
     // iconSize: PropTypes.number,
     hideLoading: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     isHidden: false,
     hideLoading: () => {},
-  }
+  };
 
   state = {
     version: '',
@@ -58,7 +58,7 @@ export default class History extends Component {
       const length = version.length;
       this.props.hideLoading();
       this.props.fetchHistoryProject(id, version[length - 1]);
-      this.setState({ version: version[length - 1] });
+      if (__CLIENT__) this.setState({ version: version[length - 1] });
     }).catch(() => {
       this.props.hideLoading();
     });

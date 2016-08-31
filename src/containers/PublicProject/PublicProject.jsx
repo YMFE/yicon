@@ -39,11 +39,10 @@ export default class PublicProject extends Component {
   };
 
   state = {
-    isShowLoading: false,
-  }
+    isShowLoading: true,
+  };
 
   componentWillMount() {
-    this.setState({ isShowLoading: true });
     if (this.props.user.login) {
       this.props.getUsersProjectList();
     }
