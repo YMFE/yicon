@@ -108,6 +108,7 @@
     "core-decorators": "^0.12.3",
     "css-loader": "^0.23.1",
     "dateformat": "^1.0.12",
+    "graphite": "0.0.6",
     "history": "^2.1.1",
     "iconfont-builder": "^2.3.0",
     "invariant": "^2.2.1",
