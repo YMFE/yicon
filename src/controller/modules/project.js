@@ -473,7 +473,7 @@ export function* appointProjectOwner(next) {
   const memberInfo = yield project.getUsers({ attributes: ['id', 'name'], raw: true });
   const oldOwner = {};
   memberInfo.forEach(v => {
-    allMembers.push(Object.assign({}, { id: v.id, name: v.name }));
+    allMembers.push({ id: v.id, name: v.name });
     if (v.id === project.owner) Object.assign(oldOwner, { id: v.id, name: v.name });
   });
   const newOwner = yield User.findOne({
@@ -484,10 +484,17 @@ export function* appointProjectOwner(next) {
   if (oldOwner === null || newOwner === null) invariant(false, '没有指定的用户信息');
   if (oldOwner.id === newOwner.id) invariant(false, '指定的用户已是项目管理员');
 
+  // 将 newOwner 插入 allMembers
+  const hasNewOwner = allMembers.some(m => m.id === newOwner.id);
+  if (!hasNewOwner) allMembers.push(newOwner);
+
   const t = yield seq.transaction(transaction =>
       Promise.all([
         Project.update({ owner: newOwner.id }, { where: { id: projectId }, transaction }),
-        UserProject.create({ projectId, userId: newOwner.id }, { transaction }),
+        UserProject.bulkCreate(
+          [{ projectId, userId: newOwner.id }],
+          { transaction, ignoreDuplicates: true }
+        ),
       ])
     .then(() => {
       const log = {
@@ -497,7 +504,7 @@ export function* appointProjectOwner(next) {
         },
         type: 'PROJECT_OWNER',
         loggerId: projectId,
-        subscribers: [newOwner, ...allMembers],
+        subscribers: allMembers,
       };
       return logRecorder(log, transaction, userId);
     })
