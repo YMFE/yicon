@@ -15,6 +15,7 @@ import Html from './helpers/Html';
 import { router, down } from './controller';
 import isomFetch from 'isom-fetch';
 import logger from './logger';
+import watcher from './helpers/watcher';
 
 const app = new Koa();
 const { PORT } = process.env;
@@ -44,6 +45,8 @@ const getRouteContext = (ctx, store) =>
         ctx.redirect(redirect.pathname + redirect.search);
         resolve('NOT_MATCH');
       } else if (renderProps) {
+        watcher('app-visit', 1);
+
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
@@ -71,15 +74,13 @@ const getRouteContext = (ctx, store) =>
             admin: sess.actor === 2,
           },
         });
-        // const title = getPageTitle(renderProps.components);
 
-        const render = (fetchedURLs) => `<!DOCTYPE html>\n${
+        const render = () => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
             <Html
               assets={webpackIsomorphicTools.assets()}
               component={component}
               store={store}
-              urls={fetchedURLs}
               title="yicon - 矢量图标库"
               authType="qsso"
             />

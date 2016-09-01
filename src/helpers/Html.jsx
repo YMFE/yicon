@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
-import { getURLStateName } from 'isom-fetch';
 
 const Html = (props) => {
-  const { assets, component, store, urls, authType, title } = props;
+  const { assets, component, store, authType, title } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
   const serverTime = +new Date();
 
@@ -43,7 +42,6 @@ const Html = (props) => {
             __html: `
             window.__INITIAL_STATE__=${serialize(store.getState())};
             window.SERVER_TIME=${serverTime};
-            window.${getURLStateName()}=${serialize(urls)};
             `,
           }}
         />
@@ -57,7 +55,6 @@ Html.propTypes = {
   assets: PropTypes.object,
   component: PropTypes.node,
   store: PropTypes.object,
-  urls: PropTypes.object,
   authType: PropTypes.string,
   title: PropTypes.string,
 };

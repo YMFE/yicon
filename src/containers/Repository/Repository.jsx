@@ -10,7 +10,6 @@ import {
 } from '../../actions/repository';
 import { getIconDetail, editIconStyle } from '../../actions/icon';
 import SliderSize from '../../components/SliderSize/SliderSize';
-import Pager from '../../components/common/Pager';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import Loading from '../../components/common/Loading/Loading.jsx';
@@ -19,8 +18,6 @@ import { autobind } from 'core-decorators';
 
 import './Repository.scss';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
-
-const pageSize = 64;
 
 @connect(
   state => ({
@@ -143,7 +140,7 @@ export default class Repository extends Component {
   }
 
   render() {
-    const { name, icons, user, currentPage, totalPage } = this.props.currRepository;
+    const { name, icons, user, iconCount } = this.props.currRepository;
     const userInfo = this.props.userInfo;
     const { id: repoId } = this.props.params;
     let admin = '';
@@ -162,7 +159,9 @@ export default class Repository extends Component {
       <div className="repository" ref="repo">
         <SubTitle tit={`${name || ''}图标库`}>
           <div className="sub-title-chil">
-            <span className="count"><b className="num">{totalPage || 0}</b>icons</span>
+            <span className="count">
+              <b className="num">{iconCount || 0}</b>icons
+            </span>
             <span className="powerby">管理员:</span>
             <span className="name">{admin}</span>
             <div className="tool-content">
@@ -202,13 +201,6 @@ export default class Repository extends Component {
               ))
             }
           </div>
-          {totalPage > pageSize &&
-            <Pager
-              defaultCurrent={currentPage}
-              onClick={this.fetchRepositoryByPage}
-              totalPage={Math.ceil(totalPage / pageSize)}
-            />
-          }
         </div>
         <Dialog
           empty
