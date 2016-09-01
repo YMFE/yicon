@@ -35,8 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const createElement = ({ dispatch }) => (C, props) => {
-  const fetchHandler = C.fetchServerData ||
-    (C.WrappedComponent && C.WrappedComponent.fetchServerData);
+  const fetchHandler = C.fetchServerData;
   if (typeof fetchHandler === 'function') {
     fetchHandler(dispatch, props);
   }

@@ -34,8 +34,7 @@ app.use(down.routes());
 function fetchServerData(props, { dispatch }) {
   return props.components.map(c => {
     if (!c) return null;
-    const fetchHandler = c.fetchServerData ||
-      (c.WrappedComponent && c.WrappedComponent.fetchServerData);
+    const fetchHandler = c.fetchServerData;
     if (typeof fetchHandler === 'function') {
       return fetchHandler(dispatch, props);
     }
@@ -85,14 +84,13 @@ const getRouteContext = (ctx, store) =>
         });
         const def = fetchServerData.call(ctx, renderProps, store);
 
-        const render = (fetchedURLs) => `<!DOCTYPE html>\n${
+        const render = () => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
             <Html
               assets={webpackIsomorphicTools.assets()}
               component={component}
               store={store}
-              urls={fetchedURLs}
-              title="呵呵"
+              title="yicon - 矢量图标库"
               authType="qsso"
             />
         )}`;
