@@ -96,6 +96,13 @@ const env = {
         },
       ],
     },
+    watcher: {
+      prefix: 'yicon',
+      host: 'qmon-fe.corp.qunar.com',
+      port: 2013,
+      category: 's.fe.',
+      rate: 1,
+    },
   },
 };
 

@@ -19,10 +19,10 @@ export function fetchHomeData() {
   };
 }
 
-export function fetchRepository(id, currentPage) {
+export function fetchRepository(id) {
   return {
     type: FETCH_REPOSITORY_DATA,
-    payload: fetch.get(`/repositories/${id}?currentPage=${currentPage}&pageSize=64`),
+    payload: fetch.get(`/repositories/${id}`),
   };
 }
 

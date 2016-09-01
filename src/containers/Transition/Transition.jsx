@@ -73,6 +73,7 @@ export default class Transition extends Component {
     const { repoId } = this.props.location.query;
     const noLoginHTML = (
       <div>
+        <div className="no-auth-logo"></div>
         <div className="no-auth-tips">
           该页面需要登录
         </div>
@@ -89,6 +90,7 @@ export default class Transition extends Component {
 
     const transHTML = (
       <div>
+        <div className="no-auth-logo"></div>
         <p className="no-auth-tips">你没有权限访问这个页面</p>
         <p className="no-auth-tips">{this.state.second} 秒之后跳转至首页</p>
       </div>
@@ -96,6 +98,7 @@ export default class Transition extends Component {
 
     const replIconHTML = (
       <div>
+        <div className="no-auth-nores"></div>
         <div className="no-auth-tips">
           <p>替换成功</p>
           <p>{this.state.second} 秒之后跳转至图标库页</p>
@@ -114,6 +117,7 @@ export default class Transition extends Component {
 
     const auditIconHTML = (
       <div>
+        <div className="no-auth-nores"></div>
         <div className="no-auth-tips">
           <p>没有待审核图标</p>
           <p>{this.state.second} 秒之后跳转至首页</p>
@@ -131,6 +135,7 @@ export default class Transition extends Component {
 
     const uploadIconHTML = (
       <div>
+        <div className="no-auth-nores"></div>
         <div className="no-auth-tips">
           <p>没有待上传的图标</p>
           <p>{this.state.second} 秒之后跳转至图标上传页</p>
@@ -149,7 +154,6 @@ export default class Transition extends Component {
     return (
       <div>
         <div className="no-auth">
-          <div className="no-auth-logo"></div>
           {type === 'no-auth' && transHTML}
           {type === 'no-login' && noLoginHTML}
           {type === 'repl-icon' && replIconHTML}
