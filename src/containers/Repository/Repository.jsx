@@ -52,7 +52,7 @@ export default class Repository extends Component {
   }
 
   componentDidMount() {
-    this.fetchRepositoryByPage(1);
+    this.fetchRepositoryWrapper();
     // this.props.resetIconSize();
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
@@ -60,7 +60,7 @@ export default class Repository extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
-      this.fetchRepositoryByPage(1, nextProps.params.id);
+      this.fetchRepositoryWrapper(nextProps.params.id);
       this.refs.myslider.getWrappedInstance().reset();
     }
   }
@@ -86,7 +86,7 @@ export default class Repository extends Component {
   }
 
   @autobind
-  fetchRepositoryByPage(page, currentId) {
+  fetchRepositoryWrapper(currentId) {
     let { params: { id } } = this.props;
     if (currentId) id = currentId;
 
@@ -94,7 +94,7 @@ export default class Repository extends Component {
       isShowLoading: true,
     }, () => {
       this.refs.myslider.getWrappedInstance().reset();
-      this.props.fetchRepository(id, page)
+      this.props.fetchRepository(id)
         .then(() => this.setState({ isShowLoading: false }))
         .catch(() => this.setState({ isShowLoading: false }));
     });
