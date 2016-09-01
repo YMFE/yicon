@@ -14,7 +14,6 @@ const initialState = {
   homeRepository: [],
   currRepository: {
     currentPage: 1,
-    totalPage: 0,
     icons: [],
     user: { name: '' },
     id: 0,
@@ -41,8 +40,8 @@ export default (state = initialState, action) => {
         ...state,
         currRepository: {
           ...action.payload.data,
-          currentPage: action.payload.page.currentPage,
-          totalPage: action.payload.page.totalCount,
+          // currentPage: action.payload.page.currentPage,
+          // totalPage: action.payload.page.totalCount,
         },
       };
     }

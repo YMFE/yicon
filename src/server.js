@@ -15,6 +15,7 @@ import Html from './helpers/Html';
 import { router, down } from './controller';
 import isomFetch from 'isom-fetch';
 import logger from './logger';
+import watcher from './helpers/watcher';
 
 const app = new Koa();
 const { PORT } = process.env;
@@ -55,6 +56,8 @@ const getRouteContext = (ctx, store) =>
         ctx.redirect(redirect.pathname + redirect.search);
         resolve('NOT_MATCH');
       } else if (renderProps) {
+        watcher('app-visit', 1);
+
         // 支持 material-ui 的 server-render
         global.navigator = {
           userAgent: ctx.req.headers['user-agent'],
@@ -82,7 +85,7 @@ const getRouteContext = (ctx, store) =>
             admin: sess.actor === 2,
           },
         });
-        const def = fetchServerData.call(ctx, renderProps, store);
+        const def = fetchServerData(renderProps, store);
 
         const render = () => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(

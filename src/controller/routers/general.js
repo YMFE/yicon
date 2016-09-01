@@ -8,13 +8,13 @@ import {
   getOneProject,
 } from '../modules/project';
 import { getUserInfo, clearUserInfo, validateAuth } from '../modules/user';
-import { pagination } from './middlewares';
+// import { pagination } from './middlewares';
 
 const general = new Router();
 
 general.get('/repositories', list);
 general.get('/tiny/repositories', listWithoutIcons);
-general.get('/repositories/:repoId', pagination, getOne);
+general.get('/repositories/:repoId', getOne);
 general.post('/icons', getById);
 general.get('/icons', getByCondition);
 general.get('/projects', getAllPublicProjects);

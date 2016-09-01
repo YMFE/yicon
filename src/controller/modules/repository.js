@@ -10,17 +10,21 @@ function* getRepoByVersion({
   repoId,
   version = '0.0.0',
   limit,
-  pageMixin,
+  // pageMixin,
 }) {
-  const mixIn = pageMixin || { offset: 0, limit };
+  let iconIds;
+  if (limit) {
+    const mixIn = { offset: 0, limit };
 
-  const versionData = yield RepoVersion.findAll({
-    attributes: ['iconId'],
-    where: { repositoryId: repoId },
-    order: 'iconId',
-    ...mixIn,
-  });
-  const iconIds = versionData.map(d => d.iconId);
+    const versionData = yield RepoVersion.findAll({
+      attributes: ['iconId'],
+      where: { repositoryId: repoId },
+      order: 'iconId',
+      ...mixIn,
+    });
+    iconIds = versionData.map(d => d.iconId);
+  }
+
   const repo = yield Repo.findOne({
     where: { id: repoId },
     include: [User],
@@ -29,7 +33,10 @@ function* getRepoByVersion({
   invariant(repo, `id 为 ${repoId} 的大库不存在`);
   const icons = yield repo.getIcons({
     attributes: ['id', 'name', 'code', 'path'],
-    where: { status: iconStatus.RESOLVED, id: { $in: iconIds } },
+    where: {
+      status: iconStatus.RESOLVED,
+      ...(iconIds ? { id: { $in: iconIds } } : null),
+    },
     on: { version },
     required: false,
     order: 'id',
@@ -85,7 +92,6 @@ export function* getOne(next) {
   });
 
   this.state.respond = repo;
-  this.state.page.totalCount = repo.iconCount;
 
   yield next;
 }

@@ -55,7 +55,6 @@ Html.propTypes = {
   assets: PropTypes.object,
   component: PropTypes.node,
   store: PropTypes.object,
-  urls: PropTypes.object,
   authType: PropTypes.string,
   title: PropTypes.string,
 };
