@@ -34,13 +34,13 @@ if (process.env.NODE_ENV === 'development') {
   window.React = React; // enable debugger
 }
 
-const createElement = ({ dispatch }) => (C, props) => {
-  const fetchHandler = C.fetchServerData;
+const createElement = ({ dispatch }) => (Comp, props) => {
+  const fetchHandler = Comp.fetchServerData;
   if (typeof fetchHandler === 'function') {
     fetchHandler(dispatch, props);
   }
 
-  return <Component {...props} />;
+  return <Comp {...props} />;
 };
 
 ReactDOM.render(
