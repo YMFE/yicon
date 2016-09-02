@@ -16,6 +16,7 @@ export default class Uploader extends Component {
     dispatch: PropTypes.func,
     replacement: PropTypes.bool,
     fromId: PropTypes.number,
+    params: PropTypes.object,
   }
 
   state = {
@@ -55,7 +56,7 @@ export default class Uploader extends Component {
 
   sendFiles(files) {
     let hasInvalidFile = false;
-    const { replacement, fromId, dispatch } = this.props;
+    const { replacement, fromId, dispatch, params } = this.props;
     const fileList = [...files];
     const MAX_COUNT = replacement ? 1 : 20;
 
@@ -104,7 +105,9 @@ export default class Uploader extends Component {
           .post('/api/user/icons', formData)
           .then(data => {
             if (data.data.res) {
-              dispatch(push('/workbench'));
+              const url = params && params.repoId ?
+                `/workbench/repository/${params.repoId}` : '/workbench';
+              dispatch(push(url));
             } else {
               Message.error(data.data.message);
             }
