@@ -50,7 +50,12 @@ export default class Workbench extends Component {
     push: PropTypes.func,
     router: PropTypes.object,
     route: PropTypes.object,
+    params: PropTypes.object,
   }
+
+  state = {
+    repo: null,
+  };
 
   componentWillMount() {
     this.props.fetchWorkbench().then(() => {
@@ -64,9 +69,12 @@ export default class Workbench extends Component {
   }
 
   componentDidMount() {
-    const { router, route } = this.props;
+    const { router, route, params } = this.props;
     router.setRouteLeaveHook(route, this.routerWillLeave);
-    window.onbeforeunload = () => '';
+    window.onbeforeunload = () => {};
+    if (params.repoId) {
+      this.selectRepo(params.repoId);
+    }
   }
 
   componentWillUnmount() {
@@ -121,6 +129,7 @@ export default class Workbench extends Component {
 
   @autobind
   selectRepo(id) {
+    this.setState({ repo: id });
     this.props.selectRepo(+id);
   }
 
@@ -196,8 +205,9 @@ export default class Workbench extends Component {
               </span>
               <div className={'select-repository'}>
                 <Select
+                  value={this.state.repo}
                   placeholder="选择图标库"
-                  onChange={this.selectRepo}
+                  onSelect={this.selectRepo}
                 >
                   {
                     allRepoList.map((repo) => (
