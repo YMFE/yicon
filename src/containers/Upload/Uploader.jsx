@@ -91,15 +91,23 @@ export default class Uploader extends Component {
         axios
           .post('/api/owner/replacement', formData)
           .then(data => {
-            const { replaceId } = data.data.data;
-            dispatch(push(`/replacement/icon/${fromId}...${replaceId}`));
+            if (data.data.res) {
+              const { replaceId } = data.data.data;
+              dispatch(push(`/replacement/icon/${fromId}...${replaceId}`));
+            } else {
+              Message.error(data.data.message);
+            }
           })
           .catch(e => Message.error(e));
       } else {
         axios
           .post('/api/user/icons', formData)
-          .then(() => {
-            dispatch(push('/workbench'));
+          .then(data => {
+            if (data.data.res) {
+              dispatch(push('/workbench'));
+            } else {
+              Message.error(data.data.message);
+            }
           })
           .catch(e => Message.error(e));
       }
