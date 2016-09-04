@@ -16,6 +16,7 @@ export default class Uploader extends Component {
     dispatch: PropTypes.func,
     replacement: PropTypes.bool,
     fromId: PropTypes.number,
+    params: PropTypes.object,
   }
 
   state = {
@@ -55,7 +56,7 @@ export default class Uploader extends Component {
 
   sendFiles(files) {
     let hasInvalidFile = false;
-    const { replacement, fromId, dispatch } = this.props;
+    const { replacement, fromId, dispatch, params } = this.props;
     const fileList = [...files];
     const MAX_COUNT = replacement ? 1 : 20;
 
@@ -91,15 +92,25 @@ export default class Uploader extends Component {
         axios
           .post('/api/owner/replacement', formData)
           .then(data => {
-            const { replaceId } = data.data.data;
-            dispatch(push(`/replacement/icon/${fromId}...${replaceId}`));
+            if (data.data.res) {
+              const { replaceId } = data.data.data;
+              dispatch(push(`/replacement/icon/${fromId}...${replaceId}`));
+            } else {
+              Message.error(data.data.message);
+            }
           })
           .catch(e => Message.error(e));
       } else {
         axios
           .post('/api/user/icons', formData)
-          .then(() => {
-            dispatch(push('/workbench'));
+          .then(data => {
+            if (data.data.res) {
+              const url = params && params.repoId ?
+                `/workbench/repository/${params.repoId}` : '/workbench';
+              dispatch(push(url));
+            } else {
+              Message.error(data.data.message);
+            }
           })
           .catch(e => Message.error(e));
       }

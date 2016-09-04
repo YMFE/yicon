@@ -44,17 +44,18 @@ function fetchServerData(props, { dispatch }) {
 }
 
 const getRouteContext = (ctx, store) =>
-  new Promise(resolve => {
+  new Promise((resolve, reject) => {
     match({
       routes: routes(store),
       location: ctx.originalUrl,
     }, (error, redirect, renderProps) => {
       if (error) {
-        ctx.status(500).send(error.message);
-        resolve('NOT_MATCH');
+        reject(error);
       } else if (redirect) {
-        ctx.redirect(redirect.pathname + redirect.search);
-        resolve('NOT_MATCH');
+        reject({
+          name: 'redirect',
+          url: redirect.pathname + redirect.search,
+        });
       } else if (renderProps) {
         watcher('app-visit', 1);
 
@@ -102,15 +103,12 @@ const getRouteContext = (ctx, store) =>
           Promise
             .all(def)
             .then(() => resolve(render()))
-            .catch(e => {
-              ctx.status(500).send(e.message);
-              resolve('NOT_MATCH');
-            });
+            .catch(e => reject(e));
         } else {
           resolve(render());
         }
       } else {
-        resolve('NOT_MATCH');
+        reject(new Error('NOT_MATCH'));
       }
     });
   });
@@ -124,9 +122,15 @@ app.use(function* s(next) {
     }
     const store = createStore();
     isomFetch.use(this, router);
-    const result = yield getRouteContext(this, store);
-    if (result !== 'NOT_MATCH') {
+    try {
+      const result = yield getRouteContext(this, store);
       this.body = result;
+    } catch (e) {
+      if (e.name === 'redirect') {
+        this.redirect(e.url);
+      } else {
+        this.status(500).send(e.message);
+      }
     }
   }
 });

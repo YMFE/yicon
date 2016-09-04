@@ -97,7 +97,14 @@ export function* uploadIcons(next) {
   };
 
   yield saveOriginalSVG(param.icons);
-  const icons = yield fontBuilder(param);
+
+  let icons;
+  try {
+    icons = yield fontBuilder(param);
+  } catch (e) {
+    invariant(false, '读取 svg 文件内容有误，请检查文件');
+  }
+
   const data = icons.map(icon => ({
     name: icon.name,
     path: icon.d,
@@ -130,7 +137,12 @@ export function* uploadReplacingIcon(next) {
     icons: [{ name, buffer }],
     writeFiles: false,
   };
-  const icons = yield fontBuilder(param);
+  let icons;
+  try {
+    icons = yield fontBuilder(param);
+  } catch (e) {
+    invariant(false, '读取 svg 文件内容有误，请检查文件');
+  }
   const icon = icons[0];
   const iconData = yield Icon.create({
     name: icon.name,

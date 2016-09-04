@@ -59,8 +59,8 @@ export default store => {
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>
-        <Route path="upload" component={Upload} /> {/* 上传图标 */}
-        <Route path="workbench" component={Workbench} /> {/* 工作台 */}
+        <Route path="upload(/repository/:repoId)" component={Upload} /> {/* 上传图标 */}
+        <Route path="workbench(/repository/:repoId)" component={Workbench} /> {/* 工作台 */}
         <Route path="projects" component={PublicProject} />
         <Route path="projects/:id/logs" component={ProjectLog} />
         <Route path="projects/:id/comparison" component={VersionComparison} />

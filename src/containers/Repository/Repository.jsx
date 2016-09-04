@@ -64,7 +64,7 @@ export default class Repository extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
-      this.fetchRepositoryByPage(1, nextProps.params.id);
+      this.fetchRepositoryWrapper(nextProps.params.id);
       this.refs.myslider.getWrappedInstance().reset();
     }
   }
@@ -90,7 +90,7 @@ export default class Repository extends Component {
   }
 
   @autobind
-  fetchRepositoryByPage(page, currentId) {
+  fetchRepositoryWrapper(currentId) {
     let { params: { id } } = this.props;
     if (currentId) id = currentId;
 
@@ -98,7 +98,7 @@ export default class Repository extends Component {
       isShowLoading: true,
     }, () => {
       this.refs.myslider.getWrappedInstance().reset();
-      this.props.fetchRepository(id, page)
+      this.props.fetchRepository(id)
         .then(() => this.setState({ isShowLoading: false }))
         .catch(() => this.setState({ isShowLoading: false }));
     });
@@ -170,7 +170,7 @@ export default class Repository extends Component {
             <span className="name">{admin}</span>
             <div className="tool-content">
               <div className="tools">
-                <Link to="/upload" className="options-btns btns-blue">
+                <Link to={`/upload/repository/${repoId}`} className="options-btns btns-blue">
                   <i className="iconfont">&#xf50a;</i>上传新图标
                 </Link>
                 <button
