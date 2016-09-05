@@ -94,17 +94,18 @@ class IconButton extends Component {
   addCartAnim() {
     const iconNode = findDOMNode(this.refs.icon);
     const { screenLeft, screenTop } = this.getScreenDist(iconNode);
+    const { scrollTop, scrollLeft } = document.body;
     const iconCopy = iconNode.cloneNode(true);
     iconCopy.style.cssText += `
-      top: ${iconNode.offsetTop}px;
-      left: ${iconNode.offsetLeft}px;
+      top: ${screenTop + scrollTop}px;
+      left: ${screenLeft + scrollLeft}px;
       transition: transform 0.3s ease-in, opacity 0.2s linear 0.3s;
       position: absolute;
       z-index: 1000;
     `;
     iconCopy.getElementsByTagName('path')[0].style.fill = '#008ed6';
-    const winWidth = window.innerWidth > 1100 ? window.innerWidth : 1100;
-    const cartLeft = (winWidth - 1100) / 2 + 766.5;
+    const cartNode = document.getElementsByClassName('global-header-cart')[0];
+    const cartLeft = this.getScreenDist(cartNode).screenLeft;
     document.body.appendChild(iconCopy);
     setTimeout(() => {
       iconCopy.style.cssText += `
@@ -121,8 +122,8 @@ class IconButton extends Component {
     const iconNode = findDOMNode(this.refs.icon);
     const { scrollTop, scrollLeft } = document.body;
     const iconCopy = iconNode.cloneNode(true);
-    const winWidth = window.innerWidth > 1100 ? window.innerWidth : 1100;
-    const cartLeft = (winWidth - 1100) / 2 + 766.5;
+    const cartNode = document.getElementsByClassName('global-header-cart')[0];
+    const cartLeft = this.getScreenDist(cartNode).screenLeft;
     iconCopy.style.cssText += `
       top: ${scrollTop + 15}px;
       left: ${scrollLeft + cartLeft}px;
@@ -151,11 +152,21 @@ class IconButton extends Component {
   }
   // 待完成：copy失败(safari下)，提示按 ⌘-C 完成复制
   @autobind
-  copyError() {
+  copyError(value) {
     this.setState({
-      copytipShow: false,
+      copytipShow: true,
       copyError: true,
     });
+    let copyNode = document.getElementsByClassName('g-copy-input')[0];
+    if (!copyNode) {
+      copyNode = document.createElement('input');
+      copyNode.className = 'g-copy-input';
+      copyNode.style.cssText = 'width: 1px; height: 1px; opacity: 0;';
+      document.body.appendChild(copyNode);
+    }
+    copyNode.value = value;
+    // copyNode.focus();
+    copyNode.select();
   }
   @autobind
   copyEnd() {
@@ -243,7 +254,7 @@ class IconButton extends Component {
           button-title="复制图标"
           data-clipboard-text={String.fromCharCode(icon.code)}
           onSuccess={this.copySuccess}
-          onError={this.copyError}
+          onError={() => this.copyError(String.fromCharCode(icon.code))}
           button-onMouseOut={this.copyEnd}
           key="copy"
         >&#xf514;</ClipboardButton>,
