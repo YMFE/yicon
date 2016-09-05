@@ -79,7 +79,7 @@ export function* createProject(next) {
       }));
       return ProjectVersion.bulkCreate(record, { transaction });
     })
-    .then(() => UserProject.create({ projectId, userId }))
+    .then(() => UserProject.create({ projectId, userId }, { transaction }))
     .then(() => {
       const log = [{
         type: 'PROJECT_CREATE',
@@ -453,11 +453,25 @@ export function* addProject(next) {
   const user = yield User.findOne({ where: { id: owner } });
   invariant(user && user.id > 0, '没有指定的用户信息');
 
-  const project = yield Project.create({
-    name,
-    owner,
-  });
-  this.state.respond = project;
+  const t = seq.transaction(transaction =>
+    Project.create({ name, owner }, { transaction })
+    .then((created) => {
+      this.state.respond = created;
+      return UserProject.create({
+        projectId: created.id,
+        userId: user.id,
+      }, { transaction });
+    })
+    .then((userProject) => {
+      const log = {
+        type: 'PROJECT_CREATE',
+        loggerId: userProject.projectId,
+        subscribers: [userProject.userId],
+      };
+      return logRecorder(log, transaction, userProject.userId);
+    })
+  );
+  yield t;
   yield next;
 }
 
@@ -487,7 +501,7 @@ export function* appointProjectOwner(next) {
   const hasNewOwner = allMembers.some(m => m.id === newOwner.id);
   if (!hasNewOwner) allMembers.push(newOwner);
 
-  const t = yield seq.transaction(transaction =>
+  const t = seq.transaction(transaction =>
       Promise.all([
         Project.update({ owner: newOwner.id }, { where: { id: projectId }, transaction }),
         UserProject.bulkCreate(
