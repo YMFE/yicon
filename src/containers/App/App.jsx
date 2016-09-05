@@ -17,7 +17,7 @@ import './App.scss';
 )
 class App extends Component {
   static fetchServerData(dispatch) {
-    dispatch(fetchUserInfo());
+    if (!__CLIENT__) dispatch(fetchUserInfo());
   }
 
   componentDidMount() {
