@@ -46,18 +46,13 @@ export default class Repository extends Component {
     push: PropTypes.func,
   };
 
-  static fetchServerData(dispatch, props) {
-    const { id } = props.params;
-    return dispatch(fetchRepository(id, 1));
-  }
-
   state = {
     isShowDownloadDialog: false,
     isShowLoading: false,
   };
 
   componentDidMount() {
-    // this.props.resetIconSize();
+    this.fetchRepositoryWrapper();
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }
