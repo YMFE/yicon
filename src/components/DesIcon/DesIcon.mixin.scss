@@ -36,4 +36,9 @@
     line-height: 16px;
     height: 16px;
   }
+
+  .name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
