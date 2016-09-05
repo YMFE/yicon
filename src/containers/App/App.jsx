@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Header } from '../../components';
 import {
   launchDevTools,
+  fetchUserInfo,
 } from '../../actions/setting';
 import './App.scss';
 // import { autobind } from 'core-decorators';
@@ -15,6 +16,10 @@ import './App.scss';
   { launchDevTools }
 )
 class App extends Component {
+  static fetchServerData(dispatch) {
+    dispatch(fetchUserInfo());
+  }
+
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
       this.props.launchDevTools();
