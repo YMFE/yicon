@@ -44,16 +44,15 @@ export default class Repository extends Component {
     userInfo: PropTypes.object,
     params: PropTypes.object,
     push: PropTypes.func,
-  }
+  };
 
   state = {
     isShowDownloadDialog: false,
     isShowLoading: false,
-  }
+  };
 
   componentDidMount() {
     this.fetchRepositoryWrapper();
-    // this.props.resetIconSize();
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }

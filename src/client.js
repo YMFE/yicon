@@ -34,10 +34,22 @@ if (process.env.NODE_ENV === 'development') {
   window.React = React; // enable debugger
 }
 
+const createElement = ({ dispatch }) => (Comp, props) => {
+  const fetchHandler = Comp.fetchServerData;
+  if (typeof fetchHandler === 'function') {
+    fetchHandler(dispatch, props);
+  }
+
+  return <Comp {...props} />;
+};
+
 ReactDOM.render(
   <Provider store={store} key="provider">
     <div>
-      <Router history={history}>
+      <Router
+        createElement={createElement(store)}
+        history={history}
+      >
         {routes(store)}
       </Router>
       <DevToolsContainer />

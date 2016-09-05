@@ -23,7 +23,7 @@ import {
   getUploadedIcons,
 } from '../modules/icon';
 
-import { getUserByName } from '../modules/user';
+import { getUserByName, getUserSessionInfo } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
 import { getAllNotices, getOneNotice, getUnreadCount } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
@@ -34,6 +34,7 @@ const uploader = multer({ storage });
 
 user.use(getCurrentUser);
 
+user.post('/info', getUserSessionInfo);
 user.post('/icons', uploader.array('icon', 20), uploadIcons);
 user.patch('/icons', submitIcons);
 user.get('/workbench', getUploadedIcons);

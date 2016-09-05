@@ -11,6 +11,21 @@ export function* getUserByName() {
   });
 }
 
+// 获取 session 用户信息
+export function* getUserSessionInfo(next) {
+  const sess = this.session;
+  // 处理以下登录 reducer
+  this.state.respond = {
+    userId: sess.userId,
+    name: sess.domain,
+    real: sess.name ? decodeURIComponent(sess.name) : undefined,
+    login: !!sess.userId,
+    repoAdmin: sess.repoAdmin,
+    admin: sess.actor === 2,
+  };
+  yield next;
+}
+
 function* verifyToken(token) {
   const verifyTokenURL = `http://qsso.corp.qunar.com/api/verifytoken.php?token=${token}`;
   return yield axios.get(verifyTokenURL)

@@ -15,10 +15,14 @@ class Home extends Component {
   static propTypes = {
     list: PropTypes.array,
     fetchHomeData: PropTypes.func,
-  }
+  };
 
-  componentWillMount() {
-    this.props.fetchHomeData();
+  // componentWillMount() {
+  //   this.props.fetchHomeData();
+  // }
+
+  static fetchServerData(dispatch) {
+    return dispatch(fetchHomeData());
   }
 
   render() {
