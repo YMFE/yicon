@@ -9,7 +9,6 @@
   .icon-container {
     padding: 12px;
     margin:0 auto;
-    overflow: hidden;
     text-align: center;
   }
   .icon-room {
@@ -36,5 +35,10 @@
     display: block;
     line-height: 16px;
     height: 16px;
+  }
+
+  .name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }

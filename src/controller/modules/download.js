@@ -93,7 +93,7 @@ export function* downloadFont(next) {
       where: { status: iconStatus.RESOLVED },
       raw: true,
     });
-    foldName = `${type}-${instance.id}-${versionTools.n2v(version)}`;
+    foldName = `${type}-${isRepo ? instance.id : instance.name}-${versionTools.n2v(version)}`;
     fontName = fontName || (isRepo ? `iconfont${instance.id}` : instance.name);
     if (isRepo) {
       lastModify = +new Date(instance.updatedAt);

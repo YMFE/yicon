@@ -294,7 +294,19 @@ class Cart extends Component {
               <span onClick={this.dumpIcon}>清空</span>
             </div>
             <div className="btn-download">
-              {status >= 2 &&
+              {status >= 2 && projectList.length === 0 &&
+                <a className="button-icon">
+                  <a
+                    style={{ 'margin-left': 0 }}
+                    className="button-icon"
+                    onClick={this.onChangeCartSaveType}
+                    data-type="SAVE_TO_NEW_PROJECT"
+                  >
+                    保存为项目
+                  </a>
+                </a>
+              }
+              {status >= 2 && projectList.length > 0 &&
                 <div className="save_selection">
                   <a className="button-icon">
                     保存为项目

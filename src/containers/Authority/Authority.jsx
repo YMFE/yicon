@@ -175,6 +175,7 @@ export default class Authority extends Component {
         return;
       }
       this.props.createSuperManager(this.state.manager);
+      this.setState({ manager: '' });
     }
   }
 

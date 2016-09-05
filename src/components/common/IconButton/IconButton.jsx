@@ -61,8 +61,8 @@ class IconButton extends Component {
     const userInfoEqual = props.userInfo === nextProps.userInfo;
     // const iconSizeEqual = props.iconSize === nextProps.iconSize;
     const repoIdEqual = props.repoId === nextProps.repoId;
-    const isSelectChange = nextProps.iconsInLocalStorage.includes(iconId) ===
-                           props.iconsInLocalStorage.includes(iconId);
+    const isSelectChange = !~nextProps.iconsInLocalStorage.indexOf(iconId) ===
+                           !~props.iconsInLocalStorage.indexOf(iconId);
     const stateEqual = state === nextState;
     if (iconEqual &&
         userInfoEqual &&

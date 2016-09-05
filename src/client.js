@@ -7,6 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import createStore from './reducer';
 
 import DevTools from './containers/DevTools/DevTools';
+import './helpers/polyfill';
 
 const initialState = window.__INITIAL_STATE__;
 const store = createStore(initialState);

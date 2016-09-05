@@ -13,7 +13,7 @@ $staticUrl: '../../../static/';
   $text-color: #616161;
   @include global-icon( $icon-size: 59px, $icon-width: 56px );
   // width: 58px;
-  margin-right: 75px;
+  margin: 0 37px;
   position: relative;
   vertical-align: top;
   .icon-container{
@@ -22,7 +22,7 @@ $staticUrl: '../../../static/';
   .name{
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    margin: 0 -37px;
   }
 
   .state {
