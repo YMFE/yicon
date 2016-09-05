@@ -34,9 +34,18 @@ export default class Slick extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultCurrent || nextProps.defaultCurrent === 0) {
+      const currentItem = nextProps.defaultCurrent;
       this.setState({
-        currentItem: nextProps.defaultCurrent,
+        currentItem,
       });
+      const itemPage = parseInt(currentItem / 12, 10);
+      // 暂时针对 只需step = 84 * 12的处理，step为其他值组件需要重新考虑
+      const currPage = parseInt(this.state.defaultTranslateX / this.props.step, 10);
+      if (itemPage !== currPage) {
+        this.setState({
+          defaultTranslateX: -(itemPage * this.props.step),
+        });
+      }
     }
   }
   // componentWillMount() {
