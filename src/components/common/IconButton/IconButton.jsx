@@ -94,10 +94,11 @@ class IconButton extends Component {
   addCartAnim() {
     const iconNode = findDOMNode(this.refs.icon);
     const { screenLeft, screenTop } = this.getScreenDist(iconNode);
+    const { scrollTop, scrollLeft } = document.body;
     const iconCopy = iconNode.cloneNode(true);
     iconCopy.style.cssText += `
-      top: ${iconNode.offsetTop}px;
-      left: ${iconNode.offsetLeft}px;
+      top: ${screenTop + scrollTop}px;
+      left: ${screenLeft + scrollLeft}px;
       transition: transform 0.3s ease-in, opacity 0.2s linear 0.3s;
       position: absolute;
       z-index: 1000;
