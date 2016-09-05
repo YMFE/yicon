@@ -43,6 +43,20 @@ function fetchServerData(props, { dispatch }) {
   }).filter(v => v);
 }
 
+function dispatchUserInfo({ dispatch }, sess) {
+  dispatch({
+    type: 'FETCH_USER_INFO',
+    payload: {
+      userId: sess.userId,
+      name: sess.domain,
+      real: sess.name ? decodeURIComponent(sess.name) : undefined,
+      login: !!sess.userId,
+      repoAdmin: sess.repoAdmin,
+      admin: sess.actor === 2,
+    },
+  });
+}
+
 const getRouteContext = (ctx, store) =>
   new Promise((resolve, reject) => {
     match({
@@ -75,6 +89,8 @@ const getRouteContext = (ctx, store) =>
         );
 
         const def = fetchServerData(renderProps, store);
+        // 服务端发送登录信息
+        dispatchUserInfo(store, ctx.session);
 
         const render = () => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
@@ -117,7 +133,7 @@ app.use(function* s(next) {
       if (e.name === 'redirect') {
         this.redirect(e.url);
       } else {
-        this.status(500).send(e.message);
+        this.body = e.stack;
       }
     }
   }

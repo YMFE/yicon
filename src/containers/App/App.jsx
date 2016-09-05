@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { Header } from '../../components';
 import {
   launchDevTools,
-  fetchUserInfo,
 } from '../../actions/setting';
 import './App.scss';
-// import { autobind } from 'core-decorators';
 
 @connect(
   state => ({
@@ -16,10 +14,6 @@ import './App.scss';
   { launchDevTools }
 )
 class App extends Component {
-  static fetchServerData(dispatch) {
-    if (!__CLIENT__) dispatch(fetchUserInfo());
-  }
-
   componentDidMount() {
     if (__DEVTOOLS__ && !window.devToolsExtension) {
       this.props.launchDevTools();
