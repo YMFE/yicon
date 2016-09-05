@@ -9,16 +9,11 @@ import {
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
+
 let localStorage = {};
 if (process.browser) {
   localStorage = window.localStorage;
 }
-// const saveType = {
-//   SAVE_TO_PROJECT: 'SAVE_TO_PROJECT',
-//   SAVE_TO_NEW_PROJECT: 'SAVE_TO_NEW_PROJECT',
-//   DEFAULT: 'DEFAULT',
-// };
-// ls.cartIconIds为Set类型
 const ls = {
   get cartIconIds() {
     localStorage.cartIconIds = localStorage.cartIconIds || JSON.stringify([]);
@@ -29,10 +24,10 @@ const ls = {
   },
 };
 
-
 function addToLocalStorage(id) {
   const iconIds = ls.cartIconIds;
-  ls.cartIconIds = iconIds.add(id);
+  iconIds.add(id);
+  ls.cartIconIds = iconIds;
   return Array.from(ls.cartIconIds);
 }
 function deleteInLocalStorage(id) {

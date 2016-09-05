@@ -276,15 +276,14 @@ export function* updateProjectInfo(next) {
   const { projectId, info, name, owner, publicProject } = this.param;
   const data = { info, name, owner, public: publicProject };
   let projectResult = null;
-  if (name) {
-    const existProject = yield Project.findOne({
-      where: { name, id: { $notIn: [projectId] } },
-      raw: true,
-    });
-    if (existProject) {
-      const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
-      invariant(false, `项目名已被使用，请更改，如有需要请联系 ${ownerName.name}`);
-    }
+  invariant(name, '项目名不可以为空');
+  const existProject = yield Project.findOne({
+    where: { name, id: { $notIn: [projectId] } },
+    raw: true,
+  });
+  if (existProject) {
+    const ownerName = yield User.findOne({ where: { id: existProject.owner }, raw: true });
+    invariant(false, `项目名已被使用，请更改，如有需要请联系 ${ownerName.name}`);
   }
   const key = Object.keys(data);
   key.forEach((v) => {

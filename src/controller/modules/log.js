@@ -7,7 +7,7 @@ function* getLog(id, model, scope, pageMixin) {
   const data = yield model.findOne({ where: { id } });
   const logs = yield data.getLogs({
     attributes: { exclude: ['operator'] },
-    order: 'createdAt DESC',
+    order: 'id DESC',
     include: [
       { model, as: scope },
       { model: User, as: 'logCreator' },

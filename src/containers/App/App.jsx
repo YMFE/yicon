@@ -5,7 +5,6 @@ import {
   launchDevTools,
 } from '../../actions/setting';
 import './App.scss';
-// import { autobind } from 'core-decorators';
 
 @connect(
   state => ({

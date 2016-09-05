@@ -32,18 +32,44 @@ app.use(serve(path.join(__dirname, '../static')));
 app.use(router.routes());
 app.use(down.routes());
 
+function fetchServerData(props, { dispatch }) {
+  return props.components.map(c => {
+    if (!c) return null;
+    const fetchHandler = c.fetchServerData;
+    if (typeof fetchHandler === 'function') {
+      return fetchHandler(dispatch, props);
+    }
+    return null;
+  }).filter(v => v);
+}
+
+function dispatchUserInfo({ dispatch }, sess) {
+  dispatch({
+    type: 'FETCH_USER_INFO',
+    payload: {
+      userId: sess.userId,
+      name: sess.domain,
+      real: sess.name ? decodeURIComponent(sess.name) : undefined,
+      login: !!sess.userId,
+      repoAdmin: sess.repoAdmin,
+      admin: sess.actor === 2,
+    },
+  });
+}
+
 const getRouteContext = (ctx, store) =>
-  new Promise(resolve => {
+  new Promise((resolve, reject) => {
     match({
       routes: routes(store),
       location: ctx.originalUrl,
     }, (error, redirect, renderProps) => {
       if (error) {
-        ctx.status(500).send(error.message);
-        resolve('NOT_MATCH');
+        reject(error);
       } else if (redirect) {
-        ctx.redirect(redirect.pathname + redirect.search);
-        resolve('NOT_MATCH');
+        reject({
+          name: 'redirect',
+          url: redirect.pathname + redirect.search,
+        });
       } else if (renderProps) {
         watcher('app-visit', 1);
 
@@ -61,19 +87,10 @@ const getRouteContext = (ctx, store) =>
             </div>
           </Provider>
         );
-        const sess = ctx.session;
-        // 处理以下登录 reducer
-        store.dispatch({
-          type: 'FETCH_USER_INFO',
-          payload: {
-            userId: sess.userId,
-            name: sess.domain,
-            real: sess.name ? decodeURIComponent(sess.name) : undefined,
-            login: !!sess.userId,
-            repoAdmin: sess.repoAdmin,
-            admin: sess.actor === 2,
-          },
-        });
+
+        const def = fetchServerData(renderProps, store);
+        // 服务端发送登录信息
+        dispatchUserInfo(store, ctx.session);
 
         const render = () => `<!DOCTYPE html>\n${
           ReactDOM.renderToString(
@@ -86,24 +103,39 @@ const getRouteContext = (ctx, store) =>
             />
         )}`;
 
-        resolve(render());
-        // render();
-        // fetch.all(() => resolve(render(fetch.urlCollection)));
+        if (def.length) {
+          Promise
+            .all(def)
+            .then(() => resolve(render()))
+            .catch(e => reject(e));
+        } else {
+          resolve(render());
+        }
       } else {
-        resolve('NOT_MATCH');
+        reject(new Error('NOT_MATCH'));
       }
     });
   });
 
-app.use(function* s() {
-  if (__DEVELOPMENT__) {
-    webpackIsomorphicTools.refresh();
-  }
-  const store = createStore();
-  isomFetch.use(this, router);
-  const result = yield getRouteContext(this, store);
-  if (result !== 'NOT_MATCH') {
-    this.body = result;
+app.use(function* s(next) {
+  if (/^\/api/.test(this.url)) {
+    yield next;
+  } else {
+    if (__DEVELOPMENT__) {
+      webpackIsomorphicTools.refresh();
+    }
+    const store = createStore();
+    isomFetch.use(this, router);
+    try {
+      const result = yield getRouteContext(this, store);
+      this.body = result;
+    } catch (e) {
+      if (e.name === 'redirect') {
+        this.redirect(e.url);
+      } else {
+        this.body = e.stack;
+      }
+    }
   }
 });
 

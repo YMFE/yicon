@@ -7,6 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import createStore from './reducer';
 
 import DevTools from './containers/DevTools/DevTools';
+import './helpers/polyfill';
 
 const initialState = window.__INITIAL_STATE__;
 const store = createStore(initialState);
@@ -34,10 +35,22 @@ if (process.env.NODE_ENV === 'development') {
   window.React = React; // enable debugger
 }
 
+const createElement = ({ dispatch }) => (Comp, props) => {
+  const fetchHandler = Comp.fetchServerData;
+  if (typeof fetchHandler === 'function') {
+    fetchHandler(dispatch, props);
+  }
+
+  return <Comp {...props} />;
+};
+
 ReactDOM.render(
   <Provider store={store} key="provider">
     <div>
-      <Router history={history}>
+      <Router
+        createElement={createElement(store)}
+        history={history}
+      >
         {routes(store)}
       </Router>
       <DevToolsContainer />
