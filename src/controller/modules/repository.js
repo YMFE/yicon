@@ -61,6 +61,7 @@ function* getRepoByVersion({
 export function* list(next) {
   const repoList = yield Repo.findAll({
     attributes: ['id'],
+    order: ['id'],
   });
   const result = [];
   let i = 0;
@@ -80,6 +81,7 @@ export function* list(next) {
 export function* listWithoutIcons(next) {
   this.state.respond = yield Repo.findAll({
     attributes: ['id', 'name'],
+    order: ['id'],
   });
   yield next;
 }

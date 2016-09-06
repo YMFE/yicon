@@ -19,7 +19,6 @@ const version = {
 };
 
 const ProjectVersion = seq.define('projectVersions', {
-  version,
   projectId: {
     type: Seq.INTEGER,
     primaryKey: true,
@@ -28,16 +27,6 @@ const ProjectVersion = seq.define('projectVersions', {
       key: 'id',
     },
   },
-  iconId: {
-    type: Seq.INTEGER,
-    primaryKey: true,
-    references: {
-      model: Icon,
-      key: 'id',
-    },
-  },
-});
-const RepoVersion = seq.define('repoVersion', {
   version,
   iconId: {
     type: Seq.INTEGER,
@@ -47,6 +36,10 @@ const RepoVersion = seq.define('repoVersion', {
       key: 'id',
     },
   },
+}, {
+  comment: '项目与图标对应关系表',
+});
+const RepoVersion = seq.define('repoVersion', {
   repositoryId: {
     type: Seq.INTEGER,
     primaryKey: true,
@@ -55,6 +48,17 @@ const RepoVersion = seq.define('repoVersion', {
       key: 'id',
     },
   },
+  version,
+  iconId: {
+    type: Seq.INTEGER,
+    primaryKey: true,
+    references: {
+      model: Icon,
+      key: 'id',
+    },
+  },
+}, {
+  comment: '大库与图标对应关系表',
 });
 
 const UserProject = seq.define('userProject');
@@ -67,7 +71,10 @@ const UserLog = seq.define('userLog', {
   unread: {
     type: Seq.BOOLEAN,
     defaultValue: true,
+    comment: '是否未读，true为未读',
   },
+}, {
+  comment: '用户通知信息表',
 });
 
 // 两边都写一下对应关系，以便添加 dao 方法
