@@ -2,31 +2,38 @@
 import { seq, Seq } from './_db';
 
 export default seq.define('icons', {
-  // 图标名称
   name: {
     type: Seq.STRING,
     allowNull: false,
+    comment: '图标名称',
   },
-  // 图标类名
-  fontClass: Seq.STRING,
-  // 图标标签
-  tags: Seq.STRING(2000),
-  // 图标编码
-  code: Seq.INTEGER,
-  // 路径信息
+  fontClass: {
+    type: Seq.STRING,
+    comment: '图标类名',
+  },
+  tags: {
+    type: Seq.STRING(2000),
+    comment: '图标标签',
+  },
+  code: {
+    type: Seq.INTEGER,
+    comment: '图标编码e000-f8ff',
+  },
   path: {
     type: Seq.STRING(5000),
     allowNull: false,
+    comment: 'svg路径信息',
   },
-  // 图标创建时间
   createTime: {
     type: Seq.DATE,
     defaultValue: Seq.NOW,
     allowNull: false,
+    comment: '图标创建时间',
   },
-  // 图标提交审核时间
-  applyTime: Seq.DATE,
-  // 图标状态
+  applyTime: {
+    type: Seq.DATE,
+    comment: '图标提交审核时间',
+  },
   // 0  - 已上传，用户可编辑
   // 5  - 审核未通过，用户可编辑
   // 10 - 已提交，owner可编辑
@@ -38,8 +45,6 @@ export default seq.define('icons', {
     type: Seq.INTEGER,
     defaultValue: 0,
     allowNull: false,
-    // validate: {
-    //   isIn: [-1, 0, 5, 10, 15, 20, 25],
-    // },
+    comment: '图标状态，标记图标是否审核通过',
   },
 });
