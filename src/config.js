@@ -77,12 +77,12 @@ const env = {
   production: {
     // 暂时写这个
     model: {
-      database: 'iconfont-dev',
+      database: 'iconfont',
       username: 'root',
       password: 'odmMj7H6x2IaACrs',
       dialect: 'mysql',
       port: '3306',
-      host: '10.86.43.48',
+      host: '10.90.59.56',
     },
     port: 3000,
     log: {
