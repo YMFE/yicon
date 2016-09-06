@@ -233,8 +233,8 @@ class IconButton extends Component {
           className={`copytip ${this.state.copytipShow ? 'show' : ''}`}
           key="copytip"
         >
-          <i className="iconfont">&#xf078;</i>
-          {this.state.copyError ? '再按 ⌘-C' : '复制成功！'}
+          <i className={`iconfont ${this.state.copyError ? 'hide' : ''}`}>&#xf078;</i>
+          {this.state.copyError ? '请再按 ⌘-C' : '复制成功！'}
         </span>,
       download:
         <i
