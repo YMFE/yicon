@@ -2,6 +2,7 @@ import PrettyError from 'pretty-error';
 import logger from '../../logger';
 import invariant from 'invariant';
 import { User, Repo, Project } from '../../model';
+import watcher from '../../helpers/watcher';
 
 const pe = new PrettyError();
 pe.skipNodeFiles();
@@ -27,7 +28,6 @@ export function* responder(next) {
       ...body,
     };
   } catch (e) {
-    // TODO: 记录错误日志
     this.body = {
       res: false,
       status: e.status || 500,
@@ -37,6 +37,7 @@ export function* responder(next) {
     const error = e;
     // 错误区分，如果是 invariant 认为是手动捕获的错误，无需记录日志
     if (error.name !== 'Invariant Violation') {
+      watcher('uncatched-error', 1);
       logger.error(error);
     }
   }
