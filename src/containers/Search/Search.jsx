@@ -78,8 +78,9 @@ export default class Search extends Component {
           <div className="yicon-search-info-container">
             <div className="clearfix options">
               <div className="search-result">
-                共为您找到 <em className="search-result-count">{this.props.totalCount}</em> 个结果，
-                如需搜索编码，请输入完整的编码，例如"<code>&#xf407</code>;"
+                共为您找到
+                <em className="search-result-count">{this.props.totalCount}</em>
+                个结果，如需搜索编码，请输入完整的编码，例如 <code>&amp;#xf407;</code>
               </div>
               <SliderSize ref="myslider" getIconsDom={this.getIconsDom} />
             </div>
