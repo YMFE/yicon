@@ -19,7 +19,7 @@ const metrics = {
 
   clear() {
     Object.keys(this._data).forEach(metry => {
-      this._data[metry] = null;
+      this._data[metry] = 0;
     });
   },
 
@@ -35,8 +35,15 @@ const metrics = {
         logger.error(e);
       }
     });
+
+    this.sendInterval(url);
+  },
+
+  sendInterval(url) {
+    setTimeout(() => this.sendToWatcher(url), cycle);
   },
 };
+
 
 let addWatcher;
 
@@ -50,7 +57,7 @@ if (watcher) {
     metrics.addMetry(metry, count);
   };
 
-  setTimeout(() => metrics.sendToWatcher(url), cycle);
+  metrics.sendInterval(url);
 }
 
 export default addWatcher || (() => {});
