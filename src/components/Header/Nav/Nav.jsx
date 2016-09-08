@@ -50,7 +50,15 @@ class Nav extends Component {
   render() {
     const { name } = this.props;
     const list = this.getNavList();
-    if (!list.length) return null;
+    if (!list.length) {
+      return (
+        <li
+          className={`global-header-Nav ${this.state.isShow ? 'hover' : ''}`}
+        >
+          <a>{name}</a>
+        </li>
+      );
+    }
 
     return (
       <li
