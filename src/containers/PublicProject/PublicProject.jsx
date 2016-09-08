@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import UserProject from '../UserProject/UserProject';
 import History from '../History/History';
-// import Loading from '../../components/common/Loading/Loading.jsx';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { getUsersProjectList } from '../../actions/project';
 
 /* eslint-disable react/no-multi-comp */
@@ -83,7 +83,7 @@ export default class PublicProject extends Component {
     return (
       <div>
         {content}
-        {/* <Loading visible={this.state.isShowLoading} /> */}
+        <Loading visible={this.state.isShowLoading} />
       </div>
     );
   }
