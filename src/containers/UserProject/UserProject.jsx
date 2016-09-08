@@ -12,7 +12,6 @@ import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
-import Loading from '../../components/common/Loading/Loading.jsx';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -491,7 +490,6 @@ class UserProject extends Component {
             </div>
           </Main>
         </Content>
-        <Loading visible={this.state.showLoading} />
         {dialogList}
       </div>
     );
