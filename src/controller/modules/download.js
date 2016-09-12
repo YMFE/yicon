@@ -114,7 +114,7 @@ export function* downloadFont(next) {
       icons: iconData,
       readFiles: false,
       dest: fontDest,
-      descent: 128,
+      descent: baselineShouldBeAdjusted ? 128 : 0,
       fontName,
       translate: baselineShouldBeAdjusted ? -128 : 0,
     });
