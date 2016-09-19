@@ -8,6 +8,11 @@ const common = {
     svg: 'download/svg',
     png: 'download/png',
   },
+  login: {
+    ssoType: 'sso',
+    authUrl: 'https://qsso.corp.qunar.com/login.php?ret={{service}}',
+    tokenUrl: 'http://qsso.corp.qunar.com/api/verifytoken.php?token={{token}}',
+  },
 };
 
 const env = {

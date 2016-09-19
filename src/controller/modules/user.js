@@ -1,6 +1,5 @@
-import axios from 'axios';
 import invariant from 'invariant';
-import { User, Repo } from '../../model';
+import { User } from '../../model';
 
 // suggest 获取用户名称
 export function* getUserByName() {
@@ -23,49 +22,6 @@ export function* getUserSessionInfo(next) {
     repoAdmin: sess.repoAdmin,
     admin: sess.actor === 2,
   };
-  yield next;
-}
-
-function* verifyToken(token) {
-  const verifyTokenURL = `http://qsso.corp.qunar.com/api/verifytoken.php?token=${token}`;
-  return yield axios.get(verifyTokenURL)
-    .then(value => value.data)
-    .catch(err => {
-      throw new Error(err);
-    });
-}
-
-function* insertToDB(data) {
-  const { userId } = data;
-  const info = yield User.findOrCreate({
-    where: { name: userId },
-    defaults: {
-      name: userId,
-      actor: 0,
-    },
-  }).spread(user => user.get({ plain: true }));
-  const repos = yield Repo.findAll({
-    where: { admin: info.id },
-    raw: true,
-  });
-  info.repoAdmin = repos ? repos.map(r => r.id) : [];
-  return info;
-}
-
-export function* getUserInfo(next) {
-  const { token } = this.param;
-  const verifyResult = yield verifyToken(token);
-  if (verifyResult.ret) {
-    const info = yield insertToDB(verifyResult.data);
-    this.session.name = encodeURIComponent(verifyResult.data.userInfo.name);
-    this.session.userId = info.id;
-    this.session.domain = info.name;
-    this.session.actor = info.actor;
-    this.session.repoAdmin = info.repoAdmin;
-    this.redirect('/');
-  } else {
-    throw new Error(verifyResult.errmsg);
-  }
   yield next;
 }
 

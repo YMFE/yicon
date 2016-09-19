@@ -129,3 +129,9 @@ export function getPageTitle(components) {
 
   return title;
 }
+
+const reg = /\{\{(\w+)\}\}/g;
+
+export function simpleParse(template, data) {
+  return template.replace(reg, (_, m) => data[m]);
+}

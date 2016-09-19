@@ -1,22 +1,9 @@
 import './ToolUserName.scss';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-
-class UnLogin extends Component {
-  qssoLogin() {
-    window.QSSO.auth('/api/login');
-  }
-
-  render() {
-    return (
-      <a className="nologin" onClick={this.qssoLogin}>
-        <i className="iconfont ">&#xf50e;</i>登录
-      </a>
-    );
-  }
-}
+import LoginButton from './Login';
 
 const Name = (props) => (
   <span className="avatar">
@@ -58,7 +45,7 @@ const ToolUserName = (props) => {
 
   return (
     <li className={className} >
-      {props.login ? <Name name={props.name} /> : <UnLogin />}
+      {props.login ? <Name name={props.name} /> : <LoginButton />}
       {props.login ? <Tool admin={props.admin} /> : null}
     </li>
   );

@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
+import config from '../config';
+
+const { authUrl } = config.login;
 
 const Html = (props) => {
-  const { assets, component, store, authType, title } = props;
+  const { assets, component, store, title } = props;
   const content = component ? ReactDOM.renderToString(component) : '';
   const serverTime = +new Date();
 
@@ -30,18 +33,13 @@ const Html = (props) => {
           dangerouslySetInnerHTML={{ __html: content }}
         >
         </div>
-        {authType === 'qsso' &&
-          <script
-            src="https://qsso.corp.qunar.com/lib/qsso-auth.js"
-            charSet="utf-8"
-          />
-        }
         <script
           charSet="utf-8"
           dangerouslySetInnerHTML={{
             __html: `
             window.__INITIAL_STATE__=${serialize(store.getState())};
             window.SERVER_TIME=${serverTime};
+            window.__AUTH=${serialize({ AUTH_URL: authUrl })};
             `,
           }}
         />

@@ -7,7 +7,8 @@ import {
   getProjectVersion,
   getOneProject,
 } from '../modules/project';
-import { getUserInfo, clearUserInfo, validateAuth } from '../modules/user';
+import { clearUserInfo, validateAuth } from '../modules/user';
+import { getUserInfo } from '../modules/login';
 // import { pagination } from './middlewares';
 
 const general = new Router();
