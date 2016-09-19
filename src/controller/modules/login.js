@@ -4,7 +4,7 @@ import config from '../../config';
 
 import { simpleParse } from '../../helpers/utils';
 
-const { ssoType, tokenUrl, serviceUrl } = config.login;
+const { ssoType, tokenUrl, serviceUrl, adminList } = config.login;
 
 function* verifyToken(token) {
   let verifyTokenURL;
@@ -18,9 +18,14 @@ function* verifyToken(token) {
 
 function* insertToDB(data) {
   const { userId } = data;
+  let isAdmin = false;
+  if (adminList instanceof Array) {
+    isAdmin = adminList.indexOf(userId) !== -1;
+  }
+
   const info = yield User.findOrCreate({
     where: { name: userId },
-    defaults: { name: userId, actor: 0 },
+    defaults: { name: userId, actor: isAdmin ? 2 : 0 },
   }).spread(user => user.get({ plain: true }));
 
   const repos = yield Repo.findAll({
