@@ -33,8 +33,8 @@ export function* responder(next) {
       status: e.status || 500,
       message: e.message || '服务器错误',
     };
-    // const error = __DEVELOPMENT__ ? pe.render(e) : e;
-    const error = e;
+    const error = __DEVELOPMENT__ ? pe.render(e) : e;
+    // const error = e;
     // 错误区分，如果是 invariant 认为是手动捕获的错误，无需记录日志
     if (error.name !== 'Invariant Violation') {
       watcher('uncatched-error', 1);
