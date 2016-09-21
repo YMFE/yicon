@@ -192,7 +192,7 @@ export function* replaceIcon(next) {
   const fromName = from.name;
   const toName = to.name;
   const { code, fontClass } = from;
-  const repoVersion = yield RepoVersion.findOne({ iconId: fromId });
+  const repoVersion = yield RepoVersion.findOne({ where: { iconId: fromId } });
 
   yield seq.transaction(transaction =>
     to.update({
