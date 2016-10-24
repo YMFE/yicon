@@ -356,7 +356,7 @@ export function* deleteIcons(next) {
 
 export function* updateIconInfo(next) {
   const { iconId, tags, name } = this.param;
-  const { userId } = this.state.user;
+  const { userId, model } = this.state.user;
 
   invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
   const iconInfo = yield Icon.findOne({
@@ -380,8 +380,8 @@ export function* updateIconInfo(next) {
     errorMsg.push(`期望传入的 tags 是非空字符串，传入的却是 ${tags}`);
   }
 
-  // 大库管理员可以修改icon的name
-  if (!iconInfo.repositories[0] || iconInfo.repositories[0].admin === userId) {
+  // 大库管理员和超管可以修改 icon 的 name
+  if ((!iconInfo.repositories[0] || iconInfo.repositories[0].admin !== userId) && model.actor < 2) {
     errorMsg.push('用户不是大库管理员，无法修改图标名称');
   } else if (typeof name !== 'string' || name === '') {
     errorMsg.push(`期望传入的 name 是非空字符串，传入的却是 ${name}`);
