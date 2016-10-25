@@ -58,7 +58,11 @@ function writeFonts(fonts, options) {
   var fontsQ = _.map(fonts, function(font, i) {
     var filePath = path.join(options.dest, options.fontName + '.' + type[i]);
 
-    var mkdirQ = Q.nfcall(mkdirp, path.dirname(filePath));
+    var mkdirQ = new Promise(function(resolve, reject) {
+      mkdirp(path.dirname(filePath), function(err) {
+        err ? reject(err) : resolve()
+      })
+    })
     var writeFileQ = Q.nfcall(fs.writeFile, filePath, font);
 
     return mkdirQ.then(writeFileQ);
