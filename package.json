@@ -110,7 +110,7 @@
     "dateformat": "^1.0.12",
     "graphite": "0.0.6",
     "history": "^2.1.1",
-    "iconfont-builder": "^2.3.1",
+    "iconfont-builder": "^2.3.2",
     "invariant": "^2.2.1",
     "isom-fetch": "^1.1.1",
     "koa": "^1.2.0",

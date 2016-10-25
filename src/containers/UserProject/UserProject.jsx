@@ -254,6 +254,13 @@ class UserProject extends Component {
   }
 
   @autobind
+  closeDownloadDialog() {
+    this.setState({
+      showDownloadDialog: false,
+    });
+  }
+
+  @autobind
   dialogUpdateShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
@@ -371,7 +378,7 @@ class UserProject extends Component {
           nextVersion={this.nextVersion}
           comparison={this.props.comparisonResult}
           onOk={this.downloadAndGenerateVersion}
-          onCancel={this.shiftDownloadDialog}
+          onCancel={this.closeDownloadDialog}
           onChange={this.changeGenerateVersion}
           value={this.state.generateVersion}
           confrimText={'生成版本并下载'}

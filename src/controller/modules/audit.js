@@ -47,7 +47,7 @@ function getBaseClassName(icons, transaction) {
           .join('')
           .replace(/[^\w]/g, '');
         const code = maxCode + index + 1;
-        const hexCode = maxCode.toString(16);
+        const hexCode = code.toString(16);
         const fontClass = `${repoMap[i.repoId]}-${pyName}${hexCode}${i.fontClass}`;
 
         return Icon.update(
