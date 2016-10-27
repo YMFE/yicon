@@ -46,10 +46,6 @@ export default class Transition extends Component {
     clearInterval(this.intervalId);
   }
 
-  qssoLogin() {
-    window.QSSO.auth('/api/login');
-  }
-
   backToPage(url) {
     this.intervalId = setInterval(() => {
       this.setState({
@@ -76,14 +72,6 @@ export default class Transition extends Component {
         <div className="no-auth-logo"></div>
         <div className="no-auth-tips">
           该页面需要登录
-        </div>
-        <div className="no-auth-tools">
-          <button
-            className="no-auth-login"
-            onClick={this.qssoLogin}
-          >
-            登录
-          </button>
         </div>
       </div>
     );
