@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/SVGPathData.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> SVGPathData.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>81/81</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>19/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>81/81</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82×</span>
+<span class="cline-any cline-yes">687×</span>
+<span class="cline-any cline-yes">687×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">683×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82×</span>
+<span class="cline-any cline-yes">82×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">100×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">100×</span>
+<span class="cline-any cline-yes">150×</span>
+<span class="cline-any cline-yes">150×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-yes">921×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">921×</span>
+<span class="cline-any cline-yes">1664×</span>
+<span class="cline-any cline-yes">1664×</span>
+<span class="cline-any cline-yes">743×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-yes">208×</span>
+<span class="cline-any cline-yes">178×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+function SVGPathData(content) {
+  this.commands = SVGPathData.parse(content);
+}
+&nbsp;
+SVGPathData.prototype.encode = function() {
+  return SVGPathData.encode(this.commands);
+};
+&nbsp;
+SVGPathData.prototype.round = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.ROUND].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.toAbs = function() {
+  return this.transform(SVGPathData.Transformer.TO_ABS);
+};
+&nbsp;
+SVGPathData.prototype.toRel = function() {
+  return this.transform(SVGPathData.Transformer.TO_REL);
+};
+&nbsp;
+SVGPathData.prototype.translate = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.TRANSLATE].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.scale = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.SCALE].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.rotate = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.ROTATE].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.matrix = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.MATRIX].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.skewX = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.SKEW_X].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.skewY = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.SKEW_Y].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.xSymetry = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.X_AXIS_SIMETRY].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.ySymetry = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.Y_AXIS_SIMETRY].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.aToC = function() {
+  return this.transform.apply(this, [SVGPathData.Transformer.A_TO_C].concat(
+    [].slice.call(arguments, 0)));
+};
+&nbsp;
+SVGPathData.prototype.transform = function(transformFunction) {
+  var newCommands = [];
+  var curCommands = [];
+  var commands = this.commands;
+  var i;
+  var ii;
+&nbsp;
+  transformFunction = transformFunction.apply(null, [].slice.call(arguments, 1));
+&nbsp;
+  for(i = 0, ii = commands.length; i &lt; ii; i++) {
+    curCommands = transformFunction(commands[i]);
+    if(curCommands instanceof Array) {
+      newCommands = newCommands.concat(curCommands);
+    } else {
+      newCommands.push(curCommands);
+    }
+  }
+  this.commands = newCommands;
+  return this;
+};
+&nbsp;
+// Static methods
+SVGPathData.encode = function(commands) {
+  var content = '';
+  var encoder = new SVGPathData.Encoder();
+&nbsp;
+  encoder.on('readable', function() {
+    var str;
+&nbsp;
+    do {
+      str = encoder.read();
+      if(null !== str) {
+        content += str;
+      }
+    } while(null !== str);
+  });
+  encoder.write(commands);
+  encoder.end();
+  return content;
+};
+&nbsp;
+SVGPathData.parse = function(content) {
+  var commands = [];
+  var parser = new SVGPathData.Parser();
+&nbsp;
+  parser.on('readable', function() {
+    var command;
+&nbsp;
+    do {
+      command = parser.read();
+      if(null !== command) {
+        commands.push(command);
+      }
+    } while(null !== command);
+  });
+  parser.write(content);
+  parser.end();
+  return commands;
+};
+&nbsp;
+// Commands static vars
+SVGPathData.CLOSE_PATH = 1;
+SVGPathData.MOVE_TO = 2;
+SVGPathData.HORIZ_LINE_TO = 4;
+SVGPathData.VERT_LINE_TO = 8;
+SVGPathData.LINE_TO = 16;
+SVGPathData.CURVE_TO = 32;
+SVGPathData.SMOOTH_CURVE_TO = 64;
+SVGPathData.QUAD_TO = 128;
+SVGPathData.SMOOTH_QUAD_TO = 256;
+SVGPathData.ARC = 512;
+SVGPathData.DRAWING_COMMANDS =
+  SVGPathData.HORIZ_LINE_TO | SVGPathData.VERT_LINE_TO | SVGPathData.LINE_TO |
+  SVGPathData.CURVE_TO | SVGPathData.SMOOTH_CURVE_TO | SVGPathData.QUAD_TO |
+  SVGPathData.SMOOTH_QUAD_TO | SVGPathData.ARC;
+&nbsp;
+// Export the main contructor first (tests are failing otherwise)
+module.exports = SVGPathData;
+&nbsp;
+// Expose the internal constructors
+SVGPathData.Parser = require('./SVGPathDataParser.js');
+SVGPathData.Encoder = require('./SVGPathDataEncoder.js');
+SVGPathData.Transformer = require('./SVGPathDataTransformer.js');
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Nov 07 2016 15:21:32 GMT+0100 (CET)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/SVGPathDataTransformer.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> SVGPathDataTransformer.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>191/191</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.7% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>178/186</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>27/27</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>188/188</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">58×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">121×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">116×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">205×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-yes">192×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">209×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">388×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">654×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">617×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">194×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">194×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">218×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">120×</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">735×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">191×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+// Transform SVG PathData
+// http://www.w3.org/TR/SVG/paths.html#PathDataBNF
+&nbsp;
+// a2c utility
+var a2c = require('./a2c.js');
+&nbsp;
+// Access to SVGPathData constructor
+var SVGPathData = require('./SVGPathData.js');
+&nbsp;
+// TransformStream inherance required modules
+var TransformStream = require('readable-stream').Transform;
+var util = require('util');
+&nbsp;
+// Inherit of transform stream
+util.inherits(SVGPathDataTransformer, TransformStream);
+&nbsp;
+function SVGPathDataTransformer(transformFunction) {
+  // Ensure new were used
+  if(!(this instanceof SVGPathDataTransformer)) {
+    return new (SVGPathDataTransformer.bind.apply(SVGPathDataTransformer,
+      [SVGPathDataTransformer].concat([].slice.call(arguments, 0))));
+  }
+&nbsp;
+  // Transform function needed
+  if('function' !== typeof transformFunction) {
+    throw new Error('Please provide a transform callback to receive commands.');
+  }
+  this._transformer = transformFunction.apply(null, [].slice.call(arguments, 1));
+  if('function' !== typeof this._transformer) {
+    throw new Error('Please provide a valid transform (returning a function).');
+  }
+&nbsp;
+  // Parent constructor
+  TransformStream.call(this, {
+    objectMode: true,
+  });
+}
+&nbsp;
+SVGPathDataTransformer.prototype._transform = function(commands, encoding, done) {
+  var i;
+  var j;
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if(!(commands instanceof Array)) {
+    commands = [commands];
+  }
+  for(i = 0, j = commands.length; i &lt; j; i++) {
+    this.push(this._transformer(commands[i]));
+  }
+  done();
+};
+&nbsp;
+// Predefined transforming functions
+// Rounds commands values
+SVGPathDataTransformer.ROUND = function roundGenerator(roundVal) {
+  roundVal = roundVal || 10e12;
+  return function round(command) {
+    // x1/y1 values
+    if('undefined' !== typeof command.x1) {
+      command.x1 = Math.round(command.x1 * roundVal) / roundVal;
+    }
+    if('undefined' !== typeof command.y1) {
+      command.y1 = Math.round(command.y1 * roundVal) / roundVal;
+    }
+    // x2/y2 values
+    if('undefined' !== typeof command.x2) {
+      command.x2 = Math.round(command.x2 * roundVal) / roundVal;
+    }
+    if('undefined' !== typeof command.y2) {
+      command.y2 = Math.round(command.y2 * roundVal) / roundVal;
+    }
+    // Finally x/y values
+    if('undefined' !== typeof command.x) {
+      command.x = Math.round(command.x * roundVal, 12) / roundVal;
+    }
+    if('undefined' !== typeof command.y) {
+      command.y = Math.round(command.y * roundVal, 12) / roundVal;
+    }
+    return command;
+  };
+};
+&nbsp;
+// Relative to absolute commands
+SVGPathDataTransformer.TO_ABS = function toAbsGenerator() {
+  var prevX = 0;
+  var prevY = 0;
+  var pathStartX = NaN;
+  var pathStartY = NaN;
+&nbsp;
+  return function toAbs(command) {
+    if(isNaN(pathStartX) &amp;&amp; (command.type &amp; SVGPathData.DRAWING_COMMANDS)) {
+      pathStartX = prevX;
+      pathStartY = prevY;
+    }
+    if((command.type &amp; SVGPathData.CLOSE_PATH) &amp;&amp; !isNaN(pathStartX)) {
+      prevX = isNaN(pathStartX) ? <span class="branch-0 cbranch-no" title="branch not covered" >0 </span>: pathStartX;
+      prevY = isNaN(pathStartY) ? <span class="branch-0 cbranch-no" title="branch not covered" >0 </span>: pathStartY;
+      pathStartX = NaN;
+      pathStartY = NaN;
+    }
+    if(command.relative) {
+      // x1/y1 values
+      if('undefined' !== typeof command.x1) {
+        command.x1 = prevX + command.x1;
+      }
+      if('undefined' !== typeof command.y1) {
+        command.y1 = prevY + command.y1;
+      }
+      // x2/y2 values
+      if('undefined' !== typeof command.x2) {
+        command.x2 = prevX + command.x2;
+      }
+      if('undefined' !== typeof command.y2) {
+        command.y2 = prevY + command.y2;
+      }
+      // Finally x/y values
+      if('undefined' !== typeof command.x) {
+        command.x = prevX + command.x;
+      }
+      if('undefined' !== typeof command.y) {
+        command.y = prevY + command.y;
+      }
+      command.relative = false;
+    }
+    prevX = ('undefined' !== typeof command.x ? command.x : prevX);
+    prevY = ('undefined' !== typeof command.y ? command.y : prevY);
+    if(command.type &amp; SVGPathData.MOVE_TO) {
+      pathStartX = prevX;
+      pathStartY = prevY;
+    }
+    return command;
+  };
+};
+&nbsp;
+// Absolute to relative commands
+SVGPathDataTransformer.TO_REL = function toRelGenerator() {
+  var prevX = 0;
+  var prevY = 0;
+&nbsp;
+  return function toRel(command) {
+    if(!command.relative) {
+      // x1/y1 values
+      if('undefined' !== typeof command.x1) {
+        command.x1 -= prevX;
+      }
+      if('undefined' !== typeof command.y1) {
+        command.y1 -= prevY;
+      }
+      // x2/y2 values
+      if('undefined' !== typeof command.x2) {
+        command.x2 -= prevX;
+      }
+      if('undefined' !== typeof command.y2) {
+        command.y2 -= prevY;
+      }
+      // Finally x/y values
+      if('undefined' !== typeof command.x) {
+        command.x -= prevX;
+      }
+      if('undefined' !== typeof command.y) {
+        command.y -= prevY;
+      }
+      command.relative = true;
+    }
+    prevX = ('undefined' !== typeof command.x ? prevX + command.x : prevX);
+    prevY = ('undefined' !== typeof command.y ? prevY + command.y : prevY);
+    return command;
+  };
+};
+&nbsp;
+// SVG Transforms : http://www.w3.org/TR/SVGTiny12/coords.html#TransformList
+// Matrix : http://apike.ca/prog_svg_transform.html
+SVGPathDataTransformer.MATRIX = function matrixGenerator(a, b, c, d, e, f) {
+  var prevX;
+  var prevY;
+&nbsp;
+  if('number' !== typeof a || 'number' !== typeof b ||
+    'number' !== typeof c || 'number' !== typeof d ||
+    'number' !== typeof e || 'number' !== typeof f) {
+    throw new Error('A matrix transformation requires parameters' +
+      ' [a,b,c,d,e,f] to be set and to be numbers.');
+  }
+  return function matrix(command) {
+    var origX = command.x;
+    var origX1 = command.x1;
+    var origX2 = command.x2;
+&nbsp;
+    if('undefined' !== typeof command.x) {
+      command.x = (command.x * a) +
+        ('undefined' !== typeof command.y ?
+          command.y : (command.relative ? 0 : prevY || <span class="branch-1 cbranch-no" title="branch not covered" >0)</span>
+        ) * c +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevX ? 0 : e);
+    }
+    if('undefined' !== typeof command.y) {
+      command.y = ('undefined' !== typeof origX ?
+          origX : (command.relative ? 0 : prevX || <span class="branch-1 cbranch-no" title="branch not covered" >0)</span>
+        ) * b +
+        command.y * d +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevY ? 0 : f);
+    }
+    if('undefined' !== typeof command.x1) {
+      command.x1 = command.x1 * a + command.y1 * c +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevX ? 0 : e);
+    }
+    if('undefined' !== typeof command.y1) {
+      command.y1 = origX1 * b + command.y1 * d +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevY ? 0 : f);
+    }
+    if('undefined' !== typeof command.x2) {
+      command.x2 = command.x2 * a + command.y2 * c +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevX ? 0 : e);
+    }
+    if('undefined' !== typeof command.y2) {
+      command.y2 = origX2 * b + command.y2 * d +
+        (command.relative &amp;&amp; 'undefined' !== typeof prevY ? 0 : f);
+    }
+    function sq(x) { return x*x; }
+    var det = a*d - b*c;
+    if('undefined' !== typeof command.xRot) {
+      // Skip if this is a pure translation
+      if(a !== 1 || b !== 0 || c !== 0 || d !== 1) {
+        // Special case for singular matrix
+        if(det === 0) {
+          // In the singular case, the arc is compressed to a line. The actual geometric image of the original
+          // curve under this transform possibly extends beyond the starting and/or ending points of the segment, but
+          // for simplicity we ignore this detail and just replace this command with a single line segment.
+          delete command.rX;
+          delete command.rY;
+          delete command.xRot;
+          delete command.lArcFlag;
+          delete command.sweepFlag;
+          command.type = SVGPathData.LINE_TO;
+        } else {
+          // Convert to radians
+          var xRot = command.xRot*Math.PI/180;
+&nbsp;
+          // Convert rotated ellipse to general conic form
+          // x0^2/rX^2 + y0^2/rY^2 - 1 = 0
+          // x0 = x*cos(xRot) + y*sin(xRot)
+          // y0 = -x*sin(xRot) + y*cos(xRot)
+          // --&gt; A*x^2 + B*x*y + C*y^2 - 1 = 0, where
+          var sinRot = Math.sin(xRot), cosRot = Math.cos(xRot),
+              xCurve = 1/sq(command.rX), yCurve = 1/sq(command.rY);
+          var A = sq(cosRot)*xCurve + sq(sinRot)*yCurve,
+              B = 2*sinRot*cosRot*(xCurve - yCurve),
+              C = sq(sinRot)*xCurve + sq(cosRot)*yCurve;
+&nbsp;
+          // Apply matrix to A*x^2 + B*x*y + C*y^2 - 1 = 0
+          // x1 = a*x + c*y
+          // y1 = b*x + d*y
+          //      (we can ignore e and f, since pure translations don't affect the shape of the ellipse)
+          // --&gt; A1*x1^2 + B1*x1*y1 + C1*y1^2 - det^2 = 0, where
+          var A1 = A*d*d - B*b*d + C*b*b,
+              B1 = B*(a*d + b*c) - 2*(A*c*d + C*a*b),
+              C1 = A*c*c - B*a*c + C*a*a;
+&nbsp;
+          // Unapply newXRot to get back to axis-aligned ellipse equation
+          // x1 = x2*cos(newXRot) - y2*sin(newXRot)
+          // y1 = x2*sin(newXRot) + y2*cos(newXRot)
+          // A1*x1^2 + B1*x1*y1 + C1*y1^2 - det^2 =
+          //   x2^2*(A1*cos(newXRot)^2 + B1*sin(newXRot)*cos(newXRot) + C1*sin(newXRot)^2)
+          //   + x2*y2*(2*(C1 - A1)*sin(newXRot)*cos(newXRot) + B1*(cos(newXRot)^2 - sin(newXRot)^2))
+          //   + y2^2*(A1*sin(newXRot)^2 - B1*sin(newXRot)*cos(newXRot) + C1*cos(newXRot)^2)
+          //   (which must have the same zeroes as)
+          // x2^2/newRX^2 + y2^2/newRY^2 - 1
+          //   (so we have)
+          // 2*(C1 - A1)*sin(newXRot)*cos(newXRot) + B1*(cos(newXRot)^2 - sin(newXRot)^2) = 0
+          // (A1 - C1)*sin(2*newXRot) = B1*cos(2*newXRot)
+          // 2*newXRot = atan2(B1, A1 - C1)
+          var newXRot = ((Math.atan2(B1, A1 - C1) + Math.PI) % Math.PI)/2;
+          // For any integer n, (atan2(B1, A1 - C1) + n*pi)/2 is a solution to the above; incrementing n just swaps the
+          // x and y radii computed below (since that's what rotating an ellipse by pi/2 does).  Choosing the rotation
+          // between 0 and pi/2 eliminates the ambiguity and leads to more predictable output.
+&nbsp;
+          // Finally, we get newRX and newRY from the same-zeroes relationship that gave us newXRot
+          var newSinRot = Math.sin(newXRot), newCosRot = Math.cos(newXRot);
+          command.rX = Math.abs(det)/Math.sqrt(A1*sq(newCosRot) + B1*newSinRot*newCosRot + C1*sq(newSinRot));
+          command.rY = Math.abs(det)/Math.sqrt(A1*sq(newSinRot) - B1*newSinRot*newCosRot + C1*sq(newCosRot));
+          command.xRot = newXRot*180/Math.PI;
+        }
+      } 
+    }
+    // sweepFlag needs to be inverted when mirroring shapes
+    // see http://www.itk.ilstu.edu/faculty/javila/SVG/SVG_drawing1/elliptical_curve.htm
+    // m 65,10 a 50,25 0 1 0 50,25
+    // M 65,60 A 50,25 0 1 1 115,35
+    if('undefined' !== typeof command.sweepFlag) {
+      command.sweepFlag = (command.sweepFlag + (0 &lt;= det ? 0 : 1)) % 2;
+    }
+&nbsp;
+    prevX = ('undefined' !== typeof command.x ?
+      (command.relative ? (prevX || 0) + command.x : command.x) :
+      prevX || 0);
+    prevY = ('undefined' !== typeof command.y ?
+      (command.relative ? (prevY || 0) + command.y : command.y) :
+      prevY || 0);
+    return command;
+  };
+};
+&nbsp;
+// Rotation
+SVGPathDataTransformer.ROTATE = function rotateGenerator(a, x, y) {
+  if('number' !== typeof a) {
+    throw new Error('A rotate transformation requires the parameter a' +
+      ' to be set and to be a number.');
+  }
+  return (function(toOrigin, doRotate, fromOrigin) {
+    return function rotate(command) {
+      return fromOrigin(doRotate(toOrigin(command)));
+    };
+  })(SVGPathDataTransformer.TRANSLATE(-(x || 0), -(y || 0)),
+    SVGPathDataTransformer.MATRIX(Math.cos(a), Math.sin(a),
+      -Math.sin(a), Math.cos(a), 0, 0),
+    SVGPathDataTransformer.TRANSLATE(x || 0, y || 0)
+  );
+};
+&nbsp;
+// Translation
+SVGPathDataTransformer.TRANSLATE = function translateGenerator(dX, dY) {
+  if('number' !== typeof dX) {
+    throw new Error('A translate transformation requires the parameter dX' +
+      ' to be set and to be a number.');
+  }
+  return SVGPathDataTransformer.MATRIX(1, 0, 0, 1, dX, dY || 0);
+};
+&nbsp;
+// Scaling
+SVGPathDataTransformer.SCALE = function scaleGenerator(dX, dY) {
+  if('number' !== typeof dX) {
+    throw new Error('A scale transformation requires the parameter dX' +
+      ' to be set and to be a number.');
+  }
+  return SVGPathDataTransformer.MATRIX(dX, 0, 0, dY || <span class="branch-1 cbranch-no" title="branch not covered" >dX,</span> 0, 0);
+};
+&nbsp;
+// Skew
+SVGPathDataTransformer.SKEW_X = function skewXGenerator(a) {
+  if('number' !== typeof a) {
+    throw new Error('A skewX transformation requires the parameter x' +
+      ' to be set and to be a number.');
+  }
+  return SVGPathDataTransformer.MATRIX(1, 0, Math.atan(a), 1, 0, 0);
+};
+SVGPathDataTransformer.SKEW_Y = function skewYGenerator(a) {
+  if('number' !== typeof a) {
+    throw new Error('A skewY transformation requires the parameter y' +
+      ' to be set and to be a number.');
+  }
+  return SVGPathDataTransformer.MATRIX(1, Math.atan(a), 0, 1, 0, 0);
+};
+&nbsp;
+// Symetry througth the X axis
+SVGPathDataTransformer.X_AXIS_SIMETRY = function xSymetryGenerator(xDecal) {
+  return (function(toAbs, scale, translate) {
+    return function xSymetry(command) {
+      return translate(scale(toAbs(command)));
+    };
+  })(SVGPathDataTransformer.TO_ABS(),
+    SVGPathDataTransformer.SCALE(-1, 1),
+    SVGPathDataTransformer.TRANSLATE(xDecal || <span class="branch-1 cbranch-no" title="branch not covered" >0,</span> 0)
+  );
+};
+&nbsp;
+// Symetry througth the Y axis
+SVGPathDataTransformer.Y_AXIS_SIMETRY = function ySymetryGenerator(yDecal) {
+  return (function(toAbs, scale, translate) {
+    return function ySymetry(command) {
+      return translate(scale(toAbs(command)));
+    };
+  })(SVGPathDataTransformer.TO_ABS(),
+    SVGPathDataTransformer.SCALE(1, -1),
+    SVGPathDataTransformer.TRANSLATE(0, yDecal || <span class="branch-1 cbranch-no" title="branch not covered" >0)</span>
+  );
+};
+&nbsp;
+// Convert arc commands to curve commands
+SVGPathDataTransformer.A_TO_C = function a2CGenerator() {
+  var prevX = 0;
+  var prevY = 0;
+  var args;
+&nbsp;
+  return (function(toAbs) {
+    return function a2C(command) {
+      var commands = [];
+      var i;
+      var ii;
+&nbsp;
+      command = toAbs(command);
+      if(command.type === SVGPathData.ARC) {
+        args = a2c(prevX, prevY, command.rX, command.rX, command.xRot,
+          command.lArcFlag, command.sweepFlag, command.x, command.y);
+        prevX = command.x; prevY = command.y;
+        for(i = 0, ii = args.length; i &lt; ii; i += 6) {
+          commands.push({
+            type: SVGPathData.CURVE_TO,
+            relative: false,
+            x2: args[i],
+            y2: args[i + 1],
+            x1: args[i + 2],
+            y1: args[i + 3],
+            x: args[i + 4],
+            y: args[i + 5],
+          });
+        }
+        return commands;
+      }
+      prevX = command.x; prevY = command.y;
+      return command;
+&nbsp;
+    };
+  })(SVGPathDataTransformer.TO_ABS());
+};
+&nbsp;
+module.exports = SVGPathDataTransformer;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Nov 07 2016 15:21:32 GMT+0100 (CET)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
