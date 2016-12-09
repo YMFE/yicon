@@ -63,7 +63,7 @@ export default class Workbench extends Component {
       if (icons.length) {
         this.props.selectEdit(0);
       } else {
-        this.props.push('transition/upload-icon');
+        this.props.push('/transition/upload-icon');
       }
     });
   }
@@ -100,7 +100,7 @@ export default class Workbench extends Component {
     this.props.selectEdit(index);
     this.props.deleteIcon(id, icons);
     if (!icons.length) {
-      this.props.push('transition/upload-icon');
+      this.props.push('/transition/upload-icon');
     }
   }
 
@@ -146,7 +146,7 @@ export default class Workbench extends Component {
       this.props.selectEdit(0);
       this.props.updateWorkbench(noDone);
       if (!noDone.length) {
-        this.props.push('transition/upload-icon');
+        this.props.push('/transition/upload-icon');
       }
     });
   }

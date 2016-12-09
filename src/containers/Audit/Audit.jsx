@@ -56,7 +56,7 @@ export default class Audit extends Component {
       if (icons.length) {
         this.props.selectIcon(0);
       } else {
-        this.props.push('transition/audit-icon');
+        this.props.push('/transition/audit-icon');
       }
     });
   }
@@ -154,7 +154,7 @@ export default class Audit extends Component {
         this.props.selectIcon(0);
         this.props.updateAuditIcons(notAuditedIcons);
         if (!notAuditedIcons.length) {
-          this.props.push('transition/audit-icon');
+          this.props.push('/transition/audit-icon');
         }
       }
     });

@@ -19,6 +19,14 @@ export const iconStateDescription = {
     className: 'fault',
     text: '审核失败',
   },
+  14: {
+    className: 'checking',
+    text: '等待替换',
+  },
+  15: {
+    className: 'fault',
+    text: '被替换',
+  },
   20: {
     className: 'passed',
     text: '审核通过',
@@ -92,7 +100,10 @@ export const InfoTemplate = {
   UPLOAD: (data) => (
     data.icons.icon.map((item, index) => {
       const classlist = ['state'];
-      const staus = iconStateDescription[item.status];
+      const staus = iconStateDescription[item.status] || {
+        className: 'fault',
+        text: '未知状态',
+      };
       classlist.push(staus.className);
       return (
         <DesIcon

@@ -61,6 +61,7 @@ function* getRepoByVersion({
 export function* list(next) {
   const repoList = yield Repo.findAll({
     attributes: ['id'],
+    order: ['id'],
   });
   const result = [];
   let i = 0;
@@ -80,6 +81,7 @@ export function* list(next) {
 export function* listWithoutIcons(next) {
   this.state.respond = yield Repo.findAll({
     attributes: ['id', 'name'],
+    order: ['id'],
   });
   yield next;
 }
@@ -129,7 +131,16 @@ export function* addRepo(next) {
   const user = yield User.findOne({ where: { id: admin } });
   if (!user || isNaN(user.id)) throw new Error('没有指定的用户信息');
 
-  const repo = yield Repo.create({ name, alias, admin });
+  let repo = null;
+  const t = yield seq.transaction(transaction =>
+      Repo.create({ name, alias, admin }, { transaction })
+    .then((_repo) => {
+      repo = _repo;
+      return User.update({ actor: 1 }, { where: { id: user.id }, transaction });
+    })
+  );
+
+  yield t;
   this.state.respond = repo;
   yield next;
 }

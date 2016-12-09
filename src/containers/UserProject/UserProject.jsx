@@ -12,7 +12,6 @@ import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
-import Loading from '../../components/common/Loading/Loading.jsx';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -255,6 +254,13 @@ class UserProject extends Component {
   }
 
   @autobind
+  closeDownloadDialog() {
+    this.setState({
+      showDownloadDialog: false,
+    });
+  }
+
+  @autobind
   dialogUpdateShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
@@ -372,7 +378,7 @@ class UserProject extends Component {
           nextVersion={this.nextVersion}
           comparison={this.props.comparisonResult}
           onOk={this.downloadAndGenerateVersion}
-          onCancel={this.shiftDownloadDialog}
+          onCancel={this.closeDownloadDialog}
           onChange={this.changeGenerateVersion}
           value={this.state.generateVersion}
           confrimText={'生成版本并下载'}
@@ -491,7 +497,6 @@ class UserProject extends Component {
             </div>
           </Main>
         </Content>
-        <Loading visible={this.state.showLoading} />
         {dialogList}
       </div>
     );
