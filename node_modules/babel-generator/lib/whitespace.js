@@ -8,10 +8,6 @@ var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Get whitespace around tokens.
- */
-
 var Whitespace = function () {
   function Whitespace(tokens) {
     (0, _classCallCheck3.default)(this, Whitespace);
@@ -19,10 +15,6 @@ var Whitespace = function () {
     this.tokens = tokens;
     this.used = {};
   }
-
-  /**
-   * Count all the newlines before a node.
-   */
 
   Whitespace.prototype.getNewlinesBefore = function getNewlinesBefore(node) {
     var startToken = void 0;
@@ -41,10 +33,6 @@ var Whitespace = function () {
 
     return this._getNewlinesBetween(startToken, endToken);
   };
-
-  /**
-   * Count all the newlines after a node.
-   */
 
   Whitespace.prototype.getNewlinesAfter = function getNewlinesAfter(node) {
     var startToken = void 0;
@@ -69,10 +57,6 @@ var Whitespace = function () {
     }
   };
 
-  /**
-   * Count all the newlines between two tokens.
-   */
-
   Whitespace.prototype._getNewlinesBetween = function _getNewlinesBetween(startToken, endToken) {
     if (!endToken || !endToken.loc) return 0;
 
@@ -89,10 +73,6 @@ var Whitespace = function () {
 
     return lines;
   };
-
-  /**
-   * Find a token between start and end.
-   */
 
   Whitespace.prototype._findToken = function _findToken(test, start, end) {
     if (start >= end) return -1;

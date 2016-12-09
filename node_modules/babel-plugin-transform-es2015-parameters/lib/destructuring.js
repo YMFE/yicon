@@ -13,8 +13,6 @@ var visitor = exports.visitor = {
   Function: function Function(path) {
     var params = path.get("params");
 
-    // If there's a rest param, no need to loop through it. Also, we need to
-    // hoist one more level to get `declar` at the right spot.
     var hoistTweak = t.isRestElement(params[params.length - 1]) ? 1 : 0;
     var outputParamsLength = params.length - hoistTweak;
 

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Filesystem cache
@@ -9,12 +9,13 @@
  * @see https://github.com/babel/babel-loader/issues/34
  * @see https://github.com/babel/babel-loader/pull/41
  */
-var crypto = require('crypto');
-var mkdirp = require('mkdirp');
-var fs = require('fs');
-var os = require('os');
-var path = require('path');
-var zlib = require('zlib');
+var crypto = require("crypto");
+var mkdirp = require("mkdirp");
+var findCacheDir = require("find-cache-dir");
+var fs = require("fs");
+var os = require("os");
+var path = require("path");
+var zlib = require("zlib");
 
 /**
  * Read the contents from the compressed file.
@@ -23,14 +24,18 @@ var zlib = require('zlib');
  * @params {String} filename
  * @params {Function} callback
  */
-var read = function(filename, callback) {
-  return fs.readFile(filename, function(err, data) {
-    if (err) { return callback(err); }
+var read = function read(filename, callback) {
+  return fs.readFile(filename, function (err, data) {
+    if (err) {
+      return callback(err);
+    }
 
-    return zlib.gunzip(data, function(err, content) {
+    return zlib.gunzip(data, function (err, content) {
       var result = {};
 
-      if (err) { return callback(err); }
+      if (err) {
+        return callback(err);
+      }
 
       try {
         result = JSON.parse(content);
@@ -43,7 +48,6 @@ var read = function(filename, callback) {
   });
 };
 
-
 /**
  * Write contents into a compressed file.
  *
@@ -52,16 +56,17 @@ var read = function(filename, callback) {
  * @params {String} result
  * @params {Function} callback
  */
-var write = function(filename, result, callback) {
+var write = function write(filename, result, callback) {
   var content = JSON.stringify(result);
 
-  return zlib.gzip(content, function(err, data) {
-    if (err) { return callback(err); }
+  return zlib.gzip(content, function (err, data) {
+    if (err) {
+      return callback(err);
+    }
 
     return fs.writeFile(filename, data, callback);
   });
 };
-
 
 /**
  * Build the filename for the cached file
@@ -71,17 +76,17 @@ var write = function(filename, result, callback) {
  *
  * @return {String}
  */
-var filename = function(source, identifier, options) {
-  var hash = crypto.createHash('SHA1');
+var filename = function filename(source, identifier, options) {
+  var hash = crypto.createHash("SHA1");
   var contents = JSON.stringify({
     source: source,
     options: options,
-    identifier: identifier,
+    identifier: identifier
   });
 
   hash.end(contents);
 
-  return hash.read().toString('hex') + '.json.gzip';
+  return hash.read().toString("hex") + ".json.gz";
 };
 
 /**
@@ -117,27 +122,36 @@ var filename = function(source, identifier, options) {
  *
  *   });
  */
-var cache = module.exports = function(params, callback) {
+module.exports = function (params, callback) {
   // Spread params into named variables
   // Forgive user whenever possible
   var source = params.source;
   var options = params.options || {};
   var transform = params.transform;
   var identifier = params.identifier;
-  var directory = (typeof params.directory === 'string') ?
-        params.directory :
-        os.tmpdir();
+  var directory = void 0;
+
+  if (typeof params.directory === "string") {
+    directory = params.directory;
+  } else {
+    directory = findCacheDir({ name: "babel-loader" }) || os.tmpdir();
+  }
+
   var file = path.join(directory, filename(source, identifier, options));
 
   // Make sure the directory exists.
-  return mkdirp(directory, function(err) {
-    if (err) { return callback(err); }
+  return mkdirp(directory, function (err) {
+    if (err) {
+      return callback(err);
+    }
 
-    return read(file, function(err, content) {
+    return read(file, function (err, content) {
       var result = {};
       // No errors mean that the file was previously cached
       // we just need to return it
-      if (!err) { return callback(null, content); }
+      if (!err) {
+        return callback(null, content);
+      }
 
       // Otherwise just transform the file
       // return it to the user asap and write it in cache
@@ -147,7 +161,7 @@ var cache = module.exports = function(params, callback) {
         return callback(error);
       }
 
-      return write(file, result, function(err) {
+      return write(file, result, function (err) {
         return callback(err, result);
       });
     });

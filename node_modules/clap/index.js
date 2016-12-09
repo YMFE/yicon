@@ -757,7 +757,7 @@ Command.prototype = {
 
     for (var name in this.values)
       if (hasOwnProperty.call(this.values, name))
-        result[name] = hasOwnProperty.call(values, name) && hasOwnProperty(this.options, name)
+        result[name] = hasOwnProperty.call(values, name) && hasOwnProperty.call(this.options, name)
           ? this.options[name].normalize.call(this, values[name])
           : this.values[name];
 

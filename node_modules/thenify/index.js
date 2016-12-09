@@ -14,7 +14,7 @@ module.exports = thenify
 
 function thenify($$__fn__$$) {
   assert(typeof $$__fn__$$ === 'function')
-  return eval(createWrapper($$__fn__$$.name.replace(/\s|bound(?!$)/g,'')))
+  return eval(createWrapper($$__fn__$$.name))
 }
 
 /**
@@ -42,12 +42,13 @@ function createCallback(resolve, reject) {
 }
 
 function createWrapper(name, withCallback) {
+  name = (name || '').replace(/\s|bound(?!$)/g, '')
   withCallback = withCallback ?
     'var lastType = typeof arguments[len - 1]\n'
     + 'if (lastType === "function") return $$__fn__$$.apply(self, arguments)\n'
    : ''
 
-  return '(function ' + (name || '') + '() {\n'
+  return '(function ' + name + '() {\n'
     + 'var self = this\n'
     + 'var len = arguments.length\n'
     + withCallback

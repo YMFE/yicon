@@ -125,6 +125,10 @@ SVGPathDataTransformer.TO_ABS = function toAbsGenerator() {
     }
     prevX = ('undefined' !== typeof command.x ? command.x : prevX);
     prevY = ('undefined' !== typeof command.y ? command.y : prevY);
+    if(command.type & SVGPathData.MOVE_TO) {
+      pathStartX = prevX;
+      pathStartY = prevY;
+    }
     return command;
   };
 };
@@ -212,12 +216,78 @@ SVGPathDataTransformer.MATRIX = function matrixGenerator(a, b, c, d, e, f) {
       command.y2 = origX2 * b + command.y2 * d +
         (command.relative && 'undefined' !== typeof prevY ? 0 : f);
     }
+    function sq(x) { return x*x; }
+    var det = a*d - b*c;
+    if('undefined' !== typeof command.xRot) {
+      // Skip if this is a pure translation
+      if(a !== 1 || b !== 0 || c !== 0 || d !== 1) {
+        // Special case for singular matrix
+        if(det === 0) {
+          // In the singular case, the arc is compressed to a line. The actual geometric image of the original
+          // curve under this transform possibly extends beyond the starting and/or ending points of the segment, but
+          // for simplicity we ignore this detail and just replace this command with a single line segment.
+          delete command.rX;
+          delete command.rY;
+          delete command.xRot;
+          delete command.lArcFlag;
+          delete command.sweepFlag;
+          command.type = SVGPathData.LINE_TO;
+        } else {
+          // Convert to radians
+          var xRot = command.xRot*Math.PI/180;
+
+          // Convert rotated ellipse to general conic form
+          // x0^2/rX^2 + y0^2/rY^2 - 1 = 0
+          // x0 = x*cos(xRot) + y*sin(xRot)
+          // y0 = -x*sin(xRot) + y*cos(xRot)
+          // --> A*x^2 + B*x*y + C*y^2 - 1 = 0, where
+          var sinRot = Math.sin(xRot), cosRot = Math.cos(xRot),
+              xCurve = 1/sq(command.rX), yCurve = 1/sq(command.rY);
+          var A = sq(cosRot)*xCurve + sq(sinRot)*yCurve,
+              B = 2*sinRot*cosRot*(xCurve - yCurve),
+              C = sq(sinRot)*xCurve + sq(cosRot)*yCurve;
+
+          // Apply matrix to A*x^2 + B*x*y + C*y^2 - 1 = 0
+          // x1 = a*x + c*y
+          // y1 = b*x + d*y
+          //      (we can ignore e and f, since pure translations don't affect the shape of the ellipse)
+          // --> A1*x1^2 + B1*x1*y1 + C1*y1^2 - det^2 = 0, where
+          var A1 = A*d*d - B*b*d + C*b*b,
+              B1 = B*(a*d + b*c) - 2*(A*c*d + C*a*b),
+              C1 = A*c*c - B*a*c + C*a*a;
+
+          // Unapply newXRot to get back to axis-aligned ellipse equation
+          // x1 = x2*cos(newXRot) - y2*sin(newXRot)
+          // y1 = x2*sin(newXRot) + y2*cos(newXRot)
+          // A1*x1^2 + B1*x1*y1 + C1*y1^2 - det^2 =
+          //   x2^2*(A1*cos(newXRot)^2 + B1*sin(newXRot)*cos(newXRot) + C1*sin(newXRot)^2)
+          //   + x2*y2*(2*(C1 - A1)*sin(newXRot)*cos(newXRot) + B1*(cos(newXRot)^2 - sin(newXRot)^2))
+          //   + y2^2*(A1*sin(newXRot)^2 - B1*sin(newXRot)*cos(newXRot) + C1*cos(newXRot)^2)
+          //   (which must have the same zeroes as)
+          // x2^2/newRX^2 + y2^2/newRY^2 - 1
+          //   (so we have)
+          // 2*(C1 - A1)*sin(newXRot)*cos(newXRot) + B1*(cos(newXRot)^2 - sin(newXRot)^2) = 0
+          // (A1 - C1)*sin(2*newXRot) = B1*cos(2*newXRot)
+          // 2*newXRot = atan2(B1, A1 - C1)
+          var newXRot = ((Math.atan2(B1, A1 - C1) + Math.PI) % Math.PI)/2;
+          // For any integer n, (atan2(B1, A1 - C1) + n*pi)/2 is a solution to the above; incrementing n just swaps the
+          // x and y radii computed below (since that's what rotating an ellipse by pi/2 does).  Choosing the rotation
+          // between 0 and pi/2 eliminates the ambiguity and leads to more predictable output.
+
+          // Finally, we get newRX and newRY from the same-zeroes relationship that gave us newXRot
+          var newSinRot = Math.sin(newXRot), newCosRot = Math.cos(newXRot);
+          command.rX = Math.abs(det)/Math.sqrt(A1*sq(newCosRot) + B1*newSinRot*newCosRot + C1*sq(newSinRot));
+          command.rY = Math.abs(det)/Math.sqrt(A1*sq(newSinRot) - B1*newSinRot*newCosRot + C1*sq(newCosRot));
+          command.xRot = newXRot*180/Math.PI;
+        }
+      } 
+    }
     // sweepFlag needs to be inverted when mirroring shapes
     // see http://www.itk.ilstu.edu/faculty/javila/SVG/SVG_drawing1/elliptical_curve.htm
     // m 65,10 a 50,25 0 1 0 50,25
     // M 65,60 A 50,25 0 1 1 115,35
     if('undefined' !== typeof command.sweepFlag) {
-      command.sweepFlag = (command.sweepFlag + (0 <= d ? 0 : 1)) % 2;
+      command.sweepFlag = (command.sweepFlag + (0 <= det ? 0 : 1)) % 2;
     }
 
     prevX = ('undefined' !== typeof command.x ?

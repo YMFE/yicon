@@ -6,11 +6,11 @@
  *
  * Actions must have a `type` field that indicates the type of action being
  * performed. Types can be defined as constants and imported from another
- * module. It’s better to use strings for `type` than Symbols because strings
+ * module. It's better to use strings for `type` than Symbols because strings
  * are serializable.
  *
  * Other than `type`, the structure of an action object is really up to you.
- * If you’re interested, check out Flux Standard Action for recommendations on
+ * If you're interested, check out Flux Standard Action for recommendations on
  * how actions should be constructed.
  */
 export interface Action {
@@ -84,7 +84,7 @@ export function combineReducers<S>(reducers: ReducersMapObject): Reducer<S>;
  * `dispatch` function provided by the store instance without any middleware.
  *
  * The base dispatch function *always* synchronously sends an action to the
- * store’s reducer, along with the previous state returned by the store, to
+ * store's reducer, along with the previous state returned by the store, to
  * calculate a new state. It expects actions to be plain objects ready to be
  * consumed by the reducer.
  *
@@ -105,7 +105,7 @@ export interface Unsubscribe {
 }
 
 /**
- * A store is an object that holds the application’s state tree.
+ * A store is an object that holds the application's state tree.
  * There should only be a single store in a Redux app, as the composition
  * happens on the reducer level.
  *
@@ -188,14 +188,14 @@ export interface Store<S> {
 /**
  * A store creator is a function that creates a Redux store. Like with
  * dispatching function, we must distinguish the base store creator,
- * `createStore(reducer, initialState)` exported from the Redux package, from
+ * `createStore(reducer, preloadedState)` exported from the Redux package, from
  * store creators that are returned from the store enhancers.
  *
  * @template S State object type.
  */
 export interface StoreCreator {
   <S>(reducer: Reducer<S>, enhancer?: StoreEnhancer<S>): Store<S>;
-  <S>(reducer: Reducer<S>, initialState: S, enhancer?: StoreEnhancer<S>): Store<S>;
+  <S>(reducer: Reducer<S>, preloadedState: S, enhancer?: StoreEnhancer<S>): Store<S>;
 }
 
 /**
@@ -211,14 +211,14 @@ export interface StoreCreator {
  * original store. There is an example in `compose` documentation
  * demonstrating that.
  *
- * Most likely you’ll never write a store enhancer, but you may use the one
+ * Most likely you'll never write a store enhancer, but you may use the one
  * provided by the developer tools. It is what makes time travel possible
  * without the app being aware it is happening. Amusingly, the Redux
  * middleware implementation is itself a store enhancer.
  */
 export type StoreEnhancer<S> = (next: StoreEnhancerStoreCreator<S>) => StoreEnhancerStoreCreator<S>;
 export type GenericStoreEnhancer = <S>(next: StoreEnhancerStoreCreator<S>) => StoreEnhancerStoreCreator<S>;
-export type StoreEnhancerStoreCreator<S> = (reducer: Reducer<S>, initialState: S) => Store<S>;
+export type StoreEnhancerStoreCreator<S> = (reducer: Reducer<S>, preloadedState?: S) => Store<S>;
 
 /**
  * Creates a Redux store that holds the state tree.
@@ -234,7 +234,7 @@ export type StoreEnhancerStoreCreator<S> = (reducer: Reducer<S>, initialState: S
  * @param reducer A function that returns the next state tree, given the
  *   current state tree and the action to handle.
  *
- * @param [initialState] The initial state. You may optionally specify it to
+ * @param [preloadedState] The initial state. You may optionally specify it to
  *   hydrate the state from the server in universal apps, or to restore a
  *   previously serialized user session. If you use `combineReducers` to
  *   produce the root reducer function, this must be an object with the same
@@ -299,7 +299,7 @@ export function applyMiddleware(...middlewares: Middleware[]): GenericStoreEnhan
  * an action creator is a factory that creates an action.
  *
  * Calling an action creator only produces an action, but does not dispatch
- * it. You need to call the store’s `dispatch` function to actually cause the
+ * it. You need to call the store's `dispatch` function to actually cause the
  * mutation. Sometimes we say *bound action creators* to mean functions that
  * call an action creator and immediately dispatch its result to a specific
  * store instance.
@@ -357,6 +357,11 @@ export function bindActionCreators<
 
 /* compose */
 
+type Func0<R> = () => R;
+type Func1<T1, R> = (a1: T1) => R;
+type Func2<T1, T2, R> = (a1: T1, a2: T2) => R;
+type Func3<T1, T2, T3, R> = (a1: T1, a2: T2, a3: T3, ...args: any[]) => R;
+
 /**
  * Composes single-argument functions from right to left. The rightmost
  * function can take multiple arguments as it provides the signature for the
@@ -367,27 +372,54 @@ export function bindActionCreators<
  *   to left. For example, `compose(f, g, h)` is identical to doing
  *   `(...args) => f(g(h(...args)))`.
  */
-export function compose(): <R>(a: R, ...args: any[]) => R;
+export function compose(): <R>(a: R) => R;
 
+export function compose<F extends Function>(f: F): F;
+
+/* two functions */
 export function compose<A, R>(
-  f1: (b: A) => R,
-  f2: (...args: any[]) => A
-): (...args: any[]) => R;
+  f1: (b: A) => R, f2: Func0<A>
+): Func0<R>;
+export function compose<A, T1, R>(
+  f1: (b: A) => R, f2: Func1<T1, A>
+): Func1<T1, R>;
+export function compose<A, T1, T2, R>(
+  f1: (b: A) => R, f2: Func2<T1, T2, A>
+): Func2<T1, T2, R>;
+export function compose<A, T1, T2, T3, R>(
+  f1: (b: A) => R, f2: Func3<T1, T2, T3, A>
+): Func3<T1, T2, T3, R>;
 
+/* three functions */
 export function compose<A, B, R>(
-  f1: (b: B) => R,
-  f2: (a: A) => B,
-  f3: (...args: any[]) => A
-): (...args: any[]) => R;
+  f1: (b: B) => R, f2: (a: A) => B, f3: Func0<A>
+): Func0<R>;
+export function compose<A, B, T1, R>(
+  f1: (b: B) => R, f2: (a: A) => B, f3: Func1<T1, A>
+): Func1<T1, R>;
+export function compose<A, B, T1, T2, R>(
+  f1: (b: B) => R, f2: (a: A) => B, f3: Func2<T1, T2, A>
+): Func2<T1, T2, R>;
+export function compose<A, B, T1, T2, T3, R>(
+  f1: (b: B) => R, f2: (a: A) => B, f3: Func3<T1, T2, T3, A>
+): Func3<T1, T2, T3, R>;
 
+/* four functions */
 export function compose<A, B, C, R>(
-  f1: (b: C) => R,
-  f2: (a: B) => C,
-  f3: (a: A) => B,
-  f4: (...args: any[]) => A
-): (...args: any[]) => R;
+  f1: (b: C) => R, f2: (a: B) => C, f3: (a: A) => B, f4: Func0<A>
+): Func0<R>;
+export function compose<A, B, C, T1, R>(
+  f1: (b: C) => R, f2: (a: B) => C, f3: (a: A) => B, f4: Func1<T1, A>
+): Func1<T1, R>;
+export function compose<A, B, C, T1, T2, R>(
+  f1: (b: C) => R, f2: (a: B) => C, f3: (a: A) => B, f4: Func2<T1, T2, A>
+): Func2<T1, T2, R>;
+export function compose<A, B, C, T1, T2, T3, R>(
+  f1: (b: C) => R, f2: (a: B) => C, f3: (a: A) => B, f4: Func3<T1, T2, T3, A>
+): Func3<T1, T2, T3, R>;
 
-export function compose<R>(
-  f1: (a: any) => R,
+/* rest */
+export function compose<A, B, C, R>(
+  f1: (b: C) => R, f2: (a: B) => C, f3: (a: A) => B,
   ...funcs: Function[]
 ): (...args: any[]) => R;

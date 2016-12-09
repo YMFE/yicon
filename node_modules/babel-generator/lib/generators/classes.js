@@ -61,7 +61,14 @@ function ClassProperty(node) {
     this.word("static");
     this.space();
   }
-  this.print(node.key, node);
+  if (node.computed) {
+    this.token("[");
+    this.print(node.key, node);
+    this.token("]");
+  } else {
+    this._variance(node);
+    this.print(node.key, node);
+  }
   this.print(node.typeAnnotation, node);
   if (node.value) {
     this.space();

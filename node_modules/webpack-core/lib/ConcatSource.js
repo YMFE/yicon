@@ -53,6 +53,10 @@ ConcatSource.prototype.listMap = function(options) {
 
 ConcatSource.prototype.updateHash = function(hash) {
 	this.children.forEach(function(item) {
-		item.updateHash(hash);
+		if (typeof item === "string") {
+			hash.update(item)
+		} else {
+			item.updateHash(hash);
+		}
 	});
 };

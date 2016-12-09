@@ -98,7 +98,6 @@ function ExportDeclaration(node) {
 
     var specifiers = node.specifiers.slice(0);
 
-    // print "special" specifiers first
     var hasSpecial = false;
     while (true) {
       var first = specifiers[0];
@@ -146,7 +145,6 @@ function ImportDeclaration(node) {
 
   var specifiers = node.specifiers.slice(0);
   if (specifiers && specifiers.length) {
-    // print "special" specifiers first
     while (true) {
       var first = specifiers[0];
       if (t.isImportDefaultSpecifier(first) || t.isImportNamespaceSpecifier(first)) {

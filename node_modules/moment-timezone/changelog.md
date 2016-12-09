@@ -1,3 +1,18 @@
+### `0.5.10` _2016-11-27_
+* Updated data to IANA TZDB `2016j`. [#422](https://github.com/moment/moment-timezone/pull/422)
+
+### `0.5.9` _2016-11-03_
+* Fixed the output of `moment.tz.version`. [#413](https://github.com/moment/moment-timezone/issues/413)
+
+### `0.5.8` _2016-11-03_
+* Updated data to IANA TZDB `2016i`. [#411](https://github.com/moment/moment-timezone/pull/411)
+
+### `0.5.7` _2016-10-21_
+* Updated data to IANA TZDB `2016h`. [#403](https://github.com/moment/moment-timezone/pull/403)
+
+### `0.5.6` _2016-10-08_
+* Updated data to IANA TZDB `2016g`. [#394](https://github.com/moment/moment-timezone/pull/394)
+
 ### `0.5.5` _2016-07-24_
 * Updated data to IANA TZDB `2016f`. [#360](https://github.com/moment/moment-timezone/pull/360)
 

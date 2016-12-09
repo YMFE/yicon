@@ -1,4 +1,4 @@
-/*istanbul ignore next*/"use strict";
+"use strict";
 
 exports.__esModule = true;
 
@@ -22,14 +22,11 @@ exports.default = function (classPath) {
   function memoiseDecorators(paths) {
     if (!Array.isArray(paths) || !paths.length) return;
 
-    // ensure correct evaluation order of decorators
     paths = paths.reverse();
 
-    // bind decorators if they're member expressions
-    /*istanbul ignore next*/(0, _babelHelperBindifyDecorators2.default)(paths);
+    (0, _babelHelperBindifyDecorators2.default)(paths);
 
-    for ( /*istanbul ignore next*/var _iterator = paths, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
-      /*istanbul ignore next*/
+    for (var _iterator = paths, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
       var _ref;
 
       if (_isArray) {
@@ -51,8 +48,7 @@ exports.default = function (classPath) {
   memoiseDecorators(classPath.get("decorators"), true);
 
   var methods = classPath.get("body.body");
-  for ( /*istanbul ignore next*/var _iterator2 = methods, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
-    /*istanbul ignore next*/
+  for (var _iterator2 = methods, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
     var _ref2;
 
     if (_isArray2) {
@@ -76,23 +72,20 @@ exports.default = function (classPath) {
   }
 
   if (memoisedExpressions) {
-    classPath.insertBefore(memoisedExpressions.map(function (expr) /*istanbul ignore next*/{
+    classPath.insertBefore(memoisedExpressions.map(function (expr) {
       return t.expressionStatement(expr);
     }));
   }
 };
 
-var /*istanbul ignore next*/_babelHelperBindifyDecorators = require("babel-helper-bindify-decorators");
+var _babelHelperBindifyDecorators = require("babel-helper-bindify-decorators");
 
-/*istanbul ignore next*/
 var _babelHelperBindifyDecorators2 = _interopRequireDefault(_babelHelperBindifyDecorators);
 
-var /*istanbul ignore next*/_babelTypes = require("babel-types");
+var _babelTypes = require("babel-types");
 
-/*istanbul ignore next*/
 var t = _interopRequireWildcard(_babelTypes);
 
-/*istanbul ignore next*/
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

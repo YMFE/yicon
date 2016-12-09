@@ -1,6 +1,6 @@
 //! moment-timezone.js
-//! version : 0.5.5
-//! author : Tim Wood
+//! version : 0.5.10
+//! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
 
@@ -24,7 +24,7 @@
 		return moment;
 	}
 
-	var VERSION = "0.5.5",
+	var VERSION = "0.5.10",
 		zones = {},
 		links = {},
 		names = {},

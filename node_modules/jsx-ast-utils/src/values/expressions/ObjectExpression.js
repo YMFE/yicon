@@ -1,5 +1,5 @@
-import getValue from './index';
 import assign from 'object-assign';
+import getValue from './index';
 
 /**
  * Extractor function for an ObjectExpression type value node.

@@ -1,6 +1,5 @@
 import castPath from './_castPath.js';
 import isFunction from './isFunction.js';
-import isKey from './_isKey.js';
 import toKey from './_toKey.js';
 
 /**
@@ -33,15 +32,15 @@ import toKey from './_toKey.js';
  * // => 'default'
  */
 function result(object, path, defaultValue) {
-  path = isKey(path, object) ? [path] : castPath(path);
+  path = castPath(path, object);
 
   var index = -1,
       length = path.length;
 
   // Ensure the loop is entered when path is empty.
   if (!length) {
-    object = undefined;
     length = 1;
+    object = undefined;
   }
   while (++index < length) {
     var value = object == null ? undefined : object[toKey(path[index])];

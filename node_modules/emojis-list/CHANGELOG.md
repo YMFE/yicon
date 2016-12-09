@@ -1,3 +1,10 @@
+<a name="2.1.0"></a>
+# 2.1.0 (2016-10-03)
+
+* Fetch new emoji ([7dbe84d](https://github.com/kikobeats/emojis-list/commit/7dbe84d))
+
+
+
 <a name="2.0.1"></a>
 ## 2.0.1 (2016-05-12)
 

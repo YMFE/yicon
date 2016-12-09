@@ -2,15 +2,18 @@
 
 webpack dev middleware for koa
 
-
 ## Usage
 
-same with https://github.com/webpack/webpack-dev-middleware
+same with https://github.com/webpack/webpack-dev-middleware. will add original middleware to ctx.webpack
+
 
 ```js
 var app = require('koa')();
 var webpackMiddleware = require("koa-webpack-dev-middleware");
 app.use(webpackMiddleware(...));
+app.get(function *() {
+  this.body = this.webpack.fileSystem.readFileSync('index.html');
+});
 ```
 
 ### Example usage

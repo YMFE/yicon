@@ -24,12 +24,9 @@ var referenceVisitor = {
       return;
     }
 
-    // direct references that we need to track to hoist this to the highest scope we can
     var binding = path.scope.getBinding(path.node.name);
     if (!binding) return;
 
-    // this binding isn't accessible from the parent scope so we can safely ignore it
-    // eg. it's in a closure etc
     if (binding !== state.scope.getBinding(path.node.name)) return;
 
     if (binding.constant) {
@@ -98,23 +95,18 @@ var PathHoister = function () {
 
     var targetScope = path.scope;
 
-    // don't allow paths that have their own lexical environments to pollute
     if (targetScope.path === path) {
       targetScope = path.scope.parent;
     }
 
-    // avoid hoisting to a scope that contains bindings that are executed after our attachment path
     if (targetScope.path.isProgram() || targetScope.path.isFunction()) {
       for (var name in this.bindings) {
-        // check binding is a direct child of this paths scope
         if (!targetScope.hasOwnBinding(name)) continue;
 
         var binding = this.bindings[name];
 
-        // allow parameter references
         if (binding.kind === "param") continue;
 
-        // if this binding appears after our attachment point then don't hoist it
         if (binding.path.getStatementParent().key > path.key) return;
       }
     }
@@ -130,13 +122,10 @@ var PathHoister = function () {
 
     if (scope.path.isFunction()) {
       if (this.hasOwnParamBindings(scope)) {
-        // should ignore this scope since it's ourselves
         if (this.scope === scope) return;
 
-        // needs to be attached to the body
         return scope.path.get("body").get("body")[0];
       } else {
-        // doesn't need to be be attached to this scope
         return this.getNextScopeStatementParent();
       }
     } else if (scope.path.isProgram()) {
@@ -171,17 +160,13 @@ var PathHoister = function () {
     var attachTo = this.getAttachmentPath();
     if (!attachTo) return;
 
-    // don't bother hoisting to the same function as this will cause multiple branches to be evaluated more than once leading to a bad optimisation
     if (attachTo.getFunctionParent() === this.path.getFunctionParent()) return;
 
-    // generate declaration and insert it to our point
     var uid = attachTo.scope.generateUidIdentifier("ref");
     attachTo.insertBefore([t.variableDeclaration("var", [t.variableDeclarator(uid, this.path.node)])]);
 
     var parent = this.path.parentPath;
     if (parent.isJSXElement() && this.path.container === parent.node.children) {
-      // turning the `span` in `<div><span /></div>` to an expression so we need to wrap it with
-      // an expression container
       uid = t.JSXExpressionContainer(uid);
     }
 

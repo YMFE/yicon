@@ -9,8 +9,6 @@ var _getIterator3 = _interopRequireDefault(_getIterator2);
 exports.default = function (node) {
   if (!this.isReferenced()) return;
 
-  // check if a binding exists of this value and if so then return a union type of all
-  // possible types that the binding could be
   var binding = this.scope.getBinding(node.name);
   if (binding) {
     if (binding.identifier.typeAnnotation) {
@@ -20,14 +18,11 @@ exports.default = function (node) {
     }
   }
 
-  // built-in values
   if (node.name === "undefined") {
     return t.voidTypeAnnotation();
   } else if (node.name === "NaN" || node.name === "Infinity") {
     return t.numberTypeAnnotation();
-  } else if (node.name === "arguments") {
-    // todo
-  }
+  } else if (node.name === "arguments") {}
 };
 
 var _babelTypes = require("babel-types");
@@ -52,45 +47,17 @@ function getTypeAnnotationBindingConstantViolations(path, name) {
     (function () {
       var testConstantViolations = getConstantViolationsBefore(binding, testType.ifStatement);
 
-      // remove constant violations observed before the IfStatement
       constantViolations = constantViolations.filter(function (path) {
         return testConstantViolations.indexOf(path) < 0;
       });
 
-      // clear current types and add in observed test type
       types.push(testType.typeAnnotation);
     })();
   }
 
   if (constantViolations.length) {
-    // pick one constant from each scope which will represent the last possible
-    // control flow path that it could've taken/been
-    /* This code is broken for the following problems:
-     * It thinks that assignments can only happen in scopes.
-     * What about conditionals, if statements without block,
-     * or guarded assignments.
-     * It also checks to see if one of the assignments is in the
-     * same scope and uses that as the only "violation". However,
-     * the binding is returned by `getConstantViolationsBefore` so we for
-     * sure always going to return that as the only "violation".
-    let rawConstantViolations = constantViolations.reverse();
-    let visitedScopes = [];
-    constantViolations = [];
-    for (let violation of (rawConstantViolations: Array<NodePath>)) {
-      let violationScope = violation.scope;
-      if (visitedScopes.indexOf(violationScope) >= 0) continue;
-       visitedScopes.push(violationScope);
-      constantViolations.push(violation);
-       if (violationScope === path.scope) {
-        constantViolations = [violation];
-        break;
-      }
-    }*/
-
-    // add back on function constant violations since we can't track calls
     constantViolations = constantViolations.concat(functionConstantViolations);
 
-    // push on inferred types of violated paths
     for (var _iterator = constantViolations, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
       var _ref;
 
@@ -149,7 +116,6 @@ function inferAnnotationFromBinaryExpression(name, path) {
     if (operator !== "===") return;
   }
 
-  //
   var typeofPath = void 0;
   var typePath = void 0;
   if (left.isUnaryExpression({ operator: "typeof" })) {
@@ -161,18 +127,14 @@ function inferAnnotationFromBinaryExpression(name, path) {
   }
   if (!typePath && !typeofPath) return;
 
-  // ensure that the type path is a Literal
   typePath = typePath.resolve();
   if (!typePath.isLiteral()) return;
 
-  // and that it's a string so we can infer it
   var typeValue = typePath.node.value;
   if (typeof typeValue !== "string") return;
 
-  // and that the argument of the typeof path references us!
   if (!typeofPath.get("argument").isIdentifier({ name: name })) return;
 
-  // turn type value into a type annotation
   return t.createTypeAnnotationBasedOnTypeof(typePath.node.value);
 }
 

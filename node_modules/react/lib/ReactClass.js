@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ReactClass
  */
 
 'use strict';
@@ -16,42 +15,25 @@ var _prodInvariant = require('./reactProdInvariant'),
 
 var ReactComponent = require('./ReactComponent');
 var ReactElement = require('./ReactElement');
-var ReactPropTypeLocations = require('./ReactPropTypeLocations');
 var ReactPropTypeLocationNames = require('./ReactPropTypeLocationNames');
 var ReactNoopUpdateQueue = require('./ReactNoopUpdateQueue');
 
 var emptyObject = require('fbjs/lib/emptyObject');
 var invariant = require('fbjs/lib/invariant');
-var keyMirror = require('fbjs/lib/keyMirror');
-var keyOf = require('fbjs/lib/keyOf');
 var warning = require('fbjs/lib/warning');
 
-var MIXINS_KEY = keyOf({ mixins: null });
+var MIXINS_KEY = 'mixins';
+
+// Helper function to allow the creation of anonymous functions which do not
+// have .name set to the name of the variable being assigned to.
+function identity(fn) {
+  return fn;
+}
 
 /**
  * Policies that describe methods in `ReactClassInterface`.
  */
-var SpecPolicy = keyMirror({
-  /**
-   * These methods may be defined only once by the class specification or mixin.
-   */
-  DEFINE_ONCE: null,
-  /**
-   * These methods may be defined by both the class specification and mixins.
-   * Subsequent definitions will be chained. These methods must return void.
-   */
-  DEFINE_MANY: null,
-  /**
-   * These methods are overriding the base class.
-   */
-  OVERRIDE_BASE: null,
-  /**
-   * These methods are similar to DEFINE_MANY, except we assume they return
-   * objects. We try to merge the keys of the return values of all the mixed in
-   * functions. If there is a key conflict we throw.
-   */
-  DEFINE_MANY_MERGED: null
-});
+
 
 var injectedMixins = [];
 
@@ -85,7 +67,7 @@ var ReactClassInterface = {
    * @type {array}
    * @optional
    */
-  mixins: SpecPolicy.DEFINE_MANY,
+  mixins: 'DEFINE_MANY',
 
   /**
    * An object containing properties and methods that should be defined on
@@ -94,7 +76,7 @@ var ReactClassInterface = {
    * @type {object}
    * @optional
    */
-  statics: SpecPolicy.DEFINE_MANY,
+  statics: 'DEFINE_MANY',
 
   /**
    * Definition of prop types for this component.
@@ -102,7 +84,7 @@ var ReactClassInterface = {
    * @type {object}
    * @optional
    */
-  propTypes: SpecPolicy.DEFINE_MANY,
+  propTypes: 'DEFINE_MANY',
 
   /**
    * Definition of context types for this component.
@@ -110,7 +92,7 @@ var ReactClassInterface = {
    * @type {object}
    * @optional
    */
-  contextTypes: SpecPolicy.DEFINE_MANY,
+  contextTypes: 'DEFINE_MANY',
 
   /**
    * Definition of context types this component sets for its children.
@@ -118,7 +100,7 @@ var ReactClassInterface = {
    * @type {object}
    * @optional
    */
-  childContextTypes: SpecPolicy.DEFINE_MANY,
+  childContextTypes: 'DEFINE_MANY',
 
   // ==== Definition methods ====
 
@@ -132,7 +114,7 @@ var ReactClassInterface = {
    * @return {object}
    * @optional
    */
-  getDefaultProps: SpecPolicy.DEFINE_MANY_MERGED,
+  getDefaultProps: 'DEFINE_MANY_MERGED',
 
   /**
    * Invoked once before the component is mounted. The return value will be used
@@ -148,13 +130,13 @@ var ReactClassInterface = {
    * @return {object}
    * @optional
    */
-  getInitialState: SpecPolicy.DEFINE_MANY_MERGED,
+  getInitialState: 'DEFINE_MANY_MERGED',
 
   /**
    * @return {object}
    * @optional
    */
-  getChildContext: SpecPolicy.DEFINE_MANY_MERGED,
+  getChildContext: 'DEFINE_MANY_MERGED',
 
   /**
    * Uses props from `this.props` and state from `this.state` to render the
@@ -172,7 +154,7 @@ var ReactClassInterface = {
    * @nosideeffects
    * @required
    */
-  render: SpecPolicy.DEFINE_ONCE,
+  render: 'DEFINE_ONCE',
 
   // ==== Delegate methods ====
 
@@ -183,7 +165,7 @@ var ReactClassInterface = {
    *
    * @optional
    */
-  componentWillMount: SpecPolicy.DEFINE_MANY,
+  componentWillMount: 'DEFINE_MANY',
 
   /**
    * Invoked when the component has been mounted and has a DOM representation.
@@ -195,7 +177,7 @@ var ReactClassInterface = {
    * @param {DOMElement} rootNode DOM element representing the component.
    * @optional
    */
-  componentDidMount: SpecPolicy.DEFINE_MANY,
+  componentDidMount: 'DEFINE_MANY',
 
   /**
    * Invoked before the component receives new props.
@@ -216,7 +198,7 @@ var ReactClassInterface = {
    * @param {object} nextProps
    * @optional
    */
-  componentWillReceiveProps: SpecPolicy.DEFINE_MANY,
+  componentWillReceiveProps: 'DEFINE_MANY',
 
   /**
    * Invoked while deciding if the component should be updated as a result of
@@ -238,7 +220,7 @@ var ReactClassInterface = {
    * @return {boolean} True if the component should update.
    * @optional
    */
-  shouldComponentUpdate: SpecPolicy.DEFINE_ONCE,
+  shouldComponentUpdate: 'DEFINE_ONCE',
 
   /**
    * Invoked when the component is about to update due to a transition from
@@ -255,7 +237,7 @@ var ReactClassInterface = {
    * @param {ReactReconcileTransaction} transaction
    * @optional
    */
-  componentWillUpdate: SpecPolicy.DEFINE_MANY,
+  componentWillUpdate: 'DEFINE_MANY',
 
   /**
    * Invoked when the component's DOM representation has been updated.
@@ -269,7 +251,7 @@ var ReactClassInterface = {
    * @param {DOMElement} rootNode DOM element representing the component.
    * @optional
    */
-  componentDidUpdate: SpecPolicy.DEFINE_MANY,
+  componentDidUpdate: 'DEFINE_MANY',
 
   /**
    * Invoked when the component is about to be removed from its parent and have
@@ -282,7 +264,7 @@ var ReactClassInterface = {
    *
    * @optional
    */
-  componentWillUnmount: SpecPolicy.DEFINE_MANY,
+  componentWillUnmount: 'DEFINE_MANY',
 
   // ==== Advanced methods ====
 
@@ -296,7 +278,7 @@ var ReactClassInterface = {
    * @internal
    * @overridable
    */
-  updateComponent: SpecPolicy.OVERRIDE_BASE
+  updateComponent: 'OVERRIDE_BASE'
 
 };
 
@@ -322,13 +304,13 @@ var RESERVED_SPEC_KEYS = {
   },
   childContextTypes: function (Constructor, childContextTypes) {
     if (process.env.NODE_ENV !== 'production') {
-      validateTypeDef(Constructor, childContextTypes, ReactPropTypeLocations.childContext);
+      validateTypeDef(Constructor, childContextTypes, 'childContext');
     }
     Constructor.childContextTypes = _assign({}, Constructor.childContextTypes, childContextTypes);
   },
   contextTypes: function (Constructor, contextTypes) {
     if (process.env.NODE_ENV !== 'production') {
-      validateTypeDef(Constructor, contextTypes, ReactPropTypeLocations.context);
+      validateTypeDef(Constructor, contextTypes, 'context');
     }
     Constructor.contextTypes = _assign({}, Constructor.contextTypes, contextTypes);
   },
@@ -345,7 +327,7 @@ var RESERVED_SPEC_KEYS = {
   },
   propTypes: function (Constructor, propTypes) {
     if (process.env.NODE_ENV !== 'production') {
-      validateTypeDef(Constructor, propTypes, ReactPropTypeLocations.prop);
+      validateTypeDef(Constructor, propTypes, 'prop');
     }
     Constructor.propTypes = _assign({}, Constructor.propTypes, propTypes);
   },
@@ -354,7 +336,6 @@ var RESERVED_SPEC_KEYS = {
   },
   autobind: function () {} };
 
-// noop
 function validateTypeDef(Constructor, typeDef, location) {
   for (var propName in typeDef) {
     if (typeDef.hasOwnProperty(propName)) {
@@ -370,12 +351,12 @@ function validateMethodOverride(isAlreadyDefined, name) {
 
   // Disallow overriding of base class methods unless explicitly allowed.
   if (ReactClassMixin.hasOwnProperty(name)) {
-    !(specPolicy === SpecPolicy.OVERRIDE_BASE) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to override `%s` from your class specification. Ensure that your method names do not overlap with React methods.', name) : _prodInvariant('73', name) : void 0;
+    !(specPolicy === 'OVERRIDE_BASE') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to override `%s` from your class specification. Ensure that your method names do not overlap with React methods.', name) : _prodInvariant('73', name) : void 0;
   }
 
   // Disallow defining methods more than once unless explicitly allowed.
   if (isAlreadyDefined) {
-    !(specPolicy === SpecPolicy.DEFINE_MANY || specPolicy === SpecPolicy.DEFINE_MANY_MERGED) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to define `%s` on your component more than once. This conflict may be due to a mixin.', name) : _prodInvariant('74', name) : void 0;
+    !(specPolicy === 'DEFINE_MANY' || specPolicy === 'DEFINE_MANY_MERGED') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClassInterface: You are attempting to define `%s` on your component more than once. This conflict may be due to a mixin.', name) : _prodInvariant('74', name) : void 0;
   }
 }
 
@@ -441,13 +422,13 @@ function mixSpecIntoComponent(Constructor, spec) {
           var specPolicy = ReactClassInterface[name];
 
           // These cases should already be caught by validateMethodOverride.
-          !(isReactClassMethod && (specPolicy === SpecPolicy.DEFINE_MANY_MERGED || specPolicy === SpecPolicy.DEFINE_MANY)) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClass: Unexpected spec policy %s for key %s when mixing in component specs.', specPolicy, name) : _prodInvariant('77', specPolicy, name) : void 0;
+          !(isReactClassMethod && (specPolicy === 'DEFINE_MANY_MERGED' || specPolicy === 'DEFINE_MANY')) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'ReactClass: Unexpected spec policy %s for key %s when mixing in component specs.', specPolicy, name) : _prodInvariant('77', specPolicy, name) : void 0;
 
           // For methods which are defined more than once, call the existing
           // methods before calling the new property, merging if appropriate.
-          if (specPolicy === SpecPolicy.DEFINE_MANY_MERGED) {
+          if (specPolicy === 'DEFINE_MANY_MERGED') {
             proto[name] = createMergedResultFunction(proto[name], property);
-          } else if (specPolicy === SpecPolicy.DEFINE_MANY) {
+          } else if (specPolicy === 'DEFINE_MANY') {
             proto[name] = createChainedFunction(proto[name], property);
           }
         } else {
@@ -642,7 +623,10 @@ var ReactClass = {
    * @public
    */
   createClass: function (spec) {
-    var Constructor = function (props, context, updater) {
+    // To keep our warnings more understandable, we'll use a little hack here to
+    // ensure that Constructor.name !== 'Constructor'. This makes sure we don't
+    // unnecessarily identify a class without displayName as 'Constructor'.
+    var Constructor = identity(function (props, context, updater) {
       // This constructor gets overridden by mocks. The argument is used
       // by mocks to assert on what gets mounted.
 
@@ -677,7 +661,7 @@ var ReactClass = {
       !(typeof initialState === 'object' && !Array.isArray(initialState)) ? process.env.NODE_ENV !== 'production' ? invariant(false, '%s.getInitialState(): must return an object or null', Constructor.displayName || 'ReactCompositeComponent') : _prodInvariant('82', Constructor.displayName || 'ReactCompositeComponent') : void 0;
 
       this.state = initialState;
-    };
+    });
     Constructor.prototype = new ReactClassComponent();
     Constructor.prototype.constructor = Constructor;
     Constructor.prototype.__reactAutoBindPairs = [];

@@ -29,7 +29,7 @@ function remove() {
   this.shareCommentsWithSiblings();
   this._remove();
   this._markRemoved();
-} // This file contains methods responsible for removing a node.
+}
 
 function _callRemovalHooks() {
   for (var _iterator = _removalHooks.hooks, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {

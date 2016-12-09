@@ -48,7 +48,7 @@ function getFunctionCalls(call, functionRE) {
     var startIndex = searchMatch.index
     var matches = balanced("(", ")", call.substring(startIndex))
 
-    if (!matches) {
+    if (!matches || matches.start !== searchMatch[0].length - 1) {
       throw new SyntaxError(fn + "(): missing closing ')' in the value '" + call + "'")
     }
 

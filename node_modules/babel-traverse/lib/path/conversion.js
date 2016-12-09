@@ -28,14 +28,13 @@ function toComputedKey() {
   }
 
   return key;
-} // This file contains methods that convert the path node into another node or some other type of data.
+}
 
 function ensureBlock() {
   return t.ensureBlock(this.node);
 }
 
 function arrowFunctionToShadowed() {
-  // todo: maybe error
   if (!this.isArrowFunctionExpression()) return;
 
   this.ensureBlock();

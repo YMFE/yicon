@@ -1,10 +1,10 @@
-/*! bignumber.js v2.3.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
+/*! bignumber.js v2.4.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
 ;(function (globalObj) {
     'use strict';
 
     /*
-      bignumber.js v2.3.0
+      bignumber.js v2.4.0
       A JavaScript library for arbitrary-precision arithmetic.
       https://github.com/MikeMcl/bignumber.js
       Copyright (c) 2016 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -12,7 +12,7 @@
     */
 
 
-    var cryptoObj, parseNumeric,
+    var BigNumber, cryptoObj, parseNumeric,
         isNumeric = /^-?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
         mathceil = Math.ceil,
         mathfloor = Math.floor,
@@ -2714,13 +2714,17 @@
     // EXPORT
 
 
-   // AMD.
+    BigNumber = constructorFactory();
+    BigNumber.default = BigNumber.BigNumber = BigNumber;
+
+
+    // AMD.
     if ( typeof define == 'function' && define.amd ) {
-        define( function () { return constructorFactory(); } );
+        define( function () { return BigNumber; } );
 
     // Node.js and other environments that support module.exports.
     } else if ( typeof module != 'undefined' && module.exports ) {
-        module.exports = constructorFactory();
+        module.exports = BigNumber;
 
         // Split string stops browserify adding crypto shim.
         if ( !cryptoObj ) try { cryptoObj = require('cry' + 'pto'); } catch (e) {}
@@ -2728,6 +2732,6 @@
     // Browser.
     } else {
         if ( !globalObj ) globalObj = typeof self != 'undefined' ? self : Function('return this')();
-        globalObj.BigNumber = constructorFactory();
+        globalObj.BigNumber = BigNumber;
     }
 })(this);

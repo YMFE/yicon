@@ -72,17 +72,6 @@ var hoistVariablesVisitor = {
   }
 };
 
-/**
- * Replace a node with an array of multiple. This method performs the following steps:
- *
- *  - Inherit the comments of first provided node with that of the current node.
- *  - Insert the provided nodes after the current node.
- *  - Remove the current node.
- */
-
-/* eslint max-len: 0 */
-// This file contains methods responsible for replacing a node with another.
-
 function replaceWithMultiple(nodes) {
   this.resync();
 
@@ -98,14 +87,6 @@ function replaceWithMultiple(nodes) {
     this.remove();
   }
 }
-
-/**
- * Parse a string as an expression and replace the current node with the result.
- *
- * NOTE: This is typically not a good idea to use. Building source strings when
- * transforming ASTs is an antipattern and SHOULD NOT be encouraged. Even if it's
- * easier to use, your transforms will be extremely brittle.
- */
 
 function replaceWithSourceString(replacement) {
   this.resync();
@@ -126,10 +107,6 @@ function replaceWithSourceString(replacement) {
   _index2.default.removeProperties(replacement);
   return this.replaceWith(replacement);
 }
-
-/**
- * Replace the current node with another.
- */
 
 function replaceWith(replacement) {
   this.resync();
@@ -164,14 +141,12 @@ function replaceWith(replacement) {
 
   if (this.isNodeType("Statement") && t.isExpression(replacement)) {
     if (!this.canHaveVariableDeclarationOrExpression() && !this.canSwapBetweenExpressionAndStatement(replacement)) {
-      // replacing a statement with an expression so wrap it in an expression statement
       replacement = t.expressionStatement(replacement);
     }
   }
 
   if (this.isNodeType("Expression") && t.isStatement(replacement)) {
     if (!this.canHaveVariableDeclarationOrExpression() && !this.canSwapBetweenExpressionAndStatement(replacement)) {
-      // replacing an expression with a statement so let's explode it
       return this.replaceExpressionWithStatements([replacement]);
     }
   }
@@ -182,20 +157,13 @@ function replaceWith(replacement) {
     t.removeComments(oldNode);
   }
 
-  // replace the node
   this._replaceWith(replacement);
   this.type = replacement.type;
 
-  // potentially create new scope
   this.setScope();
 
-  // requeue for visiting
   this.requeue();
 }
-
-/**
- * Description
- */
 
 function _replaceWith(node) {
   if (!this.container) {
@@ -215,12 +183,6 @@ function _replaceWith(node) {
   this.node = this.container[this.key] = node;
 }
 
-/**
- * This method takes an array of statements nodes and then explodes it
- * into expressions. This method retains completion records which is
- * extremely important to retain original semantics.
- */
-
 function replaceExpressionWithStatements(nodes) {
   this.resync();
 
@@ -233,7 +195,6 @@ function replaceExpressionWithStatements(nodes) {
       this._maybePopFromStatements(exprs);
     }
 
-    // could be just one element due to the previous maybe popping
     if (exprs.length === 1) {
       this.replaceWith(exprs[0]);
     } else {
@@ -248,7 +209,6 @@ function replaceExpressionWithStatements(nodes) {
     this.replaceWith(t.callExpression(container, []));
     this.traverse(hoistVariablesVisitor);
 
-    // add implicit returns to all ending expression statements
     var completionRecords = this.get("callee").getCompletionRecords();
     for (var _iterator2 = completionRecords, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : (0, _getIterator3.default)(_iterator2);;) {
       var _ref2;

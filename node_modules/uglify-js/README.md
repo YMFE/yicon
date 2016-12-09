@@ -62,6 +62,7 @@ The available options are:
   --source-map-include-sources  Pass this flag if you want to include the
                                 content of source files in the source map as
                                 sourcesContent property.
+  --source-map-inline           Write base64-encoded source map to the end of js output.
   --in-source-map               Input source map, useful if you're compressing
                                 JS that was generated from some other original
                                 code.
@@ -97,8 +98,8 @@ The available options are:
                                 "@preserve". You can optionally pass one of the
                                 following arguments to this flag:
                                 - "all" to keep all comments
-                                - a valid JS regexp (needs to start with a
-                                slash) to keep only comments that match.
+                                - a valid JS RegExp like `/foo/` or `/^!/` to
+                                keep only matching comments.
                                 Note that currently not *all* comments can be
                                 kept when compression is on, because of dead
                                 code removal or cascading statements into
@@ -284,6 +285,21 @@ of mangled property names.
 Using the name cache is not necessary if you compress all your files in a
 single call to UglifyJS.
 
+#### Debugging property name mangling
+
+You can also pass `--mangle-props-debug` in order to mangle property names
+without completely obscuring them. For example the property `o.foo`
+would mangle to `o._$foo$_` with this option. This allows property mangling
+of a large codebase while still being able to debug the code and identify
+where mangling is breaking things.
+
+You can also pass a custom suffix using `--mangle-props-debug=XYZ`. This would then
+mangle `o.foo` to `o._$foo$XYZ_`. You can change this each time you compile a
+script to identify how a property got mangled. One technique is to pass a
+random number on every compile to simulate mangling changing with different
+inputs (e.g. as you update the input script with new properties), and to help
+identify mistakes like writing mangled keys to storage.
+
 ## Compressor options
 
 You need to pass `--compress` (`-c`) to enable the compressor.  Optionally
@@ -347,6 +363,9 @@ to set `true`; it's effectively a shortcut for `foo=true`).
 
 - `collapse_vars` -- default `false`. Collapse single-use `var` and `const`
   definitions when possible.
+
+- `reduce_vars` -- default `false`. Improve optimization on variables assigned
+  with and used as constant values.
 
 - `warnings` -- display warnings when dropping unreachable code or unused
   declarations etc.
@@ -632,13 +651,22 @@ To generate a source map with the fromString option, you can also use an object:
 ```javascript
 var result = UglifyJS.minify({"file1.js": "var a = function () {};"}, {
   outSourceMap: "out.js.map",
+  outFileName: "out.js",
   fromString: true
 });
 ```
 
 Note that the source map is not saved in a file, it's just returned in
-`result.map`.  The value passed for `outSourceMap` is only used to set the
-`file` attribute in the source map (see [the spec][sm-spec]).
+`result.map`.  The value passed for `outSourceMap` is only used to set
+`//# sourceMappingURL=out.js.map` in `result.code`. The value of
+`outFileName` is only used to set `file` attribute in source map file.
+
+The `file` attribute in the source map (see [the spec][sm-spec]) will
+use `outFileName` firstly, if it's falsy, then will be deduced from
+`outSourceMap` (by removing `'.map'`).
+
+You can set option `sourceMapInline` to be `true` and source map will
+be appended to code.
 
 You can also specify sourceRoot property to be included in source map:
 ```javascript
@@ -743,6 +771,7 @@ Other options:
 
  - `regex` — Pass a RegExp to only mangle certain names (maps to the `--mangle-regex` CLI arguments option)
  - `ignore_quoted` – Only mangle unquoted property names (maps to the `--mangle-props 2` CLI arguments option)
+ - `debug` – Mangle names with the original name still present (maps to the `--mangle-props-debug` CLI arguments option). Defaults to `false`. Pass an empty string to enable, or a non-empty string to set the suffix.
 
 We could add more options to `UglifyJS.minify` — if you need additional
 functionality please suggest!
@@ -849,8 +878,11 @@ which we care about here are `source_map` and `comments`.
 #### Keeping comments in the output
 
 In order to keep certain comments in the output you need to pass the
-`comments` option.  Pass a RegExp or a function.  If you pass a RegExp, only
-those comments whose body matches the regexp will be kept.  Note that body
+`comments` option.  Pass a RegExp (as string starting and closing with `/`
+or pass a RegExp object), a boolean or a function.  Stringified options
+`all` and `some` can be passed too, where `some` behaves like it's cli
+equivalent `--comments` without passing a value. If you pass a RegExp,
+only those comments whose body matches the RegExp will be kept.  Note that body
 means without the initial `//` or `/*`.  If you pass a function, it will be
 called for every comment in the tree and will receive two arguments: the
 node that the comment is attached to, and the comment token itself.

@@ -62,8 +62,9 @@ module.exports = function fromStringWithSourceMap(code, map) {
 			var linePosition = currentLine;
 		}
 
-		if(mapping.rest && mapping.rest[0] === ",") {
-			mapping.rest = mapping.rest.substr(1);
+		if(mapping.rest) {
+			var next = mapping.rest.indexOf(",");
+			mapping.rest = next === -1 ? "" : mapping.rest.substr(next);
 		}
 
 		if(!ignore) {

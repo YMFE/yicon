@@ -1,6 +1,6 @@
 # reduce-function-call [![Build Status](https://travis-ci.org/MoOx/reduce-function-call.png)](https://travis-ci.org/MoOx/reduce-function-call)
 
-Reduce function calls in a string, using a callback
+> Reduce function calls in a string, using a callback
 
 ## Installation
 

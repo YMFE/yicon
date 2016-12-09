@@ -24,12 +24,11 @@ var initialState = {
  * this state is discouraged.
  */
 function routerReducer() {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 
-  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-  var type = _ref.type;
-  var payload = _ref.payload;
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      type = _ref.type,
+      payload = _ref.payload;
 
   if (type === LOCATION_CHANGE) {
     return _extends({}, state, { locationBeforeTransitions: payload });

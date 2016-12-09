@@ -20,10 +20,6 @@ var _sourceMap2 = _interopRequireDefault(_sourceMap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Build a sourcemap.
- */
-
 var SourceMap = function () {
   function SourceMap(opts, code) {
     var _this = this;
@@ -45,25 +41,13 @@ var SourceMap = function () {
     }
   }
 
-  /**
-   * Get the sourcemap.
-   */
-
   SourceMap.prototype.get = function get() {
     return this._map.toJSON();
   };
 
-  /**
-   * Mark the current generated position with a source position. May also be passed null line/column
-   * values to insert a mapping to nothing.
-   */
-
-  SourceMap.prototype.mark = function mark(generatedLine, generatedColumn, line, column, filename) {
-    // Adding an empty mapping at the start of a generated line just clutters the map.
+  SourceMap.prototype.mark = function mark(generatedLine, generatedColumn, line, column, identifierName, filename) {
     if (this._lastGenLine !== generatedLine && line === null) return;
 
-    // If this mapping points to the same source location as the last one, we can ignore it since
-    // the previous one covers it.
     if (this._lastGenLine === generatedLine && this._lastSourceLine === line && this._lastSourceColumn === column) {
       return;
     }
@@ -73,6 +57,7 @@ var SourceMap = function () {
     this._lastSourceColumn = column;
 
     this._map.addMapping({
+      name: identifierName,
       generated: {
         line: generatedLine,
         column: generatedColumn

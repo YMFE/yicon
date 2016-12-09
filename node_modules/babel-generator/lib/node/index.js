@@ -84,8 +84,6 @@ function expandAliases(obj) {
   return newObj;
 }
 
-// Rather than using `t.is` on each object property, we pre-expand any type aliases
-// into concrete types so that the 'find' call below can be as fast as possible.
 var expandedParens = expandAliases(parens);
 var expandedWhitespaceNodes = expandAliases(_whitespace2.default.nodes);
 var expandedWhitespaceList = expandAliases(_whitespace2.default.list);

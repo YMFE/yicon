@@ -1,1 +1,1 @@
-module.exports = require('react/lib/ReactTestUtils');
+module.exports = require('react-dom/lib/ReactTestUtils');

@@ -1,6 +1,6 @@
 module.exports = serializeNode
 
-var voidElements = /area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr/i;
+var voidElements = ["area","base","br","col","embed","hr","img","input","keygen","link","menuitem","meta","param","source","track","wbr"];
 
 function serializeNode(node) {
     switch (node.nodeType) {
@@ -24,7 +24,7 @@ function serializeElement(elem) {
 
     strings.push("<" + tagname + properties(elem) + datasetify(elem))
 
-    if (voidElements.test(tagname)) {
+    if (voidElements.indexOf(tagname) > -1) {
         strings.push(" />")
     } else {
         strings.push(">")

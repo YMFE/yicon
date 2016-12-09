@@ -1,3 +1,22 @@
+v3.3.2 - September 29, 2016
+
+* 7d3e2fc Fix: reset `isAsync` flag for each property (fixes #298) (#299) (Toru Nagashima)
+
+v3.3.1 - September 26, 2016
+
+* 80abdce Fix: `}` token followed by template had been lost (fixes #293) (#294) (Toru Nagashima)
+* 9810bab Fix: parsing error on `async` as property name. (#295) (Toru Nagashima)
+
+v3.3.0 - September 20, 2016
+
+* 92b04b1 Update: create-test script (fixes #291) (#292) (Jamund Ferguson)
+
+v3.2.0 - September 16, 2016
+
+* 5a37f80 Build: Update release tool (Nicholas C. Zakas)
+* 9bbcad8 Update: Upgrade Acorn to support ES2017 (fixes #287) (#290) (Jamund Ferguson)
+* 8d9767d Build: Add CI release scripts (Nicholas C. Zakas)
+
 v3.1.7 - July 29, 2016
 
 * 8f6cfbd Build: Add CI release (Nicholas C. Zakas)

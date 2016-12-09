@@ -20,7 +20,7 @@ const JS_RESERVED = {
 export default function extractValueFromIdentifier(value) {
   const { name } = value;
 
-  if (JS_RESERVED.hasOwnProperty(name)) {
+  if (Object.hasOwnProperty.call(JS_RESERVED, name)) {
     return JS_RESERVED[name];
   }
 

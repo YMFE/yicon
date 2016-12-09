@@ -5,9 +5,9 @@
 [![NPM Status](http://img.shields.io/npm/dm/emojis-list.svg?style=flat-square)](https://www.npmjs.org/package/emojis-list)
 [![Donate](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://paypal.me/kikobeats)
 
-> Complete list of standard Unicode codes that represent emojis.
+> Complete list of standard Unicode Hex Character Code that represent emojis.
 
-The file content all shortcuts declared that you can use for invoke a emoji.
+**NOTE**: The lists is related with the Unicode Hex Character Code. The representation of the emoji depend of the system. Will be possible that the system don't have all the representations.
 
 ## Install
 

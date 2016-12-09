@@ -12,7 +12,7 @@ const DEFAULT_OPTIONS = {
 export default function hasProp(props = [], prop = '', options = DEFAULT_OPTIONS) {
   const propToCheck = options.ignoreCase ? prop.toUpperCase() : prop;
 
-  return props.some(attribute => {
+  return props.some((attribute) => {
     // If the props contain a spread prop, then refer to strict param.
     if (attribute.type === 'JSXSpreadAttribute') {
       return !options.spreadStrict;

@@ -18,6 +18,7 @@ module.exports = function (compiler, option) {
   var doIt = expressMiddleware(compiler, option);
   return function*(next) {
     var ctx = this;
+    ctx.webpack = doIt;
     var req = this.req;
     var runNext = yield middleware(doIt, req, {
       end: function (content) {

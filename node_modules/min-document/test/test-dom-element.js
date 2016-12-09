@@ -207,4 +207,13 @@ function testDomElement(document) {
         cleanup()
         assert.end()
     })
+
+    test("can serialize textarea correctly", function(assert) {
+        var input = document.createElement("textarea")
+        input.setAttribute("name", "comment")
+        input.innerHTML = "user input here"
+        assert.equal(input.toString(), '<textarea name="comment">user input here</textarea>')
+        cleanup()
+        assert.end()
+    })
 }

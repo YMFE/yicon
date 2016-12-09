@@ -16,6 +16,8 @@
 
 A cross platform solution to node's spawn.
 
+**This module is deprecated, use [cross-spawn](https://github.com/IndigoUnited/node-cross-spawn) instead which no longer requires a build toolchain.**
+
 
 ## Installation
 

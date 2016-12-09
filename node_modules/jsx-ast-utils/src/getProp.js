@@ -10,10 +10,10 @@ const DEFAULT_OPTIONS = {
  *
  */
 export default function getProp(props = [], prop = '', options = DEFAULT_OPTIONS) {
-  let nodeProp = undefined;
+  let nodeProp;
   const propToFind = options.ignoreCase ? prop.toUpperCase() : prop;
 
-  const hasProp = props.some(attribute => {
+  const hasProp = props.some((attribute) => {
     // If the props contain a spread prop, then skip.
     if (attribute.type === 'JSXSpreadAttribute') {
       return false;

@@ -10,7 +10,6 @@ exports.default = function () {
   return {
     visitor: _babelTraverse.visitors.merge([{
       ArrowFunctionExpression: function ArrowFunctionExpression(path) {
-        // default/rest visitors require access to `arguments`
         var params = path.get("params");
         for (var _iterator = params, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : (0, _getIterator3.default)(_iterator);;) {
           var _ref;

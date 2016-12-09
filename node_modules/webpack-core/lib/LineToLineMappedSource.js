@@ -3,7 +3,6 @@
 	Author Tobias Koppers @sokra
 */
 var SourceNode = require("source-map").SourceNode;
-var SourceMapConsumer = require("source-map").SourceMapConsumer;
 var SourceListMap = require("source-list-map").SourceListMap;
 var Source = require("./Source");
 

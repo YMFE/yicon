@@ -30,7 +30,7 @@ module.exports = resolvePath
  * @private
  */
 
-var UP_PATH_REGEXP = /(?:^|[\\\/])\.\.(?:[\\\/]|$)/
+var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 /**
  * Resolve relative path against a root path

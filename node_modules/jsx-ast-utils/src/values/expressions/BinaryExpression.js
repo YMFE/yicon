@@ -32,11 +32,11 @@ export default function extractValueFromBinaryExpression(value) {
     case '>=':
       return leftVal >= rightVal;
     case '<<':
-      return leftVal << rightVal;
+      return leftVal << rightVal; // eslint-disable-line no-bitwise
     case '>>':
-      return leftVal >> rightVal;
+      return leftVal >> rightVal; // eslint-disable-line no-bitwise
     case '>>>':
-      return leftVal >>> rightVal;
+      return leftVal >>> rightVal; // eslint-disable-line no-bitwise
     case '+':
       return leftVal + rightVal;
     case '-':
@@ -48,11 +48,11 @@ export default function extractValueFromBinaryExpression(value) {
     case '%':
       return leftVal % rightVal;
     case '|':
-      return leftVal | rightVal;
+      return leftVal | rightVal; // eslint-disable-line no-bitwise
     case '^':
-      return leftVal ^ rightVal;
+      return leftVal ^ rightVal; // eslint-disable-line no-bitwise
     case '&':
-      return leftVal & rightVal;
+      return leftVal & rightVal; // eslint-disable-line no-bitwise
     case 'in':
       try {
         return leftVal in rightVal;

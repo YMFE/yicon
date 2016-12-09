@@ -22,9 +22,9 @@ function routerMiddleware(history) {
           return next(action);
         }
 
-        var _action$payload = action.payload;
-        var method = _action$payload.method;
-        var args = _action$payload.args;
+        var _action$payload = action.payload,
+            method = _action$payload.method,
+            args = _action$payload.args;
 
         history[method].apply(history, _toConsumableArray(args));
       };

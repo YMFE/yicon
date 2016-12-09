@@ -4,12 +4,6 @@ exports.__esModule = true;
 exports.shareCommentsWithSiblings = shareCommentsWithSiblings;
 exports.addComment = addComment;
 exports.addComments = addComments;
-// This file contains methods responsible for dealing with comments.
-
-/**
- * Share comments amongst siblings.
- */
-
 function shareCommentsWithSiblings() {
   var node = this.node;
   if (!node) return;
@@ -34,10 +28,6 @@ function addComment(type, content, line) {
     value: content
   }]);
 }
-
-/**
- * Give node `comments` of the specified `type`.
- */
 
 function addComments(type, comments) {
   if (!comments) return;

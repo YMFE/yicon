@@ -19,7 +19,7 @@ export default function extractValueFromUnaryExpression(value) {
     case '!':
       return !getValue(argument);
     case '~':
-      return ~getValue(argument);
+      return ~getValue(argument); // eslint-disable-line no-bitwise
     case 'delete':
       // I believe delete statements evaluate to true.
       return true;

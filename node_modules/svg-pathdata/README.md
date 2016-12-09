@@ -1,7 +1,7 @@
 # SVGPathData
 > Manipulating SVG path data (path[d] attribute content) simply and efficiently.
 
-[![NPM version](https://badge.fury.io/js/svg-pathdata.svg)](https://npmjs.org/package/svg-pathdata) [![Build status](https://secure.travis-ci.org/nfroidure/SVGPathData.svg)](https://travis-ci.org/nfroidure/SVGPathData) [![Dependency Status](https://david-dm.org/nfroidure/SVGPathData.svg)](https://david-dm.org/nfroidure/SVGPathData) [![devDependency Status](https://david-dm.org/nfroidure/SVGPathData/dev-status.svg)](https://david-dm.org/nfroidure/SVGPathData#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/SVGPathData/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/SVGPathData?branch=master)
+[![NPM version](https://badge.fury.io/js/svg-pathdata.svg)](https://npmjs.org/package/svg-pathdata) [![Build status](https://secure.travis-ci.org/nfroidure/SVGPathData.svg?branch=master)](https://travis-ci.org/nfroidure/SVGPathData?branch=master) [![Dependency Status](https://david-dm.org/nfroidure/SVGPathData.svg)](https://david-dm.org/nfroidure/SVGPathData) [![devDependency Status](https://david-dm.org/nfroidure/SVGPathData/dev-status.svg)](https://david-dm.org/nfroidure/SVGPathData#info=devDependencies) [![Coverage Status](https://coveralls.io/repos/nfroidure/SVGPathData/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/SVGPathData?branch=master)
 
 ## Including the library
 This library is fully node based (based on current stream implementation) but

@@ -1,3 +1,7 @@
+## 1.1.2 (December 3, 2016)
+
+- Fix exception on `Command#normalize()`
+
 ## 1.1.1 (May 10, 2016)
 
 - Fix `chalk` version

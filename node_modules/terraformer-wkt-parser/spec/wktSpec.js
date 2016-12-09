@@ -1,6 +1,6 @@
 if(typeof module === "object"){
  var Terraformer = require("terraformer");
- Terraformer.WKT = require("../terraformer-wkt-parser");
+ Terraformer.WKT = require("../dist/terraformer-wkt-parser");
 }
 
 beforeEach(function() {

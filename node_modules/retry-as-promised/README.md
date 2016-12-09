@@ -9,6 +9,8 @@ Retry a failed promise
 ```js
 var retry = require('retry-as-promised');
 
+var warningFn = function(msg){ someLoggingFunction(msg, 'notice'); };
+
 // Will call the until max retries or the promise is resolved.
 return retry(function () {
   return promise;
@@ -21,6 +23,8 @@ return retry(function () {
   ],
   backoffBase: 1000 // Initial backoff duration in ms. Default: 100,
   backoffExponent: 1.5 // Exponent to increase backoff each try. Default: 1.1
+  report: warningFn, // the function used for reporting; must have a (string, object) argument signature, where string is the message that will passed in by retry-as-promised, and the object will be this configuration object + the $current property
+  name:  'SourceX' // if user supplies string, it will be used when composing error/reporting messages; else if retry gets a callback, uses callback name in erroring/reporting; else (default) uses litteral string 'unknown'
 });
 ```
 

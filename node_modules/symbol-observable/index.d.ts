@@ -1,2 +1,2 @@
 declare const observableSymbol: symbol;
-export = observableSymbol;
+export default observableSymbol;

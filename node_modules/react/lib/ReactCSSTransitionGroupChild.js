@@ -6,13 +6,12 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ReactCSSTransitionGroupChild
  */
 
 'use strict';
 
 var React = require('./React');
-var ReactDOM = require('./ReactDOM');
+var ReactAddonsDOMDependencies = require('./ReactAddonsDOMDependencies');
 
 var CSSCore = require('fbjs/lib/CSSCore');
 var ReactTransitionEvents = require('./ReactTransitionEvents');
@@ -50,7 +49,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
   },
 
   transition: function (animationType, finishCallback, userSpecifiedDelay) {
-    var node = ReactDOM.findDOMNode(this);
+    var node = ReactAddonsDOMDependencies.getReactDOM().findDOMNode(this);
 
     if (!node) {
       if (finishCallback) {
