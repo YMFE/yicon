@@ -1,0 +1,2593 @@
+{
+  "name": "yicon",
+  "version": "1.0.0",
+  "dependencies": {
+    "accepts": {
+      "version": "1.3.3",
+      "from": "accepts@>=1.2.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/accepts/download/accepts-1.3.3.tgz"
+    },
+    "add-dom-event-listener": {
+      "version": "1.0.1",
+      "from": "add-dom-event-listener@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/add-dom-event-listener/download/add-dom-event-listener-1.0.1.tgz"
+    },
+    "align-text": {
+      "version": "0.1.4",
+      "from": "align-text@>=0.1.3 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/align-text/download/align-text-0.1.4.tgz"
+    },
+    "alphanum-sort": {
+      "version": "1.0.2",
+      "from": "alphanum-sort@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/alphanum-sort/download/alphanum-sort-1.0.2.tgz"
+    },
+    "amdefine": {
+      "version": "1.0.1",
+      "from": "amdefine@>=0.0.4",
+      "resolved": "http://registry.npm.corp.qunar.com/amdefine/download/amdefine-1.0.1.tgz"
+    },
+    "ansi-regex": {
+      "version": "2.0.0",
+      "from": "ansi-regex@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ansi-regex/download/ansi-regex-2.0.0.tgz"
+    },
+    "ansi-styles": {
+      "version": "2.2.1",
+      "from": "ansi-styles@>=2.2.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ansi-styles/download/ansi-styles-2.2.1.tgz"
+    },
+    "any-promise": {
+      "version": "1.3.0",
+      "from": "any-promise@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/any-promise/download/any-promise-1.3.0.tgz"
+    },
+    "append-field": {
+      "version": "0.1.0",
+      "from": "append-field@>=0.1.0 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/append-field/download/append-field-0.1.0.tgz"
+    },
+    "argparse": {
+      "version": "1.0.9",
+      "from": "argparse@>=1.0.7 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/argparse/download/argparse-1.0.9.tgz"
+    },
+    "array-find-index": {
+      "version": "1.0.2",
+      "from": "array-find-index@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/array-find-index/download/array-find-index-1.0.2.tgz"
+    },
+    "asap": {
+      "version": "2.0.5",
+      "from": "asap@>=2.0.3 <2.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/asap/download/asap-2.0.5.tgz"
+    },
+    "asn1": {
+      "version": "0.2.3",
+      "from": "asn1@>=0.2.3 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/asn1/download/asn1-0.2.3.tgz"
+    },
+    "assert-plus": {
+      "version": "0.2.0",
+      "from": "assert-plus@>=0.2.0 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/assert-plus/download/assert-plus-0.2.0.tgz"
+    },
+    "async": {
+      "version": "1.5.2",
+      "from": "async@>=1.4.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/async/download/async-1.5.2.tgz"
+    },
+    "autoprefixer": {
+      "version": "6.5.3",
+      "from": "autoprefixer@>=6.3.1 <7.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/autoprefixer/download/autoprefixer-6.5.3.tgz"
+    },
+    "aws-sign2": {
+      "version": "0.6.0",
+      "from": "aws-sign2@>=0.6.0 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/aws-sign2/download/aws-sign2-0.6.0.tgz"
+    },
+    "aws4": {
+      "version": "1.5.0",
+      "from": "aws4@>=1.2.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/aws4/download/aws4-1.5.0.tgz"
+    },
+    "axios": {
+      "version": "0.11.1",
+      "from": "axios@>=0.11.1 <0.12.0",
+      "resolved": "http://registry.npm.corp.qunar.com/axios/download/axios-0.11.1.tgz"
+    },
+    "babel-runtime": {
+      "version": "6.20.0",
+      "from": "babel-runtime@>=6.0.0 <7.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/babel-runtime/download/babel-runtime-6.20.0.tgz"
+    },
+    "balanced-match": {
+      "version": "0.4.2",
+      "from": "balanced-match@>=0.4.2 <0.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/balanced-match/download/balanced-match-0.4.2.tgz"
+    },
+    "bcrypt-pbkdf": {
+      "version": "1.0.0",
+      "from": "bcrypt-pbkdf@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/bcrypt-pbkdf/download/bcrypt-pbkdf-1.0.0.tgz",
+      "optional": true
+    },
+    "big.js": {
+      "version": "3.1.3",
+      "from": "big.js@>=3.1.3 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/big.js/download/big.js-3.1.3.tgz"
+    },
+    "bignumber.js": {
+      "version": "2.4.0",
+      "from": "bignumber.js@2.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/bignumber.js/download/bignumber.js-2.4.0.tgz"
+    },
+    "bl": {
+      "version": "1.1.2",
+      "from": "bl@>=1.1.2 <1.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/bl/download/bl-1.1.2.tgz",
+      "dependencies": {
+        "readable-stream": {
+          "version": "2.0.6",
+          "from": "readable-stream@>=2.0.5 <2.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-2.0.6.tgz"
+        }
+      }
+    },
+    "bluebird": {
+      "version": "3.4.6",
+      "from": "bluebird@>=3.3.4 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/bluebird/download/bluebird-3.4.6.tgz"
+    },
+    "boom": {
+      "version": "2.10.1",
+      "from": "boom@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/boom/download/boom-2.10.1.tgz"
+    },
+    "brace-expansion": {
+      "version": "1.1.6",
+      "from": "brace-expansion@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/brace-expansion/download/brace-expansion-1.1.6.tgz"
+    },
+    "browserslist": {
+      "version": "1.4.0",
+      "from": "browserslist@>=1.4.0 <1.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/browserslist/download/browserslist-1.4.0.tgz"
+    },
+    "buffer-shims": {
+      "version": "1.0.0",
+      "from": "buffer-shims@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/buffer-shims/download/buffer-shims-1.0.0.tgz"
+    },
+    "builtin-modules": {
+      "version": "1.1.1",
+      "from": "builtin-modules@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/builtin-modules/download/builtin-modules-1.1.1.tgz"
+    },
+    "busboy": {
+      "version": "0.2.13",
+      "from": "busboy@>=0.2.11 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/busboy/download/busboy-0.2.13.tgz",
+      "dependencies": {
+        "isarray": {
+          "version": "0.0.1",
+          "from": "isarray@0.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-0.0.1.tgz"
+        },
+        "readable-stream": {
+          "version": "1.1.14",
+          "from": "readable-stream@>=1.1.0 <1.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-1.1.14.tgz"
+        }
+      }
+    },
+    "bytes": {
+      "version": "2.4.0",
+      "from": "bytes@2.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/bytes/download/bytes-2.4.0.tgz"
+    },
+    "camelcase": {
+      "version": "2.1.1",
+      "from": "camelcase@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/camelcase/download/camelcase-2.1.1.tgz"
+    },
+    "camelcase-keys": {
+      "version": "2.1.0",
+      "from": "camelcase-keys@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/camelcase-keys/download/camelcase-keys-2.1.0.tgz"
+    },
+    "caniuse-db": {
+      "version": "1.0.30000592",
+      "from": "caniuse-db@>=1.0.30000578 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/caniuse-db/download/caniuse-db-1.0.30000592.tgz"
+    },
+    "caseless": {
+      "version": "0.11.0",
+      "from": "caseless@>=0.11.0 <0.12.0",
+      "resolved": "http://registry.npm.corp.qunar.com/caseless/download/caseless-0.11.0.tgz"
+    },
+    "center-align": {
+      "version": "0.1.3",
+      "from": "center-align@>=0.1.1 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/center-align/download/center-align-0.1.3.tgz"
+    },
+    "chalk": {
+      "version": "1.1.3",
+      "from": "chalk@>=1.1.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/chalk/download/chalk-1.1.3.tgz",
+      "dependencies": {
+        "supports-color": {
+          "version": "2.0.0",
+          "from": "supports-color@>=2.0.0 <3.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/supports-color/download/supports-color-2.0.0.tgz"
+        }
+      }
+    },
+    "clap": {
+      "version": "1.1.2",
+      "from": "clap@>=1.0.9 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/clap/download/clap-1.1.2.tgz"
+    },
+    "classnames": {
+      "version": "2.2.5",
+      "from": "classnames@>=2.2.5 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/classnames/download/classnames-2.2.5.tgz"
+    },
+    "clipboard": {
+      "version": "1.5.15",
+      "from": "clipboard@>=1.4.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/clipboard/download/clipboard-1.5.15.tgz"
+    },
+    "cliui": {
+      "version": "2.1.0",
+      "from": "cliui@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cliui/download/cliui-2.1.0.tgz",
+      "dependencies": {
+        "wordwrap": {
+          "version": "0.0.2",
+          "from": "wordwrap@0.0.2",
+          "resolved": "http://registry.npm.corp.qunar.com/wordwrap/download/wordwrap-0.0.2.tgz"
+        }
+      }
+    },
+    "clone": {
+      "version": "1.0.2",
+      "from": "clone@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/clone/download/clone-1.0.2.tgz"
+    },
+    "co": {
+      "version": "4.6.0",
+      "from": "co@>=4.6.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/co/download/co-4.6.0.tgz"
+    },
+    "co-body": {
+      "version": "4.2.0",
+      "from": "co-body@>=4.2.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/co-body/download/co-body-4.2.0.tgz"
+    },
+    "coa": {
+      "version": "1.0.1",
+      "from": "coa@>=1.0.1 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/coa/download/coa-1.0.1.tgz"
+    },
+    "color": {
+      "version": "0.11.4",
+      "from": "color@>=0.11.0 <0.12.0",
+      "resolved": "http://registry.npm.corp.qunar.com/color/download/color-0.11.4.tgz"
+    },
+    "color-convert": {
+      "version": "1.8.2",
+      "from": "color-convert@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/color-convert/download/color-convert-1.8.2.tgz"
+    },
+    "color-name": {
+      "version": "1.1.1",
+      "from": "color-name@>=1.1.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/color-name/download/color-name-1.1.1.tgz"
+    },
+    "color-string": {
+      "version": "0.3.0",
+      "from": "color-string@>=0.3.0 <0.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/color-string/download/color-string-0.3.0.tgz"
+    },
+    "colormin": {
+      "version": "1.1.2",
+      "from": "colormin@>=1.0.5 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/colormin/download/colormin-1.1.2.tgz"
+    },
+    "colors": {
+      "version": "1.1.2",
+      "from": "colors@>=1.1.2 <1.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/colors/download/colors-1.1.2.tgz"
+    },
+    "combined-stream": {
+      "version": "1.0.5",
+      "from": "combined-stream@>=1.0.5 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/combined-stream/download/combined-stream-1.0.5.tgz"
+    },
+    "commander": {
+      "version": "2.9.0",
+      "from": "commander@>=2.9.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/commander/download/commander-2.9.0.tgz"
+    },
+    "component-classes": {
+      "version": "1.2.6",
+      "from": "component-classes@>=1.2.5 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/component-classes/download/component-classes-1.2.6.tgz"
+    },
+    "component-indexof": {
+      "version": "0.0.3",
+      "from": "component-indexof@0.0.3",
+      "resolved": "http://registry.npm.corp.qunar.com/component-indexof/download/component-indexof-0.0.3.tgz"
+    },
+    "composition": {
+      "version": "2.3.0",
+      "from": "composition@>=2.1.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/composition/download/composition-2.3.0.tgz"
+    },
+    "compressible": {
+      "version": "2.0.9",
+      "from": "compressible@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/compressible/download/compressible-2.0.9.tgz"
+    },
+    "concat-map": {
+      "version": "0.0.1",
+      "from": "concat-map@0.0.1",
+      "resolved": "http://registry.npm.corp.qunar.com/concat-map/download/concat-map-0.0.1.tgz"
+    },
+    "concat-stream": {
+      "version": "1.5.2",
+      "from": "concat-stream@>=1.5.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/concat-stream/download/concat-stream-1.5.2.tgz",
+      "dependencies": {
+        "readable-stream": {
+          "version": "2.0.6",
+          "from": "readable-stream@>=2.0.0 <2.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-2.0.6.tgz"
+        }
+      }
+    },
+    "content-disposition": {
+      "version": "0.5.2",
+      "from": "content-disposition@>=0.5.0 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/content-disposition/download/content-disposition-0.5.2.tgz"
+    },
+    "content-type": {
+      "version": "1.0.2",
+      "from": "content-type@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/content-type/download/content-type-1.0.2.tgz"
+    },
+    "cookie": {
+      "version": "0.1.3",
+      "from": "cookie@0.1.3",
+      "resolved": "http://registry.npm.corp.qunar.com/cookie/download/cookie-0.1.3.tgz"
+    },
+    "cookie-parser": {
+      "version": "1.3.5",
+      "from": "cookie-parser@>=1.3.5 <1.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cookie-parser/download/cookie-parser-1.3.5.tgz"
+    },
+    "cookie-signature": {
+      "version": "1.0.6",
+      "from": "cookie-signature@1.0.6",
+      "resolved": "http://registry.npm.corp.qunar.com/cookie-signature/download/cookie-signature-1.0.6.tgz"
+    },
+    "cookies": {
+      "version": "0.6.2",
+      "from": "cookies@>=0.6.1 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cookies/download/cookies-0.6.2.tgz"
+    },
+    "copy-to": {
+      "version": "2.0.1",
+      "from": "copy-to@>=2.0.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/copy-to/download/copy-to-2.0.1.tgz"
+    },
+    "core-decorators": {
+      "version": "0.12.3",
+      "from": "core-decorators@>=0.12.3 <0.13.0",
+      "resolved": "http://registry.npm.corp.qunar.com/core-decorators/download/core-decorators-0.12.3.tgz"
+    },
+    "core-js": {
+      "version": "2.4.1",
+      "from": "core-js@>=2.4.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/core-js/download/core-js-2.4.1.tgz"
+    },
+    "core-util-is": {
+      "version": "1.0.2",
+      "from": "core-util-is@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/core-util-is/download/core-util-is-1.0.2.tgz"
+    },
+    "cross-env": {
+      "version": "3.1.3",
+      "from": "cross-env@>=3.1.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cross-env/download/cross-env-3.1.3.tgz"
+    },
+    "cross-spawn": {
+      "version": "3.0.1",
+      "from": "cross-spawn@>=3.0.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cross-spawn/download/cross-spawn-3.0.1.tgz"
+    },
+    "cryptiles": {
+      "version": "2.0.5",
+      "from": "cryptiles@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cryptiles/download/cryptiles-2.0.5.tgz"
+    },
+    "css-animation": {
+      "version": "1.3.0",
+      "from": "css-animation@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/css-animation/download/css-animation-1.3.0.tgz"
+    },
+    "css-color-names": {
+      "version": "0.0.4",
+      "from": "css-color-names@0.0.4",
+      "resolved": "http://registry.npm.corp.qunar.com/css-color-names/download/css-color-names-0.0.4.tgz"
+    },
+    "css-loader": {
+      "version": "0.23.1",
+      "from": "css-loader@>=0.23.1 <0.24.0",
+      "resolved": "http://registry.npm.corp.qunar.com/css-loader/download/css-loader-0.23.1.tgz"
+    },
+    "css-selector-tokenizer": {
+      "version": "0.5.4",
+      "from": "css-selector-tokenizer@>=0.5.1 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/css-selector-tokenizer/download/css-selector-tokenizer-0.5.4.tgz"
+    },
+    "cssesc": {
+      "version": "0.1.0",
+      "from": "cssesc@>=0.1.0 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cssesc/download/cssesc-0.1.0.tgz"
+    },
+    "cssnano": {
+      "version": "3.8.1",
+      "from": "cssnano@>=2.6.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/cssnano/download/cssnano-3.8.1.tgz"
+    },
+    "csso": {
+      "version": "2.2.1",
+      "from": "csso@>=2.2.1 <2.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/csso/download/csso-2.2.1.tgz"
+    },
+    "currently-unhandled": {
+      "version": "0.4.1",
+      "from": "currently-unhandled@>=0.4.1 <0.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/currently-unhandled/download/currently-unhandled-0.4.1.tgz"
+    },
+    "dashdash": {
+      "version": "1.14.1",
+      "from": "dashdash@>=1.12.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/dashdash/download/dashdash-1.14.1.tgz",
+      "dependencies": {
+        "assert-plus": {
+          "version": "1.0.0",
+          "from": "assert-plus@>=1.0.0 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/assert-plus/download/assert-plus-1.0.0.tgz"
+        }
+      }
+    },
+    "dateformat": {
+      "version": "1.0.12",
+      "from": "dateformat@>=1.0.12 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/dateformat/download/dateformat-1.0.12.tgz"
+    },
+    "debug": {
+      "version": "2.3.3",
+      "from": "debug@>=2.2.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/debug/download/debug-2.3.3.tgz"
+    },
+    "decamelize": {
+      "version": "1.2.0",
+      "from": "decamelize@>=1.1.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/decamelize/download/decamelize-1.2.0.tgz"
+    },
+    "deep-equal": {
+      "version": "1.0.1",
+      "from": "deep-equal@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/deep-equal/download/deep-equal-1.0.1.tgz"
+    },
+    "defined": {
+      "version": "1.0.0",
+      "from": "defined@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/defined/download/defined-1.0.0.tgz"
+    },
+    "delayed-stream": {
+      "version": "1.0.0",
+      "from": "delayed-stream@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/delayed-stream/download/delayed-stream-1.0.0.tgz"
+    },
+    "delegate": {
+      "version": "3.1.0",
+      "from": "delegate@>=3.1.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/delegate/download/delegate-3.1.0.tgz"
+    },
+    "delegates": {
+      "version": "1.0.0",
+      "from": "delegates@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/delegates/download/delegates-1.0.0.tgz"
+    },
+    "depd": {
+      "version": "1.1.0",
+      "from": "depd@>=1.1.0 <1.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/depd/download/depd-1.1.0.tgz"
+    },
+    "destroy": {
+      "version": "1.0.4",
+      "from": "destroy@>=1.0.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/destroy/download/destroy-1.0.4.tgz"
+    },
+    "dicer": {
+      "version": "0.2.5",
+      "from": "dicer@0.2.5",
+      "resolved": "http://registry.npm.corp.qunar.com/dicer/download/dicer-0.2.5.tgz",
+      "dependencies": {
+        "isarray": {
+          "version": "0.0.1",
+          "from": "isarray@0.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-0.0.1.tgz"
+        },
+        "readable-stream": {
+          "version": "1.1.14",
+          "from": "readable-stream@>=1.1.0 <1.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-1.1.14.tgz"
+        }
+      }
+    },
+    "dom-align": {
+      "version": "1.5.2",
+      "from": "dom-align@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/dom-align/download/dom-align-1.5.2.tgz"
+    },
+    "dom-scroll-into-view": {
+      "version": "1.2.1",
+      "from": "dom-scroll-into-view@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/dom-scroll-into-view/download/dom-scroll-into-view-1.2.1.tgz"
+    },
+    "dottie": {
+      "version": "1.1.1",
+      "from": "dottie@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/dottie/download/dottie-1.1.1.tgz"
+    },
+    "ecc-jsbn": {
+      "version": "0.1.1",
+      "from": "ecc-jsbn@>=0.1.1 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ecc-jsbn/download/ecc-jsbn-0.1.1.tgz",
+      "optional": true
+    },
+    "ee-first": {
+      "version": "1.1.1",
+      "from": "ee-first@1.1.1",
+      "resolved": "http://registry.npm.corp.qunar.com/ee-first/download/ee-first-1.1.1.tgz"
+    },
+    "emojis-list": {
+      "version": "2.1.0",
+      "from": "emojis-list@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/emojis-list/download/emojis-list-2.1.0.tgz"
+    },
+    "encoding": {
+      "version": "0.1.12",
+      "from": "encoding@>=0.1.11 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/encoding/download/encoding-0.1.12.tgz"
+    },
+    "error-ex": {
+      "version": "1.3.0",
+      "from": "error-ex@>=1.2.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/error-ex/download/error-ex-1.3.0.tgz"
+    },
+    "error-inject": {
+      "version": "1.0.0",
+      "from": "error-inject@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/error-inject/download/error-inject-1.0.0.tgz"
+    },
+    "es6-promise": {
+      "version": "3.3.1",
+      "from": "es6-promise@>=3.2.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/es6-promise/download/es6-promise-3.3.1.tgz"
+    },
+    "escape-html": {
+      "version": "1.0.3",
+      "from": "escape-html@>=1.0.1 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/escape-html/download/escape-html-1.0.3.tgz"
+    },
+    "escape-string-regexp": {
+      "version": "1.0.5",
+      "from": "escape-string-regexp@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz"
+    },
+    "esprima": {
+      "version": "2.7.3",
+      "from": "esprima@>=2.6.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/esprima/download/esprima-2.7.3.tgz"
+    },
+    "extend": {
+      "version": "3.0.0",
+      "from": "extend@>=3.0.0 <3.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/extend/download/extend-3.0.0.tgz"
+    },
+    "extract-zip": {
+      "version": "1.5.0",
+      "from": "extract-zip@>=1.5.0 <1.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/extract-zip/download/extract-zip-1.5.0.tgz",
+      "dependencies": {
+        "concat-stream": {
+          "version": "1.5.0",
+          "from": "concat-stream@1.5.0",
+          "resolved": "http://registry.npm.corp.qunar.com/concat-stream/download/concat-stream-1.5.0.tgz"
+        },
+        "debug": {
+          "version": "0.7.4",
+          "from": "debug@0.7.4",
+          "resolved": "http://registry.npm.corp.qunar.com/debug/download/debug-0.7.4.tgz"
+        },
+        "mkdirp": {
+          "version": "0.5.0",
+          "from": "mkdirp@0.5.0",
+          "resolved": "http://registry.npm.corp.qunar.com/mkdirp/download/mkdirp-0.5.0.tgz"
+        },
+        "readable-stream": {
+          "version": "2.0.6",
+          "from": "readable-stream@>=2.0.0 <2.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-2.0.6.tgz"
+        }
+      }
+    },
+    "extsprintf": {
+      "version": "1.0.2",
+      "from": "extsprintf@1.0.2",
+      "resolved": "http://registry.npm.corp.qunar.com/extsprintf/download/extsprintf-1.0.2.tgz"
+    },
+    "fastparse": {
+      "version": "1.1.1",
+      "from": "fastparse@>=1.1.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fastparse/download/fastparse-1.1.1.tgz"
+    },
+    "fbjs": {
+      "version": "0.8.6",
+      "from": "fbjs@>=0.8.4 <0.9.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fbjs/download/fbjs-0.8.6.tgz",
+      "dependencies": {
+        "core-js": {
+          "version": "1.2.7",
+          "from": "core-js@>=1.0.0 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/core-js/download/core-js-1.2.7.tgz"
+        }
+      }
+    },
+    "fd-slicer": {
+      "version": "1.0.1",
+      "from": "fd-slicer@>=1.0.1 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fd-slicer/download/fd-slicer-1.0.1.tgz"
+    },
+    "find-up": {
+      "version": "1.1.2",
+      "from": "find-up@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/find-up/download/find-up-1.1.2.tgz"
+    },
+    "flatten": {
+      "version": "1.0.2",
+      "from": "flatten@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/flatten/download/flatten-1.0.2.tgz"
+    },
+    "flux-standard-action": {
+      "version": "0.6.1",
+      "from": "flux-standard-action@>=0.6.1 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/flux-standard-action/download/flux-standard-action-0.6.1.tgz"
+    },
+    "follow-redirects": {
+      "version": "0.0.7",
+      "from": "follow-redirects@0.0.7",
+      "resolved": "http://registry.npm.corp.qunar.com/follow-redirects/download/follow-redirects-0.0.7.tgz"
+    },
+    "forever-agent": {
+      "version": "0.6.1",
+      "from": "forever-agent@>=0.6.1 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/forever-agent/download/forever-agent-0.6.1.tgz"
+    },
+    "form-data": {
+      "version": "1.0.1",
+      "from": "form-data@>=1.0.0-rc4 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/form-data/download/form-data-1.0.1.tgz",
+      "dependencies": {
+        "async": {
+          "version": "2.1.4",
+          "from": "async@>=2.0.1 <3.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/async/download/async-2.1.4.tgz"
+        },
+        "lodash": {
+          "version": "4.17.2",
+          "from": "lodash@>=4.14.0 <5.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/lodash/download/lodash-4.17.2.tgz"
+        }
+      }
+    },
+    "fresh": {
+      "version": "0.3.0",
+      "from": "fresh@>=0.3.0 <0.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fresh/download/fresh-0.3.0.tgz"
+    },
+    "fs-extra": {
+      "version": "0.30.0",
+      "from": "fs-extra@>=0.30.0 <0.31.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fs-extra/download/fs-extra-0.30.0.tgz"
+    },
+    "fs.realpath": {
+      "version": "1.0.0",
+      "from": "fs.realpath@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/fs.realpath/download/fs.realpath-1.0.0.tgz"
+    },
+    "function-bind": {
+      "version": "1.1.0",
+      "from": "function-bind@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/function-bind/download/function-bind-1.1.0.tgz"
+    },
+    "generate-function": {
+      "version": "2.0.0",
+      "from": "generate-function@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/generate-function/download/generate-function-2.0.0.tgz"
+    },
+    "generate-object-property": {
+      "version": "1.2.0",
+      "from": "generate-object-property@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/generate-object-property/download/generate-object-property-1.2.0.tgz"
+    },
+    "generic-pool": {
+      "version": "2.4.2",
+      "from": "generic-pool@2.4.2",
+      "resolved": "http://registry.npm.corp.qunar.com/generic-pool/download/generic-pool-2.4.2.tgz"
+    },
+    "get-stdin": {
+      "version": "4.0.1",
+      "from": "get-stdin@>=4.0.1 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/get-stdin/download/get-stdin-4.0.1.tgz"
+    },
+    "getpass": {
+      "version": "0.1.6",
+      "from": "getpass@>=0.1.1 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/getpass/download/getpass-0.1.6.tgz",
+      "dependencies": {
+        "assert-plus": {
+          "version": "1.0.0",
+          "from": "assert-plus@>=1.0.0 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/assert-plus/download/assert-plus-1.0.0.tgz"
+        }
+      }
+    },
+    "glob": {
+      "version": "7.1.1",
+      "from": "glob@>=7.0.5 <8.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/glob/download/glob-7.1.1.tgz"
+    },
+    "good-listener": {
+      "version": "1.2.0",
+      "from": "good-listener@>=1.2.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/good-listener/download/good-listener-1.2.0.tgz"
+    },
+    "graceful-fs": {
+      "version": "4.1.11",
+      "from": "graceful-fs@>=4.1.2 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/graceful-fs/download/graceful-fs-4.1.11.tgz"
+    },
+    "graceful-readlink": {
+      "version": "1.0.1",
+      "from": "graceful-readlink@>=1.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/graceful-readlink/download/graceful-readlink-1.0.1.tgz"
+    },
+    "graphite": {
+      "version": "0.0.6",
+      "from": "graphite@0.0.6",
+      "resolved": "http://registry.npm.corp.qunar.com/graphite/download/graphite-0.0.6.tgz"
+    },
+    "handlebars": {
+      "version": "4.0.6",
+      "from": "handlebars@>=4.0.5 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/handlebars/download/handlebars-4.0.6.tgz",
+      "dependencies": {
+        "source-map": {
+          "version": "0.4.4",
+          "from": "source-map@>=0.4.4 <0.5.0",
+          "resolved": "http://registry.npm.corp.qunar.com/source-map/download/source-map-0.4.4.tgz"
+        }
+      }
+    },
+    "har-validator": {
+      "version": "2.0.6",
+      "from": "har-validator@>=2.0.6 <2.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/har-validator/download/har-validator-2.0.6.tgz"
+    },
+    "has": {
+      "version": "1.0.1",
+      "from": "has@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/has/download/has-1.0.1.tgz"
+    },
+    "has-ansi": {
+      "version": "2.0.0",
+      "from": "has-ansi@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/has-ansi/download/has-ansi-2.0.0.tgz"
+    },
+    "has-flag": {
+      "version": "1.0.0",
+      "from": "has-flag@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/has-flag/download/has-flag-1.0.0.tgz"
+    },
+    "hasha": {
+      "version": "2.2.0",
+      "from": "hasha@>=2.2.0 <2.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/hasha/download/hasha-2.2.0.tgz"
+    },
+    "hawk": {
+      "version": "3.1.3",
+      "from": "hawk@>=3.1.3 <3.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/hawk/download/hawk-3.1.3.tgz"
+    },
+    "history": {
+      "version": "2.1.2",
+      "from": "history@>=2.1.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/history/download/history-2.1.2.tgz",
+      "dependencies": {
+        "query-string": {
+          "version": "3.0.3",
+          "from": "query-string@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/query-string/download/query-string-3.0.3.tgz"
+        }
+      }
+    },
+    "hoek": {
+      "version": "2.16.3",
+      "from": "hoek@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/hoek/download/hoek-2.16.3.tgz"
+    },
+    "hoist-non-react-statics": {
+      "version": "1.2.0",
+      "from": "hoist-non-react-statics@>=1.0.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/hoist-non-react-statics/download/hoist-non-react-statics-1.2.0.tgz"
+    },
+    "hosted-git-info": {
+      "version": "2.1.5",
+      "from": "hosted-git-info@>=2.1.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/hosted-git-info/download/hosted-git-info-2.1.5.tgz"
+    },
+    "html-comment-regex": {
+      "version": "1.1.1",
+      "from": "html-comment-regex@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/html-comment-regex/download/html-comment-regex-1.1.1.tgz"
+    },
+    "http-assert": {
+      "version": "1.2.0",
+      "from": "http-assert@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/http-assert/download/http-assert-1.2.0.tgz",
+      "dependencies": {
+        "http-errors": {
+          "version": "1.4.0",
+          "from": "http-errors@>=1.4.0 <1.5.0",
+          "resolved": "http://registry.npm.corp.qunar.com/http-errors/download/http-errors-1.4.0.tgz"
+        },
+        "inherits": {
+          "version": "2.0.1",
+          "from": "inherits@2.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/inherits/download/inherits-2.0.1.tgz"
+        }
+      }
+    },
+    "http-errors": {
+      "version": "1.5.1",
+      "from": "http-errors@>=1.2.8 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/http-errors/download/http-errors-1.5.1.tgz"
+    },
+    "http-signature": {
+      "version": "1.1.1",
+      "from": "http-signature@>=1.1.0 <1.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/http-signature/download/http-signature-1.1.1.tgz"
+    },
+    "humanize-number": {
+      "version": "0.0.2",
+      "from": "humanize-number@>=0.0.1 <0.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/humanize-number/download/humanize-number-0.0.2.tgz"
+    },
+    "iconfont-builder": {
+      "version": "2.3.2",
+      "from": "iconfont-builder@>=2.3.2 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/iconfont-builder/download/iconfont-builder-2.3.2.tgz"
+    },
+    "iconv-lite": {
+      "version": "0.4.13",
+      "from": "iconv-lite@0.4.13",
+      "resolved": "http://registry.npm.corp.qunar.com/iconv-lite/download/iconv-lite-0.4.13.tgz"
+    },
+    "icss-replace-symbols": {
+      "version": "1.0.2",
+      "from": "icss-replace-symbols@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/icss-replace-symbols/download/icss-replace-symbols-1.0.2.tgz"
+    },
+    "indent-string": {
+      "version": "2.1.0",
+      "from": "indent-string@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/indent-string/download/indent-string-2.1.0.tgz"
+    },
+    "indexes-of": {
+      "version": "1.0.1",
+      "from": "indexes-of@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/indexes-of/download/indexes-of-1.0.1.tgz"
+    },
+    "inflation": {
+      "version": "2.0.0",
+      "from": "inflation@>=2.0.0 <2.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/inflation/download/inflation-2.0.0.tgz"
+    },
+    "inflection": {
+      "version": "1.10.0",
+      "from": "inflection@>=1.6.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/inflection/download/inflection-1.10.0.tgz"
+    },
+    "inflight": {
+      "version": "1.0.6",
+      "from": "inflight@>=1.0.4 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/inflight/download/inflight-1.0.6.tgz"
+    },
+    "inherits": {
+      "version": "2.0.3",
+      "from": "inherits@>=2.0.1 <2.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/inherits/download/inherits-2.0.3.tgz"
+    },
+    "invariant": {
+      "version": "2.2.2",
+      "from": "invariant@>=2.2.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/invariant/download/invariant-2.2.2.tgz"
+    },
+    "is-absolute-url": {
+      "version": "2.0.0",
+      "from": "is-absolute-url@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-absolute-url/download/is-absolute-url-2.0.0.tgz"
+    },
+    "is-arrayish": {
+      "version": "0.2.1",
+      "from": "is-arrayish@>=0.2.1 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-arrayish/download/is-arrayish-0.2.1.tgz"
+    },
+    "is-buffer": {
+      "version": "1.1.4",
+      "from": "is-buffer@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-buffer/download/is-buffer-1.1.4.tgz"
+    },
+    "is-builtin-module": {
+      "version": "1.0.0",
+      "from": "is-builtin-module@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-builtin-module/download/is-builtin-module-1.0.0.tgz"
+    },
+    "is-finite": {
+      "version": "1.0.2",
+      "from": "is-finite@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-finite/download/is-finite-1.0.2.tgz"
+    },
+    "is-my-json-valid": {
+      "version": "2.15.0",
+      "from": "is-my-json-valid@>=2.12.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-my-json-valid/download/is-my-json-valid-2.15.0.tgz"
+    },
+    "is-plain-obj": {
+      "version": "1.1.0",
+      "from": "is-plain-obj@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-plain-obj/download/is-plain-obj-1.1.0.tgz"
+    },
+    "is-property": {
+      "version": "1.0.2",
+      "from": "is-property@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-property/download/is-property-1.0.2.tgz"
+    },
+    "is-stream": {
+      "version": "1.1.0",
+      "from": "is-stream@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-stream/download/is-stream-1.1.0.tgz"
+    },
+    "is-svg": {
+      "version": "2.1.0",
+      "from": "is-svg@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-svg/download/is-svg-2.1.0.tgz"
+    },
+    "is-typedarray": {
+      "version": "1.0.0",
+      "from": "is-typedarray@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-typedarray/download/is-typedarray-1.0.0.tgz"
+    },
+    "is-utf8": {
+      "version": "0.2.1",
+      "from": "is-utf8@>=0.2.0 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/is-utf8/download/is-utf8-0.2.1.tgz"
+    },
+    "isarray": {
+      "version": "1.0.0",
+      "from": "isarray@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-1.0.0.tgz"
+    },
+    "isexe": {
+      "version": "1.1.2",
+      "from": "isexe@>=1.1.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/isexe/download/isexe-1.1.2.tgz"
+    },
+    "isom-fetch": {
+      "version": "1.1.1",
+      "from": "isom-fetch@>=1.1.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/isom-fetch/download/isom-fetch-1.1.1.tgz",
+      "dependencies": {
+        "axios": {
+          "version": "0.12.0",
+          "from": "axios@>=0.12.0 <0.13.0",
+          "resolved": "http://registry.npm.corp.qunar.com/axios/download/axios-0.12.0.tgz"
+        }
+      }
+    },
+    "isomorphic-fetch": {
+      "version": "2.2.1",
+      "from": "isomorphic-fetch@>=2.1.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/isomorphic-fetch/download/isomorphic-fetch-2.2.1.tgz"
+    },
+    "isstream": {
+      "version": "0.1.2",
+      "from": "isstream@>=0.1.2 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/isstream/download/isstream-0.1.2.tgz"
+    },
+    "jodid25519": {
+      "version": "1.0.2",
+      "from": "jodid25519@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jodid25519/download/jodid25519-1.0.2.tgz",
+      "optional": true
+    },
+    "js-base64": {
+      "version": "2.1.9",
+      "from": "js-base64@>=2.1.9 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/js-base64/download/js-base64-2.1.9.tgz"
+    },
+    "js-tokens": {
+      "version": "2.0.0",
+      "from": "js-tokens@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/js-tokens/download/js-tokens-2.0.0.tgz"
+    },
+    "js-yaml": {
+      "version": "3.6.1",
+      "from": "js-yaml@>=3.6.1 <3.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/js-yaml/download/js-yaml-3.6.1.tgz"
+    },
+    "jsbn": {
+      "version": "0.1.0",
+      "from": "jsbn@>=0.1.0 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jsbn/download/jsbn-0.1.0.tgz",
+      "optional": true
+    },
+    "jsesc": {
+      "version": "0.5.0",
+      "from": "jsesc@>=0.5.0 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jsesc/download/jsesc-0.5.0.tgz"
+    },
+    "json-schema": {
+      "version": "0.2.3",
+      "from": "json-schema@0.2.3",
+      "resolved": "http://registry.npm.corp.qunar.com/json-schema/download/json-schema-0.2.3.tgz"
+    },
+    "json-stringify-safe": {
+      "version": "5.0.1",
+      "from": "json-stringify-safe@>=5.0.1 <5.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/json-stringify-safe/download/json-stringify-safe-5.0.1.tgz"
+    },
+    "json5": {
+      "version": "0.5.1",
+      "from": "json5@>=0.5.0 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/json5/download/json5-0.5.1.tgz"
+    },
+    "jsonfile": {
+      "version": "2.4.0",
+      "from": "jsonfile@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jsonfile/download/jsonfile-2.4.0.tgz"
+    },
+    "jsonpointer": {
+      "version": "4.0.0",
+      "from": "jsonpointer@>=4.0.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jsonpointer/download/jsonpointer-4.0.0.tgz"
+    },
+    "jsprim": {
+      "version": "1.3.1",
+      "from": "jsprim@>=1.2.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jsprim/download/jsprim-1.3.1.tgz"
+    },
+    "jszip": {
+      "version": "2.6.1",
+      "from": "jszip@>=2.4.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/jszip/download/jszip-2.6.1.tgz",
+      "dependencies": {
+        "pako": {
+          "version": "1.0.3",
+          "from": "pako@>=1.0.2 <1.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/pako/download/pako-1.0.3.tgz"
+        }
+      }
+    },
+    "kew": {
+      "version": "0.7.0",
+      "from": "kew@>=0.7.0 <0.8.0",
+      "resolved": "http://registry.npm.corp.qunar.com/kew/download/kew-0.7.0.tgz"
+    },
+    "keygrip": {
+      "version": "1.0.1",
+      "from": "keygrip@>=1.0.1 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/keygrip/download/keygrip-1.0.1.tgz"
+    },
+    "keypress": {
+      "version": "0.1.0",
+      "from": "keypress@>=0.1.0 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/keypress/download/keypress-0.1.0.tgz"
+    },
+    "kind-of": {
+      "version": "3.1.0",
+      "from": "kind-of@>=3.0.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/kind-of/download/kind-of-3.1.0.tgz"
+    },
+    "klaw": {
+      "version": "1.3.1",
+      "from": "klaw@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/klaw/download/klaw-1.3.1.tgz"
+    },
+    "koa": {
+      "version": "1.2.4",
+      "from": "koa@>=1.2.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa/download/koa-1.2.4.tgz"
+    },
+    "koa-bodyparser": {
+      "version": "2.3.0",
+      "from": "koa-bodyparser@>=2.2.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-bodyparser/download/koa-bodyparser-2.3.0.tgz"
+    },
+    "koa-compose": {
+      "version": "2.5.1",
+      "from": "koa-compose@>=2.3.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-compose/download/koa-compose-2.5.1.tgz"
+    },
+    "koa-compress": {
+      "version": "1.0.9",
+      "from": "koa-compress@>=1.0.9 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-compress/download/koa-compress-1.0.9.tgz"
+    },
+    "koa-favicon": {
+      "version": "1.2.1",
+      "from": "koa-favicon@>=1.2.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-favicon/download/koa-favicon-1.2.1.tgz"
+    },
+    "koa-is-json": {
+      "version": "1.0.0",
+      "from": "koa-is-json@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-is-json/download/koa-is-json-1.0.0.tgz"
+    },
+    "koa-logger": {
+      "version": "1.3.0",
+      "from": "koa-logger@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-logger/download/koa-logger-1.3.0.tgz",
+      "dependencies": {
+        "bytes": {
+          "version": "1.0.0",
+          "from": "bytes@>=1.0.0 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/bytes/download/bytes-1.0.0.tgz"
+        }
+      }
+    },
+    "koa-mount": {
+      "version": "1.3.0",
+      "from": "koa-mount@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-mount/download/koa-mount-1.3.0.tgz"
+    },
+    "koa-router": {
+      "version": "5.4.0",
+      "from": "koa-router@>=5.4.0 <6.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-router/download/koa-router-5.4.0.tgz"
+    },
+    "koa-send": {
+      "version": "3.1.1",
+      "from": "koa-send@>=3.1.0 <3.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-send/download/koa-send-3.1.1.tgz"
+    },
+    "koa-session": {
+      "version": "3.4.0",
+      "from": "koa-session@>=3.3.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-session/download/koa-session-3.4.0.tgz"
+    },
+    "koa-static": {
+      "version": "2.0.0",
+      "from": "koa-static@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/koa-static/download/koa-static-2.0.0.tgz"
+    },
+    "lazy-cache": {
+      "version": "1.0.4",
+      "from": "lazy-cache@>=1.0.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lazy-cache/download/lazy-cache-1.0.4.tgz"
+    },
+    "lazy-socket": {
+      "version": "0.0.3",
+      "from": "lazy-socket@0.0.3",
+      "resolved": "http://registry.npm.corp.qunar.com/lazy-socket/download/lazy-socket-0.0.3.tgz"
+    },
+    "load-json-file": {
+      "version": "1.1.0",
+      "from": "load-json-file@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/load-json-file/download/load-json-file-1.1.0.tgz"
+    },
+    "loader-utils": {
+      "version": "0.2.16",
+      "from": "loader-utils@>=0.2.2 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/loader-utils/download/loader-utils-0.2.16.tgz"
+    },
+    "lodash": {
+      "version": "2.1.0",
+      "from": "lodash@>=2.1.0 <2.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash/download/lodash-2.1.0.tgz"
+    },
+    "lodash-es": {
+      "version": "4.17.2",
+      "from": "lodash-es@>=4.2.1 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash-es/download/lodash-es-4.17.2.tgz"
+    },
+    "lodash._basefor": {
+      "version": "3.0.3",
+      "from": "lodash._basefor@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash._basefor/download/lodash._basefor-3.0.3.tgz"
+    },
+    "lodash._createcompounder": {
+      "version": "3.0.0",
+      "from": "lodash._createcompounder@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash._createcompounder/download/lodash._createcompounder-3.0.0.tgz"
+    },
+    "lodash._getnative": {
+      "version": "3.9.1",
+      "from": "lodash._getnative@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash._getnative/download/lodash._getnative-3.9.1.tgz"
+    },
+    "lodash._root": {
+      "version": "3.0.1",
+      "from": "lodash._root@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash._root/download/lodash._root-3.0.1.tgz"
+    },
+    "lodash.camelcase": {
+      "version": "3.0.1",
+      "from": "lodash.camelcase@>=3.0.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.camelcase/download/lodash.camelcase-3.0.1.tgz"
+    },
+    "lodash.deburr": {
+      "version": "3.2.0",
+      "from": "lodash.deburr@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.deburr/download/lodash.deburr-3.2.0.tgz"
+    },
+    "lodash.indexof": {
+      "version": "4.0.5",
+      "from": "lodash.indexof@>=4.0.5 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.indexof/download/lodash.indexof-4.0.5.tgz"
+    },
+    "lodash.isarguments": {
+      "version": "3.1.0",
+      "from": "lodash.isarguments@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.isarguments/download/lodash.isarguments-3.1.0.tgz"
+    },
+    "lodash.isarray": {
+      "version": "3.0.4",
+      "from": "lodash.isarray@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.isarray/download/lodash.isarray-3.0.4.tgz"
+    },
+    "lodash.isplainobject": {
+      "version": "3.2.0",
+      "from": "lodash.isplainobject@>=3.2.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.isplainobject/download/lodash.isplainobject-3.2.0.tgz"
+    },
+    "lodash.keys": {
+      "version": "3.1.2",
+      "from": "lodash.keys@>=3.1.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.keys/download/lodash.keys-3.1.2.tgz"
+    },
+    "lodash.keysin": {
+      "version": "3.0.8",
+      "from": "lodash.keysin@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.keysin/download/lodash.keysin-3.0.8.tgz"
+    },
+    "lodash.words": {
+      "version": "3.2.0",
+      "from": "lodash.words@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lodash.words/download/lodash.words-3.2.0.tgz"
+    },
+    "log4js": {
+      "version": "0.6.38",
+      "from": "log4js@>=0.6.38 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/log4js/download/log4js-0.6.38.tgz",
+      "dependencies": {
+        "isarray": {
+          "version": "0.0.1",
+          "from": "isarray@0.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-0.0.1.tgz"
+        },
+        "readable-stream": {
+          "version": "1.0.34",
+          "from": "readable-stream@>=1.0.2 <1.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-1.0.34.tgz"
+        },
+        "semver": {
+          "version": "4.3.6",
+          "from": "semver@>=4.3.3 <4.4.0",
+          "resolved": "http://registry.npm.corp.qunar.com/semver/download/semver-4.3.6.tgz"
+        }
+      }
+    },
+    "longest": {
+      "version": "1.0.1",
+      "from": "longest@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/longest/download/longest-1.0.1.tgz"
+    },
+    "loose-envify": {
+      "version": "1.3.0",
+      "from": "loose-envify@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/loose-envify/download/loose-envify-1.3.0.tgz"
+    },
+    "loud-rejection": {
+      "version": "1.6.0",
+      "from": "loud-rejection@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/loud-rejection/download/loud-rejection-1.6.0.tgz"
+    },
+    "lru-cache": {
+      "version": "4.0.2",
+      "from": "lru-cache@>=4.0.1 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/lru-cache/download/lru-cache-4.0.2.tgz"
+    },
+    "macaddress": {
+      "version": "0.2.8",
+      "from": "macaddress@>=0.2.8 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/macaddress/download/macaddress-0.2.8.tgz"
+    },
+    "map-obj": {
+      "version": "1.0.1",
+      "from": "map-obj@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/map-obj/download/map-obj-1.0.1.tgz"
+    },
+    "math-expression-evaluator": {
+      "version": "1.2.14",
+      "from": "math-expression-evaluator@>=1.2.14 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/math-expression-evaluator/download/math-expression-evaluator-1.2.14.tgz"
+    },
+    "media-typer": {
+      "version": "0.3.0",
+      "from": "media-typer@0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/media-typer/download/media-typer-0.3.0.tgz"
+    },
+    "meow": {
+      "version": "3.7.0",
+      "from": "meow@>=3.3.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/meow/download/meow-3.7.0.tgz",
+      "dependencies": {
+        "minimist": {
+          "version": "1.2.0",
+          "from": "minimist@>=1.1.3 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/minimist/download/minimist-1.2.0.tgz"
+        }
+      }
+    },
+    "methods": {
+      "version": "1.1.2",
+      "from": "methods@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/methods/download/methods-1.1.2.tgz"
+    },
+    "mime-db": {
+      "version": "1.25.0",
+      "from": "mime-db@>=1.25.0 <1.26.0",
+      "resolved": "http://registry.npm.corp.qunar.com/mime-db/download/mime-db-1.25.0.tgz"
+    },
+    "mime-types": {
+      "version": "2.1.13",
+      "from": "mime-types@>=2.0.7 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/mime-types/download/mime-types-2.1.13.tgz"
+    },
+    "minimatch": {
+      "version": "3.0.3",
+      "from": "minimatch@>=3.0.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/minimatch/download/minimatch-3.0.3.tgz"
+    },
+    "minimist": {
+      "version": "0.0.8",
+      "from": "minimist@0.0.8",
+      "resolved": "http://registry.npm.corp.qunar.com/minimist/download/minimist-0.0.8.tgz"
+    },
+    "mkdirp": {
+      "version": "0.5.1",
+      "from": "mkdirp@>=0.5.1 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/mkdirp/download/mkdirp-0.5.1.tgz"
+    },
+    "moment": {
+      "version": "2.17.1",
+      "from": "moment@>=2.13.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/moment/download/moment-2.17.1.tgz"
+    },
+    "moment-timezone": {
+      "version": "0.5.10",
+      "from": "moment-timezone@>=0.5.4 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/moment-timezone/download/moment-timezone-0.5.10.tgz"
+    },
+    "ms": {
+      "version": "0.7.2",
+      "from": "ms@0.7.2",
+      "resolved": "http://registry.npm.corp.qunar.com/ms/download/ms-0.7.2.tgz"
+    },
+    "multer": {
+      "version": "1.2.0",
+      "from": "multer@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/multer/download/multer-1.2.0.tgz",
+      "dependencies": {
+        "object-assign": {
+          "version": "3.0.0",
+          "from": "object-assign@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/object-assign/download/object-assign-3.0.0.tgz"
+        }
+      }
+    },
+    "mysql": {
+      "version": "2.12.0",
+      "from": "mysql@>=2.10.2 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/mysql/download/mysql-2.12.0.tgz",
+      "dependencies": {
+        "isarray": {
+          "version": "0.0.1",
+          "from": "isarray@0.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-0.0.1.tgz"
+        },
+        "readable-stream": {
+          "version": "1.1.14",
+          "from": "readable-stream@1.1.14",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-1.1.14.tgz"
+        }
+      }
+    },
+    "mz": {
+      "version": "2.6.0",
+      "from": "mz@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/mz/download/mz-2.6.0.tgz"
+    },
+    "nan": {
+      "version": "2.3.5",
+      "from": "nan@>=2.3.0 <2.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/nan/download/nan-2.3.5.tgz"
+    },
+    "negotiator": {
+      "version": "0.6.1",
+      "from": "negotiator@0.6.1",
+      "resolved": "http://registry.npm.corp.qunar.com/negotiator/download/negotiator-0.6.1.tgz"
+    },
+    "node-fetch": {
+      "version": "1.6.3",
+      "from": "node-fetch@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/node-fetch/download/node-fetch-1.6.3.tgz"
+    },
+    "node-uuid": {
+      "version": "1.4.7",
+      "from": "node-uuid@>=1.4.4 <1.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/node-uuid/download/node-uuid-1.4.7.tgz"
+    },
+    "nodejieba": {
+      "version": "2.2.4",
+      "from": "nodejieba@>=2.2.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/nodejieba/download/nodejieba-2.2.4.tgz",
+      "optional": true
+    },
+    "normalize-package-data": {
+      "version": "2.3.5",
+      "from": "normalize-package-data@>=2.3.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/normalize-package-data/download/normalize-package-data-2.3.5.tgz"
+    },
+    "normalize-range": {
+      "version": "0.1.2",
+      "from": "normalize-range@>=0.1.2 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/normalize-range/download/normalize-range-0.1.2.tgz"
+    },
+    "normalize-url": {
+      "version": "1.8.0",
+      "from": "normalize-url@>=1.4.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/normalize-url/download/normalize-url-1.8.0.tgz"
+    },
+    "num2fraction": {
+      "version": "1.2.2",
+      "from": "num2fraction@>=1.2.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/num2fraction/download/num2fraction-1.2.2.tgz"
+    },
+    "number-is-nan": {
+      "version": "1.0.1",
+      "from": "number-is-nan@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/number-is-nan/download/number-is-nan-1.0.1.tgz"
+    },
+    "oauth-sign": {
+      "version": "0.8.2",
+      "from": "oauth-sign@>=0.8.1 <0.9.0",
+      "resolved": "http://registry.npm.corp.qunar.com/oauth-sign/download/oauth-sign-0.8.2.tgz"
+    },
+    "object-assign": {
+      "version": "4.1.0",
+      "from": "object-assign@>=4.0.1 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/object-assign/download/object-assign-4.1.0.tgz"
+    },
+    "on-finished": {
+      "version": "2.3.0",
+      "from": "on-finished@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/on-finished/download/on-finished-2.3.0.tgz"
+    },
+    "once": {
+      "version": "1.4.0",
+      "from": "once@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/once/download/once-1.4.0.tgz"
+    },
+    "only": {
+      "version": "0.0.2",
+      "from": "only@0.0.2",
+      "resolved": "http://registry.npm.corp.qunar.com/only/download/only-0.0.2.tgz"
+    },
+    "optimist": {
+      "version": "0.6.1",
+      "from": "optimist@>=0.6.1 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/optimist/download/optimist-0.6.1.tgz"
+    },
+    "pako": {
+      "version": "0.2.9",
+      "from": "pako@>=0.2.2 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pako/download/pako-0.2.9.tgz"
+    },
+    "parse-json": {
+      "version": "2.2.0",
+      "from": "parse-json@>=2.2.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/parse-json/download/parse-json-2.2.0.tgz"
+    },
+    "parseurl": {
+      "version": "1.3.1",
+      "from": "parseurl@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/parseurl/download/parseurl-1.3.1.tgz"
+    },
+    "passthrough-counter": {
+      "version": "1.0.0",
+      "from": "passthrough-counter@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/passthrough-counter/download/passthrough-counter-1.0.0.tgz"
+    },
+    "path-exists": {
+      "version": "2.1.0",
+      "from": "path-exists@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/path-exists/download/path-exists-2.1.0.tgz"
+    },
+    "path-is-absolute": {
+      "version": "1.0.1",
+      "from": "path-is-absolute@1.0.1",
+      "resolved": "http://registry.npm.corp.qunar.com/path-is-absolute/download/path-is-absolute-1.0.1.tgz"
+    },
+    "path-to-regexp": {
+      "version": "1.7.0",
+      "from": "path-to-regexp@>=1.1.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/path-to-regexp/download/path-to-regexp-1.7.0.tgz",
+      "dependencies": {
+        "isarray": {
+          "version": "0.0.1",
+          "from": "isarray@0.0.1",
+          "resolved": "http://registry.npm.corp.qunar.com/isarray/download/isarray-0.0.1.tgz"
+        }
+      }
+    },
+    "path-type": {
+      "version": "1.1.0",
+      "from": "path-type@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/path-type/download/path-type-1.1.0.tgz"
+    },
+    "pend": {
+      "version": "1.2.0",
+      "from": "pend@>=1.2.0 <1.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pend/download/pend-1.2.0.tgz"
+    },
+    "phantomjs-prebuilt": {
+      "version": "2.1.13",
+      "from": "phantomjs-prebuilt@>=2.1.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/phantomjs-prebuilt/download/phantomjs-prebuilt-2.1.13.tgz",
+      "dependencies": {
+        "es6-promise": {
+          "version": "4.0.5",
+          "from": "es6-promise@>=4.0.3 <4.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/es6-promise/download/es6-promise-4.0.5.tgz"
+        },
+        "qs": {
+          "version": "6.2.1",
+          "from": "qs@>=6.2.0 <6.3.0",
+          "resolved": "http://registry.npm.corp.qunar.com/qs/download/qs-6.2.1.tgz"
+        },
+        "request": {
+          "version": "2.74.0",
+          "from": "request@>=2.74.0 <2.75.0",
+          "resolved": "http://registry.npm.corp.qunar.com/request/download/request-2.74.0.tgz"
+        }
+      }
+    },
+    "pify": {
+      "version": "2.3.0",
+      "from": "pify@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pify/download/pify-2.3.0.tgz"
+    },
+    "pinkie": {
+      "version": "2.0.4",
+      "from": "pinkie@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pinkie/download/pinkie-2.0.4.tgz"
+    },
+    "pinkie-promise": {
+      "version": "2.0.1",
+      "from": "pinkie-promise@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pinkie-promise/download/pinkie-promise-2.0.1.tgz"
+    },
+    "pinyin": {
+      "version": "2.8.0",
+      "from": "pinyin@>=2.8.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pinyin/download/pinyin-2.8.0.tgz",
+      "dependencies": {
+        "commander": {
+          "version": "1.1.1",
+          "from": "commander@>=1.1.1 <1.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/commander/download/commander-1.1.1.tgz"
+        }
+      }
+    },
+    "postcss": {
+      "version": "5.2.6",
+      "from": "postcss@>=5.0.6 <6.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss/download/postcss-5.2.6.tgz"
+    },
+    "postcss-calc": {
+      "version": "5.3.1",
+      "from": "postcss-calc@>=5.2.0 <6.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-calc/download/postcss-calc-5.3.1.tgz"
+    },
+    "postcss-colormin": {
+      "version": "2.2.1",
+      "from": "postcss-colormin@>=2.1.8 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-colormin/download/postcss-colormin-2.2.1.tgz"
+    },
+    "postcss-convert-values": {
+      "version": "2.5.0",
+      "from": "postcss-convert-values@>=2.3.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-convert-values/download/postcss-convert-values-2.5.0.tgz"
+    },
+    "postcss-discard-comments": {
+      "version": "2.0.4",
+      "from": "postcss-discard-comments@>=2.0.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-discard-comments/download/postcss-discard-comments-2.0.4.tgz"
+    },
+    "postcss-discard-duplicates": {
+      "version": "2.0.2",
+      "from": "postcss-discard-duplicates@>=2.0.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-discard-duplicates/download/postcss-discard-duplicates-2.0.2.tgz"
+    },
+    "postcss-discard-empty": {
+      "version": "2.1.0",
+      "from": "postcss-discard-empty@>=2.0.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-discard-empty/download/postcss-discard-empty-2.1.0.tgz"
+    },
+    "postcss-discard-overridden": {
+      "version": "0.1.1",
+      "from": "postcss-discard-overridden@>=0.1.1 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-discard-overridden/download/postcss-discard-overridden-0.1.1.tgz"
+    },
+    "postcss-discard-unused": {
+      "version": "2.2.3",
+      "from": "postcss-discard-unused@>=2.2.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-discard-unused/download/postcss-discard-unused-2.2.3.tgz"
+    },
+    "postcss-filter-plugins": {
+      "version": "2.0.2",
+      "from": "postcss-filter-plugins@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-filter-plugins/download/postcss-filter-plugins-2.0.2.tgz"
+    },
+    "postcss-merge-idents": {
+      "version": "2.1.7",
+      "from": "postcss-merge-idents@>=2.1.5 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-merge-idents/download/postcss-merge-idents-2.1.7.tgz"
+    },
+    "postcss-merge-longhand": {
+      "version": "2.0.1",
+      "from": "postcss-merge-longhand@>=2.0.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-merge-longhand/download/postcss-merge-longhand-2.0.1.tgz"
+    },
+    "postcss-merge-rules": {
+      "version": "2.0.10",
+      "from": "postcss-merge-rules@>=2.0.3 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-merge-rules/download/postcss-merge-rules-2.0.10.tgz"
+    },
+    "postcss-message-helpers": {
+      "version": "2.0.0",
+      "from": "postcss-message-helpers@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-message-helpers/download/postcss-message-helpers-2.0.0.tgz"
+    },
+    "postcss-minify-font-values": {
+      "version": "1.0.5",
+      "from": "postcss-minify-font-values@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-minify-font-values/download/postcss-minify-font-values-1.0.5.tgz"
+    },
+    "postcss-minify-gradients": {
+      "version": "1.0.5",
+      "from": "postcss-minify-gradients@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-minify-gradients/download/postcss-minify-gradients-1.0.5.tgz"
+    },
+    "postcss-minify-params": {
+      "version": "1.0.5",
+      "from": "postcss-minify-params@>=1.0.4 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-minify-params/download/postcss-minify-params-1.0.5.tgz"
+    },
+    "postcss-minify-selectors": {
+      "version": "2.0.7",
+      "from": "postcss-minify-selectors@>=2.0.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-minify-selectors/download/postcss-minify-selectors-2.0.7.tgz"
+    },
+    "postcss-modules-extract-imports": {
+      "version": "1.0.1",
+      "from": "postcss-modules-extract-imports@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-modules-extract-imports/download/postcss-modules-extract-imports-1.0.1.tgz"
+    },
+    "postcss-modules-local-by-default": {
+      "version": "1.1.1",
+      "from": "postcss-modules-local-by-default@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-modules-local-by-default/download/postcss-modules-local-by-default-1.1.1.tgz",
+      "dependencies": {
+        "css-selector-tokenizer": {
+          "version": "0.6.0",
+          "from": "css-selector-tokenizer@>=0.6.0 <0.7.0",
+          "resolved": "http://registry.npm.corp.qunar.com/css-selector-tokenizer/download/css-selector-tokenizer-0.6.0.tgz"
+        }
+      }
+    },
+    "postcss-modules-scope": {
+      "version": "1.0.2",
+      "from": "postcss-modules-scope@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-modules-scope/download/postcss-modules-scope-1.0.2.tgz",
+      "dependencies": {
+        "css-selector-tokenizer": {
+          "version": "0.6.0",
+          "from": "css-selector-tokenizer@>=0.6.0 <0.7.0",
+          "resolved": "http://registry.npm.corp.qunar.com/css-selector-tokenizer/download/css-selector-tokenizer-0.6.0.tgz"
+        }
+      }
+    },
+    "postcss-modules-values": {
+      "version": "1.2.2",
+      "from": "postcss-modules-values@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-modules-values/download/postcss-modules-values-1.2.2.tgz"
+    },
+    "postcss-normalize-charset": {
+      "version": "1.1.1",
+      "from": "postcss-normalize-charset@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-normalize-charset/download/postcss-normalize-charset-1.1.1.tgz"
+    },
+    "postcss-normalize-url": {
+      "version": "3.0.7",
+      "from": "postcss-normalize-url@>=3.0.7 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-normalize-url/download/postcss-normalize-url-3.0.7.tgz"
+    },
+    "postcss-ordered-values": {
+      "version": "2.2.2",
+      "from": "postcss-ordered-values@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-ordered-values/download/postcss-ordered-values-2.2.2.tgz"
+    },
+    "postcss-reduce-idents": {
+      "version": "2.3.1",
+      "from": "postcss-reduce-idents@>=2.2.2 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-reduce-idents/download/postcss-reduce-idents-2.3.1.tgz"
+    },
+    "postcss-reduce-initial": {
+      "version": "1.0.0",
+      "from": "postcss-reduce-initial@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-reduce-initial/download/postcss-reduce-initial-1.0.0.tgz"
+    },
+    "postcss-reduce-transforms": {
+      "version": "1.0.4",
+      "from": "postcss-reduce-transforms@>=1.0.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-reduce-transforms/download/postcss-reduce-transforms-1.0.4.tgz"
+    },
+    "postcss-selector-parser": {
+      "version": "2.2.2",
+      "from": "postcss-selector-parser@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-selector-parser/download/postcss-selector-parser-2.2.2.tgz"
+    },
+    "postcss-svgo": {
+      "version": "2.1.5",
+      "from": "postcss-svgo@>=2.1.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-svgo/download/postcss-svgo-2.1.5.tgz",
+      "dependencies": {
+        "svgo": {
+          "version": "0.7.1",
+          "from": "svgo@>=0.7.0 <0.8.0",
+          "resolved": "http://registry.npm.corp.qunar.com/svgo/download/svgo-0.7.1.tgz"
+        }
+      }
+    },
+    "postcss-unique-selectors": {
+      "version": "2.0.2",
+      "from": "postcss-unique-selectors@>=2.0.2 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-unique-selectors/download/postcss-unique-selectors-2.0.2.tgz"
+    },
+    "postcss-value-parser": {
+      "version": "3.3.0",
+      "from": "postcss-value-parser@>=3.2.3 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-value-parser/download/postcss-value-parser-3.3.0.tgz"
+    },
+    "postcss-zindex": {
+      "version": "2.2.0",
+      "from": "postcss-zindex@>=2.0.1 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/postcss-zindex/download/postcss-zindex-2.2.0.tgz"
+    },
+    "prepend-http": {
+      "version": "1.0.4",
+      "from": "prepend-http@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/prepend-http/download/prepend-http-1.0.4.tgz"
+    },
+    "process": {
+      "version": "0.11.9",
+      "from": "process@>=0.11.3 <0.12.0",
+      "resolved": "http://registry.npm.corp.qunar.com/process/download/process-0.11.9.tgz"
+    },
+    "process-nextick-args": {
+      "version": "1.0.7",
+      "from": "process-nextick-args@>=1.0.6 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/process-nextick-args/download/process-nextick-args-1.0.7.tgz"
+    },
+    "progress": {
+      "version": "1.1.8",
+      "from": "progress@>=1.1.8 <1.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/progress/download/progress-1.1.8.tgz"
+    },
+    "promise": {
+      "version": "7.1.1",
+      "from": "promise@>=7.1.1 <8.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/promise/download/promise-7.1.1.tgz"
+    },
+    "pseudomap": {
+      "version": "1.0.2",
+      "from": "pseudomap@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/pseudomap/download/pseudomap-1.0.2.tgz"
+    },
+    "punycode": {
+      "version": "1.4.1",
+      "from": "punycode@>=1.4.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/punycode/download/punycode-1.4.1.tgz"
+    },
+    "q": {
+      "version": "1.4.1",
+      "from": "q@>=1.4.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/q/download/q-1.4.1.tgz"
+    },
+    "qs": {
+      "version": "4.0.0",
+      "from": "qs@>=4.0.0 <4.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/qs/download/qs-4.0.0.tgz"
+    },
+    "query-string": {
+      "version": "4.2.3",
+      "from": "query-string@>=4.1.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/query-string/download/query-string-4.2.3.tgz"
+    },
+    "raw-body": {
+      "version": "2.1.7",
+      "from": "raw-body@>=2.1.2 <2.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/raw-body/download/raw-body-2.1.7.tgz"
+    },
+    "rc-align": {
+      "version": "2.3.2",
+      "from": "rc-align@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-align/download/rc-align-2.3.2.tgz",
+      "dependencies": {
+        "rc-util": {
+          "version": "3.4.1",
+          "from": "rc-util@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/rc-util/download/rc-util-3.4.1.tgz"
+        }
+      }
+    },
+    "rc-animate": {
+      "version": "2.3.1",
+      "from": "rc-animate@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-animate/download/rc-animate-2.3.1.tgz"
+    },
+    "rc-dropdown": {
+      "version": "1.4.10",
+      "from": "rc-dropdown@>=1.4.9 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-dropdown/download/rc-dropdown-1.4.10.tgz"
+    },
+    "rc-menu": {
+      "version": "4.13.0",
+      "from": "rc-menu@>=4.13.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-menu/download/rc-menu-4.13.0.tgz",
+      "dependencies": {
+        "rc-util": {
+          "version": "3.4.1",
+          "from": "rc-util@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/rc-util/download/rc-util-3.4.1.tgz"
+        }
+      }
+    },
+    "rc-notification": {
+      "version": "1.3.5",
+      "from": "rc-notification@>=1.3.5 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-notification/download/rc-notification-1.3.5.tgz",
+      "dependencies": {
+        "rc-util": {
+          "version": "3.4.1",
+          "from": "rc-util@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/rc-util/download/rc-util-3.4.1.tgz"
+        }
+      }
+    },
+    "rc-select": {
+      "version": "6.6.9",
+      "from": "rc-select@>=6.4.7 <7.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-select/download/rc-select-6.6.9.tgz",
+      "dependencies": {
+        "rc-util": {
+          "version": "3.4.1",
+          "from": "rc-util@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/rc-util/download/rc-util-3.4.1.tgz"
+        }
+      }
+    },
+    "rc-trigger": {
+      "version": "1.8.0",
+      "from": "rc-trigger@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-trigger/download/rc-trigger-1.8.0.tgz"
+    },
+    "rc-util": {
+      "version": "4.0.2",
+      "from": "rc-util@>=4.0.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rc-util/download/rc-util-4.0.2.tgz"
+    },
+    "react": {
+      "version": "15.4.1",
+      "from": "react@>=15.3.0 <16.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react/download/react-15.4.1.tgz"
+    },
+    "react-addons-css-transition-group": {
+      "version": "15.4.1",
+      "from": "react-addons-css-transition-group@>=15.3.0 <16.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-addons-css-transition-group/download/react-addons-css-transition-group-15.4.1.tgz"
+    },
+    "react-clipboard.js": {
+      "version": "0.2.5",
+      "from": "react-clipboard.js@>=0.2.4 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-clipboard.js/download/react-clipboard.js-0.2.5.tgz"
+    },
+    "react-dom": {
+      "version": "15.4.1",
+      "from": "react-dom@>=15.3.0 <16.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-dom/download/react-dom-15.4.1.tgz"
+    },
+    "react-redux": {
+      "version": "4.4.6",
+      "from": "react-redux@>=4.4.5 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-redux/download/react-redux-4.4.6.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "4.17.2",
+          "from": "lodash@>=4.2.0 <5.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/lodash/download/lodash-4.17.2.tgz"
+        }
+      }
+    },
+    "react-router": {
+      "version": "2.8.1",
+      "from": "react-router@>=2.4.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-router/download/react-router-2.8.1.tgz",
+      "dependencies": {
+        "warning": {
+          "version": "3.0.0",
+          "from": "warning@>=3.0.0 <4.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/warning/download/warning-3.0.0.tgz"
+        }
+      }
+    },
+    "react-router-redux": {
+      "version": "4.0.7",
+      "from": "react-router-redux@>=4.0.4 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/react-router-redux/download/react-router-redux-4.0.7.tgz"
+    },
+    "read-pkg": {
+      "version": "1.1.0",
+      "from": "read-pkg@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/read-pkg/download/read-pkg-1.1.0.tgz"
+    },
+    "read-pkg-up": {
+      "version": "1.0.1",
+      "from": "read-pkg-up@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/read-pkg-up/download/read-pkg-up-1.0.1.tgz"
+    },
+    "readable-stream": {
+      "version": "2.2.2",
+      "from": "readable-stream@>=2.0.4 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-2.2.2.tgz"
+    },
+    "redent": {
+      "version": "1.0.0",
+      "from": "redent@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/redent/download/redent-1.0.0.tgz"
+    },
+    "reduce-css-calc": {
+      "version": "1.3.0",
+      "from": "reduce-css-calc@>=1.2.6 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/reduce-css-calc/download/reduce-css-calc-1.3.0.tgz"
+    },
+    "reduce-function-call": {
+      "version": "1.0.2",
+      "from": "reduce-function-call@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/reduce-function-call/download/reduce-function-call-1.0.2.tgz"
+    },
+    "redux": {
+      "version": "3.6.0",
+      "from": "redux@>=3.5.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/redux/download/redux-3.6.0.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "4.17.2",
+          "from": "lodash@>=4.2.1 <5.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/lodash/download/lodash-4.17.2.tgz"
+        }
+      }
+    },
+    "redux-promise": {
+      "version": "0.5.3",
+      "from": "redux-promise@>=0.5.3 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/redux-promise/download/redux-promise-0.5.3.tgz"
+    },
+    "redux-thunk": {
+      "version": "2.1.0",
+      "from": "redux-thunk@>=2.1.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/redux-thunk/download/redux-thunk-2.1.0.tgz"
+    },
+    "regenerate": {
+      "version": "1.3.2",
+      "from": "regenerate@>=1.2.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/regenerate/download/regenerate-1.3.2.tgz"
+    },
+    "regenerator-runtime": {
+      "version": "0.10.1",
+      "from": "regenerator-runtime@>=0.10.0 <0.11.0",
+      "resolved": "http://registry.npm.corp.qunar.com/regenerator-runtime/download/regenerator-runtime-0.10.1.tgz"
+    },
+    "regexpu-core": {
+      "version": "1.0.0",
+      "from": "regexpu-core@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/regexpu-core/download/regexpu-core-1.0.0.tgz"
+    },
+    "regjsgen": {
+      "version": "0.2.0",
+      "from": "regjsgen@>=0.2.0 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/regjsgen/download/regjsgen-0.2.0.tgz"
+    },
+    "regjsparser": {
+      "version": "0.1.5",
+      "from": "regjsparser@>=0.1.4 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/regjsparser/download/regjsparser-0.1.5.tgz"
+    },
+    "repeat-string": {
+      "version": "1.6.1",
+      "from": "repeat-string@>=1.5.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/repeat-string/download/repeat-string-1.6.1.tgz"
+    },
+    "repeating": {
+      "version": "2.0.1",
+      "from": "repeating@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/repeating/download/repeating-2.0.1.tgz"
+    },
+    "request": {
+      "version": "2.1.1",
+      "from": "request@2.1.1",
+      "resolved": "http://registry.npm.corp.qunar.com/request/download/request-2.1.1.tgz"
+    },
+    "request-progress": {
+      "version": "2.0.1",
+      "from": "request-progress@>=2.0.1 <2.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/request-progress/download/request-progress-2.0.1.tgz"
+    },
+    "resolve-path": {
+      "version": "1.3.3",
+      "from": "resolve-path@>=1.3.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/resolve-path/download/resolve-path-1.3.3.tgz"
+    },
+    "retry-as-promised": {
+      "version": "2.2.0",
+      "from": "retry-as-promised@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/retry-as-promised/download/retry-as-promised-2.2.0.tgz"
+    },
+    "right-align": {
+      "version": "0.1.3",
+      "from": "right-align@>=0.1.1 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/right-align/download/right-align-0.1.3.tgz"
+    },
+    "rimraf": {
+      "version": "2.5.4",
+      "from": "rimraf@>=2.2.8 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/rimraf/download/rimraf-2.5.4.tgz"
+    },
+    "sax": {
+      "version": "1.2.1",
+      "from": "sax@>=1.2.1 <1.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sax/download/sax-1.2.1.tgz"
+    },
+    "select": {
+      "version": "1.1.0",
+      "from": "select@>=1.0.6 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/select/download/select-1.1.0.tgz"
+    },
+    "semver": {
+      "version": "5.3.0",
+      "from": "semver@>=2.0.0 <3.0.0||>=3.0.0 <4.0.0||>=4.0.0 <5.0.0||>=5.0.0 <6.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/semver/download/semver-5.3.0.tgz"
+    },
+    "sequelize": {
+      "version": "3.27.0",
+      "from": "sequelize@>=3.23.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sequelize/download/sequelize-3.27.0.tgz",
+      "dependencies": {
+        "lodash": {
+          "version": "4.12.0",
+          "from": "lodash@4.12.0",
+          "resolved": "http://registry.npm.corp.qunar.com/lodash/download/lodash-4.12.0.tgz"
+        }
+      }
+    },
+    "serialize-javascript": {
+      "version": "1.3.0",
+      "from": "serialize-javascript@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/serialize-javascript/download/serialize-javascript-1.3.0.tgz"
+    },
+    "setprototypeof": {
+      "version": "1.0.2",
+      "from": "setprototypeof@1.0.2",
+      "resolved": "http://registry.npm.corp.qunar.com/setprototypeof/download/setprototypeof-1.0.2.tgz"
+    },
+    "shallowequal": {
+      "version": "0.2.2",
+      "from": "shallowequal@>=0.2.0 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/shallowequal/download/shallowequal-0.2.2.tgz"
+    },
+    "shimmer": {
+      "version": "1.1.0",
+      "from": "shimmer@1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/shimmer/download/shimmer-1.1.0.tgz"
+    },
+    "signal-exit": {
+      "version": "3.0.2",
+      "from": "signal-exit@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/signal-exit/download/signal-exit-3.0.2.tgz"
+    },
+    "sntp": {
+      "version": "1.0.9",
+      "from": "sntp@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sntp/download/sntp-1.0.9.tgz"
+    },
+    "sort-keys": {
+      "version": "1.1.2",
+      "from": "sort-keys@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sort-keys/download/sort-keys-1.1.2.tgz"
+    },
+    "source-list-map": {
+      "version": "0.1.7",
+      "from": "source-list-map@>=0.1.4 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/source-list-map/download/source-list-map-0.1.7.tgz"
+    },
+    "source-map": {
+      "version": "0.5.6",
+      "from": "source-map@>=0.5.6 <0.6.0",
+      "resolved": "http://registry.npm.corp.qunar.com/source-map/download/source-map-0.5.6.tgz"
+    },
+    "spdx-correct": {
+      "version": "1.0.2",
+      "from": "spdx-correct@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/spdx-correct/download/spdx-correct-1.0.2.tgz"
+    },
+    "spdx-expression-parse": {
+      "version": "1.0.4",
+      "from": "spdx-expression-parse@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/spdx-expression-parse/download/spdx-expression-parse-1.0.4.tgz"
+    },
+    "spdx-license-ids": {
+      "version": "1.2.2",
+      "from": "spdx-license-ids@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/spdx-license-ids/download/spdx-license-ids-1.2.2.tgz"
+    },
+    "sprintf-js": {
+      "version": "1.0.3",
+      "from": "sprintf-js@>=1.0.2 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sprintf-js/download/sprintf-js-1.0.3.tgz"
+    },
+    "sqlstring": {
+      "version": "2.2.0",
+      "from": "sqlstring@2.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sqlstring/download/sqlstring-2.2.0.tgz"
+    },
+    "sshpk": {
+      "version": "1.10.1",
+      "from": "sshpk@>=1.7.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/sshpk/download/sshpk-1.10.1.tgz",
+      "dependencies": {
+        "assert-plus": {
+          "version": "1.0.0",
+          "from": "assert-plus@>=1.0.0 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/assert-plus/download/assert-plus-1.0.0.tgz"
+        }
+      }
+    },
+    "statuses": {
+      "version": "1.3.1",
+      "from": "statuses@>=1.2.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/statuses/download/statuses-1.3.1.tgz"
+    },
+    "stream-consume": {
+      "version": "0.1.0",
+      "from": "stream-consume@>=0.1.0 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/stream-consume/download/stream-consume-0.1.0.tgz"
+    },
+    "streamsearch": {
+      "version": "0.1.2",
+      "from": "streamsearch@0.1.2",
+      "resolved": "http://registry.npm.corp.qunar.com/streamsearch/download/streamsearch-0.1.2.tgz"
+    },
+    "strict-uri-encode": {
+      "version": "1.1.0",
+      "from": "strict-uri-encode@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/strict-uri-encode/download/strict-uri-encode-1.1.0.tgz"
+    },
+    "string_decoder": {
+      "version": "0.10.31",
+      "from": "string_decoder@>=0.10.0 <0.11.0",
+      "resolved": "http://registry.npm.corp.qunar.com/string_decoder/download/string_decoder-0.10.31.tgz"
+    },
+    "string.fromcodepoint": {
+      "version": "0.2.1",
+      "from": "string.fromcodepoint@>=0.2.1 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/string.fromcodepoint/download/string.fromcodepoint-0.2.1.tgz"
+    },
+    "string.prototype.codepointat": {
+      "version": "0.2.0",
+      "from": "string.prototype.codepointat@>=0.2.0 <0.3.0",
+      "resolved": "http://registry.npm.corp.qunar.com/string.prototype.codepointat/download/string.prototype.codepointat-0.2.0.tgz"
+    },
+    "stringstream": {
+      "version": "0.0.5",
+      "from": "stringstream@>=0.0.4 <0.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/stringstream/download/stringstream-0.0.5.tgz"
+    },
+    "strip-ansi": {
+      "version": "3.0.1",
+      "from": "strip-ansi@>=3.0.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/strip-ansi/download/strip-ansi-3.0.1.tgz"
+    },
+    "strip-bom": {
+      "version": "2.0.0",
+      "from": "strip-bom@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/strip-bom/download/strip-bom-2.0.0.tgz"
+    },
+    "strip-indent": {
+      "version": "1.0.1",
+      "from": "strip-indent@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/strip-indent/download/strip-indent-1.0.1.tgz"
+    },
+    "supports-color": {
+      "version": "3.1.2",
+      "from": "supports-color@>=3.1.2 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/supports-color/download/supports-color-3.1.2.tgz"
+    },
+    "svg-pathdata": {
+      "version": "1.0.4",
+      "from": "svg-pathdata@>=1.0.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svg-pathdata/download/svg-pathdata-1.0.4.tgz",
+      "dependencies": {
+        "readable-stream": {
+          "version": "2.0.6",
+          "from": "readable-stream@>=2.0.4 <2.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/readable-stream/download/readable-stream-2.0.6.tgz"
+        }
+      }
+    },
+    "svg2ttf": {
+      "version": "1.2.0",
+      "from": "svg2ttf@>=1.2.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svg2ttf/download/svg2ttf-1.2.0.tgz",
+      "dependencies": {
+        "argparse": {
+          "version": "0.1.16",
+          "from": "argparse@>=0.1.15 <0.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/argparse/download/argparse-0.1.16.tgz"
+        },
+        "svgpath": {
+          "version": "1.0.7",
+          "from": "svgpath@>=1.0.0 <1.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/svgpath/download/svgpath-1.0.7.tgz"
+        },
+        "underscore": {
+          "version": "1.7.0",
+          "from": "underscore@>=1.7.0 <1.8.0",
+          "resolved": "http://registry.npm.corp.qunar.com/underscore/download/underscore-1.7.0.tgz"
+        }
+      }
+    },
+    "svgexport": {
+      "version": "0.3.2",
+      "from": "svgexport@>=0.3.2 <0.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svgexport/download/svgexport-0.3.2.tgz"
+    },
+    "svgicons2svgfont": {
+      "version": "3.2.1",
+      "from": "svgicons2svgfont@>=3.2.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svgicons2svgfont/download/svgicons2svgfont-3.2.1.tgz"
+    },
+    "svgo": {
+      "version": "0.6.6",
+      "from": "svgo@>=0.6.6 <0.7.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svgo/download/svgo-0.6.6.tgz",
+      "dependencies": {
+        "csso": {
+          "version": "2.0.0",
+          "from": "csso@>=2.0.0 <2.1.0",
+          "resolved": "http://registry.npm.corp.qunar.com/csso/download/csso-2.0.0.tgz"
+        }
+      }
+    },
+    "svgpath": {
+      "version": "2.2.0",
+      "from": "svgpath@>=2.1.6 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/svgpath/download/svgpath-2.2.0.tgz"
+    },
+    "symbol-observable": {
+      "version": "1.0.4",
+      "from": "symbol-observable@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/symbol-observable/download/symbol-observable-1.0.4.tgz"
+    },
+    "terraformer": {
+      "version": "1.0.7",
+      "from": "terraformer@>=1.0.5 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/terraformer/download/terraformer-1.0.7.tgz"
+    },
+    "terraformer-wkt-parser": {
+      "version": "1.1.2",
+      "from": "terraformer-wkt-parser@>=1.1.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/terraformer-wkt-parser/download/terraformer-wkt-parser-1.1.2.tgz"
+    },
+    "thenify": {
+      "version": "3.2.1",
+      "from": "thenify@>=3.1.0 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/thenify/download/thenify-3.2.1.tgz"
+    },
+    "thenify-all": {
+      "version": "1.6.0",
+      "from": "thenify-all@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/thenify-all/download/thenify-all-1.6.0.tgz"
+    },
+    "throttleit": {
+      "version": "1.0.0",
+      "from": "throttleit@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/throttleit/download/throttleit-1.0.0.tgz"
+    },
+    "tiny-emitter": {
+      "version": "1.1.0",
+      "from": "tiny-emitter@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/tiny-emitter/download/tiny-emitter-1.1.0.tgz"
+    },
+    "toposort-class": {
+      "version": "1.0.1",
+      "from": "toposort-class@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/toposort-class/download/toposort-class-1.0.1.tgz"
+    },
+    "tough-cookie": {
+      "version": "2.3.2",
+      "from": "tough-cookie@>=2.3.0 <2.4.0",
+      "resolved": "http://registry.npm.corp.qunar.com/tough-cookie/download/tough-cookie-2.3.2.tgz"
+    },
+    "trim-newlines": {
+      "version": "1.0.0",
+      "from": "trim-newlines@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/trim-newlines/download/trim-newlines-1.0.0.tgz"
+    },
+    "ttf2eot": {
+      "version": "1.3.0",
+      "from": "ttf2eot@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ttf2eot/download/ttf2eot-1.3.0.tgz",
+      "dependencies": {
+        "argparse": {
+          "version": "0.1.16",
+          "from": "argparse@>=0.1.15 <0.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/argparse/download/argparse-0.1.16.tgz"
+        },
+        "underscore": {
+          "version": "1.7.0",
+          "from": "underscore@>=1.7.0 <1.8.0",
+          "resolved": "http://registry.npm.corp.qunar.com/underscore/download/underscore-1.7.0.tgz"
+        }
+      }
+    },
+    "ttf2woff": {
+      "version": "1.3.0",
+      "from": "ttf2woff@>=1.3.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ttf2woff/download/ttf2woff-1.3.0.tgz",
+      "dependencies": {
+        "argparse": {
+          "version": "0.1.16",
+          "from": "argparse@>=0.1.15 <0.2.0",
+          "resolved": "http://registry.npm.corp.qunar.com/argparse/download/argparse-0.1.16.tgz"
+        },
+        "underscore": {
+          "version": "1.7.0",
+          "from": "underscore@>=1.7.0 <1.8.0",
+          "resolved": "http://registry.npm.corp.qunar.com/underscore/download/underscore-1.7.0.tgz"
+        }
+      }
+    },
+    "tunnel-agent": {
+      "version": "0.4.3",
+      "from": "tunnel-agent@>=0.4.1 <0.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/tunnel-agent/download/tunnel-agent-0.4.3.tgz"
+    },
+    "tweetnacl": {
+      "version": "0.14.4",
+      "from": "tweetnacl@>=0.14.0 <0.15.0",
+      "resolved": "http://registry.npm.corp.qunar.com/tweetnacl/download/tweetnacl-0.14.4.tgz",
+      "optional": true
+    },
+    "type-is": {
+      "version": "1.6.14",
+      "from": "type-is@>=1.5.5 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/type-is/download/type-is-1.6.14.tgz"
+    },
+    "typedarray": {
+      "version": "0.0.6",
+      "from": "typedarray@>=0.0.5 <0.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/typedarray/download/typedarray-0.0.6.tgz"
+    },
+    "ua-parser-js": {
+      "version": "0.7.12",
+      "from": "ua-parser-js@>=0.7.9 <0.8.0",
+      "resolved": "http://registry.npm.corp.qunar.com/ua-parser-js/download/ua-parser-js-0.7.12.tgz"
+    },
+    "uglify-js": {
+      "version": "2.7.5",
+      "from": "uglify-js@>=2.6.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/uglify-js/download/uglify-js-2.7.5.tgz",
+      "dependencies": {
+        "async": {
+          "version": "0.2.10",
+          "from": "async@>=0.2.6 <0.3.0",
+          "resolved": "http://registry.npm.corp.qunar.com/async/download/async-0.2.10.tgz"
+        }
+      }
+    },
+    "uglify-to-browserify": {
+      "version": "1.0.2",
+      "from": "uglify-to-browserify@>=1.0.0 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/uglify-to-browserify/download/uglify-to-browserify-1.0.2.tgz"
+    },
+    "underscore": {
+      "version": "1.8.3",
+      "from": "underscore@>=1.8.3 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/underscore/download/underscore-1.8.3.tgz"
+    },
+    "underscore.string": {
+      "version": "2.4.0",
+      "from": "underscore.string@>=2.4.0 <2.5.0",
+      "resolved": "http://registry.npm.corp.qunar.com/underscore.string/download/underscore.string-2.4.0.tgz"
+    },
+    "uniq": {
+      "version": "1.0.1",
+      "from": "uniq@>=1.0.1 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/uniq/download/uniq-1.0.1.tgz"
+    },
+    "uniqid": {
+      "version": "4.1.0",
+      "from": "uniqid@>=4.0.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/uniqid/download/uniqid-4.1.0.tgz"
+    },
+    "uniqs": {
+      "version": "2.0.0",
+      "from": "uniqs@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/uniqs/download/uniqs-2.0.0.tgz"
+    },
+    "unpipe": {
+      "version": "1.0.0",
+      "from": "unpipe@1.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/unpipe/download/unpipe-1.0.0.tgz"
+    },
+    "util-deprecate": {
+      "version": "1.0.2",
+      "from": "util-deprecate@>=1.0.1 <1.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/util-deprecate/download/util-deprecate-1.0.2.tgz"
+    },
+    "validate-npm-package-license": {
+      "version": "3.0.1",
+      "from": "validate-npm-package-license@>=3.0.1 <4.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/validate-npm-package-license/download/validate-npm-package-license-3.0.1.tgz"
+    },
+    "validator": {
+      "version": "5.7.0",
+      "from": "validator@>=5.2.0 <6.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/validator/download/validator-5.7.0.tgz"
+    },
+    "vary": {
+      "version": "1.1.0",
+      "from": "vary@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/vary/download/vary-1.1.0.tgz"
+    },
+    "vendors": {
+      "version": "1.0.1",
+      "from": "vendors@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/vendors/download/vendors-1.0.1.tgz"
+    },
+    "verror": {
+      "version": "1.3.6",
+      "from": "verror@1.3.6",
+      "resolved": "http://registry.npm.corp.qunar.com/verror/download/verror-1.3.6.tgz"
+    },
+    "warning": {
+      "version": "2.1.0",
+      "from": "warning@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/warning/download/warning-2.1.0.tgz"
+    },
+    "whatwg-fetch": {
+      "version": "2.0.1",
+      "from": "whatwg-fetch@>=0.10.0",
+      "resolved": "http://registry.npm.corp.qunar.com/whatwg-fetch/download/whatwg-fetch-2.0.1.tgz"
+    },
+    "whet.extend": {
+      "version": "0.9.9",
+      "from": "whet.extend@>=0.9.9 <0.10.0",
+      "resolved": "http://registry.npm.corp.qunar.com/whet.extend/download/whet.extend-0.9.9.tgz"
+    },
+    "which": {
+      "version": "1.2.12",
+      "from": "which@>=1.2.9 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/which/download/which-1.2.12.tgz"
+    },
+    "window-size": {
+      "version": "0.1.0",
+      "from": "window-size@0.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/window-size/download/window-size-0.1.0.tgz"
+    },
+    "wkx": {
+      "version": "0.2.0",
+      "from": "wkx@0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/wkx/download/wkx-0.2.0.tgz"
+    },
+    "wordwrap": {
+      "version": "0.0.3",
+      "from": "wordwrap@>=0.0.2 <0.1.0",
+      "resolved": "http://registry.npm.corp.qunar.com/wordwrap/download/wordwrap-0.0.3.tgz"
+    },
+    "wrappy": {
+      "version": "1.0.2",
+      "from": "wrappy@>=1.0.0 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/wrappy/download/wrappy-1.0.2.tgz"
+    },
+    "xmldom": {
+      "version": "0.1.27",
+      "from": "xmldom@>=0.1.16 <0.2.0",
+      "resolved": "http://registry.npm.corp.qunar.com/xmldom/download/xmldom-0.1.27.tgz"
+    },
+    "xtend": {
+      "version": "4.0.1",
+      "from": "xtend@>=4.0.0 <5.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/xtend/download/xtend-4.0.1.tgz"
+    },
+    "yallist": {
+      "version": "2.0.0",
+      "from": "yallist@>=2.0.0 <3.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/yallist/download/yallist-2.0.0.tgz"
+    },
+    "yargs": {
+      "version": "3.10.0",
+      "from": "yargs@>=3.10.0 <3.11.0",
+      "resolved": "http://registry.npm.corp.qunar.com/yargs/download/yargs-3.10.0.tgz",
+      "dependencies": {
+        "camelcase": {
+          "version": "1.2.1",
+          "from": "camelcase@>=1.0.2 <2.0.0",
+          "resolved": "http://registry.npm.corp.qunar.com/camelcase/download/camelcase-1.2.1.tgz"
+        }
+      }
+    },
+    "yauzl": {
+      "version": "2.4.1",
+      "from": "yauzl@2.4.1",
+      "resolved": "http://registry.npm.corp.qunar.com/yauzl/download/yauzl-2.4.1.tgz"
+    },
+    "zip-dir": {
+      "version": "1.0.2",
+      "from": "zip-dir@>=1.0.2 <2.0.0",
+      "resolved": "http://registry.npm.corp.qunar.com/zip-dir/download/zip-dir-1.0.2.tgz"
+    }
+  }
+}
