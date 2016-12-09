@@ -191,6 +191,7 @@ class DownloadDialog extends Component {
             </div>
             <Select
               defaultValue="256"
+              value={iconDetail.iconStyle.size}
               onChange={this.changeIconSize}
               className="set-size"
             >
