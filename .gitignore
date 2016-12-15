@@ -46,3 +46,7 @@ node_modules/
 
 # ignore webpack-assets
 webpack-assets.json
+
+# ignore static/dist
+static/dist
+

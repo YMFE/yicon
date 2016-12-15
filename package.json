@@ -72,7 +72,7 @@
       }
     },
     "build": {
-      "command": "webpack --config webpack/prd.config.js && git add -f webpack-assets.json && git add -f static/dist/ && git commit -m \"rebuild for deploy\" && git push",
+      "command": "webpack --config webpack/prd.config.js",
       "env": {
         "NODE_ENV": "production"
       }
