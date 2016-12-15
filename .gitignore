@@ -40,3 +40,6 @@ ios/build/
 
 # ignore public
 public/
+
+# ignore modules
+node_modules/

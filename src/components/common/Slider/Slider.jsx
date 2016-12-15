@@ -95,6 +95,7 @@ class Slider extends Component {
     pauseEvent(e);
   }
 
+  // 分步骤slider值
   getMarkValue(value) {
     const { mark } = this.props;
     if (mark) {
