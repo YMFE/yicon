@@ -43,3 +43,6 @@ public/
 
 # ignore modules
 node_modules/
+
+# ignore webpack-assets
+webpack-assets.json
