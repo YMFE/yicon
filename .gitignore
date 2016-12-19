@@ -50,3 +50,5 @@ webpack-assets.json
 # ignore static/dist
 static/dist
 
+src/config.js
+

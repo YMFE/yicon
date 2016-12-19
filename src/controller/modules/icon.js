@@ -210,11 +210,11 @@ export function* replaceIcon(next) {
     .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
     .then(() => RepoVersion.update(
       { iconId: toId, version: '0.0.0' },
-      { where: { version: '0.0.0', iconId: fromId }, transaction }
+      { where: { version: 0, iconId: fromId }, transaction }
     ))
     .then(() => ProjectVersion.update(
       { iconId: toId, version: '0.0.0' },
-      { where: { version: '0.0.0', iconId: fromId }, transaction }
+      { where: { version: 0, iconId: fromId }, transaction }
     ))
     .then(() => {
       const log = {
