@@ -1,0 +1,32 @@
+{
+  "log": {
+    "appenders": [{
+      "category": "normal",
+      "type": "dateFile",
+      "filename": "/tmp/log",
+      "alwaysIncludePattern": true,
+      "pattern": "-yyyy-MM-dd.log"
+    }]
+  },
+  "login": {
+    "ssoType": "cas",
+    "authUrl": "http://cas.example.com/cas/login?service={{service}}",
+    "tokenUrl": "http://cas.example.com/serviceValidate?service={{service}}&ticket={{token}}",
+    "serviceUrl": "http://app.iconfont.com",
+    "adminList": []
+  },
+  "model": {
+    "host": "",
+    "username": "",
+    "password": "",
+    "dialect": "mysql",
+    "port": "3306",
+    "database": ""
+  },
+  "path": {
+    "caches": "./caches",
+    "font": "download/font",
+    "png": "download/png",
+    "svg": "download/svg"
+  }
+}
