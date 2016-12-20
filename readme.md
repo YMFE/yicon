@@ -75,11 +75,8 @@ $ npm install yicon-builder -g
 ```javascript
 {
     "login": {
-        //
         "ssoType": "cas",
-        // authUrl:
         "authUrl": "http://cas.example.com/cas/login?service={{service}}",
-        // tokenUrl: 登录
         "tokenUrl": "http://cas.example.com/serviceValidate?service={{service}}&ticket={{token}}",
         "serviceUrl": "http://app.iconfont.com",
         "adminList": []
