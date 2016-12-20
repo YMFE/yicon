@@ -75,11 +75,8 @@ $ npm install yicon-builder -g
 ```javascript
 {
     "login": {
-        //
         "ssoType": "cas",
-        // authUrl:
         "authUrl": "http://cas.example.com/cas/login?service={{service}}",
-        // tokenUrl: 登录
         "tokenUrl": "http://cas.example.com/serviceValidate?service={{service}}&ticket={{token}}",
         "serviceUrl": "http://app.iconfont.com",
         "adminList": []
@@ -89,7 +86,7 @@ $ npm install yicon-builder -g
 
 这里面的配置项含义如下：
 
-- `type`: 根据用户输入自动生成登录类型，会分别按照 cas 和 sso 的规则进行登录；
+- `ssoType`: 根据用户输入自动生成登录类型，会分别按照 cas 和 sso 的规则进行登录；
 - `authUrl`: 指点击登录按钮时需要跳转的 url，通常是一个登录页面，用户在这个页面登录后，会给服务端返回一个 token；
 - `tokenUrl`: 服务端在获取 token 之后，可以通过这个 url 来获取用户的详细信息；
 - `serviceUrl`: 通常这两种服务都需要提供当前域名，这里可以配置 iconfont 字体站服务的域名；
