@@ -1,6 +1,14 @@
-const config = require('../config.json');
+const config = require('../../config.json');
+const common = {
+  path: {
+    caches: '../caches',
+    font: 'download/font',
+    svg: 'download/svg',
+    png: 'download/png',
+  },
+};
 
-const configPool = {
+const configPool = config.production ? config : {
   // 生产环境
   production: {
     ...config,
@@ -24,4 +32,4 @@ const configPool = {
   },
 };
 
-export default { ...configPool[process.env.NODE_ENV] };
+export default { ...common, ...configPool[process.env.NODE_ENV] };
