@@ -1,7 +1,7 @@
-webpack/*
 bin/*
-karma.conf.js
-tests.webpack.js
-server.babel.js
+caches/*
+logs/*
 node_modules/*
 static/*
+webpack/*
+server.babel.js

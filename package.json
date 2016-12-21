@@ -1,7 +1,8 @@
 {
   "name": "yicon",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Font generation platform",
+  "private": true,
   "main": "bin/server.js",
   "scripts": {
     "lint": "eslint --ext .js,.jsx src",

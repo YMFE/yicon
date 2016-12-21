@@ -34,7 +34,7 @@ class Search extends Component {
               defaultValue={this.props.searchValue}
               ref="input"
               className="ks-combobox-input search-q"
-              placeholder="请输入icon名称/编码/TAG"
+              placeholder="请输入图标名称/编码/标签"
               onKeyDown={this.searchIcon}
             />
           </div>

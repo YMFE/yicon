@@ -17,12 +17,10 @@ target/
 
 # temp ignore
 *.log
-*.log.*
 *.cache
 *.diff
 *.patch
 *.tmp
-logs/
 
 # system ignore
 .DS_Store
@@ -35,20 +33,15 @@ Thumbs.db
 # *.tar
 # *.tar.gz
 
-# iOS
-ios/build/
-
-# ignore public
-public/
-
-# ignore modules
+# node modules ignore
 node_modules/
 
-# ignore webpack-assets
+# sensitive ignore
+sensitive/
+
+# webpack ignore
+static/dist/
 webpack-assets.json
 
-# ignore static/dist
-static/dist
-
-src/config.js
-
+# cache ignore
+caches/
