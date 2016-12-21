@@ -162,6 +162,7 @@ class DownloadDialog extends Component {
             <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
           </div>
           <SetTag
+            disabled={+status === 1}
             onTagChange={this.saveTags}
             tags={iconDetail.tags || ''}
           />
@@ -191,7 +192,7 @@ class DownloadDialog extends Component {
             </div>
             <Select
               defaultValue="256"
-              value={iconDetail.iconStyle.size}
+              value={String(iconDetail.iconStyle.size)}
               onChange={this.changeIconSize}
               className="set-size"
             >
