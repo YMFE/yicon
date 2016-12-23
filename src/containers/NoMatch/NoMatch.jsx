@@ -34,4 +34,4 @@ export default class NoMatch extends Component {
   }
 }
 
-NoMatch.appPageTitle = 'yicon - 未找到页面';
+NoMatch.appPageTitle = '未找到页面';

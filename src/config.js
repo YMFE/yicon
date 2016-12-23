@@ -28,6 +28,7 @@ const configPool = config.production ? config : {
 
   // 开发环境
   development: {
+    title: config.title,
     path: config.path,
     model: {
       ...config.model,

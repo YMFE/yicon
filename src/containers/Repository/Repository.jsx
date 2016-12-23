@@ -214,4 +214,4 @@ export default class Repository extends Component {
   }
 }
 
-Repository.appPageTitle = 'yicon - 图标大库';
+Repository.appPageTitle = '图标大库';
