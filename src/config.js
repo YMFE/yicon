@@ -1,4 +1,16 @@
-const config = require('../../config.json');
+import path from 'path';
+import fs from 'fs';
+
+const data = fs.readFileSync(path.join(__dirname, '../../config.json'));
+
+let config = {};
+
+try {
+  config = JSON.parse(data);
+} catch (e) {
+  throw new Error(e);
+}
+
 const common = {
   path: {
     caches: '../caches',
@@ -32,4 +44,7 @@ const configPool = config.production ? config : {
   },
 };
 
-export default { ...common, ...configPool[process.env.NODE_ENV] };
+export default {
+  ...common,
+  ...configPool[process.env.NODE_ENV],
+};

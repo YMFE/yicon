@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import config from '../config';
 
-const { authUrl } = config.login;
+const authUrl = config.login.ssoType === 'ldap' ? '/ldapauth' : config.login.authUrl;
 
 const Html = (props) => {
   const { assets, component, store, title } = props;
