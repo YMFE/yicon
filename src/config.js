@@ -13,8 +13,6 @@ if (CONFIG) {
   }
 }
 
-console.log(file);
-
 const data = fs.readFileSync(file);
 
 let config = {};
