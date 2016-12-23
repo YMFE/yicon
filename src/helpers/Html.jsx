@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import config from '../config';
 
-console.log(config);
 const titlePrefix = config.title ? config.title : 'yicon';
 const authUrl = config.login.ssoType === 'ldap' ? '/ldapauth' : config.login.authUrl;
 
