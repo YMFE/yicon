@@ -1,7 +1,21 @@
 import path from 'path';
 import fs from 'fs';
 
-const data = fs.readFileSync(path.join(__dirname, '../../config.json'));
+const { CONFIG } = process.env;
+
+let file = path.join(__dirname, '../../config.json');
+
+if (CONFIG) {
+  if (path.isAbsolute(CONFIG)) {
+    file = CONFIG;
+  } else {
+    file = path.join(process.cwd(), CONFIG);
+  }
+}
+
+console.log(file);
+
+const data = fs.readFileSync(file);
 
 let config = {};
 
