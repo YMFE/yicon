@@ -74,6 +74,10 @@ export function* getUserInfo(next) {
   this.session.domain = info.name;
   this.session.actor = info.actor;
   this.session.repoAdmin = info.repoAdmin;
-  this.redirect('/');
+
+  if (ssoType === 'sso' || ssoType === 'cas') {
+    this.redirect('/');
+  }
+
   yield next;
 }

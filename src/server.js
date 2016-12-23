@@ -98,8 +98,7 @@ const getRouteContext = (ctx, store) =>
               assets={webpackIsomorphicTools.assets()}
               component={component}
               store={store}
-              title="yicon - 矢量图标库"
-              authType="qsso"
+              title="矢量图标字体库"
             />
         )}`;
 

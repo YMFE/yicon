@@ -45,3 +45,6 @@ webpack-assets.json
 
 # cache ignore
 caches/
+
+# config.json ignore
+/config.json

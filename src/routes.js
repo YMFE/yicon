@@ -23,6 +23,7 @@ import {
   History,
   PublicProject,
   Help,
+  LdapAuth,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -56,6 +57,7 @@ export default store => {
       <Route path="transition/:type" component={Transition} /> {/* 跳转页面 */}
       <Route path="search" component={Search} /> {/* 搜索结果 */}
       <Route path="help" component={Help} /> {/* 帮助中心 */}
+      <Route path="ldapauth" component={LdapAuth} /> {/* LDAP登录 */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>
