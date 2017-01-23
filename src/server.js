@@ -142,9 +142,7 @@ app.use(function* s(next) {
 app.listen(PORT, (err) => {
   if (err) {
     logger.error(err);
-    console.log(err);
   } else {
     logger.info('==> 🐸  Server listening on port %s', PORT);
-    console.log('==> 🐸  Server listening on port %s', PORT);
   }
 });
