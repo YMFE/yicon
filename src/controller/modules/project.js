@@ -1,10 +1,18 @@
 import invariant from 'invariant';
+import axios from 'axios';
+import FormData from 'form-data';
+import fs from 'fs';
+import sysPath from 'path';
 
 import { PROJECT_NAME } from '../../constants/validate';
 import { User, Project, UserProject, ProjectVersion } from '../../model';
-import { versionTools, has, diffArray } from '../../helpers/utils';
+import { versionTools, has, diffArray, simpleParse } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
+import config from '../../config';
+
+const { infoUrl, versionUrl, sourceUrl } = config.source;
+const { serviceUrl } = config.login;
 
 function* listProjects(user) {
   const projects = yield user.getProjects();
@@ -168,8 +176,9 @@ export function* getOnePublicProject(next) {
 }
 
 export function* generatorNewVersion(next) {
-  const { versionType = 'build', projectId } = this.param;
-  const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
+  const { versionType = 'build', projectId, version } = this.param;
+  const _version = yield ProjectVersion.max('version', { where: { projectId } });
+  const versionFrom = version || _version;
 
   invariant(!isNaN(versionFrom), '空项目不可进行版本升级');
 
@@ -565,5 +574,93 @@ export function* searchProjects(next) {
     v => Object.assign({}, { id: v.id, name: v.name, ownerName: v.projectOwner.name })
   );
   this.state.page.totalCount = project.count;
+  yield next;
+}
+
+// 配置项目 source 路径
+export function* addSourcePath(next) {
+  const { projectId } = this.param;
+  const { userId } = this.state.user || 380;
+  const project = yield Project.findOne({ where: { id: projectId } });
+  invariant(project, `未找到 id 为 ${projectId} 的项目`);
+  const user = yield User.findOne({ where: { id: userId } });
+  const result = yield axios.get(simpleParse(infoUrl, { project: project.name, user: user.name }));
+  invariant(result.data.ret, result.data.data);
+  // 向数据库中插入 source 路径配置信息
+  // 去掉首尾（连续）的 "/" 并在末尾自动加上一个 "/"
+  let path = '';
+  path = this.param && `${this.param.path.replace(/(^\/*)|(\/*$)/g, '')}/`;
+  const data = yield Project.update(
+    { source: encodeURIComponent(path) },
+    { where: { id: projectId } }
+  );
+  invariant(data, 'source 路径配置失败');
+  this.state.respond = 'source 路径配置成功';
+  yield next;
+}
+
+// 获取项目 source 上最高版本
+export function* getSourceVersion(next) {
+  const { projectId } = this.param;
+  const project = yield Project.findOne({ where: { id: projectId }, raw: true });
+  invariant(project.source, '上传图标到 source 前请先配置路径信息');
+  const data = yield axios.get(simpleParse(versionUrl, {
+    project: project.name,
+    branch: 'master',
+    path: decodeURIComponent(project.source),
+  }));
+  this.state.respond = { version: data.data && data.data.version, ...project };
+  yield next;
+}
+
+// 上传图标到 source
+export function* uploadSource(next) {
+  const { projectId, project, path, branch, version } = this.param;
+  const { userId } = this.state.user || 380;
+  const user = yield User.findOne({ where: { id: userId } });
+  const form = new FormData();
+  // 获取字体文件
+  const file = yield axios.post(`${serviceUrl}/api/build/font`, {
+    type: 'project',
+    id: projectId,
+    version,
+  });
+  // TODO: 文件路径需要修改
+  const filePath = sysPath.join(__dirname, '../../../', file.data.data);
+  if (file.data && file.data.res && fs.existsSync(filePath)) {
+    const data = fs.createReadStream(filePath);
+    form.append('username', user.name);
+    form.append('project', project);
+    form.append('path', path);
+    form.append('branch', branch);
+    form.append('version', versionTools.n2v(version));
+    form.append('zip', data);
+    const getHeaders = () => new Promise((resolve, reject) => {
+      form.getLength((err, length) => {
+        if (err) {
+          reject(err);
+        }
+        const headers = Object.assign({ 'Content-Length': length }, form.getHeaders());
+        resolve(headers);
+      });
+    });
+    getHeaders().then(headers => axios.post(sourceUrl, form, { headers })).then(res => {
+      if (res.ret) {
+        this.state.respond = '上传图标到 source 成功';
+        // 配置项目 log
+        this.state.log = {
+          params: { path, version: versionTools.n2v(version) },
+          type: 'SOURCE_PUBLISH',
+          loggerId: projectId,
+          subscribers: [],
+        };
+      } else {
+        invariant(res.ret, '上传图标到 source 失败');
+      }
+    })
+    .catch(() => {
+      invariant(false, '服务器错误');
+    });
+  }
   yield next;
 }

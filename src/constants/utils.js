@@ -51,6 +51,7 @@ export const logTypes = {
   PROJECT_VERSION: '项目版本从 @versionFrom 升级到 @versionTo',
   REPO_ADMIN: '大库管理员从 @userFrom 变更为 @userTo',
   PROJECT_OWNER: '项目负责人从 @userFrom 变更为 @userTo',
+  SOURCE_PUBLISH: '项目发布到 source @path，版本为 @version',
 };
 
 export const InfoTypeDetail = [

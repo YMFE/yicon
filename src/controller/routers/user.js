@@ -13,6 +13,9 @@ import {
   diffVersion,
   deleteProject,
   adjustBaseline,
+  addSourcePath,
+  getSourceVersion,
+  uploadSource,
 } from '../modules/project';
 import {
   uploadIcons,
@@ -54,6 +57,9 @@ user.patch('/projects/:projectId/members', isProjectOwner, updateProjectMember, 
 user.delete('/projects/:projectId', isProjectOwner, deleteProject);
 user.patch('/projects/:projectId/baseline', isProjectOwner, adjustBaseline);
 user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVersion);
+user.post('/projects/:projectId/source', isProjectOwner, addSourcePath);
+user.get('/projects/:projectId/source/version', isProjectOwner, getSourceVersion);
+user.post('/projects/:projectId/source/upload', isProjectOwner, uploadSource, recordLog);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);

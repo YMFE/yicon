@@ -21,4 +21,9 @@ export default seq.define('projects', {
     defaultValue: false,
     comment: '是否调整基线',
   },
+  source: {
+    type: Seq.STRING,
+    allowNull: true,
+    comment: '项目source路径',
+  },
 });
