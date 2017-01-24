@@ -23,8 +23,9 @@ import {
   deleteProject,
   deleteProjectIcon,
   fetchAllVersions,
-	compareProjectVersion,
+  compareProjectVersion,
   adjustBaseline,
+  setSourcePath,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -34,6 +35,7 @@ import {
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
+import SetPath from './SetPath.jsx';
 
 @connect(
   state => ({
@@ -58,6 +60,7 @@ import Download from './Download.jsx';
     getIconDetail,
     editIconStyle,
     adjustBaseline,
+    setSourcePath,
     // resetIconSize,
   }
 )
@@ -85,6 +88,7 @@ class UserProject extends Component {
     replace: PropTypes.func,
     hideLoading: PropTypes.func,
     adjustBaseline: PropTypes.func,
+    setSourcePath: PropTypes.func,
   }
 
   static defaultProps ={
@@ -96,6 +100,7 @@ class UserProject extends Component {
     this.state = {
       showEditProject: false,
       showManageMember: false,
+      showSetPath: false,
       showGenerateVersion: false,
       showDownloadDialog: false,
       showHistoryVersion: false,
@@ -310,6 +315,36 @@ class UserProject extends Component {
   }
 
   @autobind
+  shiftSetPath(isShow = false) {
+    if (isShow) {
+      this.props.getUserProjectInfo(this.props.projectId);
+    }
+    this.setState({
+      showSetPath: isShow,
+    });
+  }
+
+  @autobind
+  updateSourcePath(data) {
+    const oldPath = this.props.currentUserProjectInfo && this.props.currentUserProjectInfo.source;
+    const newPath = data && data.sourcePath;
+    if (decodeURIComponent(oldPath) === newPath) {
+      this.shiftSetPath();
+      return;
+    }
+    this.props.setSourcePath(data).then(result => {
+      if (result.payload && result.payload.res) {
+        this.shiftSetPath();
+      }
+    });
+  }
+
+  @autobind
+  shiftUploadSource() {
+    //
+  }
+
+  @autobind
   adjustBaseline() {
     const { projectId, currentUserProjectInfo } = this.props;
     this.props.adjustBaseline(projectId, currentUserProjectInfo.baseline);
@@ -372,8 +407,38 @@ class UserProject extends Component {
             }
           }
         />,
-        <Download
+        <SetPath
           key={3}
+          projectName={current.name}
+          sourcePath={decodeURIComponent(current.source)}
+          id={current.id}
+          onOk={this.updateSourcePath}
+          onCancel={this.shiftSetPath}
+          showSetPath={this.state.showSetPath}
+          ref={
+            (node) => {
+              this.SetPathEle = node;
+            }
+          }
+        />,
+        <SetPath
+          key={4}
+          projectName={current.name}
+          owner={current.projectOwner}
+          isPublic={current.public}
+          members={current.members}
+          id={current.id}
+          onOk={this.updateProjectDetail}
+          onCancel={this.shiftEidtProject}
+          showEditProject={this.state.showEditProject}
+          ref={
+            (node) => {
+              this.EditProjectEle = node;
+            }
+          }
+        />,
+        <Download
+          key={5}
           currenthighestVersion={this.highestVersion}
           nextVersion={this.nextVersion}
           comparison={this.props.comparisonResult}
@@ -385,7 +450,7 @@ class UserProject extends Component {
           showDownloadDialog={this.state.showDownloadDialog}
         />,
         <Dialog
-          key={4}
+          key={6}
           empty
           visible={this.state.isShowDownloadDialog}
           getShow={this.dialogUpdateShow}
@@ -454,6 +519,8 @@ class UserProject extends Component {
                   >
                     管理项目成员
                   </span>
+                  <span onClick={() => { this.shiftSetPath(true); }}>配置路径</span>
+                  <span onClick={() => { this.shiftUploadSource(true); }}>上传图标</span>
                   <span
                     onClick={this.adjustBaseline}
                     title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"

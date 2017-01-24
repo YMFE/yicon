@@ -21,6 +21,7 @@ import {
   COMPARE_PROJECT_VERSION,
   FETCH_HISTORY_PROJECT,
   SET_ADJUST_BASELINE,
+  SET_SOURCE_PATH,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -206,5 +207,12 @@ export function adjustBaseline(id, baseline) {
   return {
     type: SET_ADJUST_BASELINE,
     payload: fetch.patch(`/user/projects/${id}/baseline`, { baseline: !baseline }),
+  };
+}
+
+export function setSourcePath(project) {
+  return {
+    type: SET_SOURCE_PATH,
+    payload: fetch.post(`/user/projects/${project.id}/source`, { path: project.sourcePath }),
   };
 }

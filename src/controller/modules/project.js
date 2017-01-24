@@ -580,12 +580,14 @@ export function* searchProjects(next) {
 // 配置项目 source 路径
 export function* addSourcePath(next) {
   const { projectId } = this.param;
-  const { userId } = this.state.user || 380;
+  const { userId } = this.state.user;
   const project = yield Project.findOne({ where: { id: projectId } });
   invariant(project, `未找到 id 为 ${projectId} 的项目`);
   const user = yield User.findOne({ where: { id: userId } });
   const result = yield axios.get(simpleParse(infoUrl, { project: project.name, user: user.name }));
-  invariant(result.data.ret, result.data.data);
+  const resultData = result.data || {};
+  invariant(typeof resultData !== 'string', 'source服务异常');
+  invariant(resultData.ret, resultData.data);
   // 向数据库中插入 source 路径配置信息
   // 去掉首尾（连续）的 "/" 并在末尾自动加上一个 "/"
   let path = '';
@@ -616,7 +618,7 @@ export function* getSourceVersion(next) {
 // 上传图标到 source
 export function* uploadSource(next) {
   const { projectId, project, path, branch, version } = this.param;
-  const { userId } = this.state.user || 380;
+  const { userId } = this.state.user;
   const user = yield User.findOne({ where: { id: userId } });
   const form = new FormData();
   // 获取字体文件
