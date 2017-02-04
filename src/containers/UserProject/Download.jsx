@@ -9,7 +9,7 @@ const Download = (props) => {
     confrimText={props.confrimText}
     comparison={props.comparison}
     onOk={props.onOk}
-    onCancel={props.onCancel}
+    onCancel={() => { props.onCancel(); }}
     title="生成版本并下载字体"
     visible={props.showDownloadDialog}
   >

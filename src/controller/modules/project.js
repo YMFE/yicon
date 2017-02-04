@@ -609,9 +609,13 @@ export function* getSourceVersion(next) {
   const data = yield axios.get(simpleParse(versionUrl, {
     project: project.name,
     branch: 'master',
-    path: decodeURIComponent(project.source),
+    path: encodeURIComponent(project.source),
   }));
-  this.state.respond = { version: data.data && data.data.version, ...project };
+  const res = { version: { name: '0.0.0' }, ...project };
+  if (data.data && data.data.ret) {
+    res.version = data.data.data && data.data.data.version;
+  }
+  this.state.respond = res;
   yield next;
 }
 

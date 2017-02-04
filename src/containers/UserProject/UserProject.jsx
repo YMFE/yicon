@@ -12,6 +12,7 @@ import { replace } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
+import Message from '../../components/common/Message/Message';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -26,6 +27,8 @@ import {
   compareProjectVersion,
   adjustBaseline,
   setSourcePath,
+  getPathAndVersion,
+  uploadIconToSource,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -36,6 +39,7 @@ import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
 import SetPath from './SetPath.jsx';
+import Upload from './Upload.jsx';
 
 @connect(
   state => ({
@@ -61,6 +65,8 @@ import SetPath from './SetPath.jsx';
     editIconStyle,
     adjustBaseline,
     setSourcePath,
+    getPathAndVersion,
+    uploadIconToSource,
     // resetIconSize,
   }
 )
@@ -89,6 +95,8 @@ class UserProject extends Component {
     hideLoading: PropTypes.func,
     adjustBaseline: PropTypes.func,
     setSourcePath: PropTypes.func,
+    getPathAndVersion: PropTypes.func,
+    uploadIconToSource: PropTypes.func,
   }
 
   static defaultProps ={
@@ -103,12 +111,17 @@ class UserProject extends Component {
       showSetPath: false,
       showGenerateVersion: false,
       showDownloadDialog: false,
+      showUploadDialog: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
       generateVersion: 'revision',
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
+    // source
+    this.sourcePath = '';
+    this.sourceVersion = '0.0.0';
+    this.nextSourceVersion = '0.0.1';
   }
   componentWillMount() {
     this.setState({ showLoading: true });
@@ -150,6 +163,10 @@ class UserProject extends Component {
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
       this.nextVersion = '0.0.1';
+      // source
+      this.sourcePath = '';
+      this.sourceVersion = '0.0.0';
+      this.nextSourceVersion = '0.0.1';
       this.props.compareProjectVersion(nextId, '0.0.0', '0.0.0');
     } else {
       this.setState({ showLoading: false });
@@ -259,13 +276,6 @@ class UserProject extends Component {
   }
 
   @autobind
-  closeDownloadDialog() {
-    this.setState({
-      showDownloadDialog: false,
-    });
-  }
-
-  @autobind
   dialogUpdateShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
@@ -340,8 +350,52 @@ class UserProject extends Component {
   }
 
   @autobind
-  shiftUploadSource() {
-    //
+  shiftUploadSource(isShow = false) {
+    const id = this.props.currentUserProjectInfo.id;
+    if (isShow) {
+      this.props.getPathAndVersion(id).then(data => {
+        if (!data.payload.res) return;
+        const val = data.payload.data;
+        this.sourcePath = val && val.source;
+        this.compareVersion(() => {
+          const v = val && val.version && val.version.name;
+          const sourceNum = versionTools.v2n(v);
+          const platformNum = versionTools.v2n(this.highestVersion);
+          if (sourceNum === platformNum) {
+            Message.error('项目平台版本与source版本一致，请手动升级项目平台版本！');
+            return;
+          }
+          this.sourceVersion = sourceNum > platformNum ? v : this.highestVersion;
+          this.setState({ showUploadDialog: isShow });
+        });
+      });
+    } else {
+      this.setState({ showUploadDialog: isShow });
+    }
+  }
+
+  @autobind
+  uploadAndGenerateVersion() {
+    // 生成(指定)版本
+    const { id, name, source } = this.props.currentUserProjectInfo;
+    this.props.generateVersion({
+      id,
+      versionType: this.state.generateVersion,
+      // 指定版本
+      version: this.sourceVersion,
+    }).then(() => {
+      // TODO: 上传字体
+      this.props.fetchAllVersions(id);
+      this.uploadIconToSource({
+        id,
+        project: name,
+        path: decodeURIComponent(source),
+        branch: 'master',
+        version: versionTools.v2n(this.sourceVersion),
+      });
+    });
+    // 关闭dialog
+    this.shiftUploadSource();
   }
 
   @autobind
@@ -373,6 +427,7 @@ class UserProject extends Component {
     const current = this.props.currentUserProjectInfo;
     let dialogList = null;
     this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
+    this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
     if (current.name) {
       dialogList = [
         <EditProject
@@ -421,21 +476,17 @@ class UserProject extends Component {
             }
           }
         />,
-        <SetPath
+        <Upload
           key={4}
-          projectName={current.name}
-          owner={current.projectOwner}
-          isPublic={current.public}
-          members={current.members}
-          id={current.id}
-          onOk={this.updateProjectDetail}
-          onCancel={this.shiftEidtProject}
-          showEditProject={this.state.showEditProject}
-          ref={
-            (node) => {
-              this.EditProjectEle = node;
-            }
-          }
+          currenthighestVersion={this.sourceVersion}
+          nextVersion={this.nextSourceVersion}
+          comparison={this.props.comparisonResult}
+          onOk={this.uploadAndGenerateVersion}
+          onCancel={this.shiftUploadSource}
+          onChange={this.changeGenerateVersion}
+          value={this.state.generateVersion}
+          confrimText={'生成版本并上传'}
+          showUploadDialog={this.state.showUploadDialog}
         />,
         <Download
           key={5}
@@ -443,7 +494,7 @@ class UserProject extends Component {
           nextVersion={this.nextVersion}
           comparison={this.props.comparisonResult}
           onOk={this.downloadAndGenerateVersion}
-          onCancel={this.closeDownloadDialog}
+          onCancel={this.shiftDownloadDialog}
           onChange={this.changeGenerateVersion}
           value={this.state.generateVersion}
           confrimText={'生成版本并下载'}
