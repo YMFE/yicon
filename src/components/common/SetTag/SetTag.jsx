@@ -74,10 +74,11 @@ class SetTag extends Component {
   render() {
     const { disabled } = this.props;
     const tagArr = this.tagsToArr(this.state.tags);
+    const placeholder = disabled ? '登录可编辑' : '添加图标标签，回车提交，可多次提交';
     return (
       <div className="set-tag">
         <Input
-          placeholder="添加图标标签，回车提交，可多次提交"
+          placeholder={placeholder}
           extraClass="edit-name"
           keyDown={this.addTag}
           regExp={ICON_TAG.reg}

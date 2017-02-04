@@ -19,6 +19,7 @@ const propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.bool,
   strict: PropTypes.bool,
+  disabled: PropTypes.bool,
   errMsg: PropTypes.string,
   defaultValue: PropTypes.string,
   onChange: PropTypes.func,
@@ -105,12 +106,13 @@ export default class Input extends Component {
   }
 
   render() {
-    const { errMsg, extraClass, placeholder } = this.props;
+    const { errMsg, extraClass, placeholder, disabled } = this.props;
     const { error, value } = this.state;
     const classNames = error ? 'input-wrap info-error ' : 'input-wrap';
     return (
       <div className={`${classNames} ${extraClass}`}>
         <input
+          disabled={disabled}
           value={value || ''}
           type="text"
           className="input"

@@ -35,6 +35,7 @@ export default class Select extends Component {
     value: PropTypes.any,
     defaultValue: PropTypes.any,
   }
+
   render() {
     let { notFoundContent, optionLabelProp } = this.props;
     const { combobox } = this.props;
