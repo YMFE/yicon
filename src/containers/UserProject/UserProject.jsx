@@ -357,12 +357,14 @@ class UserProject extends Component {
         if (!data.payload.res) return;
         const val = data.payload.data;
         this.sourcePath = val && val.source;
-        this.compareVersion(() => {
+        this.compareVersion((ret) => {
+          const { deleted, added } = ret.payload.data;
           const v = val && val.version && val.version.name;
           const sourceNum = versionTools.v2n(v);
           const platformNum = versionTools.v2n(this.highestVersion);
-          if (sourceNum === platformNum) {
-            Message.error('项目平台版本与source版本一致，请手动升级项目平台版本！');
+          if (sourceNum && platformNum && sourceNum === platformNum
+          && !deleted.length && !added.length) {
+            Message.error('项目图标已是最新版，请新增或删除图标后再生成版本和上传！');
             return;
           }
           this.sourceVersion = sourceNum > platformNum ? v : this.highestVersion;
@@ -381,17 +383,16 @@ class UserProject extends Component {
     this.props.generateVersion({
       id,
       versionType: this.state.generateVersion,
-      // 指定版本
-      version: this.sourceVersion,
+      // 指定升级到的版本
+      version: this.nextSourceVersion,
     }).then(() => {
       // TODO: 上传字体
       this.props.fetchAllVersions(id);
-      this.uploadIconToSource({
-        id,
+      this.props.uploadIconToSource(id, {
         project: name,
         path: decodeURIComponent(source),
         branch: 'master',
-        version: versionTools.v2n(this.sourceVersion),
+        version: this.nextSourceVersion,
       });
     });
     // 关闭dialog

@@ -230,6 +230,6 @@ export function getPathAndVersion(id) {
 export function uploadIconToSource(id, data) {
   return {
     type: UPLOAD_ICON_SOURCE,
-    payload: fetch.post(`/projects/${id}/source/upload`, data),
+    payload: fetch.post(`/user/projects/${id}/source/upload`, data),
   };
 }

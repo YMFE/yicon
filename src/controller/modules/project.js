@@ -177,12 +177,11 @@ export function* getOnePublicProject(next) {
 
 export function* generatorNewVersion(next) {
   const { versionType = 'build', projectId, version } = this.param;
-  const _version = yield ProjectVersion.max('version', { where: { projectId } });
-  const versionFrom = version || _version;
+  const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
 
   invariant(!isNaN(versionFrom), '空项目不可进行版本升级');
 
-  const versionTo = versionTools.update(versionFrom, versionType);
+  const versionTo = version || versionTools.update(versionFrom, versionType);
 
   const versions = yield ProjectVersion.findAll({
     where: { projectId, version: '0.0.0' },
@@ -629,7 +628,6 @@ export function* uploadSource(next) {
   const file = yield axios.post(`${serviceUrl}/api/build/font`, {
     type: 'project',
     id: projectId,
-    version,
   });
   // TODO: 文件路径需要修改
   const filePath = sysPath.join(__dirname, '../../../', file.data.data);
@@ -639,7 +637,7 @@ export function* uploadSource(next) {
     form.append('project', project);
     form.append('path', path);
     form.append('branch', branch);
-    form.append('version', versionTools.n2v(version));
+    form.append('version', version);
     form.append('zip', data);
     const getHeaders = () => new Promise((resolve, reject) => {
       form.getLength((err, length) => {
@@ -655,7 +653,7 @@ export function* uploadSource(next) {
         this.state.respond = '上传图标到 source 成功';
         // 配置项目 log
         this.state.log = {
-          params: { path, version: versionTools.n2v(version) },
+          params: { path, version },
           type: 'SOURCE_PUBLISH',
           loggerId: projectId,
           subscribers: [],
