@@ -11,7 +11,7 @@ import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 import config from '../../config';
 
-const { infoUrl, versionUrl, sourceUrl } = config.source;
+const { infoUrl, versionUrl, sourceUrl, support } = config.source;
 const { serviceUrl } = config.login;
 
 function* listProjects(user) {
@@ -137,6 +137,7 @@ export function* getOneProject(next) {
   result.isOwner = project.owner === userId;
   delete result.owner;
 
+  if (support) result.isSupportSource = true;
   this.state.respond = result;
   yield next;
 }
@@ -625,12 +626,13 @@ export function* uploadSource(next) {
   const user = yield User.findOne({ where: { id: userId } });
   const form = new FormData();
   // 获取字体文件
-  const file = yield axios.post(`${serviceUrl}/api/build/font`, {
+  const file = yield axios.post(`${serviceUrl}/api/download/font`, {
     type: 'project',
     id: projectId,
   });
   // TODO: 文件路径需要修改
-  const filePath = sysPath.join(__dirname, '../../../', file.data.data);
+  const { fontDest } = file.data && file.data.data;
+  const filePath = sysPath.join(__dirname, '../../../', fontDest);
   if (file.data && file.data.res && fs.existsSync(filePath)) {
     const data = fs.createReadStream(filePath);
     form.append('username', user.name);

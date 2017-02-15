@@ -2,7 +2,6 @@ import Router from 'koa-router';
 import { getOne, list, listWithoutIcons } from '../modules/repository';
 import { getById, getByCondition, getIconInfo } from '../modules/icon';
 import { downloadFont, downloadSingleIcon } from '../modules/download';
-import { buildFont } from '../modules/source';
 import {
   getAllPublicProjects,
   getProjectVersion,
@@ -25,7 +24,6 @@ general.get('/projects/:projectId', getOneProject);
 general.get('/projects/:projectId/version/:version', getOneProject);
 general.post('/download/font', downloadFont);
 general.post('/download/icon/:type', downloadSingleIcon);
-general.post('/build/font', buildFont);
 
 general.get('/icons/:iconId', getIconInfo);
 general.post('/login', getUserInfo);

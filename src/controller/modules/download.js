@@ -120,6 +120,9 @@ export function* downloadFont(next) {
     });
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
   }
-  this.state.respond = `${foldName}.zip`;
+  this.state.respond = {
+    foldName: `${foldName}.zip`,
+    fontDest: `${fontDest}.zip`,
+  };
   yield next;
 }

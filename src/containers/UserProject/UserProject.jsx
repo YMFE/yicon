@@ -303,7 +303,8 @@ class UserProject extends Component {
       .post('/api/download/font', { type: 'project', id })
       .then(({ data }) => {
         if (data.res) {
-          window.location.href = `/download/${data.data}`;
+          const { foldName } = data.data;
+          window.location.href = `/download/${foldName}`;
         }
       });
   }
@@ -359,7 +360,7 @@ class UserProject extends Component {
         this.sourcePath = val && val.source;
         this.compareVersion((ret) => {
           const { deleted, added } = ret.payload.data;
-          const v = val && val.version && val.version.name;
+          const v = val && val.version;
           const sourceNum = versionTools.v2n(v);
           const platformNum = versionTools.v2n(this.highestVersion);
           if (sourceNum && platformNum && sourceNum === platformNum
@@ -386,7 +387,7 @@ class UserProject extends Component {
       // 指定升级到的版本
       version: this.nextSourceVersion,
     }).then(() => {
-      // TODO: 上传字体
+      // 上传字体
       this.props.fetchAllVersions(id);
       this.props.uploadIconToSource(id, {
         project: name,
@@ -522,6 +523,7 @@ class UserProject extends Component {
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
     const owner = current.projectOwner || { name: '' };
+    const { isSupportSource } = current;
     return (
       <div className="UserProject">
         <SubTitle tit="我的项目">
@@ -571,8 +573,14 @@ class UserProject extends Component {
                   >
                     管理项目成员
                   </span>
-                  <span onClick={() => { this.shiftSetPath(true); }}>配置路径</span>
-                  <span onClick={() => { this.shiftUploadSource(true); }}>上传图标</span>
+                  {isSupportSource ?
+                    <span onClick={() => { this.shiftSetPath(true); }}>配置路径</span>
+                  : null
+                  }
+                  {isSupportSource ?
+                    <span onClick={() => { this.shiftUploadSource(true); }}>上传图标</span>
+                  : null
+                  }
                   <span
                     onClick={this.adjustBaseline}
                     title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"
