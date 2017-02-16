@@ -13,6 +13,7 @@ import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -117,6 +118,7 @@ class UserProject extends Component {
       isUploadSuccess: false,
       iconStr: '',
       generateVersion: 'revision',
+      isShowLoading: false,
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -347,6 +349,8 @@ class UserProject extends Component {
     }
     this.props.setSourcePath(data).then(result => {
       if (result.payload && result.payload.res) {
+        const id = this.props.currentUserProjectInfo.id;
+        this.props.getUserProjectInfo(id);
         this.shiftSetPath();
       }
     });
@@ -388,6 +392,7 @@ class UserProject extends Component {
 
   @autobind
   uploadAndGenerateVersion() {
+    this.setState({ isShowLoading: true });
     // 生成(指定)版本
     const { id, name, source } = this.props.currentUserProjectInfo;
     this.props.generateVersion({
@@ -395,22 +400,28 @@ class UserProject extends Component {
       versionType: this.state.generateVersion,
       // 指定升级到的版本
       version: this.nextSourceVersion,
-    }).then(() => {
+    })
+    .then(() => {
       // 上传字体
       this.props.fetchAllVersions(id);
-      this.props.uploadIconToSource(id, {
+      return this.props.uploadIconToSource(id, {
         project: name,
         path: decodeURIComponent(source),
         branch: 'master',
         version: this.nextSourceVersion,
-      }).then((val) => {
-        const { res, data } = val.payload;
-        if (res && data) {
-          this.shiftUploadSource();
-          this.shiftUploadSuccess(true);
-          this.setState({ iconStr: data });
-        }
       });
+    })
+    .then((val) => {
+      const { res, data } = val.payload;
+      if (res && data) {
+        this.shiftUploadSource();
+        this.shiftUploadSuccess(true);
+        this.setState({ iconStr: data });
+      }
+      this.setState({ isShowLoading: false });
+    })
+    .catch(() => {
+      this.setState({ isShowLoading: false });
     });
     // 关闭dialog
     this.shiftUploadSource();
@@ -444,6 +455,14 @@ class UserProject extends Component {
   renderDialogList() {
     const current = this.props.currentUserProjectInfo;
     let dialogList = null;
+    const url = this.state.iconStr;
+    const template = `@font-face {
+  font-family: 'iconfont';
+  src: url('${url}.eot'); /* IE9*/
+  url('${url}.woff') format('woff'), /* chrome、firefox */
+  url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
+}`;
     this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
     this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
     if (current.name) {
@@ -534,7 +553,7 @@ class UserProject extends Component {
           onOk={() => { this.shiftUploadSuccess(); }}
           onCancel={() => { this.shiftUploadSuccess(); }}
         >
-          <pre>{this.state.iconStr}</pre>
+          <pre>{template}</pre>
         </Dialog>,
       ];
     }
@@ -651,6 +670,7 @@ class UserProject extends Component {
           </Main>
         </Content>
         {dialogList}
+        <Loading visible={this.state.isShowLoading} />
       </div>
     );
   }

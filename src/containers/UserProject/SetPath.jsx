@@ -61,10 +61,10 @@ class SetPath extends Component {
               </div>
             </li>
             <li className="field tips">
-              <p>提示：例如在 gitlab 中的项目名称为 <code>finance</code>，字体文件的路径为 <code>score/font</code>，请填写
-                <code>finance/score/font</code></p>。
-              <p>我们会在此基础上按照版本号创建自路径，例如生成的 1.0.3 版本字体位置将会是
-                <code>finance/score/font/1.0.3/fontname.ttf</code></p>。
+              <p><strong>提示：</strong>例如在 gitlab 中的项目名称为 <code>finance</code>
+                ，字体文件的路径为 <code>score/font</code>，请填写 <code>finance/score/font</code>。</p>
+              <p>我们会在此基础上按照版本号创建自路径，例如生成的
+                1.0.3 版本字体位置将会是 <code>finance/score/font/1.0.3/fontname.ttf</code>。</p>
             </li>
           </ul>
         </form>

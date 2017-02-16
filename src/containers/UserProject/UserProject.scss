@@ -67,7 +67,22 @@
     line-height: 1,
   }
 }
-pre {
+
+.tips {
+  width: 500px;
+  p {
+    strong {
+      font-weight: bold;
+    }
+    code {
+      color: #666;
+    }
+    font-size: 12px;
+    color: #9e9e9e;
+    line-height: 1;
+  }
+}
+pre, code {
   overflow: scroll;
   font-family: monaco,menlo,consolas,courier new,courier,monospace;
 }
