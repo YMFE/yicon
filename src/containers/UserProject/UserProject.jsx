@@ -371,7 +371,7 @@ class UserProject extends Component {
           const platformNum = versionTools.v2n(this.highestVersion);
           if (sourceNum && platformNum && sourceNum === platformNum
           && !deleted.length && !added.length) {
-            Message.error('项目图标已是最新版，请新增或删除图标后再生成版本和上传！');
+            Message.error('线上最新版项目图标与当前项目图标一致，无需进行图标同步');
             return;
           }
           this.sourceVersion = sourceNum > platformNum ? v : this.highestVersion;
@@ -619,11 +619,11 @@ class UserProject extends Component {
                     管理项目成员
                   </span>
                   {isSupportSource ?
-                    <span onClick={() => { this.shiftSetPath(true); }}>配置路径</span>
+                    <span onClick={() => { this.shiftSetPath(true); }}>配置source路径</span>
                   : null
                   }
                   {isSupportSource ?
-                    <span onClick={() => { this.shiftUploadSource(true); }}>上传图标</span>
+                    <span onClick={() => { this.shiftUploadSource(true); }}>同步source</span>
                   : null
                   }
                   <span
