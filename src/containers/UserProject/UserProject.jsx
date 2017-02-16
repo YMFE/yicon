@@ -13,6 +13,7 @@ import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -117,6 +118,7 @@ class UserProject extends Component {
       isUploadSuccess: false,
       iconStr: '',
       generateVersion: 'revision',
+      isShowLoading: false,
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -390,7 +392,7 @@ class UserProject extends Component {
 
   @autobind
   uploadAndGenerateVersion() {
-    this.setState({ showLoading: true });
+    this.setState({ isShowLoading: true });
     // 生成(指定)版本
     const { id, name, source } = this.props.currentUserProjectInfo;
     this.props.generateVersion({
@@ -416,10 +418,10 @@ class UserProject extends Component {
         this.shiftUploadSuccess(true);
         this.setState({ iconStr: data });
       }
-      this.setState({ showLoading: false });
+      this.setState({ isShowLoading: false });
     })
     .catch(() => {
-      this.setState({ showLoading: false });
+      this.setState({ isShowLoading: false });
     });
     // 关闭dialog
     this.shiftUploadSource();
@@ -668,6 +670,7 @@ class UserProject extends Component {
           </Main>
         </Content>
         {dialogList}
+        <Loading visible={this.state.isShowLoading} />
       </div>
     );
   }
