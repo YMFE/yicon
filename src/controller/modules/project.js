@@ -2,7 +2,6 @@ import invariant from 'invariant';
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
-import sysPath from 'path';
 
 import { PROJECT_NAME } from '../../constants/validate';
 import { User, Project, UserProject, ProjectVersion } from '../../model';
@@ -638,10 +637,9 @@ export function* uploadSource(next) {
   });
   // TODO: 文件路径需要修改
   const { fontDest } = file.data && file.data.data;
-  const filePath = sysPath.join(__dirname, '../../../', fontDest);
   let result = {};
-  if (file.data && file.data.res && fs.existsSync(filePath)) {
-    const data = fs.createReadStream(filePath);
+  if (file.data && file.data.res && fs.existsSync(fontDest)) {
+    const data = fs.createReadStream(fontDest);
     const sourceProjectName = path.split('/')[0] || project;
     form.append('username', user.name);
     form.append('project', sourceProjectName);
