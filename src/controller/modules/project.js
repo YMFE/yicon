@@ -611,10 +611,11 @@ export function* getSourceVersion(next) {
   invariant(project.source, '上传图标到 source 前请先配置路径信息');
   const path = decodeURIComponent(project.source);
   const sourceProjectName = path.split('/')[0] || project.name;
+  const sourcePath = path.split('/').slice(1).join('/') || '/';
   const data = yield axios.get(simpleParse(versionUrl, {
     project: sourceProjectName,
     branch: 'master',
-    path: encodeURIComponent(path.split('/').slice(1).join('/')),
+    path: encodeURIComponent(sourcePath),
   }));
   const res = { version: '0.0.0', ...project };
   if (data.data && data.data.ret) {
@@ -638,12 +639,13 @@ export function* uploadSource(next) {
   // TODO: 文件路径需要修改
   const { fontDest } = file.data && file.data.data;
   let result = {};
+  const sourcePath = path.split('/').slice(1).join('/') || '/';
   if (file.data && file.data.res && fs.existsSync(fontDest)) {
     const data = fs.createReadStream(fontDest);
     const sourceProjectName = path.split('/')[0] || project;
     form.append('username', user.name);
     form.append('project', sourceProjectName);
-    form.append('path', path.split('/').slice(1).join('/'));
+    form.append('path', sourcePath);
     form.append('branch', branch);
     form.append('version', version);
     form.append('zip', data);
@@ -663,7 +665,7 @@ export function* uploadSource(next) {
     this.state.respond = `${cdn}/${url}${project}`;
     // 配置项目 log
     this.state.log = {
-      params: { path: path.split('/').slice(1).join('/'), version },
+      params: { path: sourcePath, version },
       type: 'SOURCE_PUBLISH',
       loggerId: projectId,
       subscribers: [],
