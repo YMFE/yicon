@@ -133,7 +133,8 @@ export default class Repository extends Component {
       .post('/api/download/font', { type: 'repo', id })
       .then(({ data }) => {
         if (data.res) {
-          window.location.href = `/download/${data.data}`;
+          const { foldName } = data.data;
+          window.location.href = `/download/${foldName}`;
         }
       });
   }

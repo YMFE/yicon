@@ -34,7 +34,8 @@ export function downloadIcon(obj) {
       type: DOWNLOAD_ICONS,
       payload: fetch.post('/download/font', obj).then((response) => {
         if (response.res) {
-          window.location.pathname = `/download/${response.data}`;
+          const { foldName } = response.data;
+          window.location.pathname = `/download/${foldName}`;
         }
       }),
     });

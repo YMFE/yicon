@@ -1,7 +1,8 @@
 const config = require('../../config.json');
+const path = require('path');
 const common = {
   path: {
-    caches: '../caches',
+    caches: path.join(__dirname, '../../caches'),
     font: 'download/font',
     svg: 'download/svg',
     png: 'download/png',

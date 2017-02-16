@@ -98,7 +98,8 @@ export default class Project extends Component {
       .post('/api/download/font', { type: 'project', id })
       .then(({ data }) => {
         if (data.res) {
-          window.location.href = `/download/${data.data}`;
+          const { foldName } = data.data;
+          window.location.href = `/download/${foldName}`;
         }
       });
   }
