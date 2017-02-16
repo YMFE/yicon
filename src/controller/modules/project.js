@@ -196,7 +196,7 @@ export function* generatorNewVersion(next) {
   });
   const baseVersion = versions.map(v => ({ iconId: v.iconId }));
   const isEqual = JSON.stringify(baseVersion) === JSON.stringify(currentHighestVersion);
-  invariant(!isEqual || versionFrom === 0, '当前版本与最高版本一致，无需重新生成版本');
+  invariant(!isEqual || versionFrom === 0 || version, '当前版本与最高版本一致，无需重新生成版本');
 
   const rawData = versions.map(v => ({
     ...v.get({ plain: true }), version: versionTo,
@@ -579,21 +579,25 @@ export function* searchProjects(next) {
 
 // 配置项目 source 路径
 export function* addSourcePath(next) {
-  const { projectId } = this.param;
+  const { projectId, path } = this.param;
   const { userId } = this.state.user;
   const project = yield Project.findOne({ where: { id: projectId } });
   invariant(project, `未找到 id 为 ${projectId} 的项目`);
   const user = yield User.findOne({ where: { id: userId } });
-  const result = yield axios.get(simpleParse(infoUrl, { project: project.name, user: user.name }));
+  const sourceProjectName = path.split('/')[0] || project.name;
+  const result = yield axios.get(simpleParse(infoUrl, {
+    project: sourceProjectName,
+    user: user.name,
+  }));
   const resultData = result.data || {};
   invariant(typeof resultData !== 'string', 'source服务异常');
   invariant(resultData.ret, resultData.data);
   // 向数据库中插入 source 路径配置信息
   // 去掉首尾（连续）的 "/" 并在末尾自动加上一个 "/"
-  let path = '';
-  path = this.param && `${this.param.path.replace(/(^\/*)|(\/*$)/g, '')}/`;
+  let _path = '';
+  _path = this.param && `${path.replace(/(^\/*)|(\/*$)/g, '')}/`;
   const data = yield Project.update(
-    { source: encodeURIComponent(path) },
+    { source: encodeURIComponent(_path) },
     { where: { id: projectId } }
   );
   invariant(data, 'source 路径配置失败');
@@ -606,12 +610,14 @@ export function* getSourceVersion(next) {
   const { projectId } = this.param;
   const project = yield Project.findOne({ where: { id: projectId }, raw: true });
   invariant(project.source, '上传图标到 source 前请先配置路径信息');
+  const path = decodeURIComponent(project.source);
+  const sourceProjectName = path.split('/')[0] || project.name;
   const data = yield axios.get(simpleParse(versionUrl, {
-    project: project.name,
+    project: sourceProjectName,
     branch: 'master',
-    path: encodeURIComponent(project.source),
+    path: encodeURIComponent(path.split('/').slice(1).join('/')),
   }));
-  const res = { version: { name: '0.0.0' }, ...project };
+  const res = { version: '0.0.0', ...project };
   if (data.data && data.data.ret) {
     res.version = data.data.data && data.data.data.version;
   }
@@ -633,11 +639,13 @@ export function* uploadSource(next) {
   // TODO: 文件路径需要修改
   const { fontDest } = file.data && file.data.data;
   const filePath = sysPath.join(__dirname, '../../../', fontDest);
+  let result = {};
   if (file.data && file.data.res && fs.existsSync(filePath)) {
     const data = fs.createReadStream(filePath);
+    const sourceProjectName = path.split('/')[0] || project;
     form.append('username', user.name);
-    form.append('project', project);
-    form.append('path', path);
+    form.append('project', sourceProjectName);
+    form.append('path', path.split('/').slice(1).join('/'));
     form.append('branch', branch);
     form.append('version', version);
     form.append('zip', data);
@@ -650,23 +658,26 @@ export function* uploadSource(next) {
         resolve(headers);
       });
     });
-    getHeaders().then(headers => axios.post(sourceUrl, form, { headers })).then(res => {
-      if (res.ret) {
-        this.state.respond = '上传图标到 source 成功';
-        // 配置项目 log
-        this.state.log = {
-          params: { path, version },
-          type: 'SOURCE_PUBLISH',
-          loggerId: projectId,
-          subscribers: [],
-        };
-      } else {
-        invariant(res.ret, '上传图标到 source 失败');
-      }
-    })
-    .catch(() => {
-      invariant(false, '服务器错误');
-    });
+    result = yield getHeaders().then(headers => axios.post(sourceUrl, form, { headers }));
+  }
+  if (result.data && result.data.ret) {
+    const url = result.data && result.data && result.data.data.sourceUrl;
+    const template = `@font-face {
+  font-family: 'iconfont';
+  src: url('${url}${project}.eot'); /* IE9*/
+  url('${url}${project}.woff') format('woff'), /* chrome、firefox */
+  url('${url}${project}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS*/
+}`;
+    this.state.respond = template;
+    // 配置项目 log
+    this.state.log = {
+      params: { path: path.split('/').slice(1).join('/'), version },
+      type: 'SOURCE_PUBLISH',
+      loggerId: projectId,
+      subscribers: [],
+    };
+  } else {
+    invariant(result.ret, '上传图标到 source 失败');
   }
   yield next;
 }
