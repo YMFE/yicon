@@ -22,6 +22,8 @@ import {
   FETCH_HISTORY_PROJECT,
   SET_ADJUST_BASELINE,
   SET_SOURCE_PATH,
+  GET_PATH_VERSION,
+  UPLOAD_ICON_SOURCE,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -130,6 +132,7 @@ export function generateVersion(project) {
     type: POST_GENERATE_VERSION,
     payload: fetch.post(`/user/projects/${project.id}/update`, {
       versionType: project.versionType,
+      version: project.version || '',
     }),
   };
 }
@@ -214,5 +217,19 @@ export function setSourcePath(project) {
   return {
     type: SET_SOURCE_PATH,
     payload: fetch.post(`/user/projects/${project.id}/source`, { path: project.sourcePath }),
+  };
+}
+
+export function getPathAndVersion(id) {
+  return {
+    type: GET_PATH_VERSION,
+    payload: fetch.get(`/user/projects/${id}/source/version`),
+  };
+}
+
+export function uploadIconToSource(id, data) {
+  return {
+    type: UPLOAD_ICON_SOURCE,
+    payload: fetch.post(`/user/projects/${id}/source/upload`, data),
   };
 }

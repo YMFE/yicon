@@ -3,15 +3,14 @@ import React, { PropTypes } from 'react';
 import Dialog from '../../components/common/Dialog/Index';
 import Icon from '../../components/common/Icon/Icon';
 
-const Download = (props) => {
+const Upload = (props) => {
   const { deleted, added, replaced } = props.comparison;
   return (<Dialog
     confrimText={props.confrimText}
-    comparison={props.comparison}
     onOk={props.onOk}
     onCancel={() => { props.onCancel(); }}
-    title="生成版本并下载字体"
-    visible={props.showDownloadDialog}
+    title="生成版本并上传到 source"
+    visible={props.showUploadDialog}
   >
     <form className="project-form Download">
       <div style={{ display: `${deleted.length ? 'block' : 'none'}` }}>
@@ -90,50 +89,35 @@ const Download = (props) => {
           padding: '10px 0',
         }}
       >
-        <li>
-          <label
-            htmlFor="project-version-revision"
-            onClick={props.onChange}
-          >
-            小版本迭代
-            <input
-              type="radio"
-              value="revision"
-              name="project-version-revision"
-              checked={props.value === 'revision'}
-              onChange={() => {}}
-            />
-          </label>
+        <li onClick={props.onChange}>
+          <label htmlFor="project-version-revision">小版本迭代</label>
+          <input
+            type="radio"
+            value="revision"
+            name="project-version-revision"
+            checked={props.value === 'revision'}
+            onChange={() => {}}
+          />
         </li>
-        <li>
-          <label
-            htmlFor="project-version-minor"
-            onClick={props.onChange}
-          >
-            较少变化
-            <input
-              type="radio"
-              value="minor"
-              name="project-version-minor"
-              checked={props.value === 'minor'}
-              onChange={() => {}}
-            />
-          </label>
+        <li onClick={props.onChange}>
+          <label htmlFor="project-version-minor">较少变化</label>
+          <input
+            type="radio"
+            value="minor"
+            name="project-version-minor"
+            checked={props.value === 'minor'}
+            onChange={() => {}}
+          />
         </li>
-        <li>
-          <label
-            htmlFor="project-version-major"
-            onClick={props.onChange}
-          >
-            重大变更
-            <input
-              type="radio"
-              value="major"
-              name="project-version-major"
-              checked={props.value === 'major'}
-              onChange={() => {}}
-            />
-          </label>
+        <li onClick={props.onChange}>
+          <label htmlFor="project-version-major">重大变更</label>
+          <input
+            type="radio"
+            value="major"
+            name="project-version-major"
+            checked={props.value === 'major'}
+            onChange={() => {}}
+          />
         </li>
       </ul>
       <ul>
@@ -144,10 +128,10 @@ const Download = (props) => {
   </Dialog>);
 };
 
-Download.propTypes = {
+Upload.propTypes = {
   onChange: PropTypes.func,
   confrimText: PropTypes.string,
-  showDownloadDialog: PropTypes.bool,
+  showUploadDialog: PropTypes.bool,
   currenthighestVersion: PropTypes.string,
   nextVersion: PropTypes.string,
   comparison: PropTypes.object,
@@ -159,4 +143,4 @@ Download.propTypes = {
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
 };
-export default Download;
+export default Upload;

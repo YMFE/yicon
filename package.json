@@ -25,7 +25,7 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "BABEL_ENV": "development",
-        "PORT": 3000
+        "PORT": 8080
       }
     },
     "start:dev": {
@@ -34,7 +34,7 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "BABEL_ENV": "development",
-        "PORT": 3000
+        "PORT": 8080
       }
     },
     "start:prd": {
