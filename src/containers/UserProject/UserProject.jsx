@@ -388,6 +388,7 @@ class UserProject extends Component {
 
   @autobind
   uploadAndGenerateVersion() {
+    this.setState({ showLoading: true });
     // 生成(指定)版本
     const { id, name, source } = this.props.currentUserProjectInfo;
     this.props.generateVersion({
@@ -395,22 +396,28 @@ class UserProject extends Component {
       versionType: this.state.generateVersion,
       // 指定升级到的版本
       version: this.nextSourceVersion,
-    }).then(() => {
+    })
+    .then(() => {
       // 上传字体
       this.props.fetchAllVersions(id);
-      this.props.uploadIconToSource(id, {
+      return this.props.uploadIconToSource(id, {
         project: name,
         path: decodeURIComponent(source),
         branch: 'master',
         version: this.nextSourceVersion,
-      }).then((val) => {
-        const { res, data } = val.payload;
-        if (res && data) {
-          this.shiftUploadSource();
-          this.shiftUploadSuccess(true);
-          this.setState({ iconStr: data });
-        }
       });
+    })
+    .then((val) => {
+      const { res, data } = val.payload;
+      if (res && data) {
+        this.shiftUploadSource();
+        this.shiftUploadSuccess(true);
+        this.setState({ iconStr: data });
+      }
+      this.setState({ showLoading: false });
+    })
+    .catch(() => {
+      this.setState({ showLoading: false });
     });
     // 关闭dialog
     this.shiftUploadSource();
