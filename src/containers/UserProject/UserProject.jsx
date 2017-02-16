@@ -114,6 +114,8 @@ class UserProject extends Component {
       showUploadDialog: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
+      isUploadSuccess: false,
+      iconStr: '',
       generateVersion: 'revision',
     };
     this.highestVersion = '0.0.0';
@@ -378,6 +380,13 @@ class UserProject extends Component {
   }
 
   @autobind
+  shiftUploadSuccess(isShow = false) {
+    this.setState({
+      isUploadSuccess: isShow,
+    });
+  }
+
+  @autobind
   uploadAndGenerateVersion() {
     // 生成(指定)版本
     const { id, name, source } = this.props.currentUserProjectInfo;
@@ -394,6 +403,13 @@ class UserProject extends Component {
         path: decodeURIComponent(source),
         branch: 'master',
         version: this.nextSourceVersion,
+      }).then((val) => {
+        const { res, data } = val.payload;
+        if (res && data) {
+          this.shiftUploadSource();
+          this.shiftUploadSuccess(true);
+          this.setState({ iconStr: data });
+        }
       });
     });
     // 关闭dialog
@@ -467,7 +483,7 @@ class UserProject extends Component {
         <SetPath
           key={3}
           projectName={current.name}
-          sourcePath={decodeURIComponent(current.source)}
+          sourcePath={decodeURIComponent(current.source || '')}
           id={current.id}
           onOk={this.updateSourcePath}
           onCancel={this.shiftSetPath}
@@ -509,6 +525,16 @@ class UserProject extends Component {
           getShow={this.dialogUpdateShow}
         >
           <DownloadDialog />
+        </Dialog>,
+        <Dialog
+          key={7}
+          title="查看在线链接"
+          visible={this.state.isUploadSuccess}
+          getShow={this.shiftUploadSuccess}
+          onOk={() => { this.shiftUploadSuccess(); }}
+          onCancel={() => { this.shiftUploadSuccess(); }}
+        >
+          <pre>{this.state.iconStr}</pre>
         </Dialog>,
       ];
     }
