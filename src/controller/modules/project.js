@@ -11,7 +11,7 @@ import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 import config from '../../config';
 
-const { infoUrl, versionUrl, sourceUrl, support } = config.source;
+const { infoUrl, versionUrl, sourceUrl, support, cdn } = config.source;
 const { serviceUrl } = config.login;
 
 function* listProjects(user) {
@@ -662,13 +662,7 @@ export function* uploadSource(next) {
   }
   if (result.data && result.data.ret) {
     const url = result.data && result.data && result.data.data.sourceUrl;
-    const template = `@font-face {
-  font-family: 'iconfont';
-  src: url('${url}${project}.eot'); /* IE9*/
-  url('${url}${project}.woff') format('woff'), /* chrome、firefox */
-  url('${url}${project}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS*/
-}`;
-    this.state.respond = template;
+    this.state.respond = `${cdn}/${url}${project}`;
     // 配置项目 log
     this.state.log = {
       params: { path: path.split('/').slice(1).join('/'), version },

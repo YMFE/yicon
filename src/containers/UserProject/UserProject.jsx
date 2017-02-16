@@ -347,6 +347,8 @@ class UserProject extends Component {
     }
     this.props.setSourcePath(data).then(result => {
       if (result.payload && result.payload.res) {
+        const id = this.props.currentUserProjectInfo.id;
+        this.props.getUserProjectInfo(id);
         this.shiftSetPath();
       }
     });
@@ -451,6 +453,14 @@ class UserProject extends Component {
   renderDialogList() {
     const current = this.props.currentUserProjectInfo;
     let dialogList = null;
+    const url = this.state.iconStr;
+    const template = `@font-face {
+  font-family: 'iconfont';
+  src: url('${url}.eot'); /* IE9*/
+  url('${url}.woff') format('woff'), /* chrome、firefox */
+  url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
+}`;
     this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
     this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
     if (current.name) {
@@ -541,7 +551,7 @@ class UserProject extends Component {
           onOk={() => { this.shiftUploadSuccess(); }}
           onCancel={() => { this.shiftUploadSuccess(); }}
         >
-          <pre>{this.state.iconStr}</pre>
+          <pre>{template}</pre>
         </Dialog>,
       ];
     }
