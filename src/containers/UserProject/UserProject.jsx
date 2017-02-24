@@ -565,6 +565,7 @@ class UserProject extends Component {
     const current = this.props.currentUserProjectInfo;
     const id = this.props.projectId;
     const versions = this.props.projectInfo.versions;
+    const len = versions && versions.length;
     const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
     const owner = current.projectOwner || { name: '' };
@@ -598,6 +599,7 @@ class UserProject extends Component {
               <header className="clearfix">
                 <h3>{current.name}</h3>
                 <div className="powerby">负责人：{owner.name}</div>
+                <div className="version">版本：{versions[len - 1]}</div>
               </header>
               {current.isOwner ?
                 <menu className="options">
