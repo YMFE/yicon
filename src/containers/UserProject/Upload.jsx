@@ -124,6 +124,11 @@ const Upload = (props) => {
         <li>当前最高版本为：{props.currenthighestVersion}</li>
         <li>生成的新版本为：<i style={{ fontWeight: 600 }}>{props.nextVersion}</i></li>
       </ul>
+      <div className="icon-title" style={{ marginTop: 10 }}>
+        <i className="iconfont">&#xf0dc;</i>
+        <span> 上传路径：</span>
+      </div>
+      //s.qunarzz.com/{props.sourcePath}
     </form>
   </Dialog>);
 };
@@ -134,6 +139,7 @@ Upload.propTypes = {
   showUploadDialog: PropTypes.bool,
   currenthighestVersion: PropTypes.string,
   nextVersion: PropTypes.string,
+  sourcePath: PropTypes.string,
   comparison: PropTypes.object,
   value: PropTypes.oneOf([
     'revision',

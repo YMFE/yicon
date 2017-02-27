@@ -524,6 +524,7 @@ class UserProject extends Component {
           value={this.state.generateVersion}
           confrimText={'生成版本并上传'}
           showUploadDialog={this.state.showUploadDialog}
+          sourcePath={decodeURIComponent(current.source || '')}
         />,
         <Download
           key={5}
@@ -624,10 +625,6 @@ class UserProject extends Component {
                     <span onClick={() => { this.shiftSetPath(true); }}>配置source路径</span>
                   : null
                   }
-                  {isSupportSource ?
-                    <span onClick={() => { this.shiftUploadSource(true); }}>同步source</span>
-                  : null
-                  }
                   <span
                     onClick={this.adjustBaseline}
                     title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"
@@ -650,6 +647,15 @@ class UserProject extends Component {
                   <i className="iconfont">&#xf50b;</i>
                   下载全部图标
                 </button>
+                {isSupportSource ?
+                  <button
+                    className="options-btns btns-default"
+                    onClick={() => { this.shiftUploadSource(true); }}
+                  >
+                    同步source
+                  </button>
+                : null
+                }
                 <Link
                   to={`/projects/${id}/logs`}
                   className="options-btns btns-default"

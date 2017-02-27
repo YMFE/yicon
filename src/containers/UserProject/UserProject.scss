@@ -56,6 +56,8 @@
     .tool{
       .options-btns{
         margin-right: 10px;
+        box-sizing: border-box;
+        vertical-align: middle;
       }
       .btn-history-hidden{
         display: none;

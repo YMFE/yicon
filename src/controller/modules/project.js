@@ -608,7 +608,7 @@ export function* addSourcePath(next) {
 export function* getSourceVersion(next) {
   const { projectId } = this.param;
   const project = yield Project.findOne({ where: { id: projectId }, raw: true });
-  invariant(project.source, '上传图标到 source 前请先配置路径信息');
+  invariant(project.source, '上传图标到 source 前请项目负责人先配置路径信息');
   const path = decodeURIComponent(project.source);
   const sourceProjectName = path.split('/')[0] || project.name;
   const sourcePath = path.split('/').slice(1).join('/') || '/';
