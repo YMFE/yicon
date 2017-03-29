@@ -118,7 +118,7 @@ export function analyzeLog(type, logString) {
 }
 
 export function getPageTitle(components) {
-  let title = 'yicon - 矢量图标字体库';
+  let title = '矢量图标字体库';
   components.some(c => {
     if (typeof c.appPageTitle === 'string') {
       title = c.appPageTitle;

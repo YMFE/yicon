@@ -1,0 +1,32 @@
+.ldapauth {
+  .login-area {
+    padding: 100px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .icon {
+    color: #dfdfdf;
+    font-size: 80px;
+    padding-right: 20px;
+  }
+
+  .item-input {
+    padding-bottom: 10px;
+  }
+
+  .item-btn {
+    text-align: center;
+  }
+
+  .textbox {
+    margin-left: 0;
+  }
+
+  .button {
+    display: block;
+    padding: 0;
+    width: 100%;
+  }
+}

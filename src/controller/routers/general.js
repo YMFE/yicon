@@ -9,6 +9,7 @@ import {
 } from '../modules/project';
 import { clearUserInfo, validateAuth } from '../modules/user';
 import { getUserInfo } from '../modules/login';
+import { getLdapAuth } from '../modules/ldapauth';
 // import { pagination } from './middlewares';
 
 const general = new Router();
@@ -27,6 +28,7 @@ general.post('/download/icon/:type', downloadSingleIcon);
 
 general.get('/icons/:iconId', getIconInfo);
 general.post('/login', getUserInfo);
+general.post('/ldapauth', getLdapAuth);
 general.get('/logout', clearUserInfo);
 general.post('/validate/:type', validateAuth);
 

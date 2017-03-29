@@ -3,6 +3,7 @@ import { autobind } from 'core-decorators';
 import './style.scss';
 
 const defaultProps = {
+  type: 'text',
   regExp: '',
   errMsg: '',
   defaultValue: '',
@@ -15,6 +16,7 @@ const defaultProps = {
 };
 
 const propTypes = {
+  type: PropTypes.string,
   regExp: PropTypes.any,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
@@ -106,7 +108,7 @@ export default class Input extends Component {
   }
 
   render() {
-    const { errMsg, extraClass, placeholder, disabled } = this.props;
+    const { type, errMsg, extraClass, placeholder, disabled } = this.props;
     const { error, value } = this.state;
     const classNames = error ? 'input-wrap info-error ' : 'input-wrap';
     return (
@@ -114,7 +116,7 @@ export default class Input extends Component {
         <input
           disabled={disabled}
           value={value || ''}
-          type="text"
+          type={type}
           className="input"
           placeholder={placeholder}
           onChange={evt => this.validate(evt.target.value)}

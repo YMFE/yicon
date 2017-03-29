@@ -453,7 +453,7 @@ export function* addProject(next) {
   const { name, owner } = this.param;
   invariant(
     PROJECT_NAME.reg.test(name),
-    `项目名称长度为 1-30，只能有英文、数字和下划线，您输入的是 ${name}`
+    `项目名称长度为 1-30，只能有英文、数字、连字符和下划线，您输入的是 ${name}`
   );
   invariant(owner > 0, `管理员 id 期望输入数字，您输入的是 ${owner}`);
   const projectInfo = yield Project.findOne({ where: { name } });

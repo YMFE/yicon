@@ -36,6 +36,10 @@ export default class Transition extends Component {
         this.backToPage('/upload');
         break;
       }
+      case 'ldapauth-failed': {
+        this.backToPage('/ldapauth');
+        break;
+      }
       default: {
         break;
       }
@@ -139,6 +143,16 @@ export default class Transition extends Component {
       </div>
     );
 
+    const ldapAuthFailedHTML = (
+      <div>
+        <div className="no-auth-logo"></div>
+        <div className="no-auth-tips">
+          <p>登录认证失败</p>
+          <p>{this.state.second} 秒之后跳转至登录页</p>
+        </div>
+      </div>
+    );
+
     return (
       <div>
         <div className="no-auth">
@@ -147,6 +161,7 @@ export default class Transition extends Component {
           {type === 'repl-icon' && replIconHTML}
           {type === 'audit-icon' && auditIconHTML}
           {type === 'upload-icon' && uploadIconHTML}
+          {type === 'ldapauth-failed' && ldapAuthFailedHTML}
         </div>
       </div>
     );
