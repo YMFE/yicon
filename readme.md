@@ -4,7 +4,7 @@
 
 YIcon 是一个集图标展示、上传、使用于一身的图标平台，目的为采用 iconfont 字体替换项目中图片的使用，以达到缩减体积、风格统一、提高开发效率等目的。不同的部门可以申请在平台上创建大库，业务线可以选择需要的图标添加到购物车，保存成项目之后进行维护。它可以方便的将 SVG 图标转换为字体图标，提供给 UI/UE 和前端开发使用。
 
-![flow](http://ued.qunar.com/yicon/images/flow.png)
+![flow](http://wx4.sinaimg.cn/large/c4b5f11bly1fee8koeoouj21kw0l6q9g.jpg)
 
 ## 优势
 
@@ -129,4 +129,3 @@ $ yicon update
 **Tips**
 
 - 更换 Logo，请替换 `src/static/images/qiconbg.png`。
-
