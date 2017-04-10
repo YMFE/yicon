@@ -1,0 +1,188 @@
+.index img[alt=logo] {
+  background-color: #000c15;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.usage img {
+  width: 70%;
+  height: 70%;
+}
+/* homepage */
+.index .ydoc-banner {
+    padding: .8rem 0;
+    text-align: center;
+}
+.index .ydoc-banner-area > h1 {
+    margin-bottom: 20px;
+    font-size: .8rem;
+    font-weight: bold;
+}
+.index .ydoc-banner-area p {
+    width: auto;
+    margin-right: 0;
+}
+.index .ydoc-banner-area a {
+    display: inline-block;
+    margin-top: .2rem;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid;
+    border-radius: 0.05rem;
+    color: #ff503f;
+    font-size: .2rem;
+    font-weight: bold;
+}
+.index .ydoc-banner-area .version {
+    display: block;
+    margin-top: .15rem;
+    color: #ff503f;
+    font-size: .14rem;
+}
+.index .ydoc-banner-area a:hover {
+    text-decoration: none;
+    border-color: #ff503f;
+    background-color: #ff503f;
+    color: #fff;
+}
+@media (min-width: 1200px) {
+    .index .ydoc-banner-area p {
+        padding: 0 1rem;
+        font-size: .28rem;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .index .ydoc-banner-area p {
+        padding: 0 0.6rem;
+        font-size: .25rem;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .index .ydoc-banner-area p {
+        padding: 0 0.3rem;
+        font-size: .21rem;
+    }
+}
+@media (max-width: 767px) {
+    .index .ydoc-banner-area p {
+        padding: 0 0.2rem;
+        font-size: .2rem;
+    }
+}
+.index .markdown-body {
+    text-align: center;
+    padding-bottom: 1rem !important;
+}
+.index .markdown-body > h2 {
+    margin-top: .8rem !important;
+    border: none;
+    font-size: .35rem;
+}
+.index .markdown-body > p {
+    width: 80%;
+    margin: auto;
+    color: #666;
+    font-size: .24rem;
+}
+@media (max-width: 767px) {
+    .index .markdown-body > h2 {
+        font-size: .28rem;
+    }
+    .index .markdown-body > p {
+        font-size: .18rem;
+    }
+}
+.index .markdown-body ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -moz-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+}
+.index .markdown-body ul > li {
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    margin: 20px 10px 0;
+    border: 1px solid #eee;
+    border-radius: 0.05rem;
+    -webkit-background-clip: padding-box !important;
+    -moz-background-clip: padding-box !important;
+    -ms-background-clip: padding-box !important;
+    background-clip: padding-box !important;
+}
+.index .markdown-body ul > li:hover > p:not(:only-child):first-child {
+    margin-top: -198px;
+}
+.index .markdown-body ul p {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -moz-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -moz-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: margin-top 0.3s ease-in;
+    -moz-transition: margin-top 0.3s ease-in;
+    -ms-transition: margin-top 0.3s ease-in;
+    transition: margin-top 0.3s ease-in;
+    margin: 0;
+}
+.index .markdown-body ul p:not(:only-child):last-child {
+    padding: .15rem;
+    background-color: #eee;
+}
+.index .markdown-body ul img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+
+
+
+
+.instructions-con-runner {
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    transform: scale(0.8);
+    left: .33rem;
+}
+
+.instructions-con-info {
+    margin-right: -0.4rem;
+    padding-right: 0;
+}
+
+.instructions-con-runner .instructions-iframe {
+    width: 2.9rem;
+    border: .02rem solid #000;
+    border-radius: .03rem;
+    left: 0.16rem;
+}
