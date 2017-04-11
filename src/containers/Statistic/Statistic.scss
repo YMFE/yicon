@@ -1,14 +1,52 @@
-.code-list{
-  // padding: 10px 0;
-  background-color: #008ed6;
-  border: 1px solid #008ed6;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-around;
-  color: #fff;
-  font-weight: bold;
-  .code-item {
-    height: 32px;
-    line-height: 32px;
+.yicon-statistic {
+  position: relative;
+  &-list {
+    position: absolute;
+    left: -40px;
+    color: #333;
+    .yicon-list-item {
+      height: 46px;
+      line-height: 46px;
+      margin-bottom: 22px;
+    }
+  }
+  &-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+.statistic {
+  .code-list{
+    background-color: #008ed6;
+    border: 1px solid #008ed6;
+    border-radius: 6px;
+    display: flex;
+    justify-content: flex-start;
+    color: #fff;
+    font-weight: bold;
+    .code-item {
+      width: 46px;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 11px;
+      text-align: center;
+    }
+  }
+
+  &.fixed {
+    .global-subtitle {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1;
+      .container {
+        padding-bottom: 6px;
+      }
+    }
+    .yicon-detail-main {
+      margin-top: 130px;
+    }
   }
 }

@@ -106,3 +106,6 @@ export const REPL_UPDATE_ICON = 'REP_UPDATE_ICON';
 
 // ldapAuth
 export const FETCH_LDAPAUTH = 'FETCH_LDAPAUTH';
+
+// statisitc
+export const FETCH_ICON_STATISTIC = 'FETCH_ICON_STATISTIC';

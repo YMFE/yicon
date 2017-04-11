@@ -1,5 +1,5 @@
 // import invariant from 'invariant';
-import { iconStatus, totalIcons } from '../../constants/utils';
+import { iconStatus, startCode, endCode } from '../../constants/utils';
 
 import { Icon } from '../../model';
 
@@ -9,7 +9,7 @@ export function* statistic(next) {
     where: { status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] } },
     order: 'code asc',
   });
-  data.total = totalIcons;
+  data.total = endCode - startCode + 1;
   this.state.respond = data;
   yield next;
 }

@@ -1,0 +1,18 @@
+
+.yicon-statistic-wrapper {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  margin: 0 11px 16px;
+  background-color: #fff;
+  border-radius: 6px;
+  display: inline-block;
+  .statistic-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+  }
+}

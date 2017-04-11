@@ -14,6 +14,7 @@ import workbench from './workbench';
 import replWorkbench from './replWorkbench';
 import audit from './audit';
 import admin from './admin';
+import statistic from './statistic';
 
 import {
   LOGOUT_DESTORY,
@@ -31,6 +32,7 @@ const reducers = combineReducers({
   workbench,
   replWorkbench,
   audit,
+  statistic,
 
   // TODO: 其实没啥用，因为登出的时候直接跳页就行了。。。。
   // 登录用户才使用的信息放到 user 下面

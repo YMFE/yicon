@@ -12,7 +12,8 @@ export const iconStatus = {
   RESOLVED: 20,  // 线上生效图标
 };
 
-export const totalIcons = 6400;
+export const startCode = 0xe000;
+export const endCode = 0xf8ff;
 
 export const iconStateDescription = {
   10: {
