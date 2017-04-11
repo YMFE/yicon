@@ -21,6 +21,7 @@ import {
 } from '../../actions/search.js';
 
 const iconManageList = [
+  { name: '图标统计', href: '/statistic', auth: 'general' },
   { name: '图标工作台', href: '/workbench', auth: 'login' },
   { name: '我的图标项目', href: '/projects', auth: 'login' },
   { name: '图标上传历史', href: '/user/icons', auth: 'login' },

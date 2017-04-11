@@ -1,0 +1,14 @@
+.code-list{
+  // padding: 10px 0;
+  background-color: #008ed6;
+  border: 1px solid #008ed6;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-around;
+  color: #fff;
+  font-weight: bold;
+  .code-item {
+    height: 32px;
+    line-height: 32px;
+  }
+}

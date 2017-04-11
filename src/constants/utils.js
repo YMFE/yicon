@@ -8,8 +8,12 @@ export const iconStatus = {
   PENDING: 10,   // 待审核
   REPLACING: 14, // 待替换
   REPLACED: 15,  // 被替换
+  DISABLED: 18, // 被禁用
   RESOLVED: 20,  // 线上生效图标
 };
+
+export const totalIcons = 6400;
+
 export const iconStateDescription = {
   10: {
     className: 'checking',

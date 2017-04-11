@@ -2,7 +2,8 @@ import './Audit.scss';
 import React, { Component, PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { withRouter } from 'react-router';
-import { connect } from 'react-redux';import {
+import { connect } from 'react-redux';
+import {
   fetchAuditIcons,
   updateAuditIcons,
   auditIcons,

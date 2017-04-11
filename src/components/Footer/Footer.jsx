@@ -4,7 +4,7 @@ import './Footer.scss';
 export default () => (
   <footer>
     <p className="copyright">
-      Powered by MFE,
+      Powered by YMFE,
       Build by YIcon
     </p>
   </footer>

@@ -20,7 +20,7 @@ class Nav extends Component {
   getNavList() {
     const { list, userInfo } = this.props;
     const navList = list.map((item, index) => {
-      if (userInfo.admin || !item.auth ||
+      if (userInfo.admin || !item.auth || item.auth === 'general' ||
         (item.auth === 'login' && userInfo.login) ||
         (item.auth === 'owner' && userInfo.repoAdmin && userInfo.repoAdmin.length)) {
         return (

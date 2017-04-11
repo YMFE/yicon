@@ -24,6 +24,7 @@ import {
   PublicProject,
   Help,
   LdapAuth,
+  Statistic,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -58,6 +59,7 @@ export default store => {
       <Route path="search" component={Search} /> {/* 搜索结果 */}
       <Route path="help" component={Help} /> {/* 帮助中心 */}
       <Route path="ldapauth" component={LdapAuth} /> {/* LDAP登录 */}
+      <Route path="statistic" component={Statistic} /> {/* 图标统计 */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>

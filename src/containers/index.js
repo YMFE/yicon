@@ -23,6 +23,7 @@ import History from './History/History';
 import PublicProject from './PublicProject/PublicProject';
 import Help from './Help/Help';
 import LdapAuth from './LdapAuth/LdapAuth';
+import Statistic from './Statistic/Statistic';
 
 export {
   App,
@@ -50,4 +51,5 @@ export {
   PublicProject,
   Help,
   LdapAuth,
+  Statistic,
 };
