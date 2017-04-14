@@ -600,7 +600,9 @@ class UserProject extends Component {
               <header className="clearfix">
                 <h3>{current.name}</h3>
                 <div className="powerby">负责人：{owner.name}</div>
-                <div className="version">版本：{versions[len - 1]}</div>
+                <div className="version">
+                  {versions.length > 1 ? `版本：${versions[len - 1]}` : ''}
+                </div>
               </header>
               {current.isOwner ?
                 <menu className="options">
