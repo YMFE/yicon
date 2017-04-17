@@ -216,6 +216,7 @@ class IconButton extends Component {
     const { icon, userInfo, download, repoId, toolBtns } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
+    const isUploader = icon.uploader === userInfo.userId;
     const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
 
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
@@ -277,7 +278,7 @@ class IconButton extends Component {
     toolBtns.forEach((btn) => {
       if (btn !== 'edit') {
         tools.push(toolList[btn]);
-      } else if (+status === +3) {
+      } else if (+status === +3 || isUploader) {
         tools.push(toolList[btn]);
       }
     });
