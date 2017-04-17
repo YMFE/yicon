@@ -22,5 +22,14 @@ footer {
     span {
       display: block;
     }
+    a {
+      color: #008ed6;
+      &:hover {
+        color: #009be9;
+      }
+      &:active {
+        color: #008ed6;
+      }
+    }
   }
 }

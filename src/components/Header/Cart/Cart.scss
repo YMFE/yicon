@@ -8,6 +8,23 @@
     $btnHoverColor: #00b7ee;
     $iconColor: #555f6e;
 
+    .nav-car {
+      position: relative;
+      &-count {
+        position: absolute;
+        top: -6px;
+        left: 16px;
+        font-size: 11px;
+        height: 12px;
+        line-height: 12px;
+        background-color: #ff5555;
+        padding: 0 3px;
+        color: #001c4c;
+        font-style: normal;
+        border-radius: 3px;
+      }
+    }
+
     .icon {
       float: left;
       width: 25px;

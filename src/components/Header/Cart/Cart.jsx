@@ -363,7 +363,9 @@ class Cart extends Component {
           <i className="iconfont">&#xf50f;</i>
           {
             iconsInLocalStorage.length > 0 ?
-              <span className="nav-car-count">{iconsInLocalStorage.length}</span> :
+              <span className="nav-car-count">
+                {iconsInLocalStorage.length < 100 ? iconsInLocalStorage.length : '99+'}
+              </span> :
               null
           }
         </span>

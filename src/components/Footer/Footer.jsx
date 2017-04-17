@@ -5,7 +5,7 @@ export default () => (
   <footer>
     <p className="copyright">
       Powered by YMFE,
-      Build by YIcon
+      Build by <a href="https://github.com/YMFE/yicon" target="_blank">YIcon</a>
     </p>
   </footer>
 );
