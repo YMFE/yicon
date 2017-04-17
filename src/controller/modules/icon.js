@@ -65,7 +65,13 @@ export function* getByCondition(next) {
   const len = data.length;
   for (; i < len; i++) {
     data[i].icons = data[i].icons.map(value =>
-      Object.assign({}, { id: value.id, name: value.name, code: value.code, path: value.path }));
+      Object.assign({}, {
+        id: value.id,
+        name: value.name,
+        code: value.code,
+        path: value.path,
+        uploader: value.uploader,
+      }));
   }
   this.state.respond.data = data;
   this.state.respond.totalCount = icons.count;

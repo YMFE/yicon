@@ -32,7 +32,7 @@ function* getRepoByVersion({
 
   invariant(repo, `id 为 ${repoId} 的大库不存在`);
   const icons = yield repo.getIcons({
-    attributes: ['id', 'name', 'code', 'path'],
+    attributes: ['id', 'name', 'code', 'path', 'uploader'],
     where: {
       status: iconStatus.RESOLVED,
       ...(iconIds ? { id: { $in: iconIds } } : null),
