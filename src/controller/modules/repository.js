@@ -136,7 +136,8 @@ export function* addRepo(next) {
       Repo.create({ name, alias, admin }, { transaction })
     .then((_repo) => {
       repo = _repo;
-      return User.update({ actor: 1 }, { where: { id: user.id }, transaction });
+      const actor = user.actor >= 1 ? user.actor : 1;
+      return User.update({ actor }, { where: { id: user.id }, transaction });
     })
   );
 

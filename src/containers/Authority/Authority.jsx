@@ -35,6 +35,7 @@ import './Authority.scss';
     page: state.user.admin.page,
     updateResult: state.user.admin.updateResult,
     suggestList: state.project.memberSuggestList,
+    info: state.user.info,
   }), {
     fetchAllRepo,
     fetchAllProject,
@@ -76,6 +77,7 @@ export default class Authority extends Component {
     project: PropTypes.array,
     manager: PropTypes.array,
     page: PropTypes.object,
+    info: PropTypes.object,
   };
 
   constructor(props) {
@@ -399,7 +401,8 @@ export default class Authority extends Component {
 
   @autobind
   renderManagerItem(item, index) {
-    return this.props.manager.length === 1 ? (
+    const { name } = this.props.info || {};
+    return this.props.manager.length === 1 || item.name === name ? (
       <li data-id={item.id} key={index}>{item.name}</li>
     ) : (
       <li
@@ -408,9 +411,7 @@ export default class Authority extends Component {
         onClick={this.removeSuperManager}
       >
         {item.name}
-        {item.name !== name &&
-          <i className="iconfont pointer" title="删除超管">&#xf077;</i>
-        }
+        <i className="iconfont pointer" title="删除超管">&#xf077;</i>
       </li>
     );
   }
