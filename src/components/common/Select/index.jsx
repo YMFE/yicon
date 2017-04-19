@@ -54,6 +54,7 @@ export default class Select extends Component {
       <RcSelect
         {...this.props}
         placeholder="请选择"
+        dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
         optionLabelProp={optionLabelProp || 'children'}
         notFoundContent={notFoundContent}
       />
