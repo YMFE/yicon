@@ -478,3 +478,19 @@ export function* getSubmittedIcons(next) {
   }
   yield next;
 }
+
+// 更新图标上传用户
+export function* updateIconUploader(next) {
+  const { iconId, uploader } = this.param;
+
+  invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
+  invariant(!isNaN(uploader), `传入的用户 id 不合法，期望是数字，传入的却是 ${uploader}`);
+  const uploaderName = yield User.findOne({
+    where: { id: uploader },
+    attributes: ['name'],
+  });
+  invariant(uploaderName && uploaderName.name, '用户域账号不存在');
+  yield Icon.update({ uploader }, { where: { id: iconId } });
+  this.state.respond = uploaderName;
+  yield next;
+}

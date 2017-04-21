@@ -2,6 +2,7 @@ import isomFetch from 'isom-fetch';
 import {
   FETCH_ICON_DETAIL,
   EDIT_ICON,
+  EDIT_UPLOADER,
   EDIT_ICON_STYLE,
   DOWNLOAD_ICONS,
 } from '../constants/actionTypes';
@@ -19,6 +20,13 @@ export function editIcon(iconId, param) {
   return {
     type: EDIT_ICON,
     payload: fetch.patch(`/user/icons/${iconId}`, param),
+  };
+}
+
+export function editUploader(iconId, param) {
+  return {
+    type: EDIT_UPLOADER,
+    payload: fetch.patch(`/owner/uploader/icon/${iconId}`, param),
   };
 }
 

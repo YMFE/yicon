@@ -6,7 +6,7 @@ const SuggestList = props => {
     suggestList,
     noFoundTip,
     show,
-    top,
+    // top,
     left,
     WRITE_STATE,
   } = props;
@@ -16,7 +16,7 @@ const SuggestList = props => {
     <ul
       className={classList.join(' ')}
       style={{
-        top,
+        // top,
         left,
       }}
     >
