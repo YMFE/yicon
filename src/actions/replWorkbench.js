@@ -31,6 +31,6 @@ export function replUpdateIcon(icon) {
 export function submitReplaceIcon(fromId, toId, replaceIcon) {
   return {
     type: SUBMIT_REPLACE_ICON,
-    payload: fetch.post(`/owner/replacement/icon/${fromId}...${toId}`, replaceIcon),
+    payload: fetch.post(`/user/replacement/icon/${fromId}...${toId}`, replaceIcon),
   };
 }

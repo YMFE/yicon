@@ -179,7 +179,7 @@ export function* replaceIcon(next) {
   const from = yield Icon.findOne({ where: { id: fromId } });
   const to = yield Icon.findOne({ where: { id: toId } });
   const repos = yield from.getRepositories();
-
+  const userInfo = yield User.findOne({ where: { id: userId } });
   invariant(
     from.status === iconStatus.RESOLVED,
     `被替换的图标 ${from.name} 并非审核通过的线上图标`
@@ -197,8 +197,15 @@ export function* replaceIcon(next) {
 
   const fromName = from.name;
   const toName = to.name;
-  const { code, fontClass } = from;
+  const { code, fontClass, uploader } = from;
+  const { admin } = repos[0];
+  const { actor } = userInfo;
   const repoVersion = yield RepoVersion.findOne({ where: { iconId: fromId } });
+
+  invariant(
+    userId === uploader || userId === admin || actor === 2,
+    '当前用户没有权限替换该图标，请上传者、库管或者超管进行替换'
+  );
 
   yield seq.transaction(transaction =>
     to.update({

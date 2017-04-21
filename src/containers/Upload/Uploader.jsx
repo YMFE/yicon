@@ -90,7 +90,7 @@ export default class Uploader extends Component {
       // 这里没有必要触发 reducer，直接使用请求跳转
       if (replacement) {
         axios
-          .post('/api/owner/replacement', formData)
+          .post('/api/user/replacement', formData)
           .then(data => {
             if (data.data.res) {
               const { replaceId } = data.data.data;

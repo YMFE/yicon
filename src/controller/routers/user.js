@@ -24,6 +24,8 @@ import {
   deleteIcons,
   updateIconInfo,
   getUploadedIcons,
+  uploadReplacingIcon,
+  replaceIcon,
 } from '../modules/icon';
 
 import { getUserByName, getUserSessionInfo } from '../modules/user';
@@ -68,5 +70,8 @@ user.get('/unread/notifications', getUnreadCount);
 user.get('/log/projects/:projectId', pagination, getLogList);
 
 user.get('/list', getUserByName);
+
+user.post('/replacement', uploader.single('icon'), uploadReplacingIcon);
+user.post('/replacement/icon/:fromId...:toId', replaceIcon);
 
 export default user;

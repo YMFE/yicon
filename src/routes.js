@@ -70,6 +70,9 @@ export default store => {
         <Route path="projects/:id/comparison" component={VersionComparison} />
         <Route path="projects/:id/history" component={History} />
 
+        <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
+        <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> {/* 替换页面 */}
+
         <Route path="user">
           <Route path="notifications" component={Notification} /> {/* 通知页面 */}
           <Route path="icons" component={Uploaded} />
@@ -77,8 +80,9 @@ export default store => {
 
         {/* 库管用户路由 */}
         <Route onEnter={requireOwner}>
-          <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
-          <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> {/* 替换页面 */}
+          {/* <Route path="replacement" component={Replacement} /> */} {/* 替换页面 */}
+          {/* <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> */}
+          {/* 替换页面 */}
           <Route path="auditing" component={Audit} /> {/* 审核页面 */}
           <Route path="repositories/:id/logs" component={Log} /> {/* 大库日志 */}
         </Route>
