@@ -4,8 +4,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { findDOMNode } from 'react-dom';
 import { autobind } from 'core-decorators';
-import { SubTitle, Content, Menu, Main } from '../../components/';
 import { Link } from 'react-router';
+import ClipboardButton from 'react-clipboard.js';
+import { SubTitle, Content, Menu, Main } from '../../components/';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
 import { replace } from 'react-router-redux';
@@ -548,13 +549,25 @@ class UserProject extends Component {
         </Dialog>,
         <Dialog
           key={7}
-          title="查看在线链接"
+          title="查看在线链接（支持点击内容进行复制）"
           visible={this.state.isUploadSuccess}
           getShow={this.shiftUploadSuccess}
           onOk={() => { this.shiftUploadSuccess(); }}
           onCancel={() => { this.shiftUploadSuccess(); }}
         >
-          <pre>{template}</pre>
+          <ClipboardButton
+            className={"copy-source-addr"}
+            button-title="复制在线链接"
+            data-clipboard-text={template}
+            onSuccess={() => {
+              Message.success('复制成功！');
+            }}
+            onError={() => {
+              Message.error('复制出错了，请稍后重试或手动复制下吧！');
+            }}
+          >
+            <pre>{template}</pre>
+          </ClipboardButton>
         </Dialog>,
       ];
     }

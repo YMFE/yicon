@@ -84,6 +84,11 @@
     line-height: 1;
   }
 }
+.copy-source-addr {
+  max-width: 650px;
+  text-align: left;
+  background-color: #fff;
+}
 pre, code {
   overflow: scroll;
   font-family: monaco,menlo,consolas,courier new,courier,monospace;

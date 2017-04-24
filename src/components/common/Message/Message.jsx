@@ -50,6 +50,7 @@ function notice(content, type, callback) {
 
 export default {
   error: (content, callback) => notice(content, 'error', callback),
+  success: (content, callback) => notice(content, 'success', callback),
   config: ({ top, duration }) => {
     defaultTop = top;
     defaultDuration = duration;
