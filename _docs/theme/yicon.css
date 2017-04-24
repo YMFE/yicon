@@ -4,6 +4,16 @@
   border-radius: 10px;
 }
 
+.index img[alt='便利蜂'] {
+  width: 150px;
+  height: 54px;
+}
+
+.index img[alt='Opera欧朋'] {
+  width: 150px;
+  height: 42px;
+}
+
 .usage img {
   width: 70%;
   height: 70%;

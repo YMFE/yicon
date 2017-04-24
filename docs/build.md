@@ -4,6 +4,10 @@
 
 ## 环境要求
 
+系统要求：
+
+- Linux/Unix
+
 环境要求：
 
 - node 4.x+
@@ -20,7 +24,7 @@ $ sudo npm install -g npm@3 --registry=https://registry.npm.taobao.org
 
 ## 初始安装
 
-使用离线安装的方式，找到我们的压缩包 `yicon-builder.tar.gz`，运行命令：
+运行命令：
 
 ```bash
 $ npm install yicon-builder -g
