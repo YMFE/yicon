@@ -20,7 +20,7 @@ export default seq.define('icons', {
     comment: '图标编码e000-f8ff',
   },
   path: {
-    type: Seq.STRING(7000),
+    type: Seq.STRING(10000),
     allowNull: false,
     comment: 'svg路径信息',
   },
