@@ -81,7 +81,6 @@ export const DELETE_SUPER_MANAGER = 'DELETE_SUPER_MANAGER';
 // icon
 export const FETCH_ICON_DETAIL = 'FETCH_ICON_DETAIL';
 export const EDIT_ICON = 'EDIT_ICON';
-export const EDIT_UPLOADER = 'EDIT_UPLOADER';
 export const EDIT_ICON_STYLE = 'EDIT_ICON_STYLE';
 export const UPLOAD_ICON = 'UPLOAD_ICON';
 export const DOWNLOAD_ICONS = 'DOWNLOAD_ICONS';

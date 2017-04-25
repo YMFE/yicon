@@ -1,19 +1,15 @@
 import './DownloadDialog.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { editIcon, editUploader, editIconStyle } from '../../actions/icon';
+import { editIcon, editIconStyle } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
 import { ICON_NAME, COLOR } from '../../constants/validate';
-import Message from '../common/Message/Message';
 import Input from '../common/Input/Index.jsx';
-import SearchList from '../SearchList/SearchList';
 import SetTag from '../common/SetTag/SetTag.jsx';
 import Select from '../common/Select';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 import axios from 'axios';
-
-import { fetchMemberSuggestList } from '../../actions/project';
 
 @connect(
   state => ({
@@ -22,9 +18,7 @@ import { fetchMemberSuggestList } from '../../actions/project';
     iconDetail: state.icon,
   }),
   {
-    fetchMemberSuggestList,
     editIcon,
-    editUploader,
     editIconStyle,
   }
 )
@@ -34,8 +28,6 @@ class DownloadDialog extends Component {
     super(props);
     this.state = {
       isEdit: false,
-      isChangeUploader: false,
-      uploader: '',
     };
   }
 
@@ -81,49 +73,6 @@ class DownloadDialog extends Component {
       isEdit: false,
     });
     this.refs.myInput.reset();
-  }
-
-  @autobind
-  showUploaderEdit() {
-    this.setState({
-      isChangeUploader: true,
-    });
-    this.uploaderSearchList.clearInput();
-  }
-
-  @autobind
-  uploaderChange(value) {
-    this.props.fetchMemberSuggestList(value).then(() => {
-      const data = this.props.suggestList;
-      if (data.length === 1 && data[0].name === value) {
-        this.setState({
-          uploader: data[0].id,
-        });
-      }
-    });
-  }
-
-  @autobind
-  saveUploader() {
-    if (!this.state.uploader) {
-      Message.error('域账号缺少、不完整或错误，请检查');
-      return;
-    }
-    this.props.editUploader(this.props.iconDetail.id, {
-      uploader: this.state.uploader,
-    }).then(() => {
-      this.setState({
-        isChangeUploader: false,
-      });
-    });
-    this.setState({ uploader: '' });
-  }
-
-  @autobind
-  cancelUploader() {
-    this.setState({
-      isChangeUploader: false,
-    });
   }
 
   @autobind
@@ -210,46 +159,8 @@ class DownloadDialog extends Component {
               <button className="cancel" onClick={this.cancel}>取消</button>
             </div>
           </div>
-          <div className={`other-info ${this.state.isChangeUploader ? 'edit' : ''}`}>
-            <div className="uploader-name">
-              <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
-              <button
-                className={`edit-author-btn ${(+status === +3 && type === 'repo') ? '' : 'hide'}`}
-                onClick={this.showUploaderEdit}
-              >
-                修改上传人
-              </button>
-            </div>
-            <div className="edit-author">
-              <ul className="clearfix">
-                <SearchList
-                  showSearchList={this.props.suggestList.length > 0}
-                  placeholder="请输入用户域账号"
-                  onChange={this.uploaderChange}
-                  suggestList={this.props.suggestList}
-                  ref={(node) => {
-                    if (node) this.uploaderSearchList = node;
-                  }}
-                >
-                  <div className="field-btn">
-                    <button
-                      type="button"
-                      className="uploader-btn save-uploader"
-                      onClick={this.saveUploader}
-                    >
-                      保存
-                    </button>
-                    <button
-                      type="button"
-                      className="uploader-btn cancel-uploader"
-                      onClick={this.cancelUploader}
-                    >
-                      取消
-                    </button>
-                  </div>
-                </SearchList>
-              </ul>
-            </div>
+          <div className="other-info">
+            <span className="author">上传人：{iconDetail.user.name}</span>&nbsp;&nbsp;
           </div>
           <SetTag
             disabled={+status === 1}
@@ -305,10 +216,7 @@ DownloadDialog.propTypes = {
   iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
   editIcon: PropTypes.func,
-  editUploader: PropTypes.func,
   editIconStyle: PropTypes.func,
-  suggestList: PropTypes.array,
-  fetchMemberSuggestList: PropTypes.func,
 };
 
 export default DownloadDialog;

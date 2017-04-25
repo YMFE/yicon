@@ -1,7 +1,6 @@
 import {
   FETCH_ICON_DETAIL,
   EDIT_ICON,
-  EDIT_UPLOADER,
   EDIT_ICON_STYLE,
 } from '../../constants/actionTypes';
 
@@ -35,12 +34,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload.data,
-      };
-    }
-    case EDIT_UPLOADER: {
-      return {
-        ...state,
-        user: { ...action.payload.data },
       };
     }
     case EDIT_ICON_STYLE: {

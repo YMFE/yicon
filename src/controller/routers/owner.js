@@ -2,8 +2,7 @@ import Router from 'koa-router';
 // import multer from '../../helpers/multer';
 import { updateRepoNotice } from '../modules/repository';
 import { getLogList } from '../modules/log';
-// import { uploadReplacingIcon, replaceIcon, updateIconUploader } from '../modules/icon';
-import { updateIconUploader } from '../modules/icon';
+// import { uploadReplacingIcon, replaceIcon } from '../modules/icon';
 import { getAuditList, auditIcons } from '../modules/audit';
 import { pagination, getCurrentUser, isRepoOwner } from './middlewares';
 
@@ -20,6 +19,5 @@ owner.get('/log/repositories/:repoId', pagination, getLogList);
 // owner.post('/replacement/icon/:fromId...:toId', replaceIcon);
 owner.get('/icons', getAuditList);
 owner.post('/icons', auditIcons);
-owner.patch('/uploader/icon/:iconId', updateIconUploader);
 
 export default owner;
