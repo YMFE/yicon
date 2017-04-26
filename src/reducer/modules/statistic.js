@@ -2,7 +2,7 @@ import {
   FETCH_ICON_STATISTIC,
 } from '../../constants/actionTypes';
 
-const initialState = {};
+const initialState = { list: [], data: [], skiped: 0, count: 0, total: 0 };
 
 export default (state = initialState, action) => {
   switch (action.type) {

@@ -7,15 +7,17 @@ import {
 } from '../../actions/statistic';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { SubTitle } from '../../components/';
-import { startCode, endCode } from '../../constants/utils';
 
 import './Statistic.scss';
 import IconBtn from './IconBtn.jsx';
 
 @connect(
   state => ({
-    statisticData: state.statistic.rows,
+    list: state.statistic.list,
+    statisticData: state.statistic.data,
     count: state.statistic.count,
+    skiped: state.statistic.skiped,
+    total: state.statistic.total,
   }),
   {
     fetchIconStatistic,
@@ -25,8 +27,11 @@ export default class Statistic extends Component {
 
   static propTypes = {
     fetchIconStatistic: PropTypes.func,
+    list: PropTypes.array,
     statisticData: PropTypes.array,
     count: PropTypes.number,
+    skiped: PropTypes.number,
+    total: PropTypes.number,
   };
 
   state = {
@@ -39,22 +44,6 @@ export default class Statistic extends Component {
 
   componentWillMount() {
     this.fetchData();
-
-    const length = endCode - startCode + 1;
-    const data = [];
-    const list = [];
-    for (let i = 0; i < length; i++) {
-      if (i % 16 === 0) {
-        const num = startCode + i;
-        list.push(num.toString(16).toUpperCase());
-      }
-      data.push({});
-    }
-    this.setState({
-      length,
-      list,
-      data,
-    });
   }
 
   componentDidMount() {
@@ -90,22 +79,17 @@ export default class Statistic extends Component {
   }
 
   render() {
-    const icons = this.props.statisticData || [];
-    const data = this.state.data;
-    icons.forEach(icon => {
-      const { code } = icon;
-      const index = code - parseInt(startCode, 10);
-      data[index] = icon;
-    });
     return (
       <div className="statistic" ref="statistic">
         <SubTitle tit={'图标使用详情统计'}>
           <div className="sub-title-chil">
             <span className="count">
-              <b className="num">{this.state.length}</b>icons
+              <b className="num">{this.props.total}</b>icons
             </span>
             <span className="powerby">已使用:</span>
             <span className="name">{this.props.count} icons</span>
+            <span className="powerby">已跳过:</span>
+            <span className="name">{this.props.skiped} icons</span>
             <div className="tool-content">
               <ul className="code-list">
                 <li className="code-item">0</li>
@@ -132,7 +116,7 @@ export default class Statistic extends Component {
           <div className="yicon-statistic-list">
             <ul>
               {
-                this.state.list.map((item, i) => (
+                this.props.list.map((item, i) => (
                   <li className="yicon-list-item" key={i}>{item}</li>
                 ))
               }
@@ -140,7 +124,7 @@ export default class Statistic extends Component {
           </div>
           <div className="yicon-statisitc-detail">
             {
-              data.map((icon, i) => (
+              this.props.statisticData.map((icon, i) => (
                 <IconBtn
                   key={i}
                   icon={icon}
