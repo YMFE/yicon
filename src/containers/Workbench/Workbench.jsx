@@ -14,6 +14,7 @@ import { push } from 'react-router-redux';
 import dialog from '../../components/common/Dialog/Confirm.jsx';
 import Select from '../../components/common/Select/';
 import IconsSetting from '../../components/common/IconsSetting/IconsSetting.jsx';
+import Message from '../../components/common/Message/Message.jsx';
 const Option = Select.Option;
 import { autobind } from 'core-decorators';
 
@@ -140,6 +141,7 @@ export default class Workbench extends Component {
       repoId: this.props.repoId,
       icons,
     }).then(() => {
+      Message.success('上传成功，请等待库管或超管审核。');
       const noDone = this.props.icons.filter((icon) => (
         !(icon.name && icon.fontClass)
       ));

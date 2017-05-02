@@ -57,3 +57,7 @@
 * ![BBAE](images/bbae.png)
 
     BBAE已接入使用 YIcon 平台
+
+* ![美团](images/meituan.png)
+
+    美团已接入使用 YIcon 平台

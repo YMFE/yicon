@@ -1,3 +1,14 @@
+## v1.0.2.1 (2016-04-28)
+
+### Features
+
+- 提供 docker [镜像](https://github.com/YMFE/YIcon-Docker)
+
+
+### Fix bugs
+
+- 修复超管新建大库后权限降级的 bug
+
 ## v1.0.2 (2016-12-19)
 
 ### Fix bugs

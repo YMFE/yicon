@@ -460,7 +460,7 @@ class UserProject extends Component {
     const template = `@font-face {
   font-family: 'iconfont';
   src: url('${url}.eot'); /* IE9*/
-  url('${url}.woff') format('woff'), /* chrome、firefox */
+  src: url('${url}.woff') format('woff'), /* chrome、firefox */
   url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
 }`;
@@ -568,6 +568,7 @@ class UserProject extends Component {
           >
             <pre>{template}</pre>
           </ClipboardButton>
+          <div style={{ marginTop: 14, color: '#666' }}>* 注：移动端只需引用 woff 和 ttf 格式字体</div>
         </Dialog>,
       ];
     }
