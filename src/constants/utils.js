@@ -6,6 +6,7 @@ export const iconStatus = {
   UPLOADED: 0,   // 已上传
   REJECTED: 5,   // 审核失败
   PENDING: 10,   // 待审核
+  REPLACE: 13,   // 待审核替换（非库管超管的上传者进行替换上传需要审核）
   REPLACING: 14, // 待替换
   REPLACED: 15,  // 被替换
   DISABLED: 18, // 被禁用
@@ -23,6 +24,10 @@ export const iconStateDescription = {
   5: {
     className: 'fault',
     text: '审核失败',
+  },
+  13: {
+    className: 'checking',
+    text: '待审核替换',
   },
   14: {
     className: 'checking',

@@ -40,6 +40,11 @@ export default class Transition extends Component {
         this.backToPage('/ldapauth');
         break;
       }
+      case 'replUpload-success': {
+        const { repoId } = this.props.location.query;
+        this.backToPage(`/repositories/${repoId}`);
+        break;
+      }
       default: {
         break;
       }
@@ -153,6 +158,24 @@ export default class Transition extends Component {
       </div>
     );
 
+    const replUploadHTML = (
+      <div>
+        <div className="no-auth-nores"></div>
+        <div className="no-auth-tips">
+          <p>替换的图标上传成功，请等待库管审核通过</p>
+          <p>{this.state.second} 秒之后跳转至图标库页</p>
+        </div>
+        <p>
+          <button
+            className="no-auth-login"
+            onClick={() => this.immedBackToPage(`/repositories/${repoId}`)}
+          >
+            点击跳转
+          </button>
+        </p>
+      </div>
+    );
+
     return (
       <div>
         <div className="no-auth">
@@ -162,6 +185,7 @@ export default class Transition extends Component {
           {type === 'audit-icon' && auditIconHTML}
           {type === 'upload-icon' && uploadIconHTML}
           {type === 'ldapauth-failed' && ldapAuthFailedHTML}
+          {type === 'replUpload-success' && replUploadHTML}
         </div>
       </div>
     );

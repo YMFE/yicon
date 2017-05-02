@@ -264,6 +264,16 @@ export function* submitIcons(next) {
     );
   });
 
+  // 某个图标被上传者替换，上传的图标还在审核中，后再次替换该图标
+  // 获取所有被覆盖的图标
+  let isExistIcon = [];
+  if (icons[0] && icons[0].isReplace) {
+    const { oldId } = icons[0];
+    isExistIcon = yield Icon.findAll({
+      where: { status: iconStatus.REPLACE, oldId: +oldId },
+    });
+  }
+
   const repo = yield Repo.findOne({ where: { id: repoId } });
 
   // 这里需要一个事务，修改图标数据，然后建立库间关联
@@ -277,10 +287,34 @@ export function* submitIcons(next) {
         applyTime: new Date,
       };
 
+      if (icon.isReplace) {
+        data.code = icon.code;
+        data.status = iconStatus.REPLACE;
+        data.oldId = +icon.oldId;
+      }
+
       return Icon.update(
         data,
         { where: { id: icon.id }, transaction }
       );
+    });
+
+    // 某个图标被上传者替换，上传的图标还在审核中，后再次替换该图标
+    // 处理策略：以最后一次为准，删除之前上传的图标(status 置为 -1)
+    isExistIcon.forEach(item => {
+      // 删除 RepoVersions 表中对应图标的记录
+      const tempRepoVer = RepoVersion.destroy({
+        where: { repositoryId: repoId, iconId: +item.id },
+        transaction,
+      });
+      // 将被覆盖的图标状态置为 -1
+      const tempIcon = Icon.update({
+        status: iconStatus.DELETE,
+      }, {
+        where: { status: iconStatus.REPLACE, id: +item.id },
+        transaction,
+      });
+      iconInfo.push(tempRepoVer, tempIcon);
     });
 
     return Promise

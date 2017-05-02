@@ -1,6 +1,7 @@
 import './ReplWorkbench.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import IconBgGrid from '../../components/common/IconBgGrid/IconBgGrid';
 import Input from '../../components/common/Input/Index.jsx';
 import SetTag from '../../components/common/SetTag/SetTag.jsx';
@@ -10,6 +11,7 @@ import {
   replUpdateIcon,
   submitReplaceIcon,
 } from '../../actions/replWorkbench.js';
+import { uploadIcons } from '../../actions/workbench.js';
 import { ICON_NAME } from '../../constants/validate';
 import { push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
@@ -17,6 +19,7 @@ import { autobind } from 'core-decorators';
 
 const defaultProps = {};
 const propTypes = {
+  userInfo: PropTypes.object,
   currIcon: PropTypes.object,
   repIcon: PropTypes.object,
   params: PropTypes.object,
@@ -24,11 +27,13 @@ const propTypes = {
   fetchReplaceIcon: PropTypes.func,
   replUpdateIcon: PropTypes.func,
   submitReplaceIcon: PropTypes.func,
+  uploadIcons: PropTypes.func,
   push: PropTypes.func,
 };
 
 @connect(
   state => ({
+    userInfo: state.user.info,
     currIcon: state.replWorkbench.currIcon,
     repIcon: state.replWorkbench.repIcon,
   }),
@@ -37,6 +42,7 @@ const propTypes = {
     fetchReplaceIcon,
     replUpdateIcon,
     submitReplaceIcon,
+    uploadIcons,
     push,
   }
 )
@@ -68,19 +74,44 @@ export default class ReplWorkbench extends Component {
 
   @autobind
   submitReplaceIcon() {
-    const { params: { fromId, toId }, currIcon } = this.props;
-    this.props.submitReplaceIcon(fromId, toId, {
-      name: currIcon.name,
-      tags: currIcon.tags,
-    }).then((data) => {
-      if (data.payload.res) {
-        this.setState({
-          isShowDialog: false,
+    // 库管超管直接替换
+    const { params: { fromId, toId }, userInfo, currIcon } = this.props;
+    if (userInfo.admin || userInfo.repoAdmin.indexOf(currIcon.repo.id) > -1) {
+      this.props.submitReplaceIcon(fromId, toId, {
+        name: currIcon.name,
+        tags: currIcon.tags,
+      }).then((data) => {
+        if (data.payload.res) {
+          this.setState({
+            isShowDialog: false,
+          });
+          // this.props.push(`/repositories/${currIcon.repo.id}`);
+          this.props.push(`/transition/repl-icon?repoId=${currIcon.repo.id}`);
+        }
+      });
+    } else {
+      // 普通上传者替换需要审核
+      axios.get(`/api/icons/${toId}`).then(info => {
+        const icon = info.data && info.data.data;
+        icon.code = currIcon.code;
+        icon.name = currIcon.name;
+        icon.tags = currIcon.tags;
+        icon.oldId = fromId;
+        icon.fontClass = /-f$/g.test(`${icon.fontClass}`) ? '-f' : '-o';
+        icon.isReplace = true;
+        this.props.uploadIcons({
+          repoId: currIcon.repo.id,
+          icons: [icon],
+        }).then(data => {
+          if (data.payload.res) {
+            this.setState({
+              isShowDialog: false,
+            });
+            this.props.push(`/transition/replUpload-success?repoId=${currIcon.repo.id}`);
+          }
         });
-        // this.props.push(`/repositories/${currIcon.repo.id}`);
-        this.props.push(`/transition/repl-icon?repoId=${currIcon.repo.id}`);
-      }
-    });
+      });
+    }
   }
 
   @autobind

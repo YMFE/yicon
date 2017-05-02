@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { iconStatus } from '../../constants/utils.js';
 import {
   fetchAuditIcons,
   updateAuditIcons,
@@ -139,6 +140,10 @@ export default class Audit extends Component {
           repoId: icon.repo.id,
           uploader: icon.uploader,
         };
+        if (icon.status === iconStatus.REPLACE) {
+          iconItem.code = icon.code;
+          iconItem.oldId = icon.oldId;
+        }
         auditedIcons.push(iconItem);
       } else {
         notAuditedIcons.push(icon);
