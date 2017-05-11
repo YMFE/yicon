@@ -13,7 +13,12 @@ import {
   searchProjects,
 } from '../modules/project';
 import { listAdmin, addAdmin, delAdmin } from '../modules/user';
-import { getDisabledCode, setDisabledCode, unSetDisabledCode } from '../modules/icon';
+import {
+  getDisabledCode,
+  setDisabledCode,
+  unSetDisabledCode,
+  fetchDisabledCode,
+} from '../modules/code';
 import { getCurrentUser, isAdmin, pagination } from './middlewares';
 
 const admin = new Router();
@@ -36,6 +41,7 @@ admin.post('/projects', addProject);
 admin.get('/disabledCode', getDisabledCode);
 admin.post('/disabledCode', setDisabledCode);
 admin.patch('/disabledCode/:iconId', unSetDisabledCode);
+admin.get('/disabledCode/github', fetchDisabledCode);
 
 admin.get('/manager/list', listAdmin);
 admin.post('/manager/:userId', addAdmin);
