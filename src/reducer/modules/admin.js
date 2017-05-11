@@ -10,9 +10,21 @@ import {
   FETCH_SUPER_MANAGER,
   CREATE_SUPER_MANAGER,
   DELETE_SUPER_MANAGER,
+  FETCH_DISABLED_CODE,
+  SET_DISABLED_CODE,
+  UNSET_DISABLED_CODE,
 } from '../../constants/actionTypes';
 
-const initialState = { repo: [], project: [], page: {}, manager: [], updateResult: false };
+// const initialState = { repo: [], project: [], page: {}, manager: [], updateResult: false };
+
+const initialState = {
+  repo: [],
+  project: [],
+  page: {},
+  manager: [],
+  updateResult: false,
+  disabledCode: [],
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -82,6 +94,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         manager: action.payload.data,
+      };
+    }
+    case FETCH_DISABLED_CODE: {
+      return {
+        ...state,
+        disabledCode: action.payload.data,
+      };
+    }
+    case SET_DISABLED_CODE: {
+      return {
+        ...state,
+        disabledCode: action.payload.data,
+      };
+    }
+    case UNSET_DISABLED_CODE: {
+      return {
+        ...state,
+        disabledCode: action.payload.data,
       };
     }
     default:

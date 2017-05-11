@@ -21,6 +21,8 @@ import {
   fetchSuperManager,
   createSuperManager,
   deleteSuperManager,
+  fetchDisabledCode,
+  unsetDisabledCode,
 } from '../../actions/admin';
 import { fetchMemberSuggestList } from '../../actions/project';
 import { fetchHomeData, fetchTinyRepository } from '../../actions/repository';
@@ -32,6 +34,7 @@ import './Authority.scss';
     repo: state.user.admin.repo,
     project: state.user.admin.project,
     manager: state.user.admin.manager,
+    disabledCode: state.user.admin.disabledCode,
     page: state.user.admin.page,
     updateResult: state.user.admin.updateResult,
     suggestList: state.project.memberSuggestList,
@@ -51,6 +54,8 @@ import './Authority.scss';
     fetchSuperManager,
     createSuperManager,
     deleteSuperManager,
+    fetchDisabledCode,
+    unsetDisabledCode,
   }
 )
 
@@ -72,10 +77,13 @@ export default class Authority extends Component {
     fetchSuperManager: PropTypes.func,
     createSuperManager: PropTypes.func,
     deleteSuperManager: PropTypes.func,
+    fetchDisabledCode: PropTypes.func,
+    unsetDisabledCode: PropTypes.func,
     suggestList: PropTypes.array,
     repo: PropTypes.array,
     project: PropTypes.array,
     manager: PropTypes.array,
+    disabledCode: PropTypes.array,
     page: PropTypes.object,
     info: PropTypes.object,
   };
@@ -137,6 +145,9 @@ export default class Authority extends Component {
     }
     if (type === 'manager') {
       this.props.fetchSuperManager();
+    }
+    if (type === 'disabledCode') {
+      this.props.fetchDisabledCode();
     }
   }
 
@@ -400,7 +411,7 @@ export default class Authority extends Component {
   }
 
   @autobind
-  renderManagerItem(item, index) {
+  showManagerItem(item, index) {
     const { name } = this.props.info || {};
     return this.props.manager.length === 1 || item.name === name ? (
       <li data-id={item.id} key={index}>{item.name}</li>
@@ -417,6 +428,34 @@ export default class Authority extends Component {
   }
 
   /* end */
+
+  /* 问题编码 */
+  @autobind
+  removeDisabledCode(e) {
+    const id = parseInt(e.currentTarget.dataset.id, 10);
+    confirm({
+      content: '是否确定解除编码禁用，请慎重操作！',
+      title: '解除禁用',
+      onOk: () => {
+        this.props.unsetDisabledCode(id);
+      },
+      onCancel: () => {},
+    });
+  }
+
+  @autobind
+  showDisabledCodeItem(item, index) {
+    return (
+      <li
+        data-id={item.id}
+        key={index}
+        onClick={this.removeDisabledCode}
+      >
+        {`&#x${item.code.toString(16)}`}
+        <i className="iconfont pointer" title="删除编码">&#xf077;</i>
+      </li>
+    );
+  }
 
   render() {
     const { type } = this.props.params;
@@ -448,11 +487,15 @@ export default class Authority extends Component {
               <li className={type === 'manager' ? 'selected' : ''}>
                 <Link to="/admin/authority/manager">超管增删管理</Link>
               </li>
+              <li className={type === 'disabledCode' ? 'selected' : ''}>
+                <Link to="/admin/authority/disabledCode">问题编码名单</Link>
+              </li>
             </Menu>
             <Main extraClass="yicon-myicon-main">
               <div
                 className="myicon-prj-right"
-                style={{ display: `${type !== 'manager' ? 'block' : 'none'}` }}
+                // style={{ display: `${type !== 'manager' ? 'block' : 'none'}` }}
+                style={{ display: `${['repo', 'project'].indexOf(type) > -1 ? 'block' : 'none'}` }}
               >
                 <div className="yicon-authority-info">
                   <div className="tools">
@@ -536,7 +579,63 @@ export default class Authority extends Component {
                   <ul className="collaborators-list">
                     {
                       this.props.manager.length > 0 && this.props.manager.map((item, index) =>
-                        this.renderManagerItem(item, index)
+                        this.showManagerItem(item, index)
+                      )
+                    }
+                  </ul>
+                </div>
+              </div>
+              <div
+                className="myicon-prj-right disabled-code"
+                style={{ display: `${type === 'disabledCode' ? 'block' : 'none'}` }}
+              >
+                <div className="myicon-prj-info">
+                  <div className="prj-details">
+                    <div className="title">
+                      <h3>问题编码名单</h3>
+                    </div>
+                  </div>
+                  <div className="add-disabled-code">
+                    {/* <ul className="clearfix">
+                      <SearchList
+                        showSearchList={this.props.suggestList.length > 0}
+                        placeholder="请输入需要禁用的编码"
+                        onChange={this.userChange}
+                        suggestList={this.props.suggestList}
+                        ref={(node) => {
+                          if (node) this.superSearchList = node;
+                        }}
+                      >
+                        <div className="field-btn">
+                          <button
+                            type="button"
+                            className="add-collaborators"
+                            onClick={this.addSuperManager}
+                          >
+                            添加编码
+                          </button>
+                        </div>
+                      </SearchList>
+                    </ul> */}
+                    <menu className="options" style={{ paddingLeft: 0 }}>
+                      <span
+                        className="disabled-code-operation add-code"
+                        onClick={() => {
+                        }}
+                      >
+                        添加问题编码
+                      </span>
+                      <span className="disabled-code-operation get-code">同步问题编码</span>
+                    </menu>
+                  </div>
+                </div>
+                <div className="clearfix collaborators">
+                  <p className="collaborators-title">问题编码列表</p>
+                  <ul className="collaborators-list">
+                    {
+                      this.props.disabledCode.length > 0 &&
+                      this.props.disabledCode.map((item, index) =>
+                        this.showDisabledCodeItem(item, index)
                       )
                     }
                   </ul>

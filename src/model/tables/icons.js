@@ -47,4 +47,9 @@ export default seq.define('icons', {
     allowNull: false,
     comment: '图标状态，标记图标是否审核通过',
   },
+  description: {
+    type: Seq.STRING(5000),
+    allowNull: true,
+    comment: '编码描述，记录问题编码信息',
+  },
 });

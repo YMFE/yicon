@@ -11,6 +11,9 @@ import {
   FETCH_SUPER_MANAGER,
   CREATE_SUPER_MANAGER,
   DELETE_SUPER_MANAGER,
+  FETCH_DISABLED_CODE,
+  SET_DISABLED_CODE,
+  UNSET_DISABLED_CODE,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -75,20 +78,41 @@ export function searchProjects(name, pageNum, pageSize) {
 export function fetchSuperManager() {
   return {
     type: FETCH_SUPER_MANAGER,
-    payload: fetch.get('/admin/list'),
+    payload: fetch.get('/admin/manager/list'),
   };
 }
 
 export function createSuperManager(id) {
   return {
     type: CREATE_SUPER_MANAGER,
-    payload: fetch.post(`/admin/${id}`),
+    payload: fetch.post(`/admin/manager/${id}`),
   };
 }
 
 export function deleteSuperManager(id) {
   return {
     type: DELETE_SUPER_MANAGER,
-    payload: fetch.delete(`/admin/${id}`),
+    payload: fetch.delete(`/admin/manager/${id}`),
+  };
+}
+
+export function fetchDisabledCode() {
+  return {
+    type: FETCH_DISABLED_CODE,
+    payload: fetch.get('/admin/disabledCode'),
+  };
+}
+
+export function setDisabledCode(param) {
+  return {
+    type: SET_DISABLED_CODE,
+    payload: fetch.post('/admin/disabledCode', param),
+  };
+}
+
+export function unsetDisabledCode(id) {
+  return {
+    type: UNSET_DISABLED_CODE,
+    payload: fetch.patch(`/admin/disabledCode/${id}`),
   };
 }

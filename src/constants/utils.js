@@ -62,6 +62,8 @@ export const logTypes = {
   REPO_ADMIN: '大库管理员从 @userFrom 变更为 @userTo',
   PROJECT_OWNER: '项目负责人从 @userFrom 变更为 @userTo',
   SOURCE_PUBLISH: '项目发布到 source @path，版本为 @version',
+  DISABLED_CODE_ADD: '编码 @code 标示为系统占用',
+  DISABLED_CODE_DEL: '编码 @code 解除系统占用标示',
 };
 
 export const InfoTypeDetail = [

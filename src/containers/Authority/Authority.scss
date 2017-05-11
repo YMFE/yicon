@@ -112,6 +112,45 @@
       }
     }
   }
+	.disabled-code {
+		.add-disabled-code {
+			border-bottom: 1px solid #d8d9d9;
+		}
+		.disabled-code-operation {
+			cursor: pointer;
+		}
+		.collaborators{
+      margin-top: 10px;
+      overflow: hidden;
+      width: 420px;
+      &-title{
+        font-size:14px ;
+        color:#616161;
+        line-height: 34px;
+      }
+      &-list{
+        li{
+          float: left;
+          color: #616161;
+          padding:0 6px;
+          background: #f1f3f6;
+          margin-right: 6px;
+          margin-top: 4px;
+          border-radius: 3px;
+          line-height: 26px;
+          height: 26px;
+          .iconfont{
+            font-size:14px;
+            float: right;
+            cursor: pointer;
+            vertical-align: top;
+            margin-left: 2px;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+	}
   .collaborators{
     padding: 0 40px 20px;
   }

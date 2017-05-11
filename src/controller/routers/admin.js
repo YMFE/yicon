@@ -13,6 +13,7 @@ import {
   searchProjects,
 } from '../modules/project';
 import { listAdmin, addAdmin, delAdmin } from '../modules/user';
+import { getDisabledCode, setDisabledCode, unSetDisabledCode } from '../modules/icon';
 import { getCurrentUser, isAdmin, pagination } from './middlewares';
 
 const admin = new Router();
@@ -32,8 +33,12 @@ admin.get('/projects/all/:name', pagination, searchProjects);
 admin.patch('/projects/:projectId/peoject', appointProjectOwner);
 admin.post('/projects', addProject);
 
-admin.get('/list', listAdmin);
-admin.post('/:userId', addAdmin);
-admin.delete('/:userId', delAdmin);
+admin.get('/disabledCode', getDisabledCode);
+admin.post('/disabledCode', setDisabledCode);
+admin.patch('/disabledCode/:iconId', unSetDisabledCode);
+
+admin.get('/manager/list', listAdmin);
+admin.post('/manager/:userId', addAdmin);
+admin.delete('/manager/:userId', delAdmin);
 
 export default admin;
