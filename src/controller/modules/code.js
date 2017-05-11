@@ -111,26 +111,27 @@ export function *setDisabledCode(next) {
 }
 
 export function *unSetDisabledCode(next) {
-  const { code } = this.params;
+  const { iconId } = this.params;
   const icon = yield Icon.findOne({
-    where: { code, status: iconStatus.DISABLED },
+    where: { id: iconId, status: iconStatus.DISABLED },
   });
 
-  invariant(icon && icon.path, `编码 ${code} 尚未被系统占用`);
+  invariant(icon && icon.path, `没有找到 id 为 ${iconId} 的系统占用编码`);
 
-  const { id, path } = icon;
+  const { path } = icon;
   if (path === disabledCodePath) {
     // 系统占用图标对应的数据直接删除
     yield Icon.destroy({
-      where: { id, status: iconStatus.DISABLED },
+      where: { id: iconId, status: iconStatus.DISABLED },
     });
   } else {
     // 对有效数据进行恢复
     yield Icon.update({
+      applyTime: new Date(),
       status: iconStatus.RESOLVED,
       description: null,
     }, {
-      where: { id, status: iconStatus.DISABLED },
+      where: { id: iconId, status: iconStatus.DISABLED },
     });
   }
   this.state.respond = '系统占用编码删除成功';
@@ -142,5 +143,14 @@ export function *fetchDisabledCode(next) {
   const gitUrl = 'https://raw.githubusercontent.com/JasonFang93/demo/master/disabledCode.json';
   const data = yield axios.get(gitUrl).then(res => res.data);
   this.state.respond = data;
+  yield next;
+}
+
+export function *updateCodeDescription(next) {
+  const { iconId, description } = this.param;
+  yield Icon.update({
+    description,
+  }, { where: { id: iconId } });
+  this.state.respond = '编码信息更新成功';
   yield next;
 }

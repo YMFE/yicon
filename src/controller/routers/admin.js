@@ -18,6 +18,7 @@ import {
   setDisabledCode,
   unSetDisabledCode,
   fetchDisabledCode,
+  updateCodeDescription,
 } from '../modules/code';
 import { getCurrentUser, isAdmin, pagination } from './middlewares';
 
@@ -40,7 +41,8 @@ admin.post('/projects', addProject);
 
 admin.get('/disabledCode', getDisabledCode);
 admin.post('/disabledCode', setDisabledCode);
-admin.patch('/disabledCode/:code', unSetDisabledCode);
+admin.patch('/disabledCode/:iconId', unSetDisabledCode);
+admin.post('/disabledCode/description', updateCodeDescription);
 admin.get('/disabledCode/github', fetchDisabledCode);
 
 admin.get('/manager/list', listAdmin);
