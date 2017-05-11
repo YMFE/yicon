@@ -40,7 +40,7 @@ admin.post('/projects', addProject);
 
 admin.get('/disabledCode', getDisabledCode);
 admin.post('/disabledCode', setDisabledCode);
-admin.patch('/disabledCode/:iconId', unSetDisabledCode);
+admin.patch('/disabledCode/:code', unSetDisabledCode);
 admin.get('/disabledCode/github', fetchDisabledCode);
 
 admin.get('/manager/list', listAdmin);

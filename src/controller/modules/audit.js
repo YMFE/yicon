@@ -184,7 +184,7 @@ function* auditReplacedIcon(replacedIcons, userId, next) {
       const { name, tags } = icon;
       const fromId = icon.oldId;
       const toId = icon.id;
-      // 要检验，to 必须是 REPLACE 状态，from 必须是 RESOVLED 状态
+      // 要检验，to 必须是 REPLACE 状态，from 必须是 RESOLVED 状态
       const from = yield Icon.findOne({ where: { id: fromId } });
       const to = yield Icon.findOne({ where: { id: toId } });
       const repos = yield from.getRepositories();

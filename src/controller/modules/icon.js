@@ -175,7 +175,7 @@ export function* uploadReplacingIcon(next) {
 export function* replaceIcon(next) {
   const { fromId, toId, name, tags } = this.param;
   const { userId } = this.state.user;
-  // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOVLED 状态
+  // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOLVED 状态
   const from = yield Icon.findOne({ where: { id: fromId } });
   const to = yield Icon.findOne({ where: { id: toId } });
   const repos = yield from.getRepositories();

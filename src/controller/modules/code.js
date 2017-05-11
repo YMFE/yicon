@@ -5,6 +5,13 @@ import { logRecorder } from './log';
 import { seq, Icon } from '../../model';
 import { iconStatus } from '../../constants/utils';
 
+// 表示系统占用的图标 path
+const disabledCodePath = ' M889 169L768 290V848C768 856.8 760.8 864 752 864H272C263.2 ' +
+  '864 256 856.8 256 848V802L169 889C159.6 898.4 144.4 898.4 135 889C125.6 879.6 125.6 ' +
+  '864.4 135 855L256 734V176C256 167.2 263.2 160 272 160H752C760.8 160 768 167.2 768 ' +
+  '176V222L855 135C859.6 130.4 865.8 128 872 128S884.2 130.4 889 135C898.4 144.4 898.4 ' +
+  '159.6 889 169zM288 832H736V322L288 770V832zM736 192H288V702L736 254V192z';
+
 export function *getDisabledCode(next) {
   const icon = yield Icon.findAll({
     attributes: ['id', 'code'],
@@ -40,12 +47,6 @@ export function *setDisabledCode(next) {
   const existingCodes = [];
   // icons 表中不存在的，尚未分配的编码
   const newCodes = [];
-  // 表示系统占用的图标 path
-  const disabledCodePath = ' M889 169L768 290V848C768 856.8 760.8 864 752 864H272C263.2 ' +
-    '864 256 856.8 256 848V802L169 889C159.6 898.4 144.4 898.4 135 889C125.6 879.6 125.6 ' +
-    '864.4 135 855L256 734V176C256 167.2 263.2 160 272 160H752C760.8 160 768 167.2 768 ' +
-    '176V222L855 135C859.6 130.4 865.8 128 872 128S884.2 130.4 889 135C898.4 144.4 898.4 ' +
-    '159.6 889 169zM288 832H736V322L288 770V832zM736 192H288V702L736 254V192z';
   const _icons = icons.map(item => item.code);
   // 过滤掉已经被标记为问题编码的数据
   const disabledIcons = [];
@@ -110,20 +111,29 @@ export function *setDisabledCode(next) {
 }
 
 export function *unSetDisabledCode(next) {
-  // const { iconId } = this.params;
-  // yield Icon.destroy({
-  //   where: {
-  //     id: iconId,
-  //   },
-  // });
-  this.state.respond = yield Icon.findAll({
-    attributes: ['id', 'code'],
-    where: {
-      status: {
-        $eq: iconStatus.DISABLED,
-      },
-    },
+  const { code } = this.params;
+  const icon = yield Icon.findOne({
+    where: { code, status: iconStatus.DISABLED },
   });
+
+  invariant(icon && icon.path, `编码 ${code} 尚未被系统占用`);
+
+  const { id, path } = icon;
+  if (path === disabledCodePath) {
+    // 系统占用图标对应的数据直接删除
+    yield Icon.destroy({
+      where: { id, status: iconStatus.DISABLED },
+    });
+  } else {
+    // 对有效数据进行恢复
+    yield Icon.update({
+      status: iconStatus.RESOLVED,
+      description: null,
+    }, {
+      where: { id, status: iconStatus.DISABLED },
+    });
+  }
+  this.state.respond = '系统占用编码删除成功';
   yield next;
 }
 
