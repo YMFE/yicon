@@ -83,7 +83,7 @@
     .collaborators{
       margin-top: 10px;
       overflow: hidden;
-      width: 420px;
+      // width: 420px;
       &-title{
         font-size:14px ;
         color:#616161;
@@ -122,7 +122,7 @@
 		.collaborators{
       margin-top: 10px;
       overflow: hidden;
-      width: 420px;
+      // width: 420px;
       &-title{
         font-size:14px ;
         color:#616161;
@@ -207,5 +207,21 @@
 		.SuggestList{
 			margin-left: 26px;
 		}
+	}
+}
+
+.sync-disabled-code {
+	margin-top: 10px;
+	color: #999;
+	.code-wrapper {
+		width: 322px;
+		max-height: 60px;
+		overflow: auto;
+		flex-wrap: wrap;
+		display: flex;
+	}
+	.item-code {
+		width: 40px;
+		text-align: center;
 	}
 }

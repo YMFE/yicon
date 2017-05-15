@@ -20,6 +20,7 @@ export function *getDisabledCode(next) {
         $eq: iconStatus.DISABLED,
       },
     },
+    order: 'code ASC',
   });
   this.state.respond = icon;
   yield next;
@@ -106,7 +107,10 @@ export function *setDisabledCode(next) {
   });
   yield t;
 
-  this.state.respond = '系统占用编码添加成功';
+  this.state.respond = yield Icon.findAll({
+    where: { status: iconStatus.DISABLED },
+    order: 'code ASC',
+  });
   yield next;
 }
 
@@ -134,7 +138,10 @@ export function *unSetDisabledCode(next) {
       where: { id: iconId, status: iconStatus.DISABLED },
     });
   }
-  this.state.respond = '系统占用编码删除成功';
+  this.state.respond = yield Icon.findAll({
+    where: { status: iconStatus.DISABLED },
+    order: 'code ASC',
+  });
   yield next;
 }
 
