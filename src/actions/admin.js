@@ -14,6 +14,7 @@ import {
   FETCH_DISABLED_CODE,
   SET_DISABLED_CODE,
   UNSET_DISABLED_CODE,
+  UPDATE_DISABLED_CODE,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api' });
@@ -114,5 +115,12 @@ export function unsetDisabledCode(id) {
   return {
     type: UNSET_DISABLED_CODE,
     payload: fetch.patch(`/admin/disabledCode/${id}`),
+  };
+}
+
+export function updateDisabledCode(param) {
+  return {
+    type: UPDATE_DISABLED_CODE,
+    payload: fetch.post('/admin/disabledCode/description', param),
   };
 }

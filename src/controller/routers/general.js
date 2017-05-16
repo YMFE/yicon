@@ -30,6 +30,7 @@ general.get('/statistics', statistic);
 
 general.get('/icons/:iconId', getIconInfo);
 general.post('/login', getUserInfo);
+general.get('/login', getUserInfo);
 general.post('/ldapauth', getLdapAuth);
 general.get('/logout', clearUserInfo);
 general.post('/validate/:type', validateAuth);

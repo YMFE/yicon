@@ -25,6 +25,7 @@ import {
   Help,
   LdapAuth,
   Statistic,
+  DisabledCode,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -90,6 +91,7 @@ export default store => {
         {/* 超管用户路由 */}
         <Route path="admin" onEnter={requireAdmin}>
           <Route path="authority/:type" component={Authority} /> {/* 权限设置 */}
+          <Route path="code" component={DisabledCode} /> {/* 系统占用编码管理 */}
         </Route>
       </Route>
 

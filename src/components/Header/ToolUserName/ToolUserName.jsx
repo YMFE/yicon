@@ -25,6 +25,12 @@ const Tool = (props) => (
             <Link to="/admin/authority/repo">权限管理</Link>
           </li>
       }
+      {
+        props.admin &&
+          <li>
+            <Link to="/admin/code">编码管理</Link>
+          </li>
+      }
       <li>
         <a href="/api/logout">退出</a>
       </li>

@@ -24,6 +24,7 @@ import PublicProject from './PublicProject/PublicProject';
 import Help from './Help/Help';
 import LdapAuth from './LdapAuth/LdapAuth';
 import Statistic from './Statistic/Statistic';
+import DisabledCode from './DisabledCode/DisabledCode';
 
 export {
   App,
@@ -52,4 +53,5 @@ export {
   Help,
   LdapAuth,
   Statistic,
+  DisabledCode,
 };

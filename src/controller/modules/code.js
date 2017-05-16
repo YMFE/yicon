@@ -66,10 +66,12 @@ export function *setDisabledCode(next) {
     }
   });
 
+  const isString = (string) => Object.prototype.toString.call(string) === '[object String]';
+
   const t = seq.transaction(transaction => {
     const existingIconInfo = existingCodes.map(code => Icon.update({
       status: iconStatus.DISABLED,
-      description: code.description,
+      description: isString(code.description) ? code.description : JSON.stringify(code.description),
       applyTime: code.time || new Date(),
     }, {
       where: {
@@ -85,7 +87,7 @@ export function *setDisabledCode(next) {
       applyTime: code.time || new Date(),
       status: iconStatus.DISABLED,
       uploader: userId,
-      description: code.description,
+      description: isString(code.description) ? code.description : JSON.stringify(code.description),
     }, {
       transaction,
     }));
@@ -158,6 +160,9 @@ export function *updateCodeDescription(next) {
   yield Icon.update({
     description,
   }, { where: { id: iconId } });
-  this.state.respond = '编码信息更新成功';
+  this.state.respond = yield Icon.findAll({
+    where: { status: iconStatus.DISABLED },
+    order: 'code ASC',
+  });
   yield next;
 }

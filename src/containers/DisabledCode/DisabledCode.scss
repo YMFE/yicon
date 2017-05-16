@@ -1,0 +1,106 @@
+@charset "utf-8";
+
+.yicon-code{
+	.yicon-myicon-main{
+		position: relative;
+	}
+	.disabled-code {
+		.add-disabled-code {
+			border-bottom: 1px solid #d8d9d9;
+		}
+		.disabled-code-operation {
+			cursor: pointer;
+		}
+		.collaborators{
+      margin-top: 10px;
+      overflow: hidden;
+      // width: 420px;
+      &-title{
+        font-size:14px ;
+        color:#616161;
+        line-height: 34px;
+      }
+      &-list{
+        li{
+          float: left;
+          color: #616161;
+          padding:0 6px;
+          background: #f1f3f6;
+          margin-right: 6px;
+          margin-top: 4px;
+          border-radius: 3px;
+          line-height: 26px;
+          height: 26px;
+					cursor: pointer;
+          .iconfont{
+            font-size:14px;
+            float: right;
+            cursor: pointer;
+            vertical-align: top;
+            margin-left: 2px;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+	}
+  .collaborators{
+    padding: 0 40px 20px;
+  }
+}
+
+.code-dialog{
+	.dialog-item,.field {
+		width: 100%;
+		line-height: 36px;
+		margin-top: 20px;
+		&:after{
+			height: 0;
+			display: block;
+			clear: both;
+			content: '';
+		}
+		.item-name{
+	    width: 48px;
+			margin: 10px 0;
+	    float: left;
+			display: block;
+	    text-align: right;
+			color: #616161;
+	    font: 12px/1.5 tahoma,"microsoft yahei","\5FAE\8F6F\96C5\9ED1";
+		}
+		.dialog-input{
+			margin-left: 74px;
+			input{
+				width: 276px;
+				height: 36px;
+				padding: 0 12px;
+				border: 1px solid #dfdfdf;
+			}
+		}
+		.description-textarea {
+			width: 100%;
+			max-height: 100;
+			padding: 6px 12px;
+			border: 1px solid #ddd;
+			box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+		}
+	}
+}
+
+.sync-disabled-code {
+	margin-top: 10px;
+	color: #999;
+	.code-wrapper {
+		width: 322px;
+		max-height: 60px;
+		overflow: auto;
+		flex-wrap: wrap;
+		display: flex;
+	}
+	.item-code {
+		width: 40px;
+		text-align: center;
+	}
+}

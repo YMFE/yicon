@@ -13,6 +13,7 @@ import {
   FETCH_DISABLED_CODE,
   SET_DISABLED_CODE,
   UNSET_DISABLED_CODE,
+  UPDATE_DISABLED_CODE,
 } from '../../constants/actionTypes';
 
 // const initialState = { repo: [], project: [], page: {}, manager: [], updateResult: false };
@@ -109,6 +110,12 @@ export default (state = initialState, action) => {
       };
     }
     case UNSET_DISABLED_CODE: {
+      return {
+        ...state,
+        disabledCode: action.payload.data,
+      };
+    }
+    case UPDATE_DISABLED_CODE: {
       return {
         ...state,
         disabledCode: action.payload.data,
