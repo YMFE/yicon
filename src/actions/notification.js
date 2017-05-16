@@ -34,7 +34,7 @@ export function getInfo(tag, page = 1) {
         dispatch(fetchAllInfo(page));
         break;
       case 'system':
-        dispatch(fetchProjectInfo(page));
+        dispatch(fetchSystemInfo(page));
         break;
       case 'project':
         dispatch(fetchProjectInfo(page));

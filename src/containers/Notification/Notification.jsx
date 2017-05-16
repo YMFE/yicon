@@ -183,6 +183,7 @@ export default class Notification extends Component {
                 <Pager
                   defaultCurrent={currentPage}
                   pageSize={10}
+                  totalPage={Math.ceil(totalPage / 10)}
                   totalCount={totalPage}
                   onClick={this.onChangePage}
                 /> :

@@ -44,7 +44,9 @@ export function* getAllNotices(next) {
       order: 'updatedAt DESC',
       ...pageMixin,
     });
-    this.state.page.totalCount = yield user.countLogs({ where: { scope: type } });
+    this.state.page.totalCount = yield user.countLogs({
+      where: { scope: type === 'system' ? 'repo' : 'project' },
+    });
   }
   this.state.respond = notice;
   // 将日志设置为已读
