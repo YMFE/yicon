@@ -1,4 +1,5 @@
 import DesIcon from '../components/DesIcon';
+import StatusIcon from '../components/StatusIcon/StatusIcon.jsx';
 import React from 'react';
 
 export const iconStatus = {
@@ -137,15 +138,13 @@ export const InfoTemplate = {
       const staus = iconStateDescription[item.status];
       classlist.push(staus.className);
       return (
-        <DesIcon
+        <StatusIcon
+          icon={item}
           key={index}
-          className="detail-icon"
-          name={item.name}
-          showCode={false}
-          iconPath={item.path}
+          statusDesc
         >
           <p className={classlist.join(' ')}>{staus.text}</p>
-        </DesIcon>
+        </StatusIcon>
       );
     })
   ),

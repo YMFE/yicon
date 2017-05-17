@@ -64,12 +64,19 @@ class InfoItem extends Component {
       const keys = Object.keys(data);
       // 我们一般只有一个 key
       const firstKey = keys[0];
+      const scopeData = scope === 'repo' ? repo : null;
       if (firstKey.indexOf('icon') > -1 || firstKey.indexOf('user') > -1) {
         text = data[firstKey].name;
+        if (type === 'AUDIT_OK' && scopeData) {
+          const link = scope === 'repo' && `/repositories/${scopeData.id}`;
+          content.push(<span key={index}><Link className="key" to={link}>{text}</Link></span>);
+        }
       } else {
         text = data[firstKey];
       }
-      content.push(<span key={index} className="key">{text}</span>);
+      if (type !== 'AUDIT_OK' || !scopeData) {
+        content.push(<span key={index} className="key">{text}</span>);
+      }
       result = regExp.exec(operation);
     }
     // 查看尾巴是否有未捕获的

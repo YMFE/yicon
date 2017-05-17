@@ -1,0 +1,67 @@
+.icon-status-item {
+  $state-green: #4bb052;
+  $state-grey: #e3e1e1;
+  $text-color: #616161;
+  width: 84px;
+  margin-right: 50px;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  >.info{
+    border: 1px solid transparent;
+    padding: 11px 5px;
+    width: 72px;
+    margin: 0 auto;
+    /*background-color: #fff;*/
+    .icon {
+      font-size: 64px;
+      width: 72px;
+      height: 72px;
+      line-height: 72px;
+      text-align: center;
+      color:#555f6e;
+      cursor: pointer;
+      .iconfont {
+        font-size: 64px;
+        vertical-align: top;
+      }
+    }
+    .name{
+      color:#616161;
+      line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      cursor: default;
+    }
+    .code{
+      color:#616161;
+      line-height: 16px;
+      margin: 0 -9px;
+    }
+  }
+  .status-desc {
+    .state {
+      color: #fff;
+      height: 20px;
+      width: 50px;
+      font-size: 12px;
+      line-height: 20px;
+      border-radius: 2px;
+      margin: 4px auto 0;
+      padding: 0 2px;
+      &.fault {
+        background-color: $state-grey;
+        color: $text-color;
+      }
+
+      &.passed {
+        background-color: $state-green;
+      }
+    }
+  }
+}
