@@ -61,6 +61,8 @@ class Log extends Component {
               {list.length ?
                 <Pager
                   defaultCurrent={currentPage}
+                  pageSize={10}
+                  totalPage={Math.ceil(totalCount / 10)}
                   totalCount={totalCount}
                   onClick={this.onChangePage}
                 /> :

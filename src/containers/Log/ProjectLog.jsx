@@ -69,6 +69,8 @@ class Log extends Component {
                 <div className="pager-container">
                   <Pager
                     defaultCurrent={currentPage}
+                    pageSize={10}
+                    totalPage={Math.ceil(totalCount / 10)}
                     totalCount={totalCount}
                     onClick={this.onChangePage}
                   />
