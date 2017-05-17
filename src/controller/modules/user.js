@@ -1,5 +1,5 @@
 import invariant from 'invariant';
-import { User } from '../../model';
+import { User, Repo } from '../../model';
 
 // suggest 获取用户名称
 export function* getUserByName() {
@@ -76,9 +76,15 @@ export function* addAdmin(next) {
 
 export function* delAdmin(next) {
   const { userId } = this.param;
+  const currentUser = this.state.user && this.state.user.userId;
+  invariant(+userId !== +currentUser, '无法删除自身超管权限');
   const count = yield User.count({ where: { actor: 2 } });
   invariant(count > 1, '删除之后系统将没有超管，不可删除');
-  yield User.update({ actor: 0 }, { where: { id: userId } });
+  const repoAdmins = yield Repo.findAll({
+    where: { admin: userId },
+  });
+  const actor = repoAdmins && repoAdmins.length ? 1 : 0;
+  yield User.update({ actor }, { where: { id: userId } });
   this.state.respond = yield User.findAll({ where: { actor: 2 } });
   yield next;
 }
