@@ -9,7 +9,6 @@ import {
 import {
   appointProjectOwner,
   getAdminProjects,
-  addProject,
   searchProjects,
 } from '../modules/project';
 import { listAdmin, addAdmin, delAdmin } from '../modules/user';
@@ -37,7 +36,6 @@ admin.post('/repositories', addRepo);
 admin.get('/projects/all', pagination, getAdminProjects);
 admin.get('/projects/all/:name', pagination, searchProjects);
 admin.patch('/projects/:projectId/peoject', appointProjectOwner);
-admin.post('/projects', addProject);
 
 admin.get('/disabledCode', getDisabledCode);
 admin.post('/disabledCode', setDisabledCode);

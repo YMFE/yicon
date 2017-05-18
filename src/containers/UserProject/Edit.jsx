@@ -73,6 +73,7 @@ class EditProject extends Component {
                   className="project-name"
                   onChange={this.onProjectNameChange}
                   value={this.state.projectName}
+                  autoComplete="off"
                   placeholder="请输入项目名称"
                 />
               </div>

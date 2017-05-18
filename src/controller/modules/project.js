@@ -450,11 +450,14 @@ export function* deleteProject(next) {
 }
 
 export function* addProject(next) {
-  const { name, owner } = this.param;
+  const { name } = this.param;
+  let { owner } = this.param;
+  const { userId } = this.state.user;
   invariant(
     PROJECT_NAME.reg.test(name),
     `项目名称长度为 1-30，只能有英文、数字、连字符和下划线，您输入的是 ${name}`
   );
+  owner = owner || userId;
   invariant(owner > 0, `管理员 id 期望输入数字，您输入的是 ${owner}`);
   const projectInfo = yield Project.findOne({ where: { name } });
   invariant(!projectInfo, `项目名称 ${name} 已被占用，请联系创建者`);
@@ -471,10 +474,14 @@ export function* addProject(next) {
       }, { transaction });
     })
     .then((userProject) => {
+      const subscribers = [];
+      if (userProject.userId !== userId) {
+        subscribers.push(userProject.userId);
+      }
       const log = {
         type: 'PROJECT_CREATE',
         loggerId: userProject.projectId,
-        subscribers: [userProject.userId],
+        subscribers,
       };
       return logRecorder(log, transaction, userProject.userId);
     })

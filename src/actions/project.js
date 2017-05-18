@@ -9,6 +9,7 @@ import {
   SAVE_TO_NEW_PROJECT,
   CHOSE_PROJECT_FOR_SAVE,
   SAVE_TO_PROJECT,
+  CREATE_EMPTY_PROJECT,
   PATCH_USERS_PROJECT_DETAIL,
   FETCH_MEMBERS_SUGGEST_LIST,
   PATCH_PROJECT_MEMBERS,
@@ -231,5 +232,12 @@ export function uploadIconToSource(id, data) {
   return {
     type: UPLOAD_ICON_SOURCE,
     payload: fetch.post(`/user/projects/${id}/source/upload`, data),
+  };
+}
+
+export function createEmptyProject(param) {
+  return {
+    type: CREATE_EMPTY_PROJECT,
+    payload: fetch.post('/user/projects/empty', param),
   };
 }

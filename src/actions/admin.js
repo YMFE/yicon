@@ -5,7 +5,6 @@ import {
   UPDATE_REPO_OWNER,
   UPDATE_PROJECT_OWNER,
   CREATE_REPO,
-  CREATE_PROJECT,
   FETCH_SEARCH_REPOS,
   FETCH_SEARCH_PROJECTS,
   FETCH_SUPER_MANAGER,
@@ -50,13 +49,6 @@ export function createRepo(param) {
   return {
     type: CREATE_REPO,
     payload: fetch.post('/admin/repositories', param),
-  };
-}
-
-export function createProject(param) {
-  return {
-    type: CREATE_PROJECT,
-    payload: fetch.post('/admin/projects', param),
   };
 }
 

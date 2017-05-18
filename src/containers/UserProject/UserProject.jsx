@@ -9,7 +9,7 @@ import ClipboardButton from 'react-clipboard.js';
 import { SubTitle, Content, Menu, Main } from '../../components/';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
-import { replace } from 'react-router-redux';
+import { replace, push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
@@ -31,6 +31,7 @@ import {
   setSourcePath,
   getPathAndVersion,
   uploadIconToSource,
+  saveToNewProject,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -42,6 +43,7 @@ import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
 import SetPath from './SetPath.jsx';
 import Upload from './Upload.jsx';
+import CopyProject from './CopyProject.jsx';
 
 @connect(
   state => ({
@@ -69,6 +71,8 @@ import Upload from './Upload.jsx';
     setSourcePath,
     getPathAndVersion,
     uploadIconToSource,
+    saveToNewProject,
+    push,
     // resetIconSize,
   }
 )
@@ -99,6 +103,8 @@ class UserProject extends Component {
     setSourcePath: PropTypes.func,
     getPathAndVersion: PropTypes.func,
     uploadIconToSource: PropTypes.func,
+    saveToNewProject: PropTypes.func,
+    push: PropTypes.func,
   }
 
   static defaultProps ={
@@ -114,6 +120,7 @@ class UserProject extends Component {
       showGenerateVersion: false,
       showDownloadDialog: false,
       showUploadDialog: false,
+      showCopyProject: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
       isUploadSuccess: false,
@@ -429,6 +436,31 @@ class UserProject extends Component {
   }
 
   @autobind
+  shiftCopyProject(isShow = false) {
+    this.setState({
+      showCopyProject: isShow,
+    });
+  }
+
+  @autobind
+  createProject(value) {
+    const { projectName } = value;
+    const current = this.props.currentUserProjectInfo;
+    const icons = current && current.icons || [];
+    this.props.saveToNewProject(projectName, icons).then(result => {
+      const { res, data } = result && result.payload;
+      if (!res) {
+        return;
+      }
+      const { projectId } = data;
+      this.props.replace(`/projects/${projectId}`);
+      this.shiftCopyProject();
+    }).catch(() => {
+      this.shiftCopyProject();
+    });
+  }
+
+  @autobind
   adjustBaseline() {
     const { projectId, currentUserProjectInfo } = this.props;
     this.props.adjustBaseline(projectId, currentUserProjectInfo.baseline);
@@ -570,6 +602,13 @@ class UserProject extends Component {
           </ClipboardButton>
           <div style={{ marginTop: 14, color: '#666' }}>* 注：移动端只需引用 woff 和 ttf 格式字体</div>
         </Dialog>,
+        <CopyProject
+          key={8}
+          id={current.id}
+          onOk={this.createProject}
+          onCancel={this.shiftCopyProject}
+          showCopyProject={this.state.showCopyProject}
+        />,
       ];
     }
     return dialogList;
@@ -672,6 +711,12 @@ class UserProject extends Component {
                   </button>
                 : null
                 }
+                <button
+                  className="options-btns btns-default"
+                  onClick={() => { this.shiftCopyProject(true); }}
+                >
+                  拷贝项目
+                </button>
                 <Link
                   to={`/projects/${id}/logs`}
                   className="options-btns btns-default"

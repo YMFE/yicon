@@ -16,6 +16,7 @@ import {
   addSourcePath,
   getSourceVersion,
   uploadSource,
+  addProject,
 } from '../modules/project';
 import {
   uploadIcons,
@@ -49,6 +50,7 @@ user.patch('/icons/:iconId', updateIconInfo);
 
 user.get('/projects', getAllProjects);
 user.post('/projects', createProject);
+user.post('/projects/empty', addProject);
 user.get('/projects/:projectId', getOneProject);
 user.get('/projects/:projectId/version/:version', getOneProject);
 user.post('/projects/:projectId/update', isProjectMember, generatorNewVersion, recordLog);

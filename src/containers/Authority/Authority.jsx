@@ -15,14 +15,13 @@ import {
   updateRepoOwner,
   updateProjectOwner,
   createRepo,
-  createProject,
   searchRepos,
   searchProjects,
   fetchSuperManager,
   createSuperManager,
   deleteSuperManager,
 } from '../../actions/admin';
-import { fetchMemberSuggestList } from '../../actions/project';
+import { fetchMemberSuggestList, createEmptyProject } from '../../actions/project';
 import { fetchHomeData, fetchTinyRepository } from '../../actions/repository';
 
 import './Authority.scss';
@@ -42,7 +41,7 @@ import './Authority.scss';
     updateRepoOwner,
     updateProjectOwner,
     createRepo,
-    createProject,
+    createEmptyProject,
     searchRepos,
     searchProjects,
     fetchMemberSuggestList,
@@ -64,7 +63,7 @@ export default class Authority extends Component {
     updateRepoOwner: PropTypes.func,
     updateProjectOwner: PropTypes.func,
     createRepo: PropTypes.func,
-    createProject: PropTypes.func,
+    createEmptyProject: PropTypes.func,
     searchRepos: PropTypes.func,
     searchProjects: PropTypes.func,
     fetchHomeData: PropTypes.func,
@@ -169,7 +168,7 @@ export default class Authority extends Component {
     }
     if (type === 'project') {
       param.owner = this.state.owner;
-      this.props.createProject(param).then(() => {
+      this.props.createEmptyProject(param).then(() => {
         this.fetchByType(type, this.state.currentPage);
       });
     }
