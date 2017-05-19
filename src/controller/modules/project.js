@@ -459,8 +459,15 @@ export function* addProject(next) {
   );
   owner = owner || userId;
   invariant(owner > 0, `管理员 id 期望输入数字，您输入的是 ${owner}`);
-  const projectInfo = yield Project.findOne({ where: { name } });
-  invariant(!projectInfo, `项目名称 ${name} 已被占用，请联系创建者`);
+  const projectInfo = yield Project.findOne({
+    where: { name },
+    include: [{
+      model: User,
+      as: 'projectOwner',
+    }],
+  });
+  const { projectOwner } = projectInfo || {};
+  invariant(!projectInfo, `项目名称 ${name} 已被占用，如有需要，请联系创建者${projectOwner && projectOwner.name}`);
   const user = yield User.findOne({ where: { id: owner } });
   invariant(user && user.id > 0, '没有指定的用户信息');
 

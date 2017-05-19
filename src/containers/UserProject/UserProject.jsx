@@ -453,7 +453,7 @@ class UserProject extends Component {
         return;
       }
       const { projectId } = data;
-      this.props.replace(`/projects/${projectId}`);
+      this.props.push(`/projects/${projectId}`);
       this.shiftCopyProject();
     }).catch(() => {
       this.shiftCopyProject();
@@ -469,7 +469,15 @@ class UserProject extends Component {
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
     if (!current) return null;
-    let iconList = null;
+    // let iconList = null;
+    let iconList = (
+      <div className="no-icon">
+        <div className="no-icon-pic"></div>
+        <div className="no-icon-tips">
+          <p>项目还没有图标，请快到大库中添加吧</p>
+        </div>
+      </div>
+    );
     if (current.icons && current.icons.length > 0) {
       iconList = current.icons.map((item, index) => (
         <IconButton

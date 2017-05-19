@@ -1,4 +1,5 @@
 import {
+  TOGGLE_CREATE_PROJECT,
   FETCH_USERS_PROJECT_INFO,
   FETCH_USERS_PROJECT_LIST,
   FETCH_PUBLIC_PROJECT_INFO,
@@ -15,6 +16,7 @@ import {
 } from '../../constants/actionTypes';
 
 const initialState = {
+  isShowCreateProject: false,
   usersProjectList: [],
   publicProjectList: [],
   currentUserProjectInfo: {},
@@ -44,6 +46,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case TOGGLE_CREATE_PROJECT: {
+      return {
+        ...state,
+        isShowCreateProject: action.payload.isShowCreateProject,
+      };
+    }
     case FETCH_USERS_PROJECT_LIST: {
       if (action.payload.res) {
         return {
