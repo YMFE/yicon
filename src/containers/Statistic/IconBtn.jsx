@@ -7,9 +7,6 @@ export default class IconBtn extends Component {
   static propTypes = {
     icon: PropTypes.object,
   };
-  // constructor(props) {
-  //   super(props);
-  // }
 
   render() {
     const icon = this.props.icon || {};

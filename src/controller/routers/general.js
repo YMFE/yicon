@@ -26,7 +26,7 @@ general.get('/projects/:projectId', getOneProject);
 general.get('/projects/:projectId/version/:version', getOneProject);
 general.post('/download/font', downloadFont);
 general.post('/download/icon/:type', downloadSingleIcon);
-general.get('/statistics', statistic);
+general.get('/statistics/size/:size/number/:number', statistic);
 
 general.get('/icons/:iconId', getIconInfo);
 general.post('/login', getUserInfo);

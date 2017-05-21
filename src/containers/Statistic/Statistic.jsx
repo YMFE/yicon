@@ -40,11 +40,8 @@ export default class Statistic extends Component {
     length: 0,
     list: [],
     data: [],
+    time: 1,
   };
-
-  componentWillMount() {
-    this.fetchData();
-  }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -55,24 +52,37 @@ export default class Statistic extends Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-
   @autobind
   handleScroll() {
+    // 页面总高度
+    const pageHeight = document.body.scrollHeight;
+    // 滚动条到顶部的高度
     const scrollTop = document.body.scrollTop;
+    // 浏览器视口高度
+    const viewportHeight = window.innerHeight;
     const element = findDOMNode(this.refs.statistic);
     if (scrollTop >= 64) {
       element.setAttribute('class', 'statistic fixed');
     } else {
       element.setAttribute('class', 'statistic');
     }
+    // 480 个图标大概显示时大概是 2 屏高
+    const size = 480;
+
+    if (scrollTop + viewportHeight >= pageHeight
+      && this.state.time <= Math.ceil(6400 / size)) {
+      const time = this.state.time + 1;
+      this.fetchData(size, this.state.time);
+      this.setState({ time });
+    }
   }
 
   @autobind
-  fetchData() {
+  fetchData(size, number) {
     this.setState({
       isShowLoading: true,
     }, () => {
-      this.props.fetchIconStatistic()
+      this.props.fetchIconStatistic(size, number)
         .then(() => this.setState({ isShowLoading: false }))
         .catch(() => this.setState({ isShowLoading: false }));
     });
@@ -88,8 +98,8 @@ export default class Statistic extends Component {
             </span>
             <span className="powerby">已使用:</span>
             <span className="name">{this.props.count} icons</span>
-            <span className="powerby">已跳过:</span>
-            <span className="name">{this.props.skiped} icons</span>
+            {/* <span className="powerby">已跳过:</span>
+            <span className="name">{this.props.skiped} icons</span> */}
             <div className="tool-content">
               <ul className="code-list">
                 <li className="code-item">0</li>
