@@ -4,14 +4,15 @@ import { iconStatus, startCode, endCode } from '../../constants/utils';
 import { Icon } from '../../model';
 
 export function* statistic(next) {
-  const { number, size } = this.param;
+  let { number, size } = this.param;
   const count = yield Icon.count({
     where: {
       status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] },
     },
   });
+  number = !isNaN(number) ? number : 1;
+  size = !isNaN(size) ? size : 480;
   const icons = yield Icon.findAndCountAll({
-    attributes: ['id', 'name', 'code', 'path'],
     where: {
       code: { $lt: startCode + number * size },
       status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] },

@@ -1,3 +1,4 @@
+@charset "utf-8";
 .yicon-statistic {
   position: relative;
   &-list {
@@ -15,6 +16,43 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+  }
+  .yicon-info {
+    width: 180px;
+    max-height: 240px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 10px;
+    border: 1px solid #cacacb;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #ccc;
+    box-sizing: border-box;
+    background-color: #fff;
+    z-index: 100000;
+    overflow: auto;
+    display: none;
+    .icon-info {
+      display: flex;
+      align-items: center;
+    }
+    .title-code {
+      width: 100px;
+      margin-left: 10px;
+    }
+    .icon-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      color: #333;
+    }
+    .icon-code {
+      font-size: 14px;
+      color: #666;
+    }
+    .icon-description {
+      margin-top: 10px;
+    }
   }
 }
 .statistic {
