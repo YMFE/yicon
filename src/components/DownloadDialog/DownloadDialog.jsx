@@ -31,6 +31,13 @@ class DownloadDialog extends Component {
   changeIconColor(color, isError) {
     if (!isError) {
       this.props.editIconStyle({ color });
+    } else {
+      // 全部删除保留 '#'
+      if (!color) {
+        this.props.editIconStyle({ color: '#' });
+      } else {
+        this.refs.colorInput.reset();
+      }
     }
   }
 
@@ -116,7 +123,6 @@ class DownloadDialog extends Component {
                 defaultValue={iconDetail.iconStyle.color}
                 regExp={COLOR.reg}
                 onChange={this.changeIconColor}
-                strict
                 ref="colorInput"
               />
               <div className="color-show" style={{ background: iconDetail.iconStyle.color }}></div>

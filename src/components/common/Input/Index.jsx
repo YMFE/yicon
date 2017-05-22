@@ -77,10 +77,10 @@ export default class Input extends Component {
       this.setState({
         error,
         value: val,
-      }, this.props.onChange(val, error));
+      }, () => this.props.onChange(val, error));
     } else {
       if (!error) {
-        this.setState({ value: val }, this.props.onChange(val, error));
+        this.setState({ value: val }, () => this.props.onChange(val, error));
       }
     }
   }
