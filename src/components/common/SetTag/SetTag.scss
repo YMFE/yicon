@@ -1,5 +1,21 @@
 .set-tag {
   display: inline-block;
+  .edit-name {
+    width: 276px;
+    .input {
+      width: 258px;
+    }
+  }
+  .add-tag {
+    height: 38px;
+    line-height: 38px;
+    font-size: 14px;
+    display: inline-block;
+    color: #fff;
+    background-color: #008EDC;
+    border: 1px solid #008EDC;
+    padding: 0 16px;
+  }
 }
 .set-tag-icon {
   color: #6f6f6f;

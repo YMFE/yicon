@@ -9,6 +9,7 @@
     padding:11px;
     width: 72px;
     margin: 0 auto;
+    position: relative;
     /*background-color: #fff;*/
     .icon {
       font-size: 64px;
@@ -39,6 +40,9 @@
       color:#616161;
       line-height: 16px;
       margin: 0 -9px;
+    }
+    .cart-mask {
+      display: none;
     }
   }
   >.tool{
@@ -102,5 +106,23 @@
 .icon-detail-item:hover{
   .tool-item{
     display: inline-block;
+  }
+  .cart-mask {
+    width: 94px;
+    height: 126px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    display: block;
+  }
+  .icon-cart {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    color: #666;
+    font-size: 30px;
   }
 }

@@ -12,6 +12,7 @@ import confirm from '../../components/common/Dialog/Confirm.jsx';
 import { replace, push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
@@ -123,6 +124,7 @@ class UserProject extends Component {
       showCopyProject: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
+      isShowUpdateDialog: false,
       isUploadSuccess: false,
       iconStr: '',
       generateVersion: 'revision',
@@ -211,6 +213,17 @@ class UserProject extends Component {
       });
     };
   }
+
+  @autobind
+  updateIconInfo(iconId) {
+    this.props.getIconDetail(iconId).then(() => {
+      this.props.editIconStyle({ color: '#34475e', size: 255 });
+      this.setState({
+        isShowUpdateDialog: true,
+      });
+    });
+  }
+
   @autobind
   updateProjectDetail(result) {
     this.props.patchUserProject({
@@ -288,9 +301,16 @@ class UserProject extends Component {
   }
 
   @autobind
-  dialogUpdateShow(isShow) {
+  dialogDownloadShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
+    });
+  }
+
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowUpdateDialog: isShow,
     });
   }
 
@@ -483,10 +503,11 @@ class UserProject extends Component {
         <IconButton
           icon={item}
           key={index}
-          toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
+          toolBtns={['copy', 'delete', 'download', 'copytip', 'update']}
           delete={(icons) => {
             this.deleteIcon(icons);
           }}
+          update={() => { this.updateIconInfo(item.id); }}
           download={this.handleSingleIconDownload(item.id)}
         />
       ));
@@ -583,7 +604,7 @@ class UserProject extends Component {
           key={6}
           empty
           visible={this.state.isShowDownloadDialog}
-          getShow={this.dialogUpdateShow}
+          getShow={this.dialogDownloadShow}
         >
           <DownloadDialog />
         </Dialog>,
@@ -617,6 +638,14 @@ class UserProject extends Component {
           onCancel={this.shiftCopyProject}
           showCopyProject={this.state.showCopyProject}
         />,
+        <Dialog
+          key={9}
+          empty
+          visible={this.state.isShowUpdateDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <UpdateDialog />
+        </Dialog>,
       ];
     }
     return dialogList;
