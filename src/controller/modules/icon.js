@@ -113,6 +113,7 @@ export function* uploadIcons(next) {
 
   const data = icons.map(icon => ({
     name: icon.name,
+    tags: icon.name,
     path: icon.d,
     status: iconStatus.UPLOADED,
     uploader: userId,

@@ -7,9 +7,11 @@ import {
 } from '../../actions/statistic';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { SubTitle } from '../../components/';
+import { iconStatus } from '../../constants/utils';
 
 import './Statistic.scss';
 import IconBtn from './IconBtn.jsx';
+import Icon from '../../components/common/Icon/Icon.jsx';
 
 @connect(
   state => ({
@@ -40,11 +42,12 @@ export default class Statistic extends Component {
     length: 0,
     list: [],
     data: [],
+    time: 1,
+    name: '',
+    code: 0,
+    path: '',
+    description: '',
   };
-
-  componentWillMount() {
-    this.fetchData();
-  }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -55,30 +58,93 @@ export default class Statistic extends Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-
   @autobind
   handleScroll() {
+    // 页面总高度
+    const pageHeight = document.body.scrollHeight;
+    // 滚动条到顶部的高度
     const scrollTop = document.body.scrollTop;
+    // 浏览器视口高度
+    const viewportHeight = window.innerHeight;
     const element = findDOMNode(this.refs.statistic);
     if (scrollTop >= 64) {
       element.setAttribute('class', 'statistic fixed');
     } else {
       element.setAttribute('class', 'statistic');
     }
+    // 480 个图标大概显示时大概是 2 屏高
+    const size = 480;
+
+    if (scrollTop + viewportHeight >= pageHeight
+      && this.state.time <= Math.ceil(6400 / size)) {
+      const time = this.state.time + 1;
+      this.fetchData(size, this.state.time);
+      this.setState({ time });
+    }
   }
 
   @autobind
-  fetchData() {
+  fetchData(size, number) {
     this.setState({
       isShowLoading: true,
     }, () => {
-      this.props.fetchIconStatistic()
+      this.props.fetchIconStatistic(size, number)
         .then(() => this.setState({ isShowLoading: false }))
         .catch(() => this.setState({ isShowLoading: false }));
     });
   }
 
+  @autobind
+  hoverIcon(e, icon) {
+    const { fromElement, clientX, clientY } = e.nativeEvent;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const { name, code, path, status, description } = icon;
+    const classList = ['statistic', 'yicon-statisitc-detail', 'yicon-info'];
+    if (fromElement && classList.indexOf(fromElement.className) > -1 && path) {
+      // left 和 top 分别定位详细信息 tip 的位置
+      let left = 0;
+      let top = 0;
+      // 系统占用的编码需要展示描述信息，故需要减去 240
+      const disabledHeight = status === iconStatus.DISABLED ? 180 : 0;
+      // 根据图标的位置改变 tip 的 left,top，主要是处理右边和下边的情况
+      // tip 的 宽为 180，高最大为 240，每个图标宽高为 60
+      if (clientX + 180 > viewportWidth) {
+        left = clientX - 210;
+      } else {
+        left = clientX + 30;
+      }
+      if (clientY + 240 > viewportHeight) {
+        top = clientY - 30 - disabledHeight;
+      } else {
+        top = clientY;
+      }
+      const element = this.infoEle;
+      element.style.left = `${left}px`;
+      element.style.top = `${top}px`;
+      element.style.display = 'block';
+      this.setState({ name, code, path, description });
+    }
+  }
+
+  @autobind
+  leaveIcon(e) {
+    const { fromElement } = e.nativeEvent;
+    if (fromElement && /yicon-statistic-wrapper/.test(fromElement.className)) {
+      const element = document.querySelector('.yicon-info');
+      element.style.display = 'none';
+    }
+  }
+
   render() {
+    const description = this.state.description;
+    let { mobile, os, other } = {};
+    if (description) {
+      const data = JSON.parse(description);
+      mobile = data.mobile;
+      os = data.os;
+      other = data.other;
+    }
     return (
       <div className="statistic" ref="statistic">
         <SubTitle tit={'图标使用详情统计'}>
@@ -88,8 +154,8 @@ export default class Statistic extends Component {
             </span>
             <span className="powerby">已使用:</span>
             <span className="name">{this.props.count} icons</span>
-            <span className="powerby">已跳过:</span>
-            <span className="name">{this.props.skiped} icons</span>
+            {/* <span className="powerby">已跳过:</span>
+            <span className="name">{this.props.skiped} icons</span> */}
             <div className="tool-content">
               <ul className="code-list">
                 <li className="code-item">0</li>
@@ -128,8 +194,36 @@ export default class Statistic extends Component {
                 <IconBtn
                   key={i}
                   icon={icon}
+                  hoverIcon={this.hoverIcon}
+                  leaveIcon={this.leaveIcon}
                 />
               ))
+            }
+          </div>
+          <div className="yicon-info" ref={(node) => { this.infoEle = node; }}>
+            <div className="icon-info">
+              <Icon
+                extraClass={'statistic-icon'}
+                size={48}
+                fill={'#555f6e'}
+                d={this.state.path}
+              />
+              <div className="title-code">
+                <h4 className="icon-title" title={this.state.name}>{this.state.name}</h4>
+                <div className="icon-code">
+                  <span>{`&#x${(+this.state.code).toString(16)};`}</span>
+                </div>
+              </div>
+            </div>
+            {description &&
+              (<div className="icon-description">
+                <h4>编码系统占用：</h4>
+                <ul>
+                  <li>设备：{mobile}</li>
+                  <li>系统：{os}</li>
+                  <li>其他信息：{other || '无'}</li>
+                </ul>
+              </div>)
             }
           </div>
         </div>

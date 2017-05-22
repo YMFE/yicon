@@ -1,12 +1,16 @@
 
 .yicon-statistic-wrapper {
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   margin: 0 11px 16px;
   background-color: #fff;
+  border: 1px solid #fff;
   border-radius: 6px;
   display: inline-block;
+  &.disabled-code {
+    border: 1px solid #f00;
+  }
   .statistic-icon {
     position: absolute;
     top: 0;
