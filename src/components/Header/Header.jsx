@@ -130,7 +130,6 @@ class Header extends Component {
                 >
                   <Link
                     to="/projects"
-                    style={{ display: 'block', padding: '0 20px' }}
                   >
                     图标项目
                   </Link>
