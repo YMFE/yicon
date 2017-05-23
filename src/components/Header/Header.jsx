@@ -28,7 +28,7 @@ import { PROJECT_NAME } from '../../constants/validate';
 const iconManageList = [
   { name: '图标统计', href: '/statistic', auth: 'general' },
   { name: '图标工作台', href: '/workbench', auth: 'login' },
-  { name: '我的图标项目', href: '/projects', auth: 'login' },
+  // { name: '我的图标项目', href: '/projects', auth: 'login' },
   { name: '图标上传历史', href: '/user/icons', auth: 'login' },
   { name: '图标审核', href: '/auditing', auth: 'owner' },
 ];
@@ -56,6 +56,7 @@ class Header extends Component {
     super(props);
     this.state = {
       isShow: false,
+      isHover: false,
     };
   }
 
@@ -73,6 +74,13 @@ class Header extends Component {
   toggleCreateProject(isShow = false) {
     this.setState({
       isShow,
+    });
+  }
+
+  @autobind
+  toggleMenuShow(isHover = false) {
+    this.setState({
+      isHover,
     });
   }
 
@@ -114,6 +122,19 @@ class Header extends Component {
               <ul>
                 <Nav name="图标库" list={list} />
                 <Nav name="图标管理" list={iconManageList} />
+                <li
+                  onMouseOver={() => this.toggleMenuShow(true)}
+                  onMouseOut={() => this.toggleMenuShow(false)}
+                  className={`global-header-Nav ${this.state.isHover ? 'hover' : ''}`}
+                  style={{ display: isLoginUser ? 'block' : 'none' }}
+                >
+                  <Link
+                    to="/projects"
+                    style={{ display: 'block', padding: '0 20px' }}
+                  >
+                    图标项目
+                  </Link>
+                </li>
               </ul>
             </nav>
             <div className="quick-menu nav-menu-info">
