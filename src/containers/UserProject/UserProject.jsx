@@ -153,6 +153,7 @@ class UserProject extends Component {
       this.setState({ showLoading: false });
     }).catch(() => this.setState({ showLoading: false }));
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
@@ -337,6 +338,8 @@ class UserProject extends Component {
         if (data.res) {
           const { foldName } = data.data;
           window.location.href = `/download/${foldName}`;
+        } else {
+          Message.error(data.message || '下载失败，请稍后再试');
         }
       });
   }
@@ -348,7 +351,10 @@ class UserProject extends Component {
     this.props.generateVersion({
       id,
       versionType: this.state.generateVersion,
-    }).then(() => {
+    }).then((data) => {
+      if (!data.res) {
+        return;
+      }
       // 下载字体
       this.props.fetchAllVersions(id);
       this.downloadAllIcons();
@@ -429,7 +435,10 @@ class UserProject extends Component {
       // 指定升级到的版本
       version: this.nextSourceVersion,
     })
-    .then(() => {
+    .then((data) => {
+      if (!data.res) {
+        throw Error();
+      }
       // 上传字体
       this.props.fetchAllVersions(id);
       return this.props.uploadIconToSource(id, {

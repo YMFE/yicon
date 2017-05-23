@@ -9,6 +9,7 @@ import { versionTools, has, diffArray, simpleParse } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 import config from '../../config';
+import { iconStatus } from '../../constants/utils';
 
 const { infoUrl, versionUrl, sourceUrl, support, cdn } = config.source;
 const { serviceUrl } = config.login;
@@ -180,6 +181,26 @@ export function* generatorNewVersion(next) {
   const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
 
   invariant(!isNaN(versionFrom), '空项目不可进行版本升级');
+
+  const project = yield Project.findOne({
+    where: { id: projectId },
+  });
+  invariant(project, `编号${projectId}的项目不存在`);
+  const icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: { version: 0 },
+    },
+  });
+  // console.log(icons);
+  const disabledCode = [];
+  icons.forEach(icon => {
+    if (icon.status === iconStatus.DISABLED) {
+      disabledCode.push(icon.name);
+    }
+  });
+  const length = disabledCode.length;
+  invariant(!length, `项目中的 ${disabledCode.join('、')} 等图标被系统占用，请先删除，再下载或同步`);
 
   const versionTo = version || versionTools.update(versionFrom, versionType);
 
@@ -650,8 +671,11 @@ export function* uploadSource(next) {
     type: 'project',
     id: projectId,
   });
+  if (!file.res) {
+    return;
+  }
   // TODO: 文件路径需要修改
-  const { fontDest } = file.data && file.data.data;
+  const { fontDest } = file && file.data && file.data.data;
   let result = {};
   const sourcePath = path.split('/').slice(1).join('/') || '/';
   if (file.data && file.data.res && fs.existsSync(fontDest)) {
