@@ -38,6 +38,10 @@ export const iconStateDescription = {
     className: 'fault',
     text: '被替换',
   },
+  18: {
+    className: 'fault',
+    text: '系统占用',
+  },
   20: {
     className: 'passed',
     text: '审核通过',
@@ -137,6 +141,19 @@ export const InfoTemplate = {
       const classlist = ['state'];
       const staus = iconStateDescription[item.status];
       classlist.push(staus.className);
+      if (item.status === iconStatus.DISABLED) {
+        return (
+          <DesIcon
+            key={index}
+            className="detail-icon"
+            name={item.name}
+            showCode={false}
+            iconPath={item.path}
+          >
+            <p className={classlist.join(' ')}>{staus.text}</p>
+          </DesIcon>
+        );
+      }
       return (
         <StatusIcon
           icon={item}

@@ -16,6 +16,7 @@ import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
+import { iconStatus } from '../../constants/utils';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -145,9 +146,16 @@ class UserProject extends Component {
       const current = this.props.currentUserProjectInfo;
       if (!current || id !== +current.id) {
         this.props.getUserProjectInfo(id)
+          .then(() => this.props.fetchAllVersions(id))
+          .then(() => {
+            const { versions } = this.props.projectInfo;
+            if (versions && versions.length) {
+              this.compareVersion(() => {});
+            }
+          })
           .then(() => this.props.hideLoading())
           .catch(() => this.props.hideLoading());
-        this.props.fetchAllVersions(id);
+        // this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();
       this.setState({ showLoading: false });
@@ -172,9 +180,18 @@ class UserProject extends Component {
       return;
     }
     if (nextId !== this.props.projectId) {
-      this.props.getUserProjectInfo(nextId).then(() =>
-        this.setState({ showLoading: false })
-      ).catch(() => this.setState({ showLoading: false }));
+      this.props.getUserProjectInfo(nextId)
+        .then(() => this.props.fetchAllVersions(nextId))
+        .then(() => {
+          const { versions } = this.props.projectInfo;
+          if (versions && versions.length) {
+            this.compareVersion(() => {});
+          }
+        })
+        .then(() =>
+          this.setState({ showLoading: false })
+        )
+        .catch(() => this.setState({ showLoading: false }));
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
       this.nextVersion = '0.0.1';
@@ -282,6 +299,14 @@ class UserProject extends Component {
   @autobind
   shiftDownloadDialog(isShow = false) {
     const length = this.props.projectInfo.versions.length;
+    const current = this.props.currentUserProjectInfo;
+    if (current && current.icons) {
+      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      if (disabled.length) {
+        Message.error('项目中存在系统占用的图标，请删除后再下载');
+        return;
+      }
+    }
     if (isShow && length > 1) {
       this.compareVersion(ret => {
         const { deleted, added } = ret.payload.data;
@@ -352,7 +377,7 @@ class UserProject extends Component {
       id,
       versionType: this.state.generateVersion,
     }).then((data) => {
-      if (!data.res) {
+      if (data.payload && !data.payload.res) {
         return;
       }
       // 下载字体
@@ -393,6 +418,14 @@ class UserProject extends Component {
   @autobind
   shiftUploadSource(isShow = false) {
     const id = this.props.currentUserProjectInfo.id;
+    const current = this.props.currentUserProjectInfo;
+    if (current && current.icons) {
+      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      if (disabled.length) {
+        Message.error('项目中存在系统占用的图标，请删除后再同步');
+        return;
+      }
+    }
     if (isShow) {
       this.props.getPathAndVersion(id).then(data => {
         if (!data.payload.res) return;
@@ -498,7 +531,7 @@ class UserProject extends Component {
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
     if (!current) return null;
-    // let iconList = null;
+    const { deleted, added, replaced } = this.props.comparisonResult;
     let iconList = (
       <div className="no-icon">
         <div className="no-icon-pic"></div>
@@ -508,18 +541,46 @@ class UserProject extends Component {
       </div>
     );
     if (current.icons && current.icons.length > 0) {
-      iconList = current.icons.map((item, index) => (
-        <IconButton
-          icon={item}
-          key={index}
-          toolBtns={['copy', 'delete', 'download', 'copytip', 'update']}
-          delete={(icons) => {
-            this.deleteIcon(icons);
-          }}
-          update={() => { this.updateIconInfo(item.id); }}
-          download={this.handleSingleIconDownload(item.id)}
-        />
-      ));
+      const currentIcons = deleted ? current.icons.concat(deleted) : current.icons;
+      const hasReplacedIcons = replaced.map(item => item.old && item.old.id);
+      const replacedIcons = replaced.map(item => item.new && item.new.id);
+      const deletedIcons =
+        deleted.map(item => item.id).filter(item => hasReplacedIcons.indexOf(item) === -1);
+      const addedIcons =
+        added.map(item => item.id).filter(item => replacedIcons.indexOf(item) === -1);
+
+      iconList = currentIcons.map((item, index) => {
+        const deletedClassName = deletedIcons.indexOf(item.id) > -1 ? 'deleted-icon' : '';
+        const addedClassName = addedIcons.indexOf(item.id) > -1 ? 'added-icon' : '';
+        const replacedClassName = replacedIcons.indexOf(item.id) > -1 ? 'replaced-icon' : '';
+        const disabledClassName = item.status === iconStatus.DISABLED ? 'disabled-icon' : '';
+        const toolBtns = ['copy', 'download', 'copytip', 'update'];
+        if (!deletedClassName) {
+          toolBtns.push('delete');
+        }
+        return (
+          <div
+            key={index}
+            className={`project-icon clearfix ${disabledClassName} ${deletedClassName}`}
+          >
+            <ul className="status-tag">
+              <li className={`status-tag-item ${disabledClassName}`}>系统占用</li>
+              <li className={`status-tag-item ${addedClassName}`}>新增</li>
+              <li className={`status-tag-item ${replacedClassName}`}>替换</li>
+              <li className={`status-tag-item ${deletedClassName}`}>删除</li>
+            </ul>
+            <IconButton
+              icon={item}
+              toolBtns={toolBtns}
+              delete={(icons) => {
+                this.deleteIcon(icons);
+              }}
+              update={() => { this.updateIconInfo(item.id); }}
+              download={this.handleSingleIconDownload(item.id)}
+            />
+          </div>
+        );
+      });
     }
     return iconList;
   }
