@@ -50,6 +50,7 @@ import CopyProject from './CopyProject.jsx';
 @connect(
   state => ({
     usersProjectList: state.project.usersProjectList,
+    projectChangeInfo: state.project.projectChangeInfo,
     currentUserProjectInfo: state.project.currentUserProjectInfo,
     suggestList: state.project.memberSuggestList,
     projectInfo: state.project.projectInfo,
@@ -82,6 +83,7 @@ class UserProject extends Component {
   static propTypes = {
     projectId: PropTypes.string,
     usersProjectList: PropTypes.array,
+    projectChangeInfo: PropTypes.object,
     currentUserProjectInfo: PropTypes.object,
     getUsersProjectList: PropTypes.func,
     fetchMemberSuggestList: PropTypes.func,
@@ -739,20 +741,28 @@ class UserProject extends Component {
         <Content>
           <Menu>
             {
-              list.map((item, index) => (
-                <li
-                  key={index}
-                  data-id={item.id}
-                  title={item.name}
-                  className={
-                    item.id === this.props.currentUserProjectInfo.id
-                    ? 'selected'
-                    : null
-                  }
-                >
-                  <Link to={`/projects/${item.id}`}>{item.name}</Link>
-                </li>
-              ))
+              list.map((item, index) => {
+                const infoCount = + this.props.projectChangeInfo[`project${item.id}`];
+                return (
+                  <li
+                    key={index}
+                    data-id={item.id}
+                    title={item.name}
+                    className={`project-name-item ${item.id === this.props.currentUserProjectInfo.id
+                      ? 'selected'
+                      : null}`
+                    }
+                  >
+                    <Link to={`/projects/${item.id}`}>{item.name}</Link>
+                    {infoCount ?
+                      (<span className="info-num">
+                        {infoCount < 100 ? infoCount : '···'}
+                      </span>)
+                      : null
+                    }
+                  </li>
+                );
+              })
             }
           </Menu>
           <Main>

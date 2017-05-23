@@ -18,6 +18,7 @@ import {
 const initialState = {
   isShowCreateProject: false,
   usersProjectList: [],
+  projectChangeInfo: {},
   publicProjectList: [],
   currentUserProjectInfo: {},
   memberSuggestList: [],
@@ -57,6 +58,7 @@ export default (state = initialState, action) => {
         return {
           ...state,
           usersProjectList: action.payload.data.organization,
+          projectChangeInfo: action.payload.data.result,
         };
       }
       return state;

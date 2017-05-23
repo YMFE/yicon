@@ -16,6 +16,25 @@ $imgUrl: '../../../static/images/';
       }
     }
   }
+  .global-content-menu {
+    .project-name-item {
+      position: relative;
+    }
+    .info-num {
+      width: 20px;
+      height: 18px;
+      line-height: 18px;
+      position: absolute;
+      top: 16px;
+      right: 9px;
+      text-align: center;
+      background-color: #ff5453;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
   .global-content-Main{
     flex-direction: column;
     padding-bottom: 50px;
@@ -141,6 +160,7 @@ $imgUrl: '../../../static/images/';
       background-color: #ff5453;
       color: #fff;
       border-radius: 4px;
+      z-index: 100;
       &-item {
         padding: 0 1px;
         display: none;

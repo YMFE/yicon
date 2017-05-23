@@ -24,6 +24,50 @@ function* listProjects(user) {
   };
 }
 
+function* getDiffResult(data) {
+  const { projectId } = data;
+  let { highVersion, lowVersion } = data;
+  invariant(projectId > 0, '缺少项目id参数');
+
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const hVersion = versionTools.v2n(highVersion);
+  const lVersion = versionTools.v2n(lowVersion);
+  if (isNaN(hVersion) && isNaN(lVersion)) invariant(false, '缺少对比项目版本号');
+  if (hVersion < lVersion) {
+    const temp = highVersion;
+    highVersion = lowVersion;
+    lowVersion = temp;
+  }
+
+  let result = { deleted: [], added: [], replaced: [] };
+  if (hVersion !== lVersion) {
+    const icons = yield project.getIcons({
+      through: {
+        model: ProjectVersion,
+        where: {
+          version: {
+            $in: [hVersion, lVersion],
+          },
+        },
+      },
+    });
+    const hvIcons = [];
+    const lvIcons = [];
+    icons.forEach(v => {
+      if (v.projectVersions && v.projectVersions.version === highVersion) {
+        hvIcons.push(v);
+      } else {
+        lvIcons.push(v);
+      }
+    });
+    // 此时diffArray：第一个参数为低版本数组，第二个为高版本数组，第三个为是否需要获取替换情况
+    // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
+    result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
+    // result = diffArray(lvIcons, hvIcons, true);
+  }
+  return result;
+}
+
 export function* adjustBaseline() {
   const { projectId, baseline } = this.param;
 
@@ -39,7 +83,29 @@ export function* getAllProjects(next) {
   const { userId } = this.state.user;
 
   const user = yield User.findOne({ where: { id: userId } });
-  this.state.respond = yield listProjects(user);
+  const projects = yield listProjects(user);
+  const projectList = projects && projects.organization;
+  const result = {};
+  for (let i = 0, len = projectList && projectList.length || 0; i < len; i++) {
+    const projectId = projectList[i] && projectList[i].id;
+    const version = yield ProjectVersion.findAll({
+      attributes: [[seq.literal('distinct `version`'), 'version']],
+      where: { projectId },
+      order: 'version',
+    }).map(v => v.version);
+    if (version && version.length > 1) {
+      const data = yield getDiffResult({
+        projectId,
+        highVersion: version[version.length - 1],
+        lowVersion: '0.0.0',
+      });
+      const { deleted = [], added = [], replaced = [] } = data;
+      result[`project${projectId}`] =
+        replaced.length ? deleted.length + added.length - 1 : deleted.length + added.length;
+    }
+  }
+  projects.result = result;
+  this.state.respond = projects;
 
   yield next;
 }
@@ -394,46 +460,7 @@ export function* getAllPublicProjects(next) {
 }
 
 export function* diffVersion(next) {
-  const { projectId } = this.param;
-  let { highVersion, lowVersion } = this.param;
-  invariant(projectId > 0, '缺少项目id参数');
-
-  const project = yield Project.findOne({ where: { id: projectId } });
-  const hVersion = versionTools.v2n(highVersion);
-  const lVersion = versionTools.v2n(lowVersion);
-  if (isNaN(hVersion) && isNaN(lVersion)) invariant(false, '缺少对比项目版本号');
-  if (hVersion < lVersion) {
-    const temp = highVersion;
-    highVersion = lowVersion;
-    lowVersion = temp;
-  }
-
-  let result = { deleted: [], added: [], replaced: [] };
-  if (hVersion !== lVersion) {
-    const icons = yield project.getIcons({
-      through: {
-        model: ProjectVersion,
-        where: {
-          version: {
-            $in: [hVersion, lVersion],
-          },
-        },
-      },
-    });
-    const hvIcons = [];
-    const lvIcons = [];
-    icons.forEach(v => {
-      if (v.projectVersions && v.projectVersions.version === highVersion) {
-        hvIcons.push(v);
-      } else {
-        lvIcons.push(v);
-      }
-    });
-    // 此时diffArray：第一个参数为低版本数组，第二个为高版本数组，第三个为是否需要获取替换情况
-    // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
-    result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
-    // result = diffArray(lvIcons, hvIcons, true);
-  }
+  const result = yield getDiffResult(this.param);
   this.state.respond = this.state.respond || {};
   this.state.respond.deleted = result.deleted;
   this.state.respond.added = result.added;
