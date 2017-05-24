@@ -171,12 +171,13 @@ export default class DisabledCode extends Component {
         }
         clearTimeout(timeout);
         const { content } = res && res.data && res.data.data;
-        const data = content.map((item, key) => (<li
+        const data = content.length ? content.map((item, key) => (<li
           className="item-code"
           key={key}
         >
           {item.code && item.code.replace('0x', '')}
-        </li>));
+        </li>))
+        : (<li>暂无同步的编码</li>);
         const element = (<div className="sync-disabled-code">
           <h5>是否同步下列编码：</h5>
           <ul className="code-wrapper">{data}</ul>
