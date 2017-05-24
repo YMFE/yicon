@@ -2,8 +2,8 @@ import axios from 'axios';
 import invariant from 'invariant';
 
 import { logRecorder } from './log';
-import { seq, Icon } from '../../model';
-import { iconStatus } from '../../constants/utils';
+import { seq, Icon, Repo, RepoVersion } from '../../model';
+import { iconStatus, startCode, endCode } from '../../constants/utils';
 
 // 表示系统占用的图标 path
 const disabledCodePath = ' M889 169L768 290V848C768 856.8 760.8 864 752 864H272C263.2 ' +
@@ -69,17 +69,79 @@ export function *setDisabledCode(next) {
   const isString = (string) => Object.prototype.toString.call(string) === '[object String]';
 
   const t = seq.transaction(transaction => {
-    const existingIconInfo = existingCodes.map(code => Icon.update({
+    let existingIcon = null;
+    const canUseCodes = [];
+    const existingIconInfo = existingCodes.map((item, index) => Icon.update({
       status: iconStatus.DISABLED,
-      description: isString(code.description) ? code.description : JSON.stringify(code.description),
-      applyTime: code.time || new Date(),
+      description: isString(item.description) ? item.description : JSON.stringify(item.description),
+      applyTime: item.time || new Date(),
     }, {
       where: {
-        code: parseInt(+code.code, 10),
+        code: parseInt(+item.code, 10),
         status: iconStatus.RESOLVED,
       },
       transaction,
-    }));
+    })
+    .then(() => Icon.findAll({
+      attributes: ['code'],
+      where: { status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] } },
+      order: 'code',
+      transaction,
+    }))
+    .then((allIcons) => {
+      // 取所有可用编码
+      const iconInfo = {};
+
+      allIcons.forEach(icon => {
+        const iconCode = icon && icon.code;
+        iconInfo[`code${iconCode}`] = iconCode && true;
+      });
+      for (let i = parseInt(startCode, 10); i <= parseInt(endCode, 10); i++) {
+        if (!iconInfo[`code${i}`]) {
+          canUseCodes.push(i);
+        }
+      }
+      return Icon.findOne({
+        where: {
+          code: parseInt(+item.code, 10),
+          status: iconStatus.RESOLVED,
+        },
+        include: [{
+          model: Repo,
+          through: {
+            model: RepoVersion,
+            version: '0.0.0',
+          },
+        }],
+        raw: true,
+      });
+    })
+    .then((icon) => {
+      // 将历史图标设置为系统占用后，需重新插入一条数据并重新编码
+      existingIcon = icon;
+      const { name, fontClass, tags, path, createTime } = existingIcon;
+      return Icon.create({
+        name,
+        fontClass,
+        tags,
+        code: canUseCodes[index],
+        path,
+        createTime,
+        applyTime: new Date(),
+        status: iconStatus.RESOLVED,
+        uploader: userId,
+      }, {
+        transaction,
+      });
+    })
+    .then((data) => RepoVersion.create({
+      repositoryId: existingIcon['repositories.id'],
+      version: '0.0.0',
+      iconId: +data.id,
+    }, {
+      transaction,
+    })
+    ));
     const newIconInfo = newCodes.map(code => Icon.create({
       name: '系统占用',
       code: parseInt(+code.code, 10),
