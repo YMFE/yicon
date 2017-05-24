@@ -4,14 +4,17 @@ import py from 'pinyin';
 import { logRecorder } from './log';
 import { seq, Repo, Icon, User, RepoVersion, ProjectVersion } from '../../model';
 import { unique } from '../../helpers/utils';
-import { iconStatus } from '../../constants/utils';
+import { iconStatus, startCode, endCode } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
 // 处理类名生成
 function getBaseClassName(icons, transaction) {
-  let oldMaxCode;
-  let newMaxCode;
   let repoMap;
+  const canUseCodes = [];
+  const passIcons = [];
+  const rejectIcons = [];
+  const passed = [];
+  const rejected = [];
   // 在事务里锁住 icon 库的更新
   return Repo
     .findAll({
@@ -28,50 +31,84 @@ function getBaseClassName(icons, transaction) {
         prev[n.id] = n.alias;
         return prev;
       }, {});
-      // 处理一下 icon-code
-      return Icon.max('code');
-    })
-    .then(oldCode => {
-      oldMaxCode = oldCode;
-      return Icon.max('code', {
-        where: { code: { lt: 0xF000 } },
+      return Icon.findAll({
+        attributes: ['code'],
+        where: { status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] } },
+        order: 'code',
       });
     })
-    .then(newCode => {
-      newMaxCode = newCode || (0xE000 - 1);
-      const maxCode = 0xF000 - newMaxCode >= icons.length
-        ? newMaxCode : oldMaxCode;
-
-      return icons.map((i, index) => {
-        const pyName = py(i.name, { style: py.STYLE_NORMAL })
+    .then((allIcons) => {
+      const iconInfo = {};
+      allIcons.forEach(icon => {
+        const { code } = icon;
+        iconInfo[`code${code}`] = code && true;
+      });
+      for (let i = parseInt(startCode, 10); i <= parseInt(endCode, 10); i++) {
+        if (!iconInfo[`code${i}`]) {
+          canUseCodes.push(i);
+        }
+      }
+      icons.forEach(icon => {
+        if (icon.passed) {
+          passed.push(icon);
+        } else {
+          rejected.push(icon);
+        }
+      });
+      // 将 逻辑删除（status：-1）、审核失败（status：5）的图标的 code 置为 null
+      return Icon.update({
+        code: null,
+        applyTime: new Date,
+      }, { where: {
+        status: { $in: [iconStatus.DELETE, iconStatus.REJECTED] },
+      }, transaction });
+    })
+    .then(() => {
+      passed.forEach((icon, index) => {
+        const pyName = py(icon.name, { style: py.STYLE_NORMAL })
           .reduce((prev, next) => prev.concat(next), [])
           .join('')
           .replace(/[^\w]/g, '');
-        const code = maxCode + index + 1;
+        const code = canUseCodes[index];
         const hexCode = code.toString(16);
-        const fontClass = `${repoMap[i.repoId]}-${pyName}${hexCode}${i.fontClass}`.toLowerCase();
+        const fontClass =
+          `${repoMap[icon.repoId]}-${pyName}${hexCode}${icon.fontClass}`.toLowerCase();
 
-        return Icon.update(
+        const temp = Icon.update(
           {
             code,
             fontClass,
-            status: i.passed ? iconStatus.RESOLVED : iconStatus.REJECTED,
+            status: iconStatus.RESOLVED,
             applyTime: new Date,
           },
-          { where: { id: i.id }, transaction }
+          { where: { id: icon.id }, transaction }
+        );
+        passIcons.push(temp);
+      });
+      return null;
+    })
+    .then(() => {
+      rejected.forEach(icon => {
+        const temp = Icon.update(
+          {
+            // fontClass,
+            status: iconStatus.REJECTED,
+            applyTime: new Date,
+          },
+          { where: { id: icon.id }, transaction }
         )
         // 如果审核未通过，需要移除 repoVersion 库中的关联
-        .then(icon => {
-          if (!i.passed) {
-            return RepoVersion.destroy({
-              where: { repositoryId: i.repoId, iconId: i.id },
-              transaction,
-            });
+        .then(() => RepoVersion.destroy(
+          {
+            where: { repositoryId: icon.repoId, iconId: icon.id },
+            transaction,
           }
-          return icon;
-        });
+        ));
+        rejectIcons.push(temp);
       });
-    });
+      return null;
+    })
+    .then(() => [].concat(passIcons, rejectIcons));
 }
 
 // 获取审核列表
