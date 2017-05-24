@@ -17,6 +17,7 @@ import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { iconStatus } from '../../constants/utils';
+import { PROJECT_NAME } from '../../constants/validate';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -34,6 +35,7 @@ import {
   getPathAndVersion,
   uploadIconToSource,
   saveToNewProject,
+  createEmptyProject,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -45,7 +47,7 @@ import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
 import SetPath from './SetPath.jsx';
 import Upload from './Upload.jsx';
-import CopyProject from './CopyProject.jsx';
+import CreateProject from './CreateProject.jsx';
 
 @connect(
   state => ({
@@ -75,6 +77,7 @@ import CopyProject from './CopyProject.jsx';
     getPathAndVersion,
     uploadIconToSource,
     saveToNewProject,
+    createEmptyProject,
     push,
     // resetIconSize,
   }
@@ -108,6 +111,7 @@ class UserProject extends Component {
     getPathAndVersion: PropTypes.func,
     uploadIconToSource: PropTypes.func,
     saveToNewProject: PropTypes.func,
+    createEmptyProject: PropTypes.func,
     push: PropTypes.func,
   }
 
@@ -124,7 +128,8 @@ class UserProject extends Component {
       showGenerateVersion: false,
       showDownloadDialog: false,
       showUploadDialog: false,
-      showCopyProject: false,
+      showCreateProject: false,
+      isCreate: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
       isShowUpdateDialog: false,
@@ -500,28 +505,48 @@ class UserProject extends Component {
   }
 
   @autobind
-  shiftCopyProject(isShow = false) {
+  shiftCreateProject(isShow = false, isCreate = false) {
     this.setState({
-      showCopyProject: isShow,
+      showCreateProject: isShow,
+      isCreate,
     });
   }
 
   @autobind
   createProject(value) {
     const { projectName } = value;
+    if (!PROJECT_NAME.reg.test(projectName)) {
+      Message.error(PROJECT_NAME.message);
+      return;
+    }
     const current = this.props.currentUserProjectInfo;
-    const icons = current && current.icons || [];
-    this.props.saveToNewProject(projectName, icons).then(result => {
-      const { res, data } = result && result.payload;
-      if (!res) {
-        return;
-      }
-      const { projectId } = data;
-      this.props.push(`/projects/${projectId}`);
-      this.shiftCopyProject();
-    }).catch(() => {
-      this.shiftCopyProject();
-    });
+    let icons = [];
+    if (this.state.isCreate) {
+      this.props.createEmptyProject({ name: projectName }).then(result => {
+        const { res, data } = result && result.payload;
+        if (!res) {
+          return;
+        }
+        const { id } = data;
+        this.props.push(`/projects/${id}`);
+        this.shiftCreateProject();
+      }).catch(() => {
+        this.shiftCreateProject();
+      });
+    } else {
+      icons = current && current.icons || [];
+      this.props.saveToNewProject(projectName, icons).then(result => {
+        const { res, data } = result && result.payload;
+        if (!res) {
+          return;
+        }
+        const { projectId } = data;
+        this.props.push(`/projects/${projectId}`);
+        this.shiftCreateProject();
+      }).catch(() => {
+        this.shiftCreateProject();
+      });
+    }
   }
 
   @autobind
@@ -538,7 +563,8 @@ class UserProject extends Component {
       <div className="no-icon">
         <div className="no-icon-pic"></div>
         <div className="no-icon-tips">
-          <p>项目还没有图标，请快到大库中添加吧</p>
+          <p>还没有图标</p>
+          <p>快从购物车添加吧</p>
         </div>
       </div>
     );
@@ -703,12 +729,13 @@ class UserProject extends Component {
           </ClipboardButton>
           <div style={{ marginTop: 14, color: '#666' }}>* 注：移动端只需引用 woff 和 ttf 格式字体</div>
         </Dialog>,
-        <CopyProject
+        <CreateProject
           key={8}
           id={current.id}
           onOk={this.createProject}
-          onCancel={this.shiftCopyProject}
-          showCopyProject={this.state.showCopyProject}
+          onCancel={this.shiftCreateProject}
+          isCreate={this.state.isCreate}
+          showCreateProject={this.state.showCreateProject}
         />,
         <Dialog
           key={9}
@@ -735,11 +762,23 @@ class UserProject extends Component {
     const { isSupportSource } = current;
     return (
       <div className="UserProject">
-        <SubTitle tit="我的项目">
+        <SubTitle tit="我的图标项目">
           <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <Content>
           <Menu>
+            <li
+              className={`project-name-item ${!list.length
+                ? 'selected'
+                : null}`
+              }
+              onClick={() => { this.shiftCreateProject(true, true); }}
+            >
+              <a>
+                <i className="iconfont" style={{ marginTop: -3, fontWeight: 700 }}>&#xf470;</i>
+                新建图标项目
+              </a>
+            </li>
             {
               list.map((item, index) => {
                 const infoCount = + this.props.projectChangeInfo[`project${item.id}`];
@@ -830,7 +869,7 @@ class UserProject extends Component {
                 }
                 <button
                   className="options-btns btns-default"
-                  onClick={() => { this.shiftCopyProject(true); }}
+                  onClick={() => { this.shiftCreateProject(true); }}
                 >
                   拷贝项目
                 </button>

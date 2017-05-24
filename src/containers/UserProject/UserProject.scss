@@ -93,7 +93,7 @@ $imgUrl: '../../../static/images/';
       padding: 60px 0;
       overflow: hidden;
       &-pic {
-        background:url("#{$imgUrl}noMatchIcon.png") 0 -300px no-repeat;
+        background:url("#{$imgUrl}noMatchIcon.png") 0 -183px no-repeat;
         background-size: 100%;
         width:100px;
         height:100px;
@@ -105,7 +105,7 @@ $imgUrl: '../../../static/images/';
         color:#9e9e9e;
         line-height:24px;
         text-align:center;
-        margin:16px auto;
+        margin:0 auto;
         overflow:hidden;
       }
     }

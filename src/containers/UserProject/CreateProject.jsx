@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { autobind } from 'core-decorators';
 import Dialog from '../../components/common/Dialog/Index';
 
-class CopyProject extends Component {
+class CreateProject extends Component {
 
   constructor(props) {
     super(props);
@@ -13,7 +13,7 @@ class CopyProject extends Component {
     if (this.props.id !== nextProps.id) {
       this.setState({ ...nextProps });
     }
-    if (this.props.showCopyProject !== nextProps.showCopyProject) {
+    if (this.props.showCreateProject !== nextProps.showCreateProject) {
       this.setState({
         projectName: '',
       });
@@ -41,11 +41,11 @@ class CopyProject extends Component {
   render() {
     return (
       <Dialog
-        title="拷贝生成新项目"
+        title={`${this.props.isCreate ? '新建' : '拷贝生成新'}项目`}
         extraClass="project-dialog"
         onOk={this.onOk}
         onCancel={() => { this.props.onCancel(); }}
-        visible={this.props.showCopyProject}
+        visible={this.props.showCreateProject}
       >
         <form className="project-form">
           <ul>
@@ -70,11 +70,12 @@ class CopyProject extends Component {
   }
 }
 
-CopyProject.propTypes = {
-  showCopyProject: PropTypes.bool,
+CreateProject.propTypes = {
+  isCreate: PropTypes.bool,
+  showCreateProject: PropTypes.bool,
   onProjectNameChange: PropTypes.func,
   id: PropTypes.number,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
 };
-export default CopyProject;
+export default CreateProject;
