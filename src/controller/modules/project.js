@@ -64,6 +64,10 @@ function* getDiffResult(data) {
     // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
     result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
     // result = diffArray(lvIcons, hvIcons, true);
+    result.icons = lvIcons;
+  } else {
+    const icons = yield project.getIcons();
+    result.icons = icons;
   }
   return result;
 }
@@ -93,15 +97,18 @@ export function* getAllProjects(next) {
       where: { projectId },
       order: 'version',
     }).map(v => v.version);
-    if (version && version.length > 1) {
+    if (version && version.length >= 1) {
       const data = yield getDiffResult({
         projectId,
         highVersion: version[version.length - 1],
         lowVersion: '0.0.0',
       });
-      const { deleted = [], added = [], replaced = [] } = data;
+      const { deleted = [], added = [], replaced = [], icons = [] } = data;
+      const disabledNum = icons.filter(icon => icon.status === iconStatus.DISABLED);
       result[`project${projectId}`] =
-        replaced.length ? deleted.length + added.length - 1 : deleted.length + added.length;
+        replaced.length
+        ? disabledNum.length + deleted.length + added.length - 1
+        : disabledNum.length + deleted.length + added.length;
     }
   }
   projects.result = result;
