@@ -1,4 +1,4 @@
-.tan-container {
+.update-icon-container {
   width: 635px;
   height: 257px;
   background: #fff;
@@ -11,10 +11,10 @@
     color: #d8dbdd;
     cursor: pointer;
   }
-  .tan-detail {
+  .update-icon-detail {
     float: left;
     margin-left: 30px;
-    .tan-detail-header {
+    .update-detail-header {
       .icon-name {
         color: #616161;
         font-size: 20px;
@@ -76,7 +76,7 @@
         }
       }
     }
-    .tan-detail-header.edit {
+    .update-detail-header.edit {
       .icon-name {
         display: none;
       }
@@ -85,30 +85,20 @@
       }
     }
     .other-info {
+      margin-bottom: 10px;
       height: 42px;
       line-height: 42px;
       color: #9e9e9e;
       font-size: 14px;
     }
-    .tag-info {
-      color: #9e9e9e;
-      font-size: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      .tag-detail {
-        height: 42px;
-        line-height: 42px;
-        margin-right: 10px;
-      }
-    }
     .set-tag {
       .input-wrap {
         margin: 0;
-        width: 344px;
-        height: 26px;
+        width: 282px;
+        // height: 26px;
         .input {
-          line-height: 26px;
-          font-size: 12px;
+          // line-height: 26px;
+          // font-size: 12px;
         }
         .set-tag-icon {
           color: #6f6f6f;
@@ -123,9 +113,8 @@
       }
       .icon-tag-list {
         padding: 0 10px;
-        overflow: hidden;
+        overflow: auto;
         width: 324px;
-        height: 40px;
         border: 1px solid #dfdfdf;
         border-top: 0;
         margin-left: 0;
@@ -143,87 +132,6 @@
             cursor: pointer;
           }
         }
-      }
-    }
-    .select-color {
-      margin-top: 18px;
-      .color-list {
-        float: left;
-        .color-item {
-          float: left;
-          width: 18px;
-          height: 38px;
-          cursor: pointer;
-        }
-      }
-      .color-select-box {
-        float: left;
-        margin-left: 8px;
-        width: 96px;
-        height: 36px;
-        line-height: 36px;
-        border: 1px solid #dfdfdf;
-        font-size: 14px;
-        color: #616161;
-        cursor: pointer;
-        .input-wrap {
-          margin-left: 0;
-          display: inline-block;
-          vertical-align: top;
-          width: 63px;
-          height: 35px;
-          border: 0;
-          .input {
-            margin-left: 5px;
-            width: 57px;
-            line-height: normal;
-          }
-          .error-info {
-            display: none;
-          }
-        }
-        .color-show {
-          display: inline-block;
-          vertical-align: middle;
-          margin-left: 9px;
-          width: 18px;
-          height: 18px;
-        }
-      }
-      .set-size {
-        float: left;
-        margin-left: 8px;
-        line-height: 36px;
-        text-align: left;
-        font-size: 14px;
-        width: 51px;
-        height: 36px;
-        border: 1px solid #dfdfdf;
-        color: #616161;
-        cursor: pointer;
-
-        .drop-down {
-          margin-left: 6px;
-          color: #abb1be;
-        }
-      }
-    }
-    .download-box {
-      margin-top: 14px;
-      display: flex;
-      justify-content: space-between;
-      .download-btn {
-        width: 110px;
-        height: 38px;
-        background: #008ed6;
-        color: #fff;
-        outline: 0;
-        border: 0;
-        border-radius: 2px;
-      }
-      .disabled {
-        color: #fff;
-        background: #e8e8e8;
       }
     }
   }

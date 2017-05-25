@@ -568,11 +568,16 @@ export default class Authority extends Component {
               </ul>
             </div>
           </Dialog>
-          <Dialog>
+          <Dialog
+            visible={this.state.createVisible}
+            title={`新建${btnName}`}
+            onOk={this.ensureCreate}
+            onCancel={this.closeCreateDialog}
+          >
             <div className="authority-dialog" onChange={this.handleCreateChange}>
               <ul>
                 <li className="dialog-item">
-                  <div className="item-name">新建{btnName}</div>
+                  <div className="item-name">{btnName}名称</div>
                   <div className="dialog-input">
                     <input
                       type="text"

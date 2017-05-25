@@ -42,6 +42,7 @@ class IconButton extends Component {
     deleteIconInLocalStorage: PropTypes.func,
     addIconToLocalStorage: PropTypes.func,
     download: PropTypes.func,
+    update: PropTypes.func,
     delete: PropTypes.func,
   };
 
@@ -213,7 +214,7 @@ class IconButton extends Component {
   }
 
   render() {
-    const { icon, userInfo, download, repoId, toolBtns } = this.props;
+    const { icon, userInfo, download, update, repoId, toolBtns } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
     const isUploader = icon.uploader === userInfo.userId;
@@ -273,6 +274,13 @@ class IconButton extends Component {
           title="删除"
           key="delete"
         >&#xf513;</i>,
+      update:
+        <i
+          className="tool-item iconfont"
+          onClick={update}
+          title="编辑图标"
+          key="update"
+        >&#xf3d5;</i>,
     };
     const tools = [];
     toolBtns.forEach((btn) => {
@@ -295,6 +303,9 @@ class IconButton extends Component {
           <div className="name" title={icon.name}>{icon.name}</div>
           <div ref="code" className="code">
             {`&#x${icon.code.toString(16)};`}
+          </div>
+          <div className="cart-mask">
+            <i className="iconfont icon-cart">&#xf50f;</i>
           </div>
         </div>
         <div className="tool">

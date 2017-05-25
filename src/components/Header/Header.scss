@@ -128,14 +128,13 @@ $iconColor:#555f6e;
         li:hover {
           background-color: #eff0f4;
         }
-        li a, li span {
+        li a {
           display: block;
           padding: 0 10px;
           color: $fontTitleColor;
         }
-        li:hover a, li:hover span {
+        li:hover a {
           color: $fontTitleColor;
-          cursor: pointer;
         }
         .arrow {
           width: 0;

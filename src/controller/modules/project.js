@@ -9,6 +9,7 @@ import { versionTools, has, diffArray, simpleParse } from '../../helpers/utils';
 import { seq } from '../../model/tables/_db';
 import { logRecorder } from './log';
 import config from '../../config';
+import { iconStatus } from '../../constants/utils';
 
 const { infoUrl, versionUrl, sourceUrl, support, cdn } = config.source;
 const { serviceUrl } = config.login;
@@ -21,6 +22,54 @@ function* listProjects(user) {
     actor: user.actor,
     organization: projects,
   };
+}
+
+function* getDiffResult(data) {
+  const { projectId } = data;
+  let { highVersion, lowVersion } = data;
+  invariant(projectId > 0, '缺少项目id参数');
+
+  const project = yield Project.findOne({ where: { id: projectId } });
+  const hVersion = versionTools.v2n(highVersion);
+  const lVersion = versionTools.v2n(lowVersion);
+  if (isNaN(hVersion) && isNaN(lVersion)) invariant(false, '缺少对比项目版本号');
+  if (hVersion < lVersion) {
+    const temp = highVersion;
+    highVersion = lowVersion;
+    lowVersion = temp;
+  }
+
+  let result = { deleted: [], added: [], replaced: [] };
+  if (hVersion !== lVersion) {
+    const icons = yield project.getIcons({
+      through: {
+        model: ProjectVersion,
+        where: {
+          version: {
+            $in: [hVersion, lVersion],
+          },
+        },
+      },
+    });
+    const hvIcons = [];
+    const lvIcons = [];
+    icons.forEach(v => {
+      if (v.projectVersions && v.projectVersions.version === highVersion) {
+        hvIcons.push(v);
+      } else {
+        lvIcons.push(v);
+      }
+    });
+    // 此时diffArray：第一个参数为低版本数组，第二个为高版本数组，第三个为是否需要获取替换情况
+    // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
+    result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
+    // result = diffArray(lvIcons, hvIcons, true);
+    result.icons = lvIcons;
+  } else {
+    const icons = yield project.getIcons();
+    result.icons = icons;
+  }
+  return result;
 }
 
 export function* adjustBaseline() {
@@ -38,7 +87,32 @@ export function* getAllProjects(next) {
   const { userId } = this.state.user;
 
   const user = yield User.findOne({ where: { id: userId } });
-  this.state.respond = yield listProjects(user);
+  const projects = yield listProjects(user);
+  const projectList = projects && projects.organization;
+  const result = {};
+  for (let i = 0, len = projectList && projectList.length || 0; i < len; i++) {
+    const projectId = projectList[i] && projectList[i].id;
+    const version = yield ProjectVersion.findAll({
+      attributes: [[seq.literal('distinct `version`'), 'version']],
+      where: { projectId },
+      order: 'version',
+    }).map(v => v.version);
+    if (version && version.length >= 1) {
+      const data = yield getDiffResult({
+        projectId,
+        highVersion: version[version.length - 1],
+        lowVersion: '0.0.0',
+      });
+      const { deleted = [], added = [], replaced = [], icons = [] } = data;
+      const disabledNum = icons.filter(icon => icon.status === iconStatus.DISABLED);
+      result[`project${projectId}`] =
+        replaced.length
+        ? disabledNum.length + deleted.length + added.length - 1
+        : disabledNum.length + deleted.length + added.length;
+    }
+  }
+  projects.result = result;
+  this.state.respond = projects;
 
   yield next;
 }
@@ -180,6 +254,26 @@ export function* generatorNewVersion(next) {
   const versionFrom = yield ProjectVersion.max('version', { where: { projectId } });
 
   invariant(!isNaN(versionFrom), '空项目不可进行版本升级');
+
+  const project = yield Project.findOne({
+    where: { id: projectId },
+  });
+  invariant(project, `编号${projectId}的项目不存在`);
+  const icons = yield project.getIcons({
+    through: {
+      model: ProjectVersion,
+      where: { version: 0 },
+    },
+  });
+  // console.log(icons);
+  const disabledCode = [];
+  icons.forEach(icon => {
+    if (icon.status === iconStatus.DISABLED) {
+      disabledCode.push(icon.name);
+    }
+  });
+  const length = disabledCode.length;
+  invariant(!length, `项目中的 ${disabledCode.join('、')} 等图标被系统占用，请先删除，再下载或同步`);
 
   const versionTo = version || versionTools.update(versionFrom, versionType);
 
@@ -373,46 +467,7 @@ export function* getAllPublicProjects(next) {
 }
 
 export function* diffVersion(next) {
-  const { projectId } = this.param;
-  let { highVersion, lowVersion } = this.param;
-  invariant(projectId > 0, '缺少项目id参数');
-
-  const project = yield Project.findOne({ where: { id: projectId } });
-  const hVersion = versionTools.v2n(highVersion);
-  const lVersion = versionTools.v2n(lowVersion);
-  if (isNaN(hVersion) && isNaN(lVersion)) invariant(false, '缺少对比项目版本号');
-  if (hVersion < lVersion) {
-    const temp = highVersion;
-    highVersion = lowVersion;
-    lowVersion = temp;
-  }
-
-  let result = { deleted: [], added: [], replaced: [] };
-  if (hVersion !== lVersion) {
-    const icons = yield project.getIcons({
-      through: {
-        model: ProjectVersion,
-        where: {
-          version: {
-            $in: [hVersion, lVersion],
-          },
-        },
-      },
-    });
-    const hvIcons = [];
-    const lvIcons = [];
-    icons.forEach(v => {
-      if (v.projectVersions && v.projectVersions.version === highVersion) {
-        hvIcons.push(v);
-      } else {
-        lvIcons.push(v);
-      }
-    });
-    // 此时diffArray：第一个参数为低版本数组，第二个为高版本数组，第三个为是否需要获取替换情况
-    // 后端默认版本0.0.0为最高版本，当传入版本中有0.0.0则将它对应的icon数组作为第二个参数传入
-    result = !lVersion ? diffArray(hvIcons, lvIcons, true) : diffArray(lvIcons, hvIcons, true);
-    // result = diffArray(lvIcons, hvIcons, true);
-  }
+  const result = yield getDiffResult(this.param);
   this.state.respond = this.state.respond || {};
   this.state.respond.deleted = result.deleted;
   this.state.respond.added = result.added;
@@ -650,8 +705,11 @@ export function* uploadSource(next) {
     type: 'project',
     id: projectId,
   });
+  if (file.data && !file.data.res) {
+    return;
+  }
   // TODO: 文件路径需要修改
-  const { fontDest } = file.data && file.data.data;
+  const { fontDest } = file && file.data && file.data.data;
   let result = {};
   const sourcePath = path.split('/').slice(1).join('/') || '/';
   if (file.data && file.data.res && fs.existsSync(fontDest)) {

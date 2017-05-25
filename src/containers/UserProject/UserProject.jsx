@@ -12,9 +12,12 @@ import confirm from '../../components/common/Dialog/Confirm.jsx';
 import { replace, push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
+import { iconStatus } from '../../constants/utils';
+import { PROJECT_NAME } from '../../constants/validate';
 import { versionTools } from '../../helpers/utils';
 import {
   getUsersProjectList,
@@ -32,6 +35,7 @@ import {
   getPathAndVersion,
   uploadIconToSource,
   saveToNewProject,
+  createEmptyProject,
 } from '../../actions/project';
 import {
   getIconDetail,
@@ -43,11 +47,12 @@ import ManageMembers from './ManageMembers.jsx';
 import Download from './Download.jsx';
 import SetPath from './SetPath.jsx';
 import Upload from './Upload.jsx';
-import CopyProject from './CopyProject.jsx';
+import CreateProject from './CreateProject.jsx';
 
 @connect(
   state => ({
     usersProjectList: state.project.usersProjectList,
+    projectChangeInfo: state.project.projectChangeInfo,
     currentUserProjectInfo: state.project.currentUserProjectInfo,
     suggestList: state.project.memberSuggestList,
     projectInfo: state.project.projectInfo,
@@ -72,6 +77,7 @@ import CopyProject from './CopyProject.jsx';
     getPathAndVersion,
     uploadIconToSource,
     saveToNewProject,
+    createEmptyProject,
     push,
     // resetIconSize,
   }
@@ -80,6 +86,7 @@ class UserProject extends Component {
   static propTypes = {
     projectId: PropTypes.string,
     usersProjectList: PropTypes.array,
+    projectChangeInfo: PropTypes.object,
     currentUserProjectInfo: PropTypes.object,
     getUsersProjectList: PropTypes.func,
     fetchMemberSuggestList: PropTypes.func,
@@ -104,6 +111,7 @@ class UserProject extends Component {
     getPathAndVersion: PropTypes.func,
     uploadIconToSource: PropTypes.func,
     saveToNewProject: PropTypes.func,
+    createEmptyProject: PropTypes.func,
     push: PropTypes.func,
   }
 
@@ -120,9 +128,11 @@ class UserProject extends Component {
       showGenerateVersion: false,
       showDownloadDialog: false,
       showUploadDialog: false,
-      showCopyProject: false,
+      showCreateProject: false,
+      isCreate: false,
       showHistoryVersion: false,
       isShowDownloadDialog: false,
+      isShowUpdateDialog: false,
       isUploadSuccess: false,
       iconStr: '',
       generateVersion: 'revision',
@@ -143,14 +153,22 @@ class UserProject extends Component {
       const current = this.props.currentUserProjectInfo;
       if (!current || id !== +current.id) {
         this.props.getUserProjectInfo(id)
+          .then(() => this.props.fetchAllVersions(id))
+          .then(() => {
+            const { versions } = this.props.projectInfo;
+            if (versions && versions.length) {
+              this.compareVersion(() => {});
+            }
+          })
           .then(() => this.props.hideLoading())
           .catch(() => this.props.hideLoading());
-        this.props.fetchAllVersions(id);
+        // this.props.fetchAllVersions(id);
       }
       this.props.fetchMemberSuggestList();
       this.setState({ showLoading: false });
     }).catch(() => this.setState({ showLoading: false }));
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
@@ -169,9 +187,18 @@ class UserProject extends Component {
       return;
     }
     if (nextId !== this.props.projectId) {
-      this.props.getUserProjectInfo(nextId).then(() =>
-        this.setState({ showLoading: false })
-      ).catch(() => this.setState({ showLoading: false }));
+      this.props.getUserProjectInfo(nextId)
+        .then(() => this.props.fetchAllVersions(nextId))
+        .then(() => {
+          const { versions } = this.props.projectInfo;
+          if (versions && versions.length) {
+            this.compareVersion(() => {});
+          }
+        })
+        .then(() =>
+          this.setState({ showLoading: false })
+        )
+        .catch(() => this.setState({ showLoading: false }));
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
       this.nextVersion = '0.0.1';
@@ -211,6 +238,17 @@ class UserProject extends Component {
       });
     };
   }
+
+  @autobind
+  updateIconInfo(iconId) {
+    this.props.getIconDetail(iconId).then(() => {
+      this.props.editIconStyle({ color: '#34475e', size: 255 });
+      this.setState({
+        isShowUpdateDialog: true,
+      });
+    });
+  }
+
   @autobind
   updateProjectDetail(result) {
     this.props.patchUserProject({
@@ -268,6 +306,14 @@ class UserProject extends Component {
   @autobind
   shiftDownloadDialog(isShow = false) {
     const length = this.props.projectInfo.versions.length;
+    const current = this.props.currentUserProjectInfo;
+    if (current && current.icons) {
+      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      if (disabled.length) {
+        Message.error('项目中存在系统占用的图标，请删除后再下载');
+        return;
+      }
+    }
     if (isShow && length > 1) {
       this.compareVersion(ret => {
         const { deleted, added } = ret.payload.data;
@@ -288,9 +334,16 @@ class UserProject extends Component {
   }
 
   @autobind
-  dialogUpdateShow(isShow) {
+  dialogDownloadShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
+    });
+  }
+
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowUpdateDialog: isShow,
     });
   }
 
@@ -317,6 +370,8 @@ class UserProject extends Component {
         if (data.res) {
           const { foldName } = data.data;
           window.location.href = `/download/${foldName}`;
+        } else {
+          Message.error(data.message || '下载失败，请稍后再试');
         }
       });
   }
@@ -328,7 +383,10 @@ class UserProject extends Component {
     this.props.generateVersion({
       id,
       versionType: this.state.generateVersion,
-    }).then(() => {
+    }).then((data) => {
+      if (data.payload && !data.payload.res) {
+        return;
+      }
       // 下载字体
       this.props.fetchAllVersions(id);
       this.downloadAllIcons();
@@ -367,6 +425,14 @@ class UserProject extends Component {
   @autobind
   shiftUploadSource(isShow = false) {
     const id = this.props.currentUserProjectInfo.id;
+    const current = this.props.currentUserProjectInfo;
+    if (current && current.icons) {
+      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      if (disabled.length) {
+        Message.error('项目中存在系统占用的图标，请删除后再同步');
+        return;
+      }
+    }
     if (isShow) {
       this.props.getPathAndVersion(id).then(data => {
         if (!data.payload.res) return;
@@ -409,7 +475,10 @@ class UserProject extends Component {
       // 指定升级到的版本
       version: this.nextSourceVersion,
     })
-    .then(() => {
+    .then((data) => {
+      if (data.payload && !data.payload.res) {
+        throw Error();
+      }
       // 上传字体
       this.props.fetchAllVersions(id);
       return this.props.uploadIconToSource(id, {
@@ -436,28 +505,48 @@ class UserProject extends Component {
   }
 
   @autobind
-  shiftCopyProject(isShow = false) {
+  shiftCreateProject(isShow = false, isCreate = false) {
     this.setState({
-      showCopyProject: isShow,
+      showCreateProject: isShow,
+      isCreate,
     });
   }
 
   @autobind
   createProject(value) {
     const { projectName } = value;
+    if (!PROJECT_NAME.reg.test(projectName)) {
+      Message.error(PROJECT_NAME.message);
+      return;
+    }
     const current = this.props.currentUserProjectInfo;
-    const icons = current && current.icons || [];
-    this.props.saveToNewProject(projectName, icons).then(result => {
-      const { res, data } = result && result.payload;
-      if (!res) {
-        return;
-      }
-      const { projectId } = data;
-      this.props.push(`/projects/${projectId}`);
-      this.shiftCopyProject();
-    }).catch(() => {
-      this.shiftCopyProject();
-    });
+    let icons = [];
+    if (this.state.isCreate) {
+      this.props.createEmptyProject({ name: projectName }).then(result => {
+        const { res, data } = result && result.payload;
+        if (!res) {
+          return;
+        }
+        const { id } = data;
+        this.props.push(`/projects/${id}`);
+        this.shiftCreateProject();
+      }).catch(() => {
+        this.shiftCreateProject();
+      });
+    } else {
+      icons = current && current.icons || [];
+      this.props.saveToNewProject(projectName, icons).then(result => {
+        const { res, data } = result && result.payload;
+        if (!res) {
+          return;
+        }
+        const { projectId } = data;
+        this.props.push(`/projects/${projectId}`);
+        this.shiftCreateProject();
+      }).catch(() => {
+        this.shiftCreateProject();
+      });
+    }
   }
 
   @autobind
@@ -469,27 +558,57 @@ class UserProject extends Component {
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
     if (!current) return null;
-    // let iconList = null;
+    const { deleted, added, replaced } = this.props.comparisonResult;
     let iconList = (
       <div className="no-icon">
         <div className="no-icon-pic"></div>
         <div className="no-icon-tips">
-          <p>项目还没有图标，请快到大库中添加吧</p>
+          <p>还没有图标</p>
+          <p>快从购物车添加吧</p>
         </div>
       </div>
     );
     if (current.icons && current.icons.length > 0) {
-      iconList = current.icons.map((item, index) => (
-        <IconButton
-          icon={item}
-          key={index}
-          toolBtns={['cart', 'copy', 'download', 'copytip', 'delete']}
-          delete={(icons) => {
-            this.deleteIcon(icons);
-          }}
-          download={this.handleSingleIconDownload(item.id)}
-        />
-      ));
+      const currentIcons = deleted ? current.icons.concat(deleted) : current.icons;
+      const hasReplacedIcons = replaced.map(item => item.old && item.old.id);
+      const replacedIcons = replaced.map(item => item.new && item.new.id);
+      const deletedIcons =
+        deleted.map(item => item.id).filter(item => hasReplacedIcons.indexOf(item) === -1);
+      const addedIcons =
+        added.map(item => item.id).filter(item => replacedIcons.indexOf(item) === -1);
+
+      iconList = currentIcons.map((item, index) => {
+        const deletedClassName = deletedIcons.indexOf(item.id) > -1 ? 'deleted-icon' : '';
+        const addedClassName = addedIcons.indexOf(item.id) > -1 ? 'added-icon' : '';
+        const replacedClassName = replacedIcons.indexOf(item.id) > -1 ? 'replaced-icon' : '';
+        const disabledClassName = item.status === iconStatus.DISABLED ? 'disabled-icon' : '';
+        const toolBtns = ['copy', 'download', 'copytip', 'update'];
+        if (!deletedClassName) {
+          toolBtns.push('delete');
+        }
+        return (
+          <div
+            key={index}
+            className={`project-icon clearfix ${disabledClassName} ${deletedClassName}`}
+          >
+            <ul className="status-tag">
+              <li className={`status-tag-item ${disabledClassName}`}>系统占用</li>
+              <li className={`status-tag-item ${addedClassName}`}>新增</li>
+              <li className={`status-tag-item ${replacedClassName}`}>替换</li>
+              <li className={`status-tag-item ${deletedClassName}`}>删除</li>
+            </ul>
+            <IconButton
+              icon={item}
+              toolBtns={toolBtns}
+              delete={(icons) => {
+                this.deleteIcon(icons);
+              }}
+              update={() => { this.updateIconInfo(item.id); }}
+              download={this.handleSingleIconDownload(item.id)}
+            />
+          </div>
+        );
+      });
     }
     return iconList;
   }
@@ -583,7 +702,7 @@ class UserProject extends Component {
           key={6}
           empty
           visible={this.state.isShowDownloadDialog}
-          getShow={this.dialogUpdateShow}
+          getShow={this.dialogDownloadShow}
         >
           <DownloadDialog />
         </Dialog>,
@@ -610,13 +729,22 @@ class UserProject extends Component {
           </ClipboardButton>
           <div style={{ marginTop: 14, color: '#666' }}>* 注：移动端只需引用 woff 和 ttf 格式字体</div>
         </Dialog>,
-        <CopyProject
+        <CreateProject
           key={8}
           id={current.id}
           onOk={this.createProject}
-          onCancel={this.shiftCopyProject}
-          showCopyProject={this.state.showCopyProject}
+          onCancel={this.shiftCreateProject}
+          isCreate={this.state.isCreate}
+          showCreateProject={this.state.showCreateProject}
         />,
+        <Dialog
+          key={9}
+          empty
+          visible={this.state.isShowUpdateDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <UpdateDialog />
+        </Dialog>,
       ];
     }
     return dialogList;
@@ -634,26 +762,46 @@ class UserProject extends Component {
     const { isSupportSource } = current;
     return (
       <div className="UserProject">
-        <SubTitle tit="我的项目">
+        <SubTitle tit="我的图标项目">
           <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <Content>
           <Menu>
+            <li
+              className={`project-name-item ${!list.length
+                ? 'selected'
+                : null}`
+              }
+              onClick={() => { this.shiftCreateProject(true, true); }}
+            >
+              <a>
+                <i className="iconfont" style={{ marginTop: -3, fontWeight: 700 }}>&#xf470;</i>
+                新建图标项目
+              </a>
+            </li>
             {
-              list.map((item, index) => (
-                <li
-                  key={index}
-                  data-id={item.id}
-                  title={item.name}
-                  className={
-                    item.id === this.props.currentUserProjectInfo.id
-                    ? 'selected'
-                    : null
-                  }
-                >
-                  <Link to={`/projects/${item.id}`}>{item.name}</Link>
-                </li>
-              ))
+              list.map((item, index) => {
+                const infoCount = + this.props.projectChangeInfo[`project${item.id}`];
+                return (
+                  <li
+                    key={index}
+                    data-id={item.id}
+                    title={item.name}
+                    className={`project-name-item ${item.id === this.props.currentUserProjectInfo.id
+                      ? 'selected'
+                      : null}`
+                    }
+                  >
+                    <Link to={`/projects/${item.id}`}>{item.name}</Link>
+                    {infoCount ?
+                      (<span className="info-num">
+                        {infoCount < 100 ? infoCount : '···'}
+                      </span>)
+                      : null
+                    }
+                  </li>
+                );
+              })
             }
           </Menu>
           <Main>
@@ -721,7 +869,7 @@ class UserProject extends Component {
                 }
                 <button
                   className="options-btns btns-default"
-                  onClick={() => { this.shiftCopyProject(true); }}
+                  onClick={() => { this.shiftCreateProject(true); }}
                 >
                   拷贝项目
                 </button>

@@ -5,6 +5,7 @@ import { fetchSearchData } from '../../actions/search';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import { autobind } from 'core-decorators';
 import { getIconDetail, editIconStyle } from '../../actions/icon';
@@ -30,6 +31,7 @@ export default class Search extends Component {
 
   state = {
     isShowDownloadDialog: false,
+    isShowUpdateDialog: false,
   }
 
   componentWillMount() {
@@ -65,9 +67,26 @@ export default class Search extends Component {
   }
 
   @autobind
-  dialogUpdateShow(isShow) {
+  updateIconInfo(iconId) {
+    this.props.getIconDetail(iconId).then(() => {
+      this.props.editIconStyle({ color: '#34475e', size: 255 });
+      this.setState({
+        isShowUpdateDialog: true,
+      });
+    });
+  }
+
+  @autobind
+  dialogDownloadShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
+    });
+  }
+
+  @autobind
+  dialogUpdateShow(isShow) {
+    this.setState({
+      isShowUpdateDialog: isShow,
     });
   }
 
@@ -101,7 +120,8 @@ export default class Search extends Component {
                       repoId={repo.id}
                       key={icon.id}
                       download={this.clikIconDownloadBtn(icon.id)}
-                      toolBtns={['copytip', 'copy', 'edit', 'download', 'cart']}
+                      update={() => { this.updateIconInfo(icon.id); }}
+                      toolBtns={['copytip', 'copy', 'edit', 'download', 'update']}
                     />
                   ))
                 }
@@ -123,9 +143,16 @@ export default class Search extends Component {
         <Dialog
           empty
           visible={this.state.isShowDownloadDialog}
-          getShow={this.dialogUpdateShow}
+          getShow={this.dialogDownloadShow}
         >
           <DownloadDialog />
+        </Dialog>
+        <Dialog
+          empty
+          visible={this.state.isShowUpdateDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <UpdateDialog />
         </Dialog>
       </div>
     );

@@ -52,6 +52,14 @@ class SetTag extends Component {
     }
   }
 
+  // 模拟回车输入
+  @autobind
+  addTagByClick() {
+    const inputEle = this.refs.myInput;
+    const value = inputEle && typeof inputEle.getVal === 'function' && inputEle.getVal();
+    this.addTag({ keyCode: 13 }, value || '');
+  }
+
   deleteTag(tag) {
     const tagArr = this.tagsToArr(this.state.tags);
     if (tagArr.length > 1) {
@@ -86,8 +94,9 @@ class SetTag extends Component {
           ref="myInput"
           disabled={disabled}
         >
-          <i className="iconfont set-tag-icon">&#xf0ae;</i>
+          {/* <i className="iconfont set-tag-icon">&#xf0ae;</i> */}
         </Input>
+        <button className="add-tag" onClick={this.addTagByClick}>添加</button>
         <ul className="icon-tag-list">
           {
             tagArr.map((tag, index, arr) => (

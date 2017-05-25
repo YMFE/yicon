@@ -11,6 +11,7 @@ import {
 import { getIconDetail, editIconStyle } from '../../actions/icon';
 import SliderSize from '../../components/SliderSize/SliderSize';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
+import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { SubTitle } from '../../components/';
@@ -48,6 +49,7 @@ export default class Repository extends Component {
 
   state = {
     isShowDownloadDialog: false,
+    isShowUpdateDialog: false,
     isShowLoading: false,
   };
 
@@ -117,11 +119,31 @@ export default class Repository extends Component {
   }
 
   @autobind
-  dialogUpdateShow(isShow) {
+  updateIconInfo(iconId) {
+    this.props.getIconDetail(iconId).then(() => {
+      this.props.editIconStyle({ color: '#34475e', size: 255 });
+      this.setState({
+        isShowUpdateDialog: true,
+      });
+    });
+  }
+
+  @autobind
+  dialogDownloadShow(isShow) {
     const { params: { id } } = this.props;
     const { currentPage } = this.props.currRepository;
     this.setState({
       isShowDownloadDialog: isShow,
+    });
+    this.props.fetchRepository(id, currentPage);
+  }
+
+  @autobind
+  dialogUpdateShow(isShow) {
+    const { params: { id } } = this.props;
+    const { currentPage } = this.props.currRepository;
+    this.setState({
+      isShowUpdateDialog: isShow,
     });
     this.props.fetchRepository(id, currentPage);
   }
@@ -196,7 +218,8 @@ export default class Repository extends Component {
                   icon={icon}
                   key={icon.id}
                   download={this.clickIconDownloadBtn(icon.id)}
-                  toolBtns={['copytip', 'copy', 'edit', 'download', 'cart']}
+                  update={() => { this.updateIconInfo(icon.id); }}
+                  toolBtns={['copytip', 'copy', 'edit', 'download', 'update']}
                 />
               ))
             }
@@ -205,9 +228,17 @@ export default class Repository extends Component {
         <Dialog
           empty
           visible={this.state.isShowDownloadDialog}
-          getShow={this.dialogUpdateShow}
+          getShow={this.dialogDownloadShow}
         >
           <DownloadDialog type="repo" />
+        </Dialog>
+        <Dialog
+          empty
+          // visible={this.state.isShowUpdateDialog}
+          visible={this.state.isShowUpdateDialog}
+          getShow={this.dialogUpdateShow}
+        >
+          <UpdateDialog type="repo" />
         </Dialog>
         <Loading visible={this.state.isShowLoading} />
       </div>

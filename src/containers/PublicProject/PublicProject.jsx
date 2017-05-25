@@ -48,10 +48,20 @@ export default class PublicProject extends Component {
     }
   }
 
+  componentDidMount() {
+    this.pulseId = setInterval(() => {
+      this.props.getUsersProjectList();
+    }, 30 * 1000);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id && this.props.user.login) {
       this.props.getUsersProjectList();
     }
+  }
+
+  componentWillUnmount() {
+    if (this.pulseId) clearInterval(this.pulseId);
   }
 
   @autobind

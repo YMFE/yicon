@@ -1,7 +1,7 @@
-import './CreateProject.scss';
+import './edit.scss';
 import React, { PropTypes, Component } from 'react';
 import { autobind } from 'core-decorators';
-import Dialog from '../../common/Dialog/Index';
+import Dialog from '../../components/common/Dialog/Index';
 
 class CreateProject extends Component {
 
@@ -26,8 +26,14 @@ class CreateProject extends Component {
     });
   }
 
+  @autobind
+  onOk() {
+    this.props.onOk(this.getValue());
+  }
+
   getValue() {
     return {
+      id: this.props.id,
       projectName: this.state.projectName,
     };
   }
@@ -35,10 +41,10 @@ class CreateProject extends Component {
   render() {
     return (
       <Dialog
-        title="新建项目"
+        title={`${this.props.isCreate ? '新建' : '拷贝生成新'}项目`}
         extraClass="project-dialog"
-        onOk={() => { this.props.createEmptyProject(this.getValue()); }}
-        onCancel={() => { this.props.closeCreateProject(); }}
+        onOk={this.onOk}
+        onCancel={() => { this.props.onCancel(); }}
         visible={this.props.showCreateProject}
       >
         <form className="project-form">
@@ -65,10 +71,11 @@ class CreateProject extends Component {
 }
 
 CreateProject.propTypes = {
+  isCreate: PropTypes.bool,
   showCreateProject: PropTypes.bool,
   onProjectNameChange: PropTypes.func,
   id: PropTypes.number,
-  createEmptyProject: PropTypes.func,
-  closeCreateProject: PropTypes.func,
+  onOk: PropTypes.func,
+  onCancel: PropTypes.func,
 };
 export default CreateProject;

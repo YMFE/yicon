@@ -2,7 +2,6 @@ import isomFetch from 'isom-fetch';
 import { replace } from 'react-router-redux';
 
 import {
-  TOGGLE_CREATE_PROJECT,
   FETCH_USERS_PROJECT_LIST,
   FETCH_USERS_PROJECT_INFO,
   FETCH_PUBLIC_PROJECT_LIST,
@@ -35,20 +34,6 @@ function getIconList(icons) {
     id: item.id,
     name: item.name,
   }));
-}
-
-function toggleDiplay(dispatch, isShowCreateProject) {
-  dispatch({
-    type: TOGGLE_CREATE_PROJECT,
-    payload: {
-      isShowCreateProject,
-    },
-  });
-}
-export function showCreateProject(isShowCreateProject) {
-  return (dispatch) => {
-    toggleDiplay(dispatch, isShowCreateProject);
-  };
 }
 
 export function getUsersProjectList() {

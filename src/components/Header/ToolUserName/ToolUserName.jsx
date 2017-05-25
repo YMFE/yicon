@@ -32,9 +32,6 @@ const Tool = (props) => (
           </li>
       }
       <li>
-        <span onClick={() => { props.showCreateProject(true); }}>新建项目</span>
-      </li>
-      <li>
         <a href="/api/logout">退出</a>
       </li>
     </ul>
@@ -44,7 +41,6 @@ const Tool = (props) => (
 
 Tool.propTypes = {
   admin: PropTypes.bool,
-  showCreateProject: PropTypes.func,
 };
 
 const ToolUserName = (props) => {
@@ -56,7 +52,7 @@ const ToolUserName = (props) => {
   return (
     <li className={className} >
       {props.login ? <Name name={props.name} /> : <LoginButton />}
-      {props.login ? <Tool admin={props.admin} showCreateProject={props.showCreate} /> : null}
+      {props.login ? <Tool admin={props.admin} /> : null}
     </li>
   );
 };
@@ -65,7 +61,6 @@ ToolUserName.propTypes = {
   name: PropTypes.string,
   login: PropTypes.bool,
   admin: PropTypes.bool,
-  showCreate: PropTypes.func,
 };
 
 export default connect(

@@ -80,6 +80,20 @@ export function* downloadFont(next) {
 
     invariant(instance, `不存在 id 为 ${id} 的 ${isRepo ? '大库' : '项目'}`);
 
+    // 检查项目中是否存在系统占用的图标，若存在则阻止下载
+    if (type === 'project') {
+      const icon = yield instance.getIcons({
+        attributes: ['name'],
+        where: { status: iconStatus.DISABLED },
+        through: {
+          model: ProjectVersion,
+          where: { version: 0 },
+        },
+        raw: true,
+      });
+      invariant(!icon.length, `项目中的 ${icon.map(item => item.name).join('、')} 等图标被系统占用，请先删除，再下载或同步`);
+    }
+
     iconData = yield instance.getIcons({
       attributes: [
         ['fontClass', 'name'],
