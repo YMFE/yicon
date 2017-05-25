@@ -204,7 +204,7 @@ class UserProject extends Component {
   handleSingleIconDownload(iconId) {
     return () => {
       this.props.getIconDetail(iconId).then(() => {
-        this.props.editIconStyle({ color: '#34475e', size: 255 });
+        this.props.editIconStyle({ color: '#34475e', size: 256 });
         this.setState({
           isShowDownloadDialog: true,
         });
