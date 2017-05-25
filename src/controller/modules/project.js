@@ -698,7 +698,7 @@ export function* uploadSource(next) {
     type: 'project',
     id: projectId,
   });
-  if (!file.res) {
+  if (file.data && !file.data.res) {
     return;
   }
   // TODO: 文件路径需要修改

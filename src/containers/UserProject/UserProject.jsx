@@ -476,7 +476,7 @@ class UserProject extends Component {
       version: this.nextSourceVersion,
     })
     .then((data) => {
-      if (!data.res) {
+      if (data.payload && !data.payload.res) {
         throw Error();
       }
       // 上传字体
