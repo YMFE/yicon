@@ -188,7 +188,7 @@ export default class Statistic extends Component {
               }
             </ul>
           </div>
-          <div className="yicon-statisitc-detail">
+          <div className="yicon-statistic-detail">
             {
               this.props.statisticData.map((icon, i) => (
                 <IconBtn

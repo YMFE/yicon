@@ -8,13 +8,11 @@
     .yicon-list-item {
       height: 46px;
       line-height: 46px;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
   }
-  &-wrapper {
-    width: 100%;
+  &-detail {
     display: flex;
-    justify-content: flex-start;
     flex-wrap: wrap;
   }
   .yicon-info {
