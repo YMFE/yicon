@@ -27,7 +27,7 @@ import {
   patchProjectMemeber,
   generateVersion,
   deleteProject,
-  deleteProjectIcon,
+  delProjectIcon,
   fetchAllVersions,
   compareProjectVersion,
   adjustBaseline,
@@ -66,7 +66,7 @@ import CreateProject from './CreateProject.jsx';
     patchProjectMemeber,
     generateVersion,
     deleteProject,
-    deleteProjectIcon,
+    delProjectIcon,
     fetchAllVersions,
     compareProjectVersion,
     replace,
@@ -85,6 +85,7 @@ import CreateProject from './CreateProject.jsx';
 class UserProject extends Component {
   static propTypes = {
     projectId: PropTypes.string,
+    from: PropTypes.string,
     usersProjectList: PropTypes.array,
     projectChangeInfo: PropTypes.object,
     currentUserProjectInfo: PropTypes.object,
@@ -92,7 +93,7 @@ class UserProject extends Component {
     fetchMemberSuggestList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
     deleteProject: PropTypes.func,
-    deleteProjectIcon: PropTypes.func,
+    delProjectIcon: PropTypes.func,
     fetchAllVersions: PropTypes.func,
     compareProjectVersion: PropTypes.func,
     patchUserProject: PropTypes.func,
@@ -173,6 +174,8 @@ class UserProject extends Component {
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
     const nextId = nextProps.projectId;
+    const from = this.props.from;
+    const nextFrom = nextProps.from;
     if (current) {
       this.setState({
         name: current.name,
@@ -186,7 +189,7 @@ class UserProject extends Component {
       this.props.replace(`/projects/${this.props.usersProjectList[0].id}`);
       return;
     }
-    if (nextId !== this.props.projectId) {
+    if (nextId !== this.props.projectId || from !== nextFrom) {
       this.props.getUserProjectInfo(nextId)
         .then(() => this.props.fetchAllVersions(nextId))
         .then(() => {
@@ -286,10 +289,16 @@ class UserProject extends Component {
       content: '确认从项目中删除图标吗？',
       title: '删除确认',
       onOk: () => {
-        this.props.deleteProjectIcon(
-          this.props.currentUserProjectInfo.id,
-          [icons]
-        );
+        const id = this.props.currentUserProjectInfo.id;
+        this.props.delProjectIcon(id, [icons])
+        .then(() => this.props.getUserProjectInfo(id))
+        .then(() => this.props.fetchAllVersions(id))
+        .then(() => {
+          const { versions } = this.props.projectInfo;
+          if (versions && versions.length) {
+            this.compareVersion(() => {});
+          }
+        });
       },
       onCancel: () => {},
     });

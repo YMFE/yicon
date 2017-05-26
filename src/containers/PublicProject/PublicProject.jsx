@@ -36,6 +36,7 @@ export default class PublicProject extends Component {
     getUsersProjectList: PropTypes.func,
     user: PropTypes.object,
     usersProjectList: PropTypes.array,
+    location: PropTypes.object,
   };
 
   state = {
@@ -55,7 +56,11 @@ export default class PublicProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.params.id !== nextProps.params.id && this.props.user.login) {
+    const id = this.props.params.id;
+    const nextId = nextProps.params.id;
+    const query = this.props.location.query || {};
+    const nextQuery = nextProps.location.query || {};
+    if ((id !== nextId || query.from !== nextQuery.from) && this.props.user.login) {
       this.props.getUsersProjectList();
     }
   }
@@ -70,13 +75,14 @@ export default class PublicProject extends Component {
   }
 
   renderContent(id) {
+    const { from } = this.props.location && this.props.location.query;
     if (!id) {
       return <NoProject hideLoading={this.hideLoading} />;
     }
     let content;
     const isBelong = this.props.usersProjectList.some(v => v.id === +id);
     if (this.props.user.login && isBelong) {
-      content = <UserProject projectId={id} hideLoading={this.hideLoading} />;
+      content = <UserProject projectId={id} from={from} hideLoading={this.hideLoading} />;
     } else {
       content = <History projectId={id} isHidden hideLoading={this.hideLoading} />;
     }

@@ -163,7 +163,7 @@ export function fetchProjectLogs(id, page) {
   };
 }
 
-function delProjectIcon(id, icons) {
+export function delProjectIcon(id, icons) {
   return {
     type: DELETE_PROJECT_ICON,
     payload: fetch.delete(`/user/projects/${id}/icons`, { data: { icons } }),
