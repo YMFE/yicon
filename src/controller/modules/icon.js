@@ -111,13 +111,19 @@ export function* uploadIcons(next) {
     invariant(false, '读取 svg 文件内容有误，请检查文件');
   }
 
-  const data = icons.map(icon => ({
-    name: icon.name,
-    tags: icon.name,
-    path: icon.d,
-    status: iconStatus.UPLOADED,
-    uploader: userId,
-  }));
+  const data = icons.map(icon => {
+    invariant(
+      ICON_NAME.reg.test(icon.name),
+      '文件名称长度为 1-20，支持中文、英文、数字、连字符和下划线等，不能含有其他非法字符，请修改后重新上传'
+    );
+    return {
+      name: icon.name,
+      tags: icon.name,
+      path: icon.d,
+      status: iconStatus.UPLOADED,
+      uploader: userId,
+    };
+  });
 
   yield Icon.bulkCreate(data);
 
@@ -423,6 +429,7 @@ export function* updateIconInfo(next) {
   const errorMsg = [];
 
   if (typeof tags === 'string' && tags !== '') {
+    invariant(ICON_TAG.reg.test(tags), ICON_TAG.message);
     data.tags = tags;
   } else {
     errorMsg.push(`期望传入的 tags 是非空字符串，传入的却是 ${tags}`);

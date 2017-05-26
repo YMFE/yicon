@@ -100,7 +100,7 @@ export default class Statistic extends Component {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const { name, code, path, status, description } = icon;
-    const classList = ['statistic', 'yicon-statisitc-detail', 'yicon-info'];
+    const classList = ['statistic', 'yicon-statistic-detail', 'yicon-info'];
     if (fromElement && classList.indexOf(fromElement.className) > -1 && path) {
       // left 和 top 分别定位详细信息 tip 的位置
       let left = 0;

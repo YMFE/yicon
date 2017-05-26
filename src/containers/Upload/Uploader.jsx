@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import axios from 'axios';
 
+import { ICON_NAME } from '../../constants/validate';
 import Message from '../../components/common/Message/Message';
 
 // 最大 20kb
@@ -74,6 +75,13 @@ export default class Uploader extends Component {
 
       if (file.size > MAX_SIZE) {
         Message.error('上传的文件最大为 20KB！');
+        hasInvalidFile = true;
+        return true;
+      }
+
+      const fileName = file.name.replace('.svg', '');
+      if (!ICON_NAME.reg.test(fileName)) {
+        Message.error('文件名称长度为 1-20，支持中文、英文、数字、连字符和下划线等，不能含有其他非法字符，请修改后重新上传');
         hasInvalidFile = true;
         return true;
       }

@@ -85,7 +85,7 @@ class UpdateDialog extends Component {
     return (
       <div className="update-icon-container">
         <IconBgGrid
-          bgSize={257}
+          bgSize={256}
           iconPath={iconDetail.path}
           iconSize={iconDetail.iconStyle.size}
           iconColor={iconDetail.iconStyle.color}
