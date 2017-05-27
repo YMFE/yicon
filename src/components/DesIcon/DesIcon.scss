@@ -34,6 +34,9 @@ $staticUrl: '../../../static/';
     border-radius: 2px;
     margin: 4px auto 0;
     padding: 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &.fault {
       background-color: $state-grey;
       color: $text-color;

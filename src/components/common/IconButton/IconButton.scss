@@ -10,6 +10,7 @@
     width: 72px;
     margin: 0 auto;
     position: relative;
+    border-radius: 5px;
     /*background-color: #fff;*/
     .icon {
       font-size: 64px;
@@ -95,7 +96,7 @@
 .icon-detail-item:hover,.icon-detail-item.active{
   .info{
     border: 1px solid #ccc;
-    border-radius: 2px;
+    border-radius: 5px;
     background-color: #fff;
     .icon{
       color:#008ed6;
@@ -113,16 +114,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(249,250,251, 0.8);
+    background-color: rgba(0,0,0, 0.8);
     cursor: pointer;
     display: block;
+    border-radius: 5px;
   }
   .icon-cart {
     position: absolute;
     top: 40px;
     left: 0;
     right: 0;
-    color: #666;
+    color: #fff;
     font-size: 30px;
   }
 }

@@ -84,7 +84,7 @@ export default class Authority extends Component {
     this.state = {
       updateVisible: false,
       createVisible: false,
-      disabledCodeVisible: false,
+      // disabledCodeVisible: false,
       ownerName: '',
       searchValue: '',
       isSearch: false,
@@ -112,7 +112,7 @@ export default class Authority extends Component {
       this.setState({
         updateVisible: false,
         createVisible: false,
-        disabledCodeVisible: false,
+        // disabledCodeVisible: false,
         searchValue: '',
         name: '',
         alias: '',

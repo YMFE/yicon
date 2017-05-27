@@ -98,7 +98,7 @@ export const InfoTemplate = {
         showCode={false}
         iconPath={item.path}
       >
-        <p className="tag">新</p>
+        <p className="tag" title="新">新</p>
       </DesIcon>
     ))
   ),
@@ -111,7 +111,7 @@ export const InfoTemplate = {
         showCode={false}
         iconPath={item.path}
       >
-        <p className="tag">删</p>
+        <p className="tag" title="删">删</p>
       </DesIcon>
     ))
   ),
@@ -131,7 +131,7 @@ export const InfoTemplate = {
           showCode={false}
           iconPath={item.path}
         >
-          <p className={classlist.join(' ')}>{staus.text}</p>
+          <p className={classlist.join(' ')} title={staus.text}>{staus.text}</p>
         </DesIcon>
       );
     })
@@ -150,7 +150,7 @@ export const InfoTemplate = {
             showCode={false}
             iconPath={item.path}
           >
-            <p className={classlist.join(' ')}>{staus.text}</p>
+            <p className={classlist.join(' ')} title={staus.text}>{staus.text}</p>
           </DesIcon>
         );
       }
@@ -160,7 +160,7 @@ export const InfoTemplate = {
           key={index}
           statusDesc
         >
-          <p className={classlist.join(' ')}>{staus.text}</p>
+          <p className={classlist.join(' ')} title={staus.text}>{staus.text}</p>
         </StatusIcon>
       );
     })
@@ -176,7 +176,7 @@ export const InfoTemplate = {
             showCode={false}
             iconPath={prohibitIcon.path}
           >
-            <p className="state fault">已删除</p>
+            <p className="state fault" title="已删除">已删除</p>
           </DesIcon>
         );
       }
@@ -191,7 +191,7 @@ export const InfoTemplate = {
           showCode={false}
           iconPath={item.path}
         >
-          <p className={classlist.join(' ')}>{staus.text}</p>
+          <p className={classlist.join(' ')} title={staus.text}>{staus.text}</p>
         </DesIcon>
       );
     })
@@ -207,7 +207,7 @@ export const InfoTemplate = {
           showCode={false}
           iconPath={icons.iconFrom.path}
         >
-          <p className="tag">旧</p>
+          <p className="tag" title="旧">旧</p>
         </DesIcon>
         <DesIcon
           key={2}
@@ -216,7 +216,7 @@ export const InfoTemplate = {
           showCode={false}
           iconPath={icons.iconTo.path}
         >
-          <p className="tag">新</p>
+          <p className="tag" title="新">新</p>
         </DesIcon>
       </div>
     );

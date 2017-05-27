@@ -48,6 +48,9 @@ export default class Statistic extends Component {
     path: '',
     description: '',
   };
+  componentWillMount() {
+    this.fetchData(480, 1);
+  }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
