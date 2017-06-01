@@ -99,35 +99,40 @@ export default class Statistic extends Component {
 
   @autobind
   hoverIcon(e, icon) {
-    const { fromElement, clientX, clientY } = e.nativeEvent;
+    const { toElement } = e.nativeEvent;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const { name, code, path, status, description } = icon;
-    const classList = ['statistic', 'yicon-statistic-detail', 'yicon-info'];
-    if (fromElement && classList.indexOf(fromElement.className) > -1 && path) {
-      // left 和 top 分别定位详细信息 tip 的位置
-      let left = 0;
-      let top = 0;
-      // 系统占用的编码需要展示描述信息，故需要减去 240
-      const disabledHeight = status === iconStatus.DISABLED ? 180 : 0;
-      // 根据图标的位置改变 tip 的 left,top，主要是处理右边和下边的情况
-      // tip 的 宽为 180，高最大为 240，每个图标宽高为 60
-      if (clientX + 180 > viewportWidth) {
-        left = clientX - 210;
-      } else {
-        left = clientX + 30;
-      }
-      if (clientY + 240 > viewportHeight) {
-        top = clientY - 30 - disabledHeight;
-      } else {
-        top = clientY;
-      }
-      const element = this.infoEle;
-      element.style.left = `${left}px`;
-      element.style.top = `${top}px`;
-      element.style.display = 'block';
-      this.setState({ name, code, path, description });
+    const toElementPosition = toElement.getBoundingClientRect();
+    if (!code) {
+      return;
     }
+    // left 和 top 分别定位详细信息 tip 的位置
+    let left = 0;
+    let top = 0;
+    // elementX，elementY：hover时元素位置
+    const elementX = toElementPosition.left;
+    const elementY = toElementPosition.top;
+    // 系统占用的编码需要展示描述信息，且 tip 高度最大为 240（120 + 60 + 60），故需要减去 120
+    const disabledHeight = status === iconStatus.DISABLED ? 120 : 0;
+    // 根据图标的位置改变 tip 的 left,top，主要是处理右边和下边的情况
+    // tip 的 宽为 180，高最大为 240，每个图标宽高为 60
+    if (elementX + 240 > viewportWidth) {
+      left = elementX - 185;
+    } else {
+      left = elementX + 50;
+    }
+    if (elementY + 90 + disabledHeight > viewportHeight) {
+      // 60 + 60 + 120
+      top = elementY - 60 - disabledHeight;
+    } else {
+      top = elementY;
+    }
+    const element = this.infoEle;
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+    element.style.display = 'block';
+    this.setState({ name, code, path, description });
   }
 
   @autobind

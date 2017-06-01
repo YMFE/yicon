@@ -18,7 +18,7 @@ export default class IconBtn extends Component {
         className={
           `yicon-statistic-wrapper ${icon.status === iconStatus.DISABLED ? 'disabled-code' : ''}`
         }
-        onMouseOver={(e) => {
+        onMouseEnter={(e) => {
           this.props.hoverIcon(e, icon);
         }}
         onMouseLeave={this.props.leaveIcon}

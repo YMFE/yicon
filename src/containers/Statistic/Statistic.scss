@@ -22,11 +22,11 @@
     top: 0;
     left: 0;
     padding: 20px 10px;
-    border: 1px solid #cacacb;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 5px 5px 5px #ccc;
+    box-shadow: 0 0 5px 0px #ddd;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.96);
     z-index: 100000;
     overflow: auto;
     display: none;

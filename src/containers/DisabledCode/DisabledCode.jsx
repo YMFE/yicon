@@ -63,6 +63,7 @@ export default class DisabledCode extends Component {
         data-id={item.id}
         data-code={item.code}
         key={index}
+        title="编辑信息"
         onClick={this.updateCodeDescription}
       >
         {`&#x${item.code.toString(16)};`}

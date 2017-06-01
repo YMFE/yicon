@@ -796,7 +796,7 @@ class UserProject extends Component {
                     key={index}
                     data-id={item.id}
                     // title={item.name}
-                    title={infoCount ? `项目存在${infoCount < 100 ? infoCount : '99+'}条变更记录，请查看` : ''}
+                    title={infoCount ? `该项目有${infoCount < 100 ? infoCount : '99+'}条变更，请仔细查看` : ''}
                     className={`project-name-item ${item.id === this.props.currentUserProjectInfo.id
                       ? 'selected'
                       : null}`
