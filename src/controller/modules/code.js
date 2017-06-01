@@ -79,6 +79,8 @@ export function *setDisabledCode(next) {
   const t = seq.transaction(transaction => {
     let existingIcon = null;
     const canUseCodes = [];
+    const idList = [];
+    // 将历史图标（分配的编码将被设置为系统占用）状态置为 DISABLED
     const existingIconInfo = existingCodes.map((item, index) => Icon.update({
       status: iconStatus.DISABLED,
       description: isString(item.description) ? item.description : JSON.stringify(item.description),
@@ -127,7 +129,9 @@ export function *setDisabledCode(next) {
     .then((icon) => {
       // 将历史图标设置为系统占用后，需重新插入一条数据并重新编码
       existingIcon = icon;
-      const { name, fontClass, tags, path, createTime } = existingIcon;
+      const { id, name, fontClass, tags, path, createTime } = existingIcon;
+      idList[index] = idList[index] || {};
+      Object.assign(idList[index], { oldId: id });
       return Icon.create({
         name,
         fontClass,
@@ -137,19 +141,31 @@ export function *setDisabledCode(next) {
         createTime,
         applyTime: new Date(),
         status: iconStatus.RESOLVED,
+        oldId: id,
         uploader: userId,
       }, {
         transaction,
       });
     })
-    .then((data) => RepoVersion.create({
-      repositoryId: existingIcon['repositories.id'],
-      version: '0.0.0',
-      iconId: +data.id,
-    }, {
-      transaction,
+    .then((data) => {
+      idList[index] = idList[index] || {};
+      Object.assign(idList[index], { newId: +data.id });
+      // 在 repoVersion 表中关联上新上传的图标和大库
+      return RepoVersion.create({
+        repositoryId: existingIcon['repositories.id'],
+        version: '0.0.0',
+        iconId: +data.id,
+      }, {
+        transaction,
+      });
     })
-    ));
+    // 记录旧图标对应的新图标的 id，方便系统占用图标关联查询
+    .then(() => Icon.update({
+      newId: idList[index].newId,
+    }, {
+      where: { id: idList[index].oldId },
+      transaction,
+    })));
     const newIconInfo = newCodes.map(code => Icon.create({
       name: '系统占用',
       code: parseInt(+code.code, 10),
