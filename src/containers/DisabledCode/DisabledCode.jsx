@@ -143,6 +143,18 @@ export default class DisabledCode extends Component {
       Message.error('机型和系统等信息不能为空');
       return;
     }
+    if (mobile.length >= 100) {
+      Message.error('机型信息字段过长，请删减');
+      return;
+    }
+    if (os.length >= 100) {
+      Message.error('系统信息字段过长，请删减');
+      return;
+    }
+    if (other.length >= 2000) {
+      Message.error('其他信息字段过长，请删减');
+      return;
+    }
     this.props.setDisabledCode({ codes: [{
       code: `0x${code.toLowerCase()}`,
       description: JSON.stringify({
@@ -222,6 +234,18 @@ export default class DisabledCode extends Component {
     const { codeId, mobile, os, other } = this.state;
     if (!mobile.trim() || !os.trim()) {
       Message.error('机型和系统等信息不能为空');
+      return;
+    }
+    if (mobile.length >= 100) {
+      Message.error('机型信息字段过长，请删减');
+      return;
+    }
+    if (os.length >= 100) {
+      Message.error('系统信息字段过长，请删减');
+      return;
+    }
+    if (other.length >= 2000) {
+      Message.error('其他信息字段过长，请删减');
       return;
     }
     const description = JSON.stringify({

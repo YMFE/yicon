@@ -12,6 +12,8 @@ const disabledCodePath = ' M889 169L768 290V848C768 856.8 760.8 864 752 864H272C
   '176V222L855 135C859.6 130.4 865.8 128 872 128S884.2 130.4 889 135C898.4 144.4 898.4 ' +
   '159.6 889 169zM288 832H736V322L288 770V832zM736 192H288V702L736 254V192z';
 
+const isString = (string) => Object.prototype.toString.call(string) === '[object String]';
+
 export function *getDisabledCode(next) {
   const icon = yield Icon.findAll({
     attributes: ['id', 'code'],
@@ -31,7 +33,15 @@ export function *setDisabledCode(next) {
   const { userId } = this.state.user;
   invariant(codes instanceof Array, '传入的 codes 不合法，期望是数组');
   // codeList：查询条件（icons 表中已存在的编码）
-  const codeList = codes.map(item => parseInt(+item.code, 10));
+  const codeList = codes.map(item => {
+    const { mobile, os, other } = isString(item.description)
+      ? JSON.parse(item.description)
+      : item.description || {};
+    invariant(mobile.length < 100, '机型信息字段过长，请删减');
+    invariant(os.length < 100, '系统信息字段过长，请删减');
+    invariant(other.length < 2000, '其他信息字段过长，请删减');
+    return parseInt(+item.code, 10);
+  });
   const icons = yield Icon.findAll({
     attributes: ['id', 'code', 'status'],
     where: {
@@ -65,8 +75,6 @@ export function *setDisabledCode(next) {
       newCodes.push(item);
     }
   });
-
-  const isString = (string) => Object.prototype.toString.call(string) === '[object String]';
 
   const t = seq.transaction(transaction => {
     let existingIcon = null;
@@ -219,6 +227,12 @@ export function *fetchDisabledCode(next) {
 
 export function *updateCodeDescription(next) {
   const { iconId, description } = this.param;
+  const { mobile, os, other } = isString(description)
+    ? JSON.parse(description)
+    : description || {};
+  invariant(mobile.length < 100, '机型信息字段过长，请删减');
+  invariant(os.length < 100, '系统信息字段过长，请删减');
+  invariant(other.length < 2000, '其他信息字段过长，请删减');
   yield Icon.update({
     description,
   }, { where: { id: iconId } });
