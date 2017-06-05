@@ -235,7 +235,7 @@ export function *unSetDisabledCode(next) {
 
 // 从 GitHub 上拉取
 export function *fetchDisabledCode(next) {
-  const gitUrl = 'https://raw.githubusercontent.com/JasonFang93/demo/master/disabledCode.json';
+  const gitUrl = 'https://raw.githubusercontent.com/YMFE/yicon-problem-code/master/index.json';
   const data = yield axios.get(gitUrl).then(res => res.data);
   this.state.respond = data;
   yield next;
