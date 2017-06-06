@@ -48,7 +48,19 @@
                     
                     <li class="">
                         
+                        <a href="update.html">如何升级</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
                         <a href="usage.html">使用说明</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="source.html">source 接口</a>
                         
                     </li>
                     
@@ -89,17 +101,25 @@
           <div class="ydoc-container-content" id="readme">
               <article class="markdown-body">
                   
-                  <h1 class="subject" id="YIcon Builder">YIcon Builder <a class="hashlink" href="#YIcon Builder">#</a></h1><p>如果希望在自己的服务器上搭建字体站，可以遵照如下的方式，一步一步进行部署即可。</p>
+                  <h1 class="subject" id="YIcon Builder - init">YIcon Builder - init <a class="hashlink" href="#YIcon Builder - init">#</a></h1><p>如果希望在自己的服务器上搭建字体站，可以遵照如下的方式，一步一步进行部署即可。</p>
 <h2 class="subject" id="环境要求">环境要求 <a class="hashlink" href="#环境要求">#</a></h2><p>系统要求：</p>
 <ul>
 <li>Linux/Unix</li></ul>
 <p>环境要求：</p>
 <ul>
-<li>node 4.x+</li><li>npm 3.x</li><li>mysql 5.5+</li></ul>
+<li>node 4.x+</li><li>npm 3.x</li><li>mysql 5.5+</li><li>fontconfig lib</li></ul>
 <p>npm 应该升级到 3.x，升级方式为：</p>
 <pre><code>$ sudo npm install -g npm@3 --registry=https://registry.npm.taobao.org
 </code></pre><p>应该提前配置好 mysql 的服务，创建一个用户及其登录密码（可参考<a href="http://www.cyberciti.biz/faq/mysql-change-root-password/">这篇文章</a>），并在里面创建一个 <code>utf-8</code> 编码的数据库。数据库名字、用户名、密码应和下面配置项中的名字保持一致。</p>
-<h2 class="subject" id="初始安装">初始安装 <a class="hashlink" href="#初始安装">#</a></h2><p>运行命令：</p>
+<p>下载图标 png 图片依赖 fontconfig，安装方式：</p>
+<p>CentOS</p>
+<pre><code>$ yum install fontconfig
+</code></pre><p>Ubuntu</p>
+<pre><code>$ apt-get install fontconfig
+</code></pre><p>OS</p>
+<pre><code>$ sudo brew install fontconfig
+</code></pre><p>其他系统请自行 Google 解决。</p>
+<h2 class="subject" id="初始安装">初始安装 <a class="hashlink" href="#初始安装">#</a></h2><p>安装构建工具 <a href="https://github.com/YMFE/yicon-builder">yicon builder</a>，运行命令：</p>
 <pre><code class="lang-bash">$ <span class="token function">npm</span> <span class="token function">install</span> yicon-builder -g
 </code></pre>
 <p>安装完成之后，会在拥有一个 <code>yicon</code> 的命令。运行 <code>yicon init</code>，可以按照提示进行安装：</p>
@@ -111,8 +131,8 @@
 <ol>
 <li>数据库域名，即数据库服务的域，如果配置在本地就填写默认 <code>127.0.0.1</code>；</li><li>数据库用户名，即登录数据库的默认用户，默认为 <code>root</code>；</li><li>数据库密码，必须按照上文所述，给数据库设定一个密码，默认为 <code>123456</code>；</li><li>数据库端口号，默认 <code>3306</code>；</li><li>数据库名称，必须在设置之前创建并指定一个特定的数据库，推荐为默认值 <code>iconfont</code>；</li></ol>
 <p>配置完成后将生成配置文件，并尝试连接数据库，如果连接期间存在问题，将无法自动导入数据表，安装程序会将创建数据表的 sql 文件置入安装路径中，需要稍后手动导入。</p>
-<h3 class="subject" id="提示：选择登陆类型">提示：选择登陆类型 <a class="hashlink" href="#提示：选择登陆类型">#</a></h3><p>由于本应用没有接入第三方登录，因此依赖内部系统的 cas 或 sso 登录模式。应用内部已经支持这两种模式的配置，只需要提供相关 url 即可。</p>
-<p>在生成的配置文件中，我们会看到如下配置：</p>
+<h3 class="subject" id="提示：选择登陆类型">提示：选择登陆类型 <a class="hashlink" href="#提示：选择登陆类型">#</a></h3><p>由于本应用没有接入第三方登录，因此依赖内部系统的 cas、sso 或 ldap 等三种登录模式。应用只需要提供相关 url 即可。</p>
+<p>选择 cas 或 sso 时，在生成的配置文件中，我们会看到如下配置：</p>
 <pre><code class="lang-javascript"><span class="token punctuation">{</span>
     <span class="token string">"login"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
         <span class="token string">"ssoType"</span><span class="token punctuation">:</span> <span class="token string">"cas"</span><span class="token punctuation">,</span>
@@ -127,15 +147,46 @@
 <ul>
 <li><code>ssoType</code>: 根据用户输入自动生成登录类型，会分别按照 cas 和 sso 的规则进行登录；</li><li><code>authUrl</code>: 指点击登录按钮时需要跳转的 url，通常是一个登录页面，用户在这个页面登录后，会给服务端返回一个 token；</li><li><code>tokenUrl</code>: 服务端在获取 token 之后，可以通过这个 url 来获取用户的详细信息；</li><li><code>serviceUrl</code>: 通常这两种服务都需要提供当前域名，这里可以配置 iconfont 字体站服务的域名；</li><li><code>adminList</code>: 字符串格式的数组，里面可以写入超管的用户名，用于配置超管，如 <code>[&#39;minghao.yu&#39;]</code>。</li></ul>
 <p>url 中的 <code>{{xxx}}</code> 格式表示占位符，其中 <code>{{service}}</code> 会被替换成 <code>serviceUrl</code>，<code>{{token}}</code> 会被替换成获取的 token。</p>
+<p>选择 ldap 时，在生成的配置文件中，我们会看到如下配置：</p>
+<pre><code class="lang-javascript"><span class="token punctuation">{</span>
+    <span class="token string">"login"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"ssoType"</span><span class="token punctuation">:</span> <span class="token string">"ldap"</span><span class="token punctuation">,</span>
+        <span class="token string">"server"</span><span class="token punctuation">:</span> <span class="token string">"ldap://127.0.0.1:1389"</span><span class="token punctuation">,</span>
+        <span class="token string">"bindDn"</span><span class="token punctuation">:</span> <span class="token string">"cn=root"</span><span class="token punctuation">,</span>
+        <span class="token string">"baseDn"</span><span class="token punctuation">:</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+        <span class="token string">"bindPassword"</span><span class="token punctuation">:</span> <span class="token string">"secret"</span><span class="token punctuation">,</span>
+        <span class="token string">"searchDn"</span><span class="token punctuation">:</span> <span class="token string">"cn=root"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 class="subject" id="source 配置">source 配置 <a class="hashlink" href="#source 配置">#</a></h3><p>该项配置只支持默认配置，且功能默认不开启，如需在图标项目中接入同步 source 功能，请手动修改 <code>config.json</code> 配置项，并自行提供上传服务，接口文档详见<a href="http://mytest.qunar.com/_docs/source.html">source 接口</a></p>
+<pre><code class="lang-javascript"><span class="token punctuation">{</span>
+    <span class="token string">"source"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"support"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token string">"infoUrl"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"versionUrl"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"sourceUrl"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"cdn"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>这里面的配置项含义如下：</p>
+<ul>
+<li><code>support</code>: 在图标项目中是否开启“同步 source”功能，默认为 false，不开启；</li><li><code>infoUrl</code>: 查询项目的 source 信息的 url，用于在配置上传路径时，检查配置的路径是否存在；</li><li><code>versionUrl</code>: 获取项目 source 上最高版本的 url，用于跟 yicon 平台上对应项目的版本进行对比，版本一致时，不允许上传，不一致时，上传并生成新的版本（基于 yicon 平台对应项目最高版本和 source 最高版本）；</li><li><code>sourceUrl</code>: yicon 平台将需要上传的字体文件通过 post 请求发送到该 url，通过该接口将接收到的字体文件上传到 source 服务；</li><li><code>cdn</code>: source（cdn）服务地址，用于字体文件同步到 source 成功后生成的引用地址。</li></ul>
+<p><strong>注：</strong> 因为各个公司的 source 平台不一致，所以无法提供统一的上传服务，需要接入方根据自身 source 平台和接口文档自行实现上传服务</p>
 <h2 class="subject" id="依赖安装">依赖安装 <a class="hashlink" href="#依赖安装">#</a></h2><p>初始安装成功后，会提示需要进入到安装路径的 src 路径下执行 <code>npm install</code> 进行依赖安装，目前只提供淘宝源，如果有自己指定的源，可以选择 <code>3) other</code>，然后手动输入源（如输入 <code>http://registry.npm.xxx.org</code>）。</p>
 <h2 class="subject" id="项目编译">项目编译 <a class="hashlink" href="#项目编译">#</a></h2><p>安装依赖完成之后，会在 <code>/src</code> 目录下执行 <code>npm run build</code> 进行静态资源编译；如果编译出错，可以去项目路径中手动执行 <code>npm run build</code> 编译。</p>
 <h2 class="subject" id="项目启动">项目启动 <a class="hashlink" href="#项目启动">#</a></h2><p>依赖安装完成后，进入到安装路径的 src 路径下执行 <code>./start.sh</code> 进行项目启动，或者自行选择使用 pm2 等工具进行启动。</p>
-<h2 class="subject" id="项目更新">项目更新 <a class="hashlink" href="#项目更新">#</a></h2><p>在项目目录下运行</p>
-<pre><code>$ yicon update
-</code></pre><p>运行完成之后，会先分析当前项目的变动，可以手工先保存变动的文件。之后项目会拉取最新的代码，覆盖项目内部的 <code>/src</code> 目录，并重新安装依赖和编译。</p>
-<p><strong>Tips</strong></p>
+<h2 class="subject" id="init 命令行详情">init 命令行详情 <a class="hashlink" href="#init 命令行详情">#</a></h2><p>通过 <code>ykit init -h</code> 可以查看该指令的参数</p>
+<pre><code>$ yicon init -h
+
+  Options:
+    -d, --default             # 默认配置
+    -b, --branch &lt;branch&gt;     # 指定 yicon 初始化分支或 tag
+    -h, --help                # output usage information
+</code></pre><p><strong>Tips</strong></p>
 <ul>
-<li>更换 Logo，请替换 <code>src/static/images/qiconbg.png</code>。</li></ul>
+<li>更换 Logo，请替换 <code>src/static/images/Yicon_logo.svg</code>。</li></ul>
 
               </article>
           </div>
