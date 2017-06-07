@@ -1,4 +1,4 @@
-# YIcon Builder
+# YIcon Builder - init
 
 如果希望在自己的服务器上搭建字体站，可以遵照如下的方式，一步一步进行部署即可。
 
@@ -13,6 +13,7 @@
 - node 4.x+
 - npm 3.x
 - mysql 5.5+
+- fontconfig lib
 
 npm 应该升级到 3.x，升级方式为：
 
@@ -22,9 +23,26 @@ $ sudo npm install -g npm@3 --registry=https://registry.npm.taobao.org
 
 应该提前配置好 mysql 的服务，创建一个用户及其登录密码（可参考[这篇文章](http://www.cyberciti.biz/faq/mysql-change-root-password/)），并在里面创建一个 `utf-8` 编码的数据库。数据库名字、用户名、密码应和下面配置项中的名字保持一致。
 
+下载图标 png 图片依赖 fontconfig，安装方式：
+
+CentOS
+```
+$ yum install fontconfig
+```
+
+Ubuntu
+```
+$ apt-get install fontconfig
+```
+OS
+```
+$ sudo brew install fontconfig
+```
+其他系统请自行 Google 解决。
+
 ## 初始安装
 
-运行命令：
+安装构建工具 [yicon builder](https://github.com/YMFE/yicon-builder)，运行命令：
 
 ```bash
 $ npm install yicon-builder -g
@@ -56,9 +74,9 @@ $ npm install yicon-builder -g
 
 ### 提示：选择登陆类型
 
-由于本应用没有接入第三方登录，因此依赖内部系统的 cas 或 sso 登录模式。应用内部已经支持这两种模式的配置，只需要提供相关 url 即可。
+由于本应用没有接入第三方登录，因此依赖内部系统的 cas、sso 或 ldap 等三种登录模式。应用只需要提供相关 url 即可。
 
-在生成的配置文件中，我们会看到如下配置：
+选择 cas 或 sso 时，在生成的配置文件中，我们会看到如下配置：
 
 ```javascript
 {
@@ -71,7 +89,6 @@ $ npm install yicon-builder -g
     }
 }
 ```
-
 这里面的配置项含义如下：
 
 - `ssoType`: 根据用户输入自动生成登录类型，会分别按照 cas 和 sso 的规则进行登录；
@@ -81,6 +98,45 @@ $ npm install yicon-builder -g
 - `adminList`: 字符串格式的数组，里面可以写入超管的用户名，用于配置超管，如 `['minghao.yu']`。
 
 url 中的 `{{xxx}}` 格式表示占位符，其中 `{{service}}` 会被替换成 `serviceUrl`，`{{token}}` 会被替换成获取的 token。
+
+选择 ldap 时，在生成的配置文件中，我们会看到如下配置：
+
+```javascript
+{
+    "login": {
+        "ssoType": "ldap",
+        "server": "ldap://127.0.0.1:1389",
+        "bindDn": "cn=root",
+        "baseDn": "test",
+        "bindPassword": "secret",
+        "searchDn": "cn=root"
+    }
+}
+```
+
+### source 配置
+该项配置只支持默认配置，且功能默认不开启，如需在图标项目中接入同步 source 功能，请手动修改 `config.json` 配置项，并自行提供上传服务，接口文档详见[source 接口](http://mytest.qunar.com/_docs/source.html)
+
+```javascript
+{
+    "source": {
+        "support": false,
+        "infoUrl": "",
+        "versionUrl": "",
+        "sourceUrl": "",
+        "cdn": ""
+    }
+}
+```
+这里面的配置项含义如下：
+
+- `support`: 在图标项目中是否开启“同步 source”功能，默认为 false，不开启；
+- `infoUrl`: 查询项目的 source 信息的 url，用于在配置上传路径时，检查配置的路径是否存在；
+- `versionUrl`: 获取项目 source 上最高版本的 url，用于跟 yicon 平台上对应项目的版本进行对比，版本一致时，不允许上传，不一致时，上传并生成新的版本（基于 yicon 平台对应项目最高版本和 source 最高版本）；
+- `sourceUrl`: yicon 平台将需要上传的字体文件通过 post 请求发送到该 url，通过该接口将接收到的字体文件上传到 source 服务；
+- `cdn`: source（cdn）服务地址，用于字体文件同步到 source 成功后生成的引用地址。
+
+**注：** 因为各个公司的 source 平台不一致，所以无法提供统一的上传服务，需要接入方根据自身 source 平台和接口文档自行实现上传服务
 
 ## 依赖安装
 
@@ -94,16 +150,18 @@ url 中的 `{{xxx}}` 格式表示占位符，其中 `{{service}}` 会被替换�
 
 依赖安装完成后，进入到安装路径的 src 路径下执行 `./start.sh` 进行项目启动，或者自行选择使用 pm2 等工具进行启动。
 
-## 项目更新
-
-在项目目录下运行
+## init 命令行详情
+通过 `ykit init -h` 可以查看该指令的参数
 
 ```
-$ yicon update
-```
+$ yicon init -h
 
-运行完成之后，会先分析当前项目的变动，可以手工先保存变动的文件。之后项目会拉取最新的代码，覆盖项目内部的 `/src` 目录，并重新安装依赖和编译。
+  Options:
+    -d, --default             # 默认配置
+    -b, --branch <branch>     # 指定 yicon 初始化分支或 tag
+    -h, --help                # output usage information
+```
 
 **Tips**
 
-- 更换 Logo，请替换 `src/static/images/qiconbg.png`。
+- 更换 Logo，请替换 `src/static/images/Yicon_logo.svg`。

@@ -297,7 +297,7 @@ class Cart extends Component {
               {status >= 2 && projectList.length === 0 &&
                 <a className="button-icon">
                   <a
-                    style={{ 'margin-left': 0 }}
+                    style={{ marginLeft: 0 }}
                     className="button-icon"
                     onClick={this.onChangeCartSaveType}
                     data-type="SAVE_TO_NEW_PROJECT"
