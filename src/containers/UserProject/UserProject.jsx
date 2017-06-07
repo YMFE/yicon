@@ -392,12 +392,23 @@ class UserProject extends Component {
     this.props.generateVersion({
       id,
       versionType: this.state.generateVersion,
-    }).then((data) => {
+    })
+    .then((data) => {
       if (data.payload && !data.payload.res) {
         return;
       }
+      // 生成新版后需要同步一下项目状态
+      this.props.getUserProjectInfo(id);
+    })
+    .then(() => this.props.fetchAllVersions(id))
+    .then(() => {
+      const { versions } = this.props.projectInfo;
+      if (versions && versions.length) {
+        this.compareVersion(() => {});
+      }
+    })
+    .then(() => {
       // 下载字体
-      this.props.fetchAllVersions(id);
       this.downloadAllIcons();
     });
     // 关闭dialog
@@ -505,6 +516,16 @@ class UserProject extends Component {
         this.setState({ iconStr: data });
       }
       this.setState({ isShowLoading: false });
+    })
+    .then(() => {
+      // 生成新版后需要同步一下项目状态
+      this.props.getUserProjectInfo(id);
+    })
+    .then(() => {
+      const { versions } = this.props.projectInfo;
+      if (versions && versions.length) {
+        this.compareVersion(() => {});
+      }
     })
     .catch(() => {
       this.setState({ isShowLoading: false });
