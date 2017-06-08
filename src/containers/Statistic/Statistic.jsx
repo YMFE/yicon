@@ -47,6 +47,8 @@ export default class Statistic extends Component {
     code: 0,
     path: '',
     description: '',
+    showTip: false,
+    hasMoreData: true,
   };
   componentWillMount() {
     this.fetchData(480, 1);
@@ -78,22 +80,35 @@ export default class Statistic extends Component {
     // 480 个图标大概显示时大概是 2 屏高
     const size = 480;
 
-    if (scrollTop + viewportHeight >= pageHeight
-      && this.state.time <= Math.ceil(6400 / size)) {
-      const time = this.state.time + 1;
-      this.fetchData(size, this.state.time);
-      this.setState({ time });
+    if (scrollTop + viewportHeight >= pageHeight) {
+      if (this.state.time <= Math.ceil(6400 / size)) {
+        const time = this.state.time + 1;
+        this.fetchData(size, this.state.time);
+        this.setState({ time });
+      } else {
+        this.setState({
+          showTip: true,
+          hasMoreData: false,
+        });
+      }
     }
   }
 
   @autobind
   fetchData(size, number) {
     this.setState({
+      showTip: true,
       isShowLoading: true,
     }, () => {
       this.props.fetchIconStatistic(size, number)
-        .then(() => this.setState({ isShowLoading: false }))
-        .catch(() => this.setState({ isShowLoading: false }));
+        .then(() => this.setState({
+          showTip: false,
+          isShowLoading: false,
+        }))
+        .catch(() => this.setState({
+          showTip: false,
+          isShowLoading: false,
+        }));
     });
   }
 
@@ -103,7 +118,20 @@ export default class Statistic extends Component {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const { name, code, path, status, description } = icon;
-    const toElementPosition = toElement.getBoundingClientRect();
+    const node = document.querySelector(`div[id="${icon.id}"]`) || toElement;
+    let targetElement = null;
+    switch (toElement.tagName.toUpperCase()) {
+      case 'SVG':
+        targetElement = node;
+        break;
+      case 'PATH':
+        targetElement = node;
+        break;
+      default:
+        targetElement = toElement;
+    }
+
+    const toElementPosition = targetElement.getBoundingClientRect();
     if (!code) {
       return;
     }
@@ -207,6 +235,16 @@ export default class Statistic extends Component {
                 />
               ))
             }
+          </div>
+          <div
+            className="yicon-loading-tip"
+            style={{
+              display: `${this.state.showTip ? 'block' : 'none'}`,
+              color: '#333',
+              textAlign: 'center',
+            }}
+          >
+            {this.state.hasMoreData ? '正在加载...' : '没有更多啦'}
           </div>
           <div className="yicon-info" ref={(node) => { this.infoEle = node; }}>
             <div className="icon-info">
