@@ -349,7 +349,7 @@ export function* deleteProjectIcon(next) {
   let result = 0;
   for (let i = 0, len = icon.length; i < len; i++) {
     result += yield ProjectVersion.destroy({
-      where: { version: '0.0.0', iconId: icon[i], projectId },
+      where: { version: 0, iconId: icon[i], projectId },
     });
   }
   if (result) {
