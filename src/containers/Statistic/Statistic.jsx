@@ -13,6 +13,9 @@ import './Statistic.scss';
 import IconBtn from './IconBtn.jsx';
 import Icon from '../../components/common/Icon/Icon.jsx';
 
+// 480 个图标大概显示时大概是 2 屏高
+let size = 480;
+
 @connect(
   state => ({
     list: state.statistic.list,
@@ -25,6 +28,7 @@ import Icon from '../../components/common/Icon/Icon.jsx';
     fetchIconStatistic,
   }
 )
+
 export default class Statistic extends Component {
 
   static propTypes = {
@@ -39,7 +43,6 @@ export default class Statistic extends Component {
   state = {
     isShowDownloadDialog: false,
     isShowLoading: false,
-    length: 0,
     list: [],
     data: [],
     time: 1,
@@ -50,11 +53,12 @@ export default class Statistic extends Component {
     showTip: false,
     hasMoreData: true,
   };
-  componentWillMount() {
-    this.fetchData(480, 1);
-  }
 
   componentDidMount() {
+    // 浏览器视口高度
+    const viewportHeight = window.innerHeight;
+    size = Math.max(Math.ceil(viewportHeight / 46) * 16 * 2, 480);
+    this.fetchData(1);
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }
@@ -77,13 +81,11 @@ export default class Statistic extends Component {
     } else {
       element.setAttribute('class', 'statistic');
     }
-    // 480 个图标大概显示时大概是 2 屏高
-    const size = 480;
 
-    if (scrollTop + viewportHeight >= pageHeight) {
+    if (Math.ceil(scrollTop + viewportHeight) >= pageHeight) {
       if (this.state.time <= Math.ceil(6400 / size)) {
         const time = this.state.time + 1;
-        this.fetchData(size, this.state.time);
+        this.fetchData(this.state.time);
         this.setState({ time });
       } else {
         this.setState({
@@ -95,7 +97,7 @@ export default class Statistic extends Component {
   }
 
   @autobind
-  fetchData(size, number) {
+  fetchData(number) {
     this.setState({
       showTip: true,
       isShowLoading: true,
