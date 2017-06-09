@@ -613,6 +613,7 @@ export function* getAdminProjects(next) {
       model: User,
       as: 'projectOwner',
     }],
+    order: 'id desc',
     ...pageMixin,
   });
   this.state.respond = project.rows.map(
