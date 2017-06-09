@@ -17,7 +17,7 @@
     display: flex;
     .description{
       width: $description-width;
-      padding-right: 28px;
+      padding:4px 28px 0 0;
       box-sizing: border-box;
       text-align: right;
     }
@@ -38,6 +38,7 @@
         content: ' ';
         display: block;
         position: absolute;
+        top: 5px;
         left: 0;
         transform: translate3d(-50%, 100%, 0);
         width: 8px;
