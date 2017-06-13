@@ -193,8 +193,9 @@ export default class Statistic extends Component {
   fetchStatisticWrapper() {
     const id = localStorage.getItem('statistic_id');
     this.props.fetchRepository(id)
-      .then(() => this.setState({ isShowLoading: false }))
-      .catch(() => this.setState({ isShowLoading: false }));
+      .catch(() => {
+        console.log('Statistic.jsx: fetchRepository 接口异常');
+      });
   }
 
   render() {
