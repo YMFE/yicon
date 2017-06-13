@@ -48,3 +48,8 @@ caches/
 
 # config.json ignore
 /config.json
+
+# docs ignore
+docs/
+_docs/
+ydoc.config

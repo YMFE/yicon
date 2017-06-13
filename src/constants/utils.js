@@ -141,7 +141,7 @@ export const InfoTemplate = {
       const classlist = ['state'];
       const staus = iconStateDescription[item.status];
       classlist.push(staus.className);
-      if (item.status === iconStatus.DISABLED) {
+      if (item.status === iconStatus.DISABLED || item.status === iconStatus.REPLACED) {
         return (
           <DesIcon
             key={index}

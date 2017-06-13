@@ -6,8 +6,9 @@
     left: -40px;
     color: #333;
     .yicon-list-item {
-      height: 46px;
-      line-height: 46px;
+      height: 44px;
+      line-height: 44px;
+      border: 1px solid transparent;
       margin-bottom: 16px;
     }
   }
@@ -27,7 +28,7 @@
     box-shadow: 0 0 5px 0px #ddd;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.96);
-    z-index: 100000;
+    z-index: 1000;
     overflow: auto;
     display: none;
     .icon-info {

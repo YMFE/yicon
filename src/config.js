@@ -54,6 +54,9 @@ const configPool = config.production ? config : {
     login: {
       ...config.login,
     },
+    source: {
+      ...config.source,
+    },
   },
 };
 

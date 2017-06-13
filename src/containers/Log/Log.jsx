@@ -2,21 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import classnames from 'classnames';
-import { fetchRepositoryLogs } from '../../actions/repository';
+import { fetchRepositoryLogs, fetchRepository } from '../../actions/repository';
 import { SubTitle, Content } from '../../components/';
 import TimelineList from './TimelineList.jsx';
 import Pager from '../../components/common/Pager/';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import {
   getInfoDetail,
 } from '../../actions/notification';
-
 
 @connect(
   state => ({
     ...state.log.repo,
     infoDetail: state.user.notification.infoDetail,
+    currRepository: state.repository.currRepository,
   }),
-  { fetchRepositoryLogs, getInfoDetail }
+  {
+    fetchRepositoryLogs,
+    getInfoDetail,
+    fetchRepository,
+  }
 )
 class Log extends Component {
 
@@ -28,10 +33,17 @@ class Log extends Component {
     fetchRepositoryLogs: PropTypes.func,
     infoDetail: PropTypes.object,
     getInfoDetail: PropTypes.func,
+    currRepository: PropTypes.object,
+    fetchRepository: PropTypes.func,
+  }
+
+  state = {
+    isShowLoading: false,
   }
 
   componentDidMount() {
     const { id } = this.props.params;
+    this.fetchLogWrapper();
     this.props.fetchRepositoryLogs(id, 1);
   }
 
@@ -41,15 +53,29 @@ class Log extends Component {
     this.props.fetchRepositoryLogs(id, page);
   }
 
+  @autobind
+  fetchLogWrapper(currentId) {
+    let { params: { id } } = this.props;
+    if (currentId) id = currentId;
+
+    this.setState({
+      isShowLoading: true,
+    }, () => {
+      this.props.fetchRepository(id)
+        .then(() => this.setState({ isShowLoading: false }))
+        .catch(() => this.setState({ isShowLoading: false }));
+    });
+  }
+
   render() {
-    const { list, currentPage, totalCount, infoDetail } = this.props;
+    const { currRepository: { name }, list, currentPage, totalCount, infoDetail } = this.props;
     const mainClass = classnames({
       'empty-content': !list.length,
     });
 
     return (
       <div className="log">
-        <SubTitle tit="图标库日志" />
+        <SubTitle tit={`${name || ''}图标库日志`} />
         <Content>
           <div className={mainClass} style={{ width: '100%' }}>
             <TimelineList
@@ -71,6 +97,7 @@ class Log extends Component {
             </div>
           </div>
         </Content>
+        <Loading visible={this.state.isShowLoading} />
       </div>
     );
   }
