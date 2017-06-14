@@ -25,7 +25,7 @@
   dl{
     margin: 30px 0 0;
     display: flex;
-    position: absolute;
+    position: relative;
     z-index: 2;
     .description{
       width: $description-width;
