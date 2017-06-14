@@ -11,11 +11,7 @@ export default date => {
     const gapDay = serverTime.getDate() - d.getDate();
     if (gapDay <= 2) {
       const day = ['今天', '昨天', '前天'][gapDay];
-      const pam = {
-        AM: '上午',
-        PM: '下午',
-      }[format(d, 'TT')];
-      template = `${day}${pam} hh:MM`;
+      template = `${day} HH:MM`;
     }
   }
   return format(d, template);

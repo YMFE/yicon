@@ -282,14 +282,25 @@ class IconButton extends Component {
           key="update"
         >&#xf3d5;</i>,
     };
+
     const tools = [];
+
     toolBtns.forEach((btn) => {
-      if (btn !== 'edit') {
-        tools.push(toolList[btn]);
-      } else if (+status === +3 || isUploader) {
-        tools.push(toolList[btn]);
+      const tool = toolList[btn];
+      // 已登陆用户 展示编辑
+      if (btn === 'update') {
+        if (+status !== 1) {
+          tools.push(tool);
+        }
+      } else {
+        if (btn !== 'edit') {
+          tools.push(tool);
+        } else if (+status === +3 || isUploader) {
+          tools.push(tool);
+        }
       }
     });
+
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className="info" onClick={this.selectIcon(icon.id)}>
