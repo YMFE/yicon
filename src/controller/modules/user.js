@@ -66,16 +66,15 @@ export function* listAdmin(next) {
   const { userId } = this.session;
   const users = yield User.findAll({ where: { actor: 2 } });
   const usersAdjust = [];
-  users.forEach(function (val){
-    if(val.id === userId){
+  users.forEach((val) => {
+    if (val.id === userId) {
       usersAdjust.unshift(val);
-    }else{
+    } else {
       usersAdjust.push(val);
     }
     return usersAdjust;
   });
-   this.state.respond = usersAdjust ;
-  /*this.state.respond = yield User.findAll({ where: { actor: 2 } });*/
+  this.state.respond = usersAdjust;
   yield next;
 }
 
