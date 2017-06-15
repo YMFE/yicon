@@ -8,7 +8,6 @@ import Pager from '../../components/common/Pager';
 import Dialog from '../../components/common/Dialog/Index';
 import Message from '../../components/common/Message/Message';
 import confirm from '../../components/common/Dialog/Confirm.jsx';
-
 import {
   fetchAllRepo,
   fetchAllProject,
@@ -399,7 +398,6 @@ export default class Authority extends Component {
       onCancel: () => {},
     });
   }
-
   @autobind
   showManagerItem(item, index) {
     const { name } = this.props.info || {};
@@ -412,7 +410,7 @@ export default class Authority extends Component {
         onClick={this.removeSuperManager}
       >
         {item.name}
-        <i className="iconfont pointer" title="删除超管">&#xf077;</i>
+        <i className="iconfont pointer" title="删除超管">删除超管</i>
       </li>
     );
   }

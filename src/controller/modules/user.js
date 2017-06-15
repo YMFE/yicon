@@ -63,7 +63,19 @@ export function* validateAuth(next) {
 // ========== 超管添加与删除  ========== //
 
 export function* listAdmin(next) {
-  this.state.respond = yield User.findAll({ where: { actor: 2 } });
+  const { userId } = this.session;
+  const users = yield User.findAll({ where: { actor: 2 } });
+  const usersAdjust = [];
+  users.forEach(function (val){
+    if(val.id === userId){
+      usersAdjust.unshift(val);
+    }else{
+      usersAdjust.push(val);
+    }
+    return usersAdjust;
+  });
+   this.state.respond = usersAdjust ;
+  /*this.state.respond = yield User.findAll({ where: { actor: 2 } });*/
   yield next;
 }
 
