@@ -17,8 +17,18 @@
     }
   }
   .global-timeline{
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 116px;
+      background: #dddfe2;
+      height: 100%;
+      width: 1px;
+      z-index: 1;
+    }      
     padding-top: 30px;
-    background-image: linear-gradient(90deg,transparent,transparent 116px,#dddfe2,#dddfe2 117px,transparent,transparent 0);
+    // background-image: linear-gradient(90deg,transparent,transparent 116px,#dddfe2,#dddfe2 117px,transparent,transparent 0);
     dl{
       .description{
         width: 116px;
