@@ -7,16 +7,23 @@ import { InfoTemplate } from '../../constants/utils.js';
 import {
   getInfo,
   getInfoDetail,
+  fetchUnreadNotification,
+  setPollingId,
+  setInfoReaded,
 } from '../../actions/notification';
 import Pager from '../../components/common/Pager/';
 
-const scope = {
+const scopes = {
   repo: '系统',
   project: '项目',
 };
 
 @connect(
   state => ({
+    userInfo: state.user.info,
+    unReadCount: state.user.notification.unReadCount,
+    systemUnReadCount: state.user.notification.systemUnReadCount,
+    projectUnReadCount: state.user.notification.projectUnReadCount,
     all: state.user.notification.allInfo,
     system: state.user.notification.systemInfo,
     project: state.user.notification.projectInfo,
@@ -25,16 +32,26 @@ const scope = {
   {
     getInfo,
     getInfoDetail,
+    fetchUnreadNotification,
+    setPollingId,
+    setInfoReaded,
   }
 )
 export default class Notification extends Component {
   static propTypes = {
     getInfo: PropTypes.func,
     getInfoDetail: PropTypes.func,
+    fetchUnreadNotification: PropTypes.func,
+    setPollingId: PropTypes.func,
+    setInfoReaded: PropTypes.func,
+    unReadCount: PropTypes.number,
+    systemUnReadCount: PropTypes.number,
+    projectUnReadCount: PropTypes.number,
     all: PropTypes.object,
     system: PropTypes.object,
     project: PropTypes.object,
     infoDetail: PropTypes.object,
+    userInfo: PropTypes.object,
   }
 
   constructor(props) {
@@ -45,19 +62,46 @@ export default class Notification extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getInfo();
+  componentWillMount() {
+    this.getUnreadCount();
+    this.props.getInfo('all', 1);
+  }
+
+  componentWillUpdate(_, nextState) {
+    if (this.state.tag !== nextState.tag) {
+      this.getUnreadCount();
+      this.props.getInfo(nextState.tag, 1);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.userInfo.login) {
+      this.props.fetchUnreadNotification();
+      this.pulseId = setInterval(() => {
+        this.props.fetchUnreadNotification();
+      }, 30 * 1000);
+      this.props.setPollingId(this.pulseId);
+    }
   }
 
   @autobind
   onChangePage(page) {
+    this.getUnreadCount();
     this.props.getInfo(this.state.tag, page);
   }
 
   @autobind
   onShowDetail(e, item) {
-    const id = item.id;
+    const { id, scope, userLog } = item;
     const infoState = Object.assign({}, this.state.infoState);
+    // 点击展开查看详细信息时将该条日志置为已读
+    if (userLog && userLog.unread) {
+      this.props.setInfoReaded({
+        id,
+        scope: scope === 'repo' ? 'system' : 'project',
+        type: this.state.tag,
+      });
+    }
     if (this.props.infoDetail[id]) {
       infoState[id] = infoState[id] || {};
       infoState[id].isShow = !infoState[id].isShow;
@@ -70,6 +114,13 @@ export default class Notification extends Component {
     this.setState({
       infoState,
     });
+  }
+
+  @autobind
+  getUnreadCount() {
+    this.props.fetchUnreadNotification();
+    this.props.fetchUnreadNotification('system');
+    this.props.fetchUnreadNotification('project');
   }
 
   @autobind
@@ -102,7 +153,7 @@ export default class Notification extends Component {
           infoList.map((item, index) => (
             <InfoItem
               key={index}
-              tag={scope[item.scope]}
+              tag={scopes[item.scope]}
               timeStr={item.createdAt}
               logCreator={item.logCreator}
               showTitleHtml
@@ -143,8 +194,8 @@ export default class Notification extends Component {
             >
               <a>全部消息
               {
-                this.props.all.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.all.unReadCount}</i> :
+                this.props.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.unReadCount}</i> :
                   null
               }
               </a>
@@ -156,8 +207,8 @@ export default class Notification extends Component {
             >
               <a>系统消息
               {
-                this.props.system.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.system.unReadCount}</i> :
+                this.props.systemUnReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.systemUnReadCount}</i> :
                   null
               }
               </a>
@@ -169,8 +220,8 @@ export default class Notification extends Component {
             >
               <a>项目消息
               {
-                this.props.project.unReadCount > 0 ?
-                  <i className={"info-cont"}>{this.props.project.unReadCount}</i> :
+                this.props.projectUnReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.projectUnReadCount}</i> :
                   null
               }
               </a>

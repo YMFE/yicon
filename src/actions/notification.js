@@ -5,6 +5,8 @@ import {
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
   FETCH_INFO_DETAIL,
+  SET_POLLING_ID,
+  SET_INFO_READED,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
@@ -47,15 +49,29 @@ export function getInfo(tag, page = 1) {
     }
   };
 }
-export function fetchUnreadNotification() {
+export function fetchUnreadNotification(type = 'all') {
   return {
     type: FETCH_UNREAD_COUNT,
-    payload: fetch.get('/unread/notifications'),
+    payload: fetch.get(`/unread/notifications/type/${type}`),
   };
 }
 export function getInfoDetail(id) {
   return {
     type: FETCH_INFO_DETAIL,
     payload: fetch.get(`/notifications/${id}`),
+  };
+}
+
+export function setPollingId(id) {
+  return {
+    type: SET_POLLING_ID,
+    payload: id,
+  };
+}
+
+export function setInfoReaded(info) {
+  return {
+    type: SET_INFO_READED,
+    payload: info,
   };
 }

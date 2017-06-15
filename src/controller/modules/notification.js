@@ -5,12 +5,25 @@ import invariant from 'invariant';
 
 export function* getUnreadCount(next) {
   const { model } = this.state.user;
-  this.state.respond = yield model.countLogs({
-    through: {
-      model: Notification,
-      where: { unread: true },
-    },
-  });
+  const { type } = this.param;
+  let number = null;
+  if (type === 'all') {
+    number = yield model.countLogs({
+      through: {
+        model: Notification,
+        where: { unread: true },
+      },
+    });
+  } else {
+    number = yield model.countLogs({
+      through: {
+        model: Notification,
+        where: { unread: true },
+      },
+      where: { scope: type === 'system' ? 'repo' : 'project' },
+    });
+  }
+  this.state.respond = { type, number };
   yield next;
 }
 

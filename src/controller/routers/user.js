@@ -67,7 +67,7 @@ user.post('/projects/:projectId/source/upload', isProjectOwner, uploadSource, re
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
-user.get('/unread/notifications', getUnreadCount);
+user.get('/unread/notifications/type/:type', getUnreadCount);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
 

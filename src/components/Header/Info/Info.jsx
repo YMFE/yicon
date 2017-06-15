@@ -2,34 +2,49 @@ import './Info.scss';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
+import { autobind } from 'core-decorators';
 
-import { fetchUnreadNotification } from '../../../actions/notification';
+import { fetchUnreadNotification, setPollingId } from '../../../actions/notification';
 
 @connect(
   state => ({
     userInfo: state.user.info,
     infoCount: state.user.notification.unReadCount,
+    pollingId: state.user.notification.pollingId,
   }),
-  { fetchUnreadNotification }
+  { fetchUnreadNotification, setPollingId }
 )
 class Info extends Component {
   static propTypes = {
-    infoCount: PropTypes.number,
-    fetchUnreadNotification: PropTypes.func,
     userInfo: PropTypes.object,
+    infoCount: PropTypes.number,
+    pollingId: PropTypes.number,
+    fetchUnreadNotification: PropTypes.func,
+    setPollingId: PropTypes.func,
   }
 
   componentDidMount() {
-    if (this.props.userInfo.login) {
+    const { pathname } = location;
+    if (this.props.userInfo.login && pathname !== '/user/notifications') {
       this.props.fetchUnreadNotification();
       this.pulseId = setInterval(() => {
         this.props.fetchUnreadNotification();
       }, 30 * 1000);
+      this.props.setPollingId(this.pulseId);
     }
   }
 
   componentWillUnmount() {
-    if (this.pulseId) clearInterval(this.pulseId);
+    this.stopPolling();
+  }
+
+  @autobind
+  stopPolling() {
+    const { pollingId } = this.props;
+    if (pollingId) {
+      clearInterval(pollingId);
+      this.props.setPollingId();
+    }
   }
 
   render() {
@@ -40,7 +55,7 @@ class Info extends Component {
 
     return (
       <li className="lists">
-        <Link to="/user/notifications" className="nav-message">
+        <Link to="/user/notifications" className="nav-message" onClick={this.stopPolling}>
           <i className="iconfont">&#xf50d;</i>
           {countNum}
         </Link>
