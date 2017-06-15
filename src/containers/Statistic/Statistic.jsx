@@ -5,7 +5,6 @@ import { autobind } from 'core-decorators';
 import {
   fetchIconStatistic,
 } from '../../actions/statistic';
-import { fetchRepository } from '../../actions/repository';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { SubTitle } from '../../components/';
 import { iconStatus } from '../../constants/utils';
@@ -24,11 +23,9 @@ let size = 480;
     count: state.statistic.count,
     skiped: state.statistic.skiped,
     total: state.statistic.total,
-    currRepository: state.repository.currRepository,
   }),
   {
     fetchIconStatistic,
-    fetchRepository,
   }
 )
 
@@ -41,8 +38,6 @@ export default class Statistic extends Component {
     count: PropTypes.number,
     skiped: PropTypes.number,
     total: PropTypes.number,
-    currRepository: PropTypes.object,
-    fetchRepository: PropTypes.func,
   };
 
   state = {
@@ -57,6 +52,7 @@ export default class Statistic extends Component {
     description: '',
     showTip: false,
     hasMoreData: true,
+    libraryName: '',
   };
 
   componentDidMount() {
@@ -66,7 +62,6 @@ export default class Statistic extends Component {
     this.fetchData(1);
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
-    this.saveStatisticFetchId();
   }
 
   componentWillUnmount() {
@@ -125,7 +120,7 @@ export default class Statistic extends Component {
     const { toElement } = e.nativeEvent;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    const { name, code, path, status, description } = icon;
+    const { name, code, path, status, description, repositories: [{ name: libraryName }] } = icon;
     const node = document.querySelector(`div[id="${icon.id}"]`) || toElement;
     let targetElement = null;
     switch (toElement.tagName.toUpperCase()) {
@@ -168,7 +163,7 @@ export default class Statistic extends Component {
     element.style.left = `${left}px`;
     element.style.top = `${top}px`;
     element.style.display = 'block';
-    this.setState({ name, code, path, description });
+    this.setState({ name, code, path, description, libraryName });
   }
 
   @autobind
@@ -180,27 +175,8 @@ export default class Statistic extends Component {
     }
   }
 
-  @autobind
-  saveStatisticFetchId() {
-    const { currRepository: { id } } = this.props;
-    if ((typeof +id === 'number') && id) {
-      localStorage.setItem('statistic_id', id);
-    }
-    this.fetchStatisticWrapper();
-  }
-
-  @autobind
-  fetchStatisticWrapper() {
-    const id = localStorage.getItem('statistic_id');
-    this.props.fetchRepository(id)
-      .catch(() => {
-        console.log('Statistic.jsx: fetchRepository 接口异常');
-      });
-  }
-
   render() {
-    const description = this.state.description;
-    const { currRepository: { name } } = this.props;
+    const { description, libraryName } = this.state;
     let { mobile, os, other } = {};
 
     if (description) {
@@ -275,7 +251,7 @@ export default class Statistic extends Component {
             {this.state.hasMoreData ? '正在加载...' : '没有更多啦'}
           </div>
           <div className="yicon-info" ref={(node) => { this.infoEle = node; }}>
-            <h3 className="icon-library">{name || ''}</h3>
+            <h3 className="icon-library">{libraryName || ''}</h3>
             <div className="icon-info">
               <Icon
                 extraClass={'statistic-icon'}

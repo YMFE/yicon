@@ -1,7 +1,7 @@
 // import invariant from 'invariant';
 import { iconStatus, startCode, endCode } from '../../constants/utils';
 
-import { Icon } from '../../model';
+import { Icon, Repo } from '../../model';
 
 export function* statistic(next) {
   let { number, size } = this.param;
@@ -17,6 +17,7 @@ export function* statistic(next) {
       code: { $lt: startCode + number * size },
       status: { $in: [iconStatus.DISABLED, iconStatus.RESOLVED] },
     },
+    include: [{ model: Repo }],
     order: 'code asc',
   });
 
