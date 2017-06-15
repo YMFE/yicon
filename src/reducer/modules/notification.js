@@ -3,6 +3,7 @@ import {
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
+  FETCH_UNREAD_INFO,
   FETCH_INFO_DETAIL,
   SET_POLLING_ID,
   SET_INFO_READED,
@@ -23,6 +24,11 @@ const initialState = {
     currentPage: 1,
   },
   projectInfo: {
+    list: [],
+    totalPage: 1,
+    currentPage: 1,
+  },
+  unreadInfo: {
     list: [],
     totalPage: 1,
     currentPage: 1,
@@ -64,6 +70,19 @@ export default (state = initialState, action) => {
         return {
           ...state,
           projectInfo: {
+            list: action.payload.data,
+            totalPage: action.payload.page.totalCount,
+            currentPage: action.payload.page.currentPage,
+          },
+        };
+      }
+      return state;
+    }
+    case FETCH_UNREAD_INFO: {
+      if (action.payload.res) {
+        return {
+          ...state,
+          unreadInfo: {
             list: action.payload.data,
             totalPage: action.payload.page.totalCount,
             currentPage: action.payload.page.currentPage,
@@ -155,6 +174,14 @@ export default (state = initialState, action) => {
             projectUnReadCount: state.projectUnReadCount - 1,
             projectInfo: info,
           };
+          break;
+        case 'unread':
+          data = {
+            ...state,
+            unReadCount: state.unReadCount - 1 || 0,
+            unreadInfo: info,
+          };
+          data[`${scope}UnReadCount`] = data[`${scope}UnReadCount`] - 1;
           break;
         default:
           data = state;

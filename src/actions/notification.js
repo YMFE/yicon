@@ -4,6 +4,7 @@ import {
   FETCH_ALL_INFO,
   FETCH_SYSTEM_INFO,
   FETCH_PROJECT_INFO,
+  FETCH_UNREAD_INFO,
   FETCH_INFO_DETAIL,
   SET_POLLING_ID,
   SET_INFO_READED,
@@ -29,6 +30,12 @@ export function fetchProjectInfo(currentPage) {
     payload: fetch.get(`/notifications/type/project?currentPage=${currentPage}`),
   };
 }
+export function fetchUnreadInfo(currentPage) {
+  return {
+    type: FETCH_UNREAD_INFO,
+    payload: fetch.get(`/notifications/type/unread?currentPage=${currentPage}`),
+  };
+}
 export function getInfo(tag, page = 1) {
   return (dispatch) => {
     switch (tag) {
@@ -41,10 +48,14 @@ export function getInfo(tag, page = 1) {
       case 'project':
         dispatch(fetchProjectInfo(page));
         break;
+      case 'unread':
+        dispatch(fetchUnreadInfo(page));
+        break;
       default:
         dispatch(fetchAllInfo(1));
         dispatch(fetchSystemInfo(1));
         dispatch(fetchProjectInfo(1));
+        dispatch(fetchUnreadInfo(1));
         break;
     }
   };

@@ -46,6 +46,21 @@ export function* getAllNotices(next) {
       ...pageMixin,
     });
     this.state.page.totalCount = yield user.countLogs();
+  } else if (type === 'unread') {
+    notice = yield user.getLogs({
+      through: {
+        model: Notification,
+        where: { unread: true },
+      },
+      order: 'updatedAt DESC',
+      ...pageMixin,
+    });
+    this.state.page.totalCount = yield model.countLogs({
+      through: {
+        model: Notification,
+        where: { unread: true },
+      },
+    });
   } else {
     notice = yield user.getLogs({
       include: [

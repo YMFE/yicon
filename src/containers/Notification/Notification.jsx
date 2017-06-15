@@ -27,6 +27,7 @@ const scopes = {
     all: state.user.notification.allInfo,
     system: state.user.notification.systemInfo,
     project: state.user.notification.projectInfo,
+    unread: state.user.notification.unreadInfo,
     infoDetail: state.user.notification.infoDetail,
   }),
   {
@@ -50,6 +51,7 @@ export default class Notification extends Component {
     all: PropTypes.object,
     system: PropTypes.object,
     project: PropTypes.object,
+    unread: PropTypes.object,
     infoDetail: PropTypes.object,
     userInfo: PropTypes.object,
   }
@@ -222,6 +224,19 @@ export default class Notification extends Component {
               {
                 this.props.projectUnReadCount > 0 ?
                   <i className={"info-cont"}>{this.props.projectUnReadCount}</i> :
+                  null
+              }
+              </a>
+            </li>
+            <li
+              className={this.state.tag === 'unread' ? 'selected' : ''}
+              onClick={this.changeTag}
+              data-tag="unread"
+            >
+              <a>未读消息
+              {
+                this.props.unReadCount > 0 ?
+                  <i className={"info-cont"}>{this.props.unReadCount}</i> :
                   null
               }
               </a>
