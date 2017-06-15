@@ -92,21 +92,24 @@
       &-list{
         li{
           float: left;
-          color: #616161;
+          color:#212121;
           padding:0 6px;
-          background: #f1f3f6;
-          margin-right: 6px;
-          margin-top: 4px;
+          background: #fff;
+          margin-right: 10px;
+          margin-top: 15px;
+          border: 1px solid #eff2fb;
           border-radius: 3px;
-          line-height: 26px;
-          height: 26px;
+          line-height: 56px;
+          text-align: center;
+          height: 66px;
+          width:180px;
           .iconfont{
+            color: #008ed6;
             font-size:14px;
-            float: right;
             cursor: pointer;
             vertical-align: top;
-            margin-left: 2px;
-            line-height: 28px;
+            margin-left: 10px;
+            line-height: 56px;
           }
         }
       }
