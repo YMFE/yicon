@@ -1,17 +1,19 @@
 .icon-detail-item {
   width:128px;
-  height: 161px;
+  height: 141px;
   margin: 16px 7px 0;
   display: inline-block;
   float: left;
   text-align: center;
+  position: relative;
   >.info{
     border: 1px solid transparent;
     padding:11px;
     width: 72px;
     margin: 0 auto;
     position: relative;
-    border-radius: 5px;
+    border-radius: 6px;
+    height: 111px;
     /*background-color: #fff;*/
     .icon {
       font-size: 64px;
@@ -50,8 +52,12 @@
   >.tool{
     margin-top: 3px;
     height: 30px;
-    position: relative;
+    position: absolute;
     font-size: 0;
+    top: 0;
+    left: 0;
+    padding: 11px;
+    zoom: 1;
     // display: none;
     .copytip{
       display: none;
@@ -73,10 +79,8 @@
       display: initial;
     }
     .tool-item{
-      /*margin:0 1px;*/
       display: none;
       margin: 0 1px;
-      /*float: left;*/
       width: 30px;
       height: 30px;
       text-align: center;
@@ -87,12 +91,13 @@
       color:#fff;
       border-radius: 5px;
       cursor: pointer;
+      float: left;
+      margin: 0 -8px 9px 18px;
     }
     .tool-item:hover{
       background-color: #008ed6;
     }
   }
-
 }
 .icon-detail-item:hover,.icon-detail-item.active{
   .info{
@@ -111,14 +116,14 @@
   }
   .cart-mask {
     width: 94px;
-    height: 126px;
+    height: 134px;
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 0;
     background-color: rgba(0,0,0, 0.8);
     cursor: pointer;
     display: block;
-    border-radius: 5px;
+    border-radius: 4px;
   }
   .icon-cart {
     position: absolute;

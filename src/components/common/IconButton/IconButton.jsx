@@ -219,7 +219,7 @@ class IconButton extends Component {
     const fill = selected ? '#008ed6' : '#555f6e';
     const isUploader = icon.uploader === userInfo.userId;
     const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
-
+    toolBtns.unshift('cart');
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
@@ -303,7 +303,7 @@ class IconButton extends Component {
 
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
-        <div className="info" onClick={this.selectIcon(icon.id)}>
+        <div className="info">
           <div className="icon">
             <Icon
               size={32}
@@ -315,9 +315,7 @@ class IconButton extends Component {
           <div ref="code" className="code">
             {`&#x${icon.code.toString(16)};`}
           </div>
-          <div className="cart-mask">
-            <i className="iconfont icon-cart">&#xf50f;</i>
-          </div>
+          <div className="cart-mask"></div>
         </div>
         <div className="tool">
           {tools}
