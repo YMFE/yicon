@@ -109,3 +109,10 @@ export function* getOneNotice(next) {
 
   yield next;
 }
+
+export function* setAllReaded(next) {
+  const { userId } = this.state.user;
+  yield Notification.update({ unread: 0 }, { where: { userId, unread: 1 } });
+  this.state.respond = '全部消息置为已读';
+  yield next;
+}

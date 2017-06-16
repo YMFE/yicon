@@ -8,6 +8,7 @@ import {
   FETCH_INFO_DETAIL,
   SET_POLLING_ID,
   SET_INFO_READED,
+  SET_ALL_READED,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
@@ -84,5 +85,12 @@ export function setInfoReaded(info) {
   return {
     type: SET_INFO_READED,
     payload: info,
+  };
+}
+
+export function setAllReaded() {
+  return {
+    type: SET_ALL_READED,
+    payload: fetch.patch('/notification/all/readed'),
   };
 }

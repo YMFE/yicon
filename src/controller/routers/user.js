@@ -31,7 +31,7 @@ import {
 
 import { getUserByName, getUserSessionInfo } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
-import { getAllNotices, getOneNotice, getUnreadCount } from '../modules/notification';
+import { getAllNotices, getOneNotice, getUnreadCount, setAllReaded } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
 
 const user = new Router();
@@ -68,6 +68,7 @@ user.post('/projects/:projectId/source/upload', isProjectOwner, uploadSource, re
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications/type/:type', getUnreadCount);
+user.patch('/notification/all/readed', setAllReaded);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
 

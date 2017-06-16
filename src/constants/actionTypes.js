@@ -61,6 +61,7 @@ export const FETCH_UNREAD_COUNT = 'FETCH_UNREAD_COUNT';
 export const FETCH_INFO_DETAIL = 'FETCH_INFO_DETAIL';
 export const SET_POLLING_ID = 'SET_POLLING_ID';
 export const SET_INFO_READED = 'SET_INFO_READED';
+export const SET_ALL_READED = 'SET_ALL_READED';
 
 // uploaded
 export const FETCH_MY_LOADED = 'FETCH_MY_LOADED';

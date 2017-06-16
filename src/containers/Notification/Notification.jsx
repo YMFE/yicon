@@ -10,6 +10,7 @@ import {
   fetchUnreadNotification,
   setPollingId,
   setInfoReaded,
+  setAllReaded,
 } from '../../actions/notification';
 import Pager from '../../components/common/Pager/';
 
@@ -36,6 +37,7 @@ const scopes = {
     fetchUnreadNotification,
     setPollingId,
     setInfoReaded,
+    setAllReaded,
   }
 )
 export default class Notification extends Component {
@@ -45,6 +47,7 @@ export default class Notification extends Component {
     fetchUnreadNotification: PropTypes.func,
     setPollingId: PropTypes.func,
     setInfoReaded: PropTypes.func,
+    setAllReaded: PropTypes.func,
     unReadCount: PropTypes.number,
     systemUnReadCount: PropTypes.number,
     projectUnReadCount: PropTypes.number,
@@ -135,6 +138,19 @@ export default class Notification extends Component {
   }
 
   @autobind
+  setAllReaded() {
+    if (!this.props.unReadCount) return;
+    this.props.setAllReaded().then(data => {
+      if (data.payload.res) {
+        const type = this.state.tag;
+        const page = this.state.page[type];
+        this.getUnreadCount();
+        this.props.getInfo(type, page);
+      }
+    });
+  }
+
+  @autobind
   changeTag(e) {
     const nextTag = e.currentTarget.dataset.tag;
     this.setState({
@@ -195,7 +211,11 @@ export default class Notification extends Component {
     let mainClassList = infoList.length === 0 ? 'empty-container' : '';
     return (
       <div className="notification">
-        <SubTitle tit={'我的消息'} />
+        <SubTitle tit={'我的消息'}>
+          <div className="set-all-readed">
+            <button className="set-all-readed-btn" onClick={this.setAllReaded}>全部置为已读</button>
+          </div>
+        </SubTitle>
         <Content>
           <Menu>
             <li
@@ -252,8 +272,14 @@ export default class Notification extends Component {
             </li>
           </Menu>
           <Main extraClass={mainClassList} >
+            {/* <div className="set-all-readed clearfix">
+              <button className="set-all-readed-btn">全部置为已读</button>
+            </div> */}
             {this.renderTimeLine()}
             <div className="pager-container">
+              {/* <div className="set-all-readed set-all-readed-pager clearfix">
+                <button className="set-all-readed-btn">全部置为已读</button>
+              </div> */}
               {infoList.length > 0 ?
                 <Pager
                   defaultCurrent={currentPage}
