@@ -60,6 +60,11 @@ export default class Notification extends Component {
     super(props);
     this.state = {
       tag: 'all',
+      page: {
+        all: 1,
+        system: 1,
+        project: 1,
+      },
       infoState: {},
     };
   }
@@ -71,8 +76,9 @@ export default class Notification extends Component {
 
   componentWillUpdate(_, nextState) {
     if (this.state.tag !== nextState.tag) {
+      const page = nextState.tag !== 'unread' ? this.state.page[nextState.tag] : 1;
       this.getUnreadCount();
-      this.props.getInfo(nextState.tag, 1);
+      this.props.getInfo(nextState.tag, page);
     }
   }
 
@@ -89,6 +95,9 @@ export default class Notification extends Component {
   @autobind
   onChangePage(page) {
     this.getUnreadCount();
+    const _page = this.state.page;
+    _page[this.state.tag] = page;
+    this.setState({ page: _page });
     this.props.getInfo(this.state.tag, page);
   }
 
