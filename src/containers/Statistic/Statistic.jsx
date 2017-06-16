@@ -190,10 +190,10 @@ export default class Statistic extends Component {
         <SubTitle tit={'图标使用详情统计'}>
           <div className="sub-title-chil">
             <span className="count">
-              <b className="num">{this.props.total}</b>icons
+              <b className="num">{this.props.total}</b>codes
             </span>
             <span className="powerby">已使用:</span>
-            <span className="name">{this.props.count} icons</span>
+            <span className="name">{this.props.count} codes</span>
             {/* <span className="powerby">已跳过:</span>
             <span className="name">{this.props.skiped} icons</span> */}
             <div className="tool-content">
