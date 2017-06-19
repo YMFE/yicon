@@ -220,7 +220,7 @@ class IconButton extends Component {
     const isUploader = icon.uploader === userInfo.userId;
     const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
 
-    toolBtns.splice(0, 0, 'copyCoding', 'cart');
+    toolBtns.splice(0, 0, 'cart', 'copyCoding');
 
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
