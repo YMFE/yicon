@@ -219,7 +219,9 @@ class IconButton extends Component {
     const fill = selected ? '#008ed6' : '#555f6e';
     const isUploader = icon.uploader === userInfo.userId;
     const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
-    toolBtns.unshift('cart');
+
+    toolBtns.splice(0, 0, 'copyCoding', 'cart');
+
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
@@ -260,6 +262,16 @@ class IconButton extends Component {
           button-onMouseOut={this.copyEnd}
           key="copy"
         >&#xf514;</ClipboardButton>,
+      copyCoding:
+        <ClipboardButton
+          component="i"
+          className={"tool-item iconfont copy"}
+          button-title="复制编码"
+          data-clipboard-text={`&#x${icon.code.toString(16)};`}
+          onSuccess={this.copySuccess}
+          button-onMouseOut={this.copyEnd}
+          key="copyCoding"
+        >&#xf078;</ClipboardButton>,
       cart:
         <i
           className={"tool-item iconfont car"}
@@ -284,23 +296,30 @@ class IconButton extends Component {
     };
 
     const tools = [];
-
     toolBtns.forEach((btn) => {
       const tool = toolList[btn];
-      // 已登陆用户 展示编辑
-      if (btn === 'update') {
-        if (+status !== 1) {
+      const btnList = ['copy', 'download', 'copyCoding', 'cart'];
+
+      if (btnList.includes(btn)) {
+        tools.push(tool);
+        return false;
+      }
+
+      // 普通用户 || 管理员登录
+      if (+status !== 1) {
+        if (btn === 'update') {
           tools.push(tool);
-        }
-      } else {
-        if (btn !== 'edit') {
-          tools.push(tool);
-        } else if (+status === +3 || isUploader) {
-          tools.push(tool);
+          return false;
         }
       }
-    });
 
+      // 管理员登录
+      if (+status === 3 || isUploader) {
+        tools.push(tool);
+      }
+
+      return false;
+    });
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className="info">
