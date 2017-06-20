@@ -271,7 +271,7 @@ class IconButton extends Component {
           onSuccess={this.copySuccess}
           button-onMouseOut={this.copyEnd}
           key="copyCoding"
-        >&#xf078;</ClipboardButton>,
+        >&#xe06d;</ClipboardButton>,
       cart:
         <i
           className={"tool-item iconfont car"}
