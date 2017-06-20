@@ -54,10 +54,6 @@ export default class Workbench extends Component {
     params: PropTypes.object,
   }
 
-  state = {
-    repo: null,
-  };
-
   componentWillMount() {
     this.props.fetchWorkbench().then(() => {
       const { icons } = this.props;
@@ -130,7 +126,6 @@ export default class Workbench extends Component {
 
   @autobind
   selectRepo(id) {
-    this.setState({ repo: id });
     this.props.selectRepo(+id);
   }
 
@@ -207,7 +202,7 @@ export default class Workbench extends Component {
               </span>
               <div className={'select-repository'}>
                 <Select
-                  value={this.state.repo}
+                  value={`${repoId || ''}`}
                   placeholder="选择图标库"
                   onSelect={this.selectRepo}
                 >
