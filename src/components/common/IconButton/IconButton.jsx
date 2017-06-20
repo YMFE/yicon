@@ -337,7 +337,9 @@ class IconButton extends Component {
           <div className="cart-mask"></div>
         </div>
         <div className="tool">
-          {tools}
+          <div className="tool-box">
+            {tools}
+          </div>
         </div>
       </div>
     );
