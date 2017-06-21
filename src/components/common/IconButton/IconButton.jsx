@@ -214,13 +214,14 @@ class IconButton extends Component {
   }
 
   render() {
-    const { icon, userInfo, download, update, repoId, toolBtns } = this.props;
+    let { toolBtns } = this.props;
+    const { icon, userInfo, download, update, repoId } = this.props;
     const selected = this.isSelected(icon.id);
     const fill = selected ? '#008ed6' : '#555f6e';
     const isUploader = icon.uploader === userInfo.userId;
     const repositoryId = repoId || (icon.repoVersion && icon.repoVersion.repositoryId);
 
-    toolBtns.splice(0, 0, 'cart', 'copyCoding');
+    toolBtns = new Set(['cart', 'copyCoding', ...toolBtns]);
 
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
@@ -298,7 +299,7 @@ class IconButton extends Component {
     const tools = [];
     toolBtns.forEach((btn) => {
       const tool = toolList[btn];
-      const btnList = ['copy', 'download', 'copyCoding', 'cart'];
+      const btnList = ['copy', 'download', 'copyCoding', 'cart', 'copytip'];
 
       if (btnList.includes(btn)) {
         tools.push(tool);
@@ -320,6 +321,7 @@ class IconButton extends Component {
 
       return false;
     });
+
     return (
       <div className={`icon-detail-item ${selected ? 'active' : ''}`}>
         <div className="info">
