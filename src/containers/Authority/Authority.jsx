@@ -176,7 +176,9 @@ export default class Authority extends Component {
         Message.error('域名称缺少、不完整或错误，请检查');
         return;
       }
-      this.props.createSuperManager(this.state.manager);
+      this.props.createSuperManager(this.state.manager).then(() => {
+        this.fetchByType(type);
+      });
       this.setState({ manager: '' });
     }
   }
