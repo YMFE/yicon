@@ -395,7 +395,9 @@ export default class Authority extends Component {
           Message.error('无法删除最后一位超管');
           return;
         }
-        this.props.deleteSuperManager(id);
+        this.props.deleteSuperManager(id).then(() => {
+          this.fetchByType('manager');
+        });
       },
       onCancel: () => {},
     });
