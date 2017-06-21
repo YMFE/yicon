@@ -104,7 +104,7 @@
 }
 .icon-detail-item:hover,.icon-detail-item.active{
   .info{
-    border: 1px solid #ccc;
+    border: 1px solid #ccc !important;
     border-radius: 5px;
     background-color: #fff;
     .icon{
