@@ -284,7 +284,7 @@ export default class DisabledCode extends Component {
           <Content>
             <Menu>
               <li className="selected">
-                <Link to="/admin/disabledCode">系统占用编码</Link>
+                <Link to="/admin/code">系统占用编码</Link>
               </li>
             </Menu>
             <Main extraClass="yicon-myicon-main">

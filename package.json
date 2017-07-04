@@ -1,6 +1,6 @@
 {
   "name": "yicon",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Font generation platform",
   "private": true,
   "main": "bin/server.js",

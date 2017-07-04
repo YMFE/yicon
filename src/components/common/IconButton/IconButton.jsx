@@ -308,7 +308,7 @@ class IconButton extends Component {
 
       // 普通用户 || 管理员登录
       if (+status !== 1) {
-        if (btn === 'update') {
+        if (btn === 'update' || btn === 'delete') {
           tools.push(tool);
           return false;
         }
