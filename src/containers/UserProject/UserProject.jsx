@@ -599,7 +599,6 @@ class UserProject extends Component {
       </div>
     );
     if (current.icons && current.icons.length > 0) {
-      const currentIcons = deleted ? current.icons.concat(deleted) : current.icons;
       const hasReplacedIcons = replaced.map(item => item.old && item.old.id);
       const replacedIcons = replaced.map(item => item.new && item.new.id);
       const deletedIcons =
@@ -607,6 +606,9 @@ class UserProject extends Component {
       const addedIcons =
         added.map(item => item.id).filter(item => replacedIcons.indexOf(item) === -1);
 
+      const currentIcons = deletedIcons && deletedIcons.length
+        ? current.icons.concat(deleted.filter(item => deletedIcons.indexOf(item.id) > -1))
+        : current.icons;
       iconList = currentIcons.map((item, index) => {
         const deletedClassName = deletedIcons.indexOf(item.id) > -1 ? 'deleted-icon' : '';
         const addedClassName = addedIcons.indexOf(item.id) > -1 ? 'added-icon' : '';
@@ -624,7 +626,7 @@ class UserProject extends Component {
             <ul className="status-tag">
               <li className={`status-tag-item ${disabledClassName}`}>系统占用</li>
               <li className={`status-tag-item ${addedClassName}`}>新增</li>
-              <li className={`status-tag-item ${replacedClassName}`}>替换</li>
+              <li className={`status-tag-item ${replacedClassName}`}>已替换</li>
               <li className={`status-tag-item ${deletedClassName}`}>删除</li>
             </ul>
             <IconButton
