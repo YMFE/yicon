@@ -428,6 +428,7 @@ export function* updateProjectMember(next) {
     {
       where: {
         userId: { $in: deleted.map(v => v.id) },
+        projectId,
       },
       transaction: t,
     }
