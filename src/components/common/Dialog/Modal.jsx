@@ -46,7 +46,8 @@ export default class Modal extends Component {
   }
   render() {
     const { title, zIndex, onOk, onCancel, empty, confrimText, cancelText } = this.props;
-    document.body.style.cssText = this.state.show ? 'overflow: hidden' : '';
+    // 代码里德 show 属性暂时不屏蔽 测试是否影响其他页面的功能
+    // document.body.style.cssText = this.state.show ? 'overflow: hidden' : '';
     return (
       <div
         style={{
