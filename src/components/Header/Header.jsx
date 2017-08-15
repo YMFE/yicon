@@ -90,6 +90,9 @@ class Header extends Component {
                     图标项目
                   </Link>
                 </li>
+                <li className="features">
+                  <a href="http://yicon.ymfe.org/index.html" target="_blank">使用说明</a>
+                </li>
               </ul>
             </nav>
             <div className="quick-menu nav-menu-info">
