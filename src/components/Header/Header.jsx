@@ -105,7 +105,7 @@ class Header extends Component {
                 {isLoginUser &&
                   <li className="lists">
                     <Link to="/upload" className="upload">
-                      <i className="iconfont">&#xf50a;</i>
+                      <i className="iconfont" title="上传图标">&#xf50a;</i>
                     </Link>
                   </li>
                 }

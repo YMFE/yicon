@@ -360,7 +360,7 @@ class Cart extends Component {
       >
 
         <span className="nav-car" href="#">
-          <i className="iconfont">&#xf50f;</i>
+          <i className="iconfont" title="购物车">&#xf50f;</i>
           {
             iconsInLocalStorage.length > 0 ?
               <span className="nav-car-count">
