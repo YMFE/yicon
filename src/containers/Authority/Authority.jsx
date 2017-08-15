@@ -525,7 +525,7 @@ export default class Authority extends Component {
                         <div className="field-btn">
                           <button
                             type="button"
-                            className="add-collaborators"
+                            className="options-btns btns-blue"
                             onClick={this.addSuperManager}
                           >
                             添加新超管
@@ -536,7 +536,6 @@ export default class Authority extends Component {
                   </div>
                 </div>
                 <div className="clearfix collaborators">
-                  <p className="collaborators-title">超管列表</p>
                   <ul className="collaborators-list">
                     {
                       this.props.manager.length > 0 && this.props.manager.map((item, index) =>

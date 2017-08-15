@@ -63,9 +63,12 @@
 			min-height: 640px;
 			display: block;
 			.myicon-prj-info{
-				padding:20px 40px;
+				zoom: 1;
+				overflow: hidden;
+				padding:20px 20px 0 20px;
 				.prj-details{
 					overflow: hidden;
+					float: left;
 					.title{
 						float: left;
 						>h3 {
