@@ -1,5 +1,5 @@
 $mainColor:#3bbaff;
-.global-header-Nav {
+.global-header-Nav, .features {
   height: 62px;
   line-height: 62px;
   float: left;
@@ -10,8 +10,13 @@ $mainColor:#3bbaff;
   a {
     color: #fff;
   }
-
-
+}
+.features {
+  a:hover {
+    color: #3bbaff;
+  }
+}
+.global-header-Nav {
   .quick-menu-sub {
     z-index: 1009;
     border-top: 2px solid $mainColor;

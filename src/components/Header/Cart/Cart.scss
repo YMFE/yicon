@@ -1,19 +1,4 @@
 .global-header {
-  .features {
-    height: 62px;
-    line-height: 62px;
-    float: left;
-    margin: 0 7px;
-    padding: 0 10px;
-    position: relative;
-    cursor: pointer;
-    a {
-      color: #FFF;
-    }
-    a:hover {
-      color: #3bbaff;
-    }
-  }
   &-cart {
     $fontTitleColor: #344562;
     $fontContentColor: #616161;
