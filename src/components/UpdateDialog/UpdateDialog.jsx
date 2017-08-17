@@ -12,6 +12,7 @@ import { autobind } from 'core-decorators';
   state => ({
     userInfo: state.user.info,
     iconDetail: state.icon,
+    resetT: state.icon.resetT,
   }),
   {
     editIcon,
@@ -23,13 +24,29 @@ class UpdateDialog extends Component {
     super(props);
     this.state = {
       isEdit: false,
+      inputValue: '',
+      tagList: '',
+      isOK: true,
     };
+  }
+
+  componentDidMount() {
+    document.body.addEventListener('click', (e) => {
+      this.cancel(e);
+    }, false);
+  }
+
+  setTagList() {
+    this.setState({
+      tagList: '',
+    });
   }
 
   @autobind
   showNameEdit() {
     this.setState({
       isEdit: true,
+      isOK: false,
     });
   }
   validate(tags) {
@@ -43,8 +60,18 @@ class UpdateDialog extends Component {
   @autobind
   saveTags(tags) {
     const { iconDetail } = this.props;
-    this.props.editIcon(iconDetail.id, { tags });
+    this.props.editIcon(iconDetail.id, { tags }).then(() => {
+      this.props.resetT();
+      this.setTagList();
+    });
   }
+  @autobind
+  addTags(newTags) {
+    this.setState({
+      tagList: newTags,
+    });
+  }
+
   @autobind
   save(e) {
     if (e.type === 'click' || +e.keyCode === +13) {
@@ -56,6 +83,7 @@ class UpdateDialog extends Component {
         this.props.editIcon(this.props.iconDetail.id, { name }).then(() => {
           this.setState({
             isEdit: false,
+            isOK: true,
           });
           this.refs.myInput.reset();
         });
@@ -64,15 +92,29 @@ class UpdateDialog extends Component {
   }
   @autobind
   cancel() {
-    this.setState({
-      isEdit: false,
-    });
-    this.refs.myInput.reset();
+    const newValue = this.refs.myInput.getVal();
+    if (newValue) {
+      this.setState({
+        isEdit: false,
+        inputValue: newValue,
+      });
+      this.refs.myInput.setVal(newValue);
+    }
+  }
+
+  @autobind
+  submit(e) {
+    if (!this.state.tagList) {
+      // console.log('error');
+    }
+    this.save(e);
+    this.saveTags(this.state.tagList);
   }
 
   render() {
-    const { iconDetail, userInfo, type } = this.props;
+    const { iconDetail, userInfo } = this.props;
     const repoId = iconDetail.repo.id;
+    const value = this.state.isOK ? iconDetail.name : this.state.inputValue;
     // 登录状态：1：未登录  2：普通用户登录  3：管理员登录
     let status = 1;
     if (userInfo.login) {
@@ -91,26 +133,23 @@ class UpdateDialog extends Component {
           iconColor={iconDetail.iconStyle.color}
         />
         <div className="update-icon-detail">
-          <div className={`update-detail-header ${this.state.isEdit ? 'edit' : ''}`}>
+          <div
+            className={`update-detail-header ${this.state.isEdit ? 'edit' : ''}`}
+            onClick={this.showNameEdit}
+          >
             <div className="icon-name">
-              <span className="icon-name-txt">{iconDetail.name}</span>
-              <button
-                className={`to-edit-name ${(+status === +3 && type === 'repo') ? '' : 'hide'}`}
-                onClick={this.showNameEdit}
-              >修改名称</button>
+              <span className="icon-name-txt">{value}</span>
             </div>
             <div className="edit-name-box clearfix">
               <Input
                 placeholder="请输入图标名称"
-                defaultValue={iconDetail.name}
+                defaultValue={value}
                 extraClass="edit-name"
                 keyDown={this.save}
                 regExp={ICON_NAME.reg}
                 errMsg={ICON_NAME.message}
                 ref="myInput"
               />
-              <button className="save" onClick={this.save}>保存</button>
-              <button className="cancel" onClick={this.cancel}>取消</button>
             </div>
           </div>
           <div className="other-info">
@@ -118,9 +157,14 @@ class UpdateDialog extends Component {
           </div>
           <SetTag
             disabled={+status === 1}
-            onTagChange={this.saveTags}
+            onTagChange={this.addTags}
             tags={iconDetail.tags || ''}
+            ref="abc"
           />
+
+          <button className="options-btns-ok" onClick={this.submit}>
+            确定
+          </button>
         </div>
       </div>
     );
@@ -132,6 +176,7 @@ UpdateDialog.propTypes = {
   iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
   editIcon: PropTypes.func,
+  resetT: PropTypes.func,
 };
 
 export default UpdateDialog;

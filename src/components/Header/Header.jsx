@@ -90,9 +90,6 @@ class Header extends Component {
                     图标项目
                   </Link>
                 </li>
-                <li className="features">
-                  <a href="http://yicon.ymfe.org/index.html" target="_blank">使用说明</a>
-                </li>
               </ul>
             </nav>
             <div className="quick-menu nav-menu-info">
@@ -109,6 +106,11 @@ class Header extends Component {
                     </Link>
                   </li>
                 }
+                <li className="lists">
+                  <a href="http://yicon.ymfe.org/index.html" className="help" target="_blank">
+                    <i className="iconfont" title="使用说明">&#xf0c9;</i>
+                  </a>
+                </li>
                 <Search
                   defaultValue={this.props.searchValue}
                   onSubmit={this.props.fetchSearchResult}

@@ -1,7 +1,7 @@
 import './SetTag.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { editIcon } from '../../../actions/icon';
+import { editIcon, resetTags } from '../../../actions/icon';
 import Input from '../../common/Input/Index.jsx';
 import { ICON_TAG } from '../../../constants/validate';
 import { autobind } from 'core-decorators';
@@ -12,6 +12,7 @@ import { autobind } from 'core-decorators';
   }),
   {
     editIcon,
+    resetTags,
   }
 )
 class SetTag extends Component {
@@ -20,6 +21,10 @@ class SetTag extends Component {
     this.state = {
       tags: this.props.tags,
     };
+  }
+
+  componentDidMount() {
+    this.props.resetTags(this.reset.bind(this));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,6 +84,10 @@ class SetTag extends Component {
     return tags ? tags.split(/[\s|,]+/) : [];
   }
 
+  reset() {
+    this.refs.myInput.reset();
+  }
+
   render() {
     const { disabled } = this.props;
     const tagArr = this.tagsToArr(this.state.tags);
@@ -125,6 +134,7 @@ SetTag.propTypes = {
   onTagChange: PropTypes.func,
   tags: PropTypes.string,
   disabled: PropTypes.bool,
+  resetTags: PropTypes.bool,
 };
 
 export default SetTag;

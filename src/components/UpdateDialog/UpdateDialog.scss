@@ -2,6 +2,7 @@
   width: 635px;
   height: 257px;
   background: #fff;
+  position: relative;
   .cancel-box {
     line-height: 32px;
     font-size: 32px;
@@ -36,10 +37,11 @@
         display: none;
         .edit-name {
           height: 36px;
-          width: 196px;
+          // width: 196px;
+          width: 338px;
           float: left;
           margin: 0;
-          border-right: 0;
+          // border-right: 0;
           .input {
             height: 36px;
             width: 176px;
@@ -63,12 +65,11 @@
         }
         .cancel {
           float: left;
-          margin-left: 8px;
           width: 68px;
           height: 38px;
           background: #fbfbfb;
           outline: 0;
-          border: 1px solid #d2d2d2;
+          border: 1px solid #D9D9D9;
           border-radius: 2px;
           font-size: 14px;
           color: #616161;
@@ -134,5 +135,19 @@
         }
       }
     }
+  }
+
+  .options-btns-ok {
+    height: 30px;
+    line-height: 30px;
+    padding:0 12px;
+    font-size:14px;
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    margin: 10px 0 0 0;
+    background: #008EDC;
+    border-radius: 4px;
+    color: #FFF;
   }
 }
