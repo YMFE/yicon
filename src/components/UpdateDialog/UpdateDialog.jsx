@@ -159,7 +159,6 @@ class UpdateDialog extends Component {
             disabled={+status === 1}
             onTagChange={this.addTags}
             tags={iconDetail.tags || ''}
-            ref="abc"
           />
 
           <button className="options-btns-ok" onClick={this.submit}>
