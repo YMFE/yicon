@@ -24,7 +24,7 @@ function* listProjects(user) {
   };
 }
 
-function* getDiffResult(data) {
+export function* getDiffResult(data) {
   const { projectId } = data;
   let { highVersion, lowVersion } = data;
   invariant(projectId > 0, '缺少项目id参数');
@@ -476,8 +476,8 @@ export function* diffVersion(next) {
   yield next;
 }
 
-export function* getProjectVersion(next) {
-  const { projectId } = this.param;
+export function* getAllVersion(data) {
+  const { projectId } = data;
   invariant(projectId > 0, '缺少参数项目id');
   const project = yield Project.findOne({ attributes: ['name'], where: { id: projectId } });
   const version = yield ProjectVersion.findAll({
@@ -485,7 +485,12 @@ export function* getProjectVersion(next) {
     where: { projectId },
     order: 'version',
   }).map(v => v.version);
-  this.state.respond = { project, version };
+  return { project, version };
+}
+
+export function* getProjectVersion(next) {
+  const result = yield getAllVersion(this.param);
+  this.state.respond = result;
   yield next;
 }
 

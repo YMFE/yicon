@@ -11,6 +11,7 @@ import { clearUserInfo, validateAuth } from '../modules/user';
 import { getUserInfo } from '../modules/login';
 import { getLdapAuth } from '../modules/ldapauth';
 import { statistic } from '../modules/statistic';
+import { getProjectInfo } from '../modules/common';
 // import { pagination } from './middlewares';
 
 const general = new Router();
@@ -34,5 +35,9 @@ general.get('/login', getUserInfo);
 general.post('/ldapauth', getLdapAuth);
 general.get('/logout', clearUserInfo);
 general.post('/validate/:type', validateAuth);
+
+// 提供给第三方调用的接口
+general.get('/projects/name/:projectName/type/:type', getProjectInfo);
+general.get('/projects/name/:projectName/type/:type/version/:version', getProjectInfo);
 
 export default general;
