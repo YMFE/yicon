@@ -1,17 +1,22 @@
 $mainColor:#3bbaff;
-.global-header-Nav {
+.global-header-Nav, .features {
   height: 62px;
   line-height: 62px;
   float: left;
-  margin: 0 15px;
-  padding: 0 14px;
+  margin: 0 7px;
+  padding: 0 10px;
   position: relative;
   cursor: pointer;
   a {
     color: #fff;
   }
-
-
+}
+.features {
+  a:hover {
+    color: #3bbaff;
+  }
+}
+.global-header-Nav {
   .quick-menu-sub {
     z-index: 1009;
     border-top: 2px solid $mainColor;

@@ -46,7 +46,7 @@ $iconColor:#555f6e;
     height: 64px;
     position: relative;
     >.nav {
-      left: 195px;
+      left: 175px;
       font-size: 16px;
       position: absolute;
       line-height: 64px;
@@ -66,6 +66,10 @@ $iconColor:#555f6e;
     right: 0;
     top: 0;
     /*line-height: 64px;*/
+    .help {
+      line-height: 64px;
+      color: #AAA;
+    }
     .lists {
       float: left;
       margin-right: 20px;

@@ -2,6 +2,7 @@ import {
   FETCH_ICON_DETAIL,
   EDIT_ICON,
   EDIT_ICON_STYLE,
+  RESET_TAGS,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
     name: '',
   },
   path: '',
+  resetT: null,
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +36,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload.data,
+      };
+    }
+    case RESET_TAGS: {
+      return {
+        ...state,
+        resetT: action.payload,
       };
     }
     case EDIT_ICON_STYLE: {

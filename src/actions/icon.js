@@ -4,6 +4,7 @@ import {
   EDIT_ICON,
   EDIT_ICON_STYLE,
   DOWNLOAD_ICONS,
+  RESET_TAGS,
 } from '../constants/actionTypes';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -28,6 +29,14 @@ export function editIconStyle(style) {
     payload: style,
   };
 }
+
+export function resetTags(fn) {
+  return {
+    type: RESET_TAGS,
+    payload: fn,
+  };
+}
+
 export function downloadIcon(obj) {
   return (dispatch) => {
     dispatch({

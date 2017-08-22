@@ -102,10 +102,15 @@ class Header extends Component {
                 {isLoginUser &&
                   <li className="lists">
                     <Link to="/upload" className="upload">
-                      <i className="iconfont">&#xf50a;</i>
+                      <i className="iconfont" title="上传图标">&#xf50a;</i>
                     </Link>
                   </li>
                 }
+                <li className="lists">
+                  <a href="http://yicon.ymfe.org/index.html" className="help" target="_blank">
+                    <i className="iconfont" title="使用说明">&#xf0c9;</i>
+                  </a>
+                </li>
                 <Search
                   defaultValue={this.props.searchValue}
                   onSubmit={this.props.fetchSearchResult}

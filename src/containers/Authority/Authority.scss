@@ -24,16 +24,15 @@
   .super-manager{
     color: #616161;
     .add-manager{
-      padding: 15px 0 24px;
-      border-bottom: 1px solid #d8d9d9;
+      float: right;
+      .clearfix .SearchList-input {
+        border-radius: 3px;
+        width: 318px;
+      }
     }
     .field{
-      margin-top: 20px;
       overflow: hidden;
       line-height: 36px;
-      &:first-child{
-        margin-top: 10px;
-      }
     }
     .field-label{
       width: 74px;
@@ -81,9 +80,9 @@
       }
     }
     .collaborators{
-      margin-top: 10px;
       overflow: hidden;
       // width: 420px;
+      clear: both;
       &-title{
         font-size:14px ;
         color:#616161;
@@ -93,16 +92,14 @@
         li{
           float: left;
           color:#212121;
-          padding:0 6px;
+          padding:18px 30px 12px;
           background: #fff;
-          margin-right: 20px;
-          margin-top: 20px;
+          margin: 20px 0 0 20px;
           border: 1px solid #eff2fb;
           border-radius: 3px;
           line-height: 66px;
-          text-align: center;
-          height: 66px;
-          width:226px;
+          height: 70px;
+          width: 198px;
           .iconfont{
             color: #008ed6;
             font-size:14px;
@@ -114,9 +111,6 @@
         }
       }
     }
-  }
-  .collaborators{
-    padding: 0 40px 20px;
   }
 }
 
