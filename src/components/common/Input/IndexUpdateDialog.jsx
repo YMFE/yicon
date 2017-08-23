@@ -47,12 +47,18 @@ export default class Input extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       error: nextProps.error,
-      value: nextProps.defaultValue,
+      // value: nextProps.defaultValue,
     });
   }
 
   getVal() {
     return this.state.value;
+  }
+
+  setVal(newValue) {
+    this.setState({
+      value: newValue,
+    });
   }
 
   @autobind
@@ -93,7 +99,7 @@ export default class Input extends Component {
   }
   @autobind
   blur() {
-    if (!this.state.error) {
+    if (!this.state.error && this.getVal()) {
       this.props.blur(this.getVal());
     } else {
       this.reset();
@@ -103,7 +109,7 @@ export default class Input extends Component {
   reset() {
     this.setState({
       error: false,
-      value: this.props.defaultValue,
+      value: '',
     });
   }
 
