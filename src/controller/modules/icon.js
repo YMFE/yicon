@@ -4,7 +4,7 @@ import invariant from 'invariant';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
+import { seq, Repo, Icon, RepoVersion, User, ProjectVersion, Cache } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { saveOriginalSVG } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
@@ -125,8 +125,21 @@ export function* uploadIcons(next) {
     };
   });
 
-  yield Icon.bulkCreate(data);
-
+  yield seq.transaction(transaction =>
+    Icon.bulkCreate(data, { individualHooks: true, transaction })
+  .then(addedIcons => {
+    const cacheIcons = [];
+    addedIcons.forEach((icon, index) => {
+      const { id, name } = icon || {};
+      const originalIcons = param.icons;
+      if (originalIcons && originalIcons[index] && name === originalIcons[index].name) {
+        // 将 icon id 和 对应的 svg 插入 cache 表
+        const svg = originalIcons[index].buffer && originalIcons[index].buffer.toString() || null;
+        cacheIcons.push({ iconId: id, svg });
+      }
+    });
+    return Cache.bulkCreate(cacheIcons, { transaction });
+  }));
   // TODO: 看一下上传失败是否会直接抛出异常
   this.state.respond = '图标上传成功';
 
