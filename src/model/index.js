@@ -3,6 +3,8 @@ import Icon from './tables/icons';
 import Log from './tables/logs';
 import Project from './tables/projects';
 import Repo from './tables/repositories';
+// 存储上传后未审核的图标的原 svg 文件
+import Cache from './tables/cache';
 import { seq, Seq } from './tables/_db';
 import { versionTools } from '../helpers/utils';
 
@@ -96,6 +98,8 @@ Icon.belongsToMany(Project, {
 });
 Icon.belongsTo(User, { foreignKey: 'uploader' });
 
+Cache.belongsTo(Icon, { foreignKey: 'iconId' });
+
 Repo.belongsToMany(Icon, {
   through: {
     model: RepoVersion,
@@ -164,6 +168,7 @@ export {
   ProjectVersion,
   UserProject,
   UserLog as Notification,
+  Cache,
 };
 
 // 处理与数据库的连接情况
