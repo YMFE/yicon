@@ -114,6 +114,7 @@ class UserProject extends Component {
     saveToNewProject: PropTypes.func,
     createEmptyProject: PropTypes.func,
     push: PropTypes.func,
+    cacheProjectList: PropTypes.func,
   }
 
   static defaultProps ={
@@ -138,6 +139,8 @@ class UserProject extends Component {
       iconStr: '',
       generateVersion: 'revision',
       isShowLoading: false,
+      loadIconOver: false,
+      iconList: [],
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -147,9 +150,10 @@ class UserProject extends Component {
     this.nextSourceVersion = '0.0.1';
   }
   componentWillMount() {
+    window.addEventListener('scroll', this.addDiv.bind(this));
     this.setState({ showLoading: true });
     // this.props.resetIconSize();
-    this.props.getUsersProjectList().then(() => {
+    this.props.cacheProjectList.then(() => {
       const id = this.props.projectId;
       const current = this.props.currentUserProjectInfo;
       if (!current || id !== +current.id) {
@@ -171,6 +175,7 @@ class UserProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.renderIconList();
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
     const nextId = nextProps.projectId;
@@ -585,6 +590,29 @@ class UserProject extends Component {
     this.props.adjustBaseline(projectId, currentUserProjectInfo.baseline);
   }
 
+  resumeIconList() {
+    this.setState({
+      iconList: false,
+    });
+  }
+
+  addDiv() {
+    if (!this.state.loadIconOver) {
+      const body = document.querySelector('body');
+      const bodyHeight = body.offsetHeight;
+      const scrollHeight = body.scrollTop;
+      const appHeight = document.querySelector('#app').offsetHeight;
+      if ((bodyHeight + scrollHeight) >= (appHeight - 50)) {
+        this.setState({
+          loadIconOver: true,
+        }, () => {
+          this.renderIconList();
+        });
+      }
+    }
+  }
+
+  @autobind
   renderIconList() {
     const current = this.props.currentUserProjectInfo;
     if (!current) return null;
@@ -618,6 +646,9 @@ class UserProject extends Component {
         if (!deletedClassName) {
           toolBtns.push('delete');
         }
+        if (index >= 40 && !this.state.loadIconOver) {
+          return false;
+        }
         return (
           <div
             key={index}
@@ -641,6 +672,10 @@ class UserProject extends Component {
           </div>
         );
       });
+
+      this.setState({
+        iconList,
+      });
     }
     return iconList;
   }
@@ -649,12 +684,12 @@ class UserProject extends Component {
     let dialogList = null;
     const url = this.state.iconStr;
     const template = `@font-face {
-  font-family: 'iconfont';
-  src: url('${url}.eot'); /* IE9*/
-  src: url('${url}.woff') format('woff'), /* chrome、firefox */
-  url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
-}`;
+      font-family: 'iconfont';
+      src: url('${url}.eot'); /* IE9*/
+      src: url('${url}.woff') format('woff'), /* chrome、firefox */
+      url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
+    }`;
     this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
     this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
     if (current.name) {
@@ -788,10 +823,11 @@ class UserProject extends Component {
     const id = this.props.projectId;
     const versions = this.props.projectInfo.versions;
     const len = versions && versions.length;
-    const iconList = this.renderIconList();
+    const { iconList } = this.state;
     const dialogList = this.renderDialogList();
     const owner = current.projectOwner || { name: '' };
     const { isSupportSource } = current;
+
     return (
       <div className="UserProject">
         <SubTitle tit="我的图标项目">
@@ -825,7 +861,12 @@ class UserProject extends Component {
                       : null}`
                     }
                   >
-                    <Link to={`/projects/${item.id}`}>{item.name}</Link>
+                    <Link
+                      to={`/projects/${item.id}`}
+                      onClick={this.resumeIconList}
+                    >
+                        {item.name}
+                    </Link>
                     {infoCount ?
                       (<span className="info-num">
                         {infoCount < 100 ? infoCount : '···'}
