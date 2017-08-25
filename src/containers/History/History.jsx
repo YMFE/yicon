@@ -123,7 +123,7 @@ export default class History extends Component {
                   <Select
                     className="select-component"
                     value={this.state.version}
-                    style={{ width: 50, textIndent: 0, outline: 0 }}
+                    style={{ width: 60, textIndent: 0, outline: 0 }}
                     onSelect={this.onSelect}
                   >
                   {

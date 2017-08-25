@@ -170,12 +170,21 @@ export function* uploadReplacingIcon(next) {
     invariant(false, '读取 svg 文件内容有误，请检查文件');
   }
   const icon = icons[0];
-  const iconData = yield Icon.create({
-    name: icon.name,
-    path: icon.d,
-    status: iconStatus.REPLACING,
-    uploader: userId,
-  });
+
+  let iconData = {};
+
+  yield seq.transaction(transaction =>
+    Icon.create({
+      name: icon.name,
+      path: icon.d,
+      status: iconStatus.REPLACING,
+      uploader: userId,
+    }, { transaction })
+  .then(addedIcon => {
+    iconData = addedIcon;
+    const svg = buffer && buffer.toString() || null;
+    return Cache.create({ iconId: addedIcon && addedIcon.id, svg }, { transaction });
+  }));
 
   this.state.respond = {
     replaceId: iconData.id,
@@ -237,6 +246,10 @@ export function* replaceIcon(next) {
       applyTime: +new Date,
       status: iconStatus.RESOLVED,
     }, { transaction })
+    .then(() => Cache.destroy({
+      where: { iconId: toId },
+      transaction,
+    }))
     .then(() => from.update({
       newId: toId, status: iconStatus.REPLACED,
     }, { transaction }))
@@ -334,7 +347,12 @@ export function* submitIcons(next) {
         where: { status: iconStatus.REPLACE, id: +item.id },
         transaction,
       });
-      iconInfo.push(tempRepoVer, tempIcon);
+      // 将被覆盖的图标对应的 cache 中的 svg 删除
+      const tempIconCache = Cache.destroy({
+        where: { iconId: +item.id },
+        transaction,
+      });
+      iconInfo.push(tempRepoVer, tempIcon, tempIconCache);
     });
 
     return Promise
@@ -412,10 +430,21 @@ export function* deleteIcons(next) {
     iconInfo.status === iconStatus.UPLOADED,
     '只能删除审核未通过的图标或未上传的图标'
   );
-  yield Icon.update(
-    { status: iconStatus.DELETE },
-    { where: { id: iconId } },
-  );
+
+  yield seq.transaction(transaction =>
+    Icon.update(
+      { status: iconStatus.DELETE },
+      {
+        where: { id: iconId },
+        transaction,
+      }
+    )
+  .then(() =>
+    Cache.destroy({
+      where: { iconId },
+      transaction,
+    })
+  ));
 
   this.state.respond = '删除图标成功';
   yield next;

@@ -141,7 +141,7 @@ export default class VersionComparison extends Component {
                   <Select
                     className="select-component"
                     value={this.state.leftVersion}
-                    style={{ width: 50, textIndent: 0, outline: 0 }}
+                    style={{ width: 60, textIndent: 0, outline: 0 }}
                     onSelect={this.selectHighVersion}
                   >
                   {
@@ -160,7 +160,7 @@ export default class VersionComparison extends Component {
                   <Select
                     className="select-component"
                     value={this.state.rightVersion}
-                    style={{ width: 50, textIndent: 0 }}
+                    style={{ width: 60, textIndent: 0 }}
                     onSelect={this.selectLowVersion}
                   >
                   {
