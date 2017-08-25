@@ -196,6 +196,7 @@ export function* getOneProject(next) {
     where: { id: projectId },
     include: [{ model: User, as: 'projectOwner' }],
   });
+
   invariant(project, `编号${projectId}的项目不存在`);
   const result = project.dataValues;
 
@@ -206,6 +207,7 @@ export function* getOneProject(next) {
       where: { version },
     },
   });
+
   result.members = yield project.getUsers();
   result.isOwner = project.owner === userId;
   delete result.owner;
@@ -265,7 +267,7 @@ export function* generatorNewVersion(next) {
       where: { version: 0 },
     },
   });
-  // console.log(icons);
+
   const disabledCode = [];
   icons.forEach(icon => {
     if (icon.status === iconStatus.DISABLED) {

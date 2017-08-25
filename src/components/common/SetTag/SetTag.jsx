@@ -2,7 +2,7 @@ import './SetTag.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { editIcon, resetTags } from '../../../actions/icon';
-import Input from '../../common/Input/Index.jsx';
+import Input from '../../common/Input/IndexUpdateDialog.jsx';
 import { ICON_TAG } from '../../../constants/validate';
 import { autobind } from 'core-decorators';
 

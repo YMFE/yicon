@@ -41,17 +41,18 @@ export default class PublicProject extends Component {
 
   state = {
     isShowLoading: true,
+    cacheProjectList: '',
   };
 
   componentWillMount() {
     if (this.props.user.login) {
-      this.props.getUsersProjectList();
+      this.replaceProject();
     }
   }
 
   componentDidMount() {
     this.pulseId = setInterval(() => {
-      this.props.getUsersProjectList();
+      this.replaceProject();
     }, 30 * 1000);
   }
 
@@ -61,7 +62,7 @@ export default class PublicProject extends Component {
     const query = this.props.location.query || {};
     const nextQuery = nextProps.location.query || {};
     if ((id !== nextId || query.from !== nextQuery.from) && this.props.user.login) {
-      this.props.getUsersProjectList();
+      this.replaceProject();
     }
   }
 
@@ -69,20 +70,34 @@ export default class PublicProject extends Component {
     if (this.pulseId) clearInterval(this.pulseId);
   }
 
+  replaceProject() {
+    this.setState({
+      cacheProjectList: this.props.getUsersProjectList(),
+    });
+  }
+
   @autobind
   hideLoading() {
-    this.setState({ isShowLoading: false });
+    this.setState({
+      isShowLoading: false,
+    });
   }
 
   renderContent(id) {
     const { from } = this.props.location && this.props.location.query;
+    const { cacheProjectList } = this.state;
     if (!id) {
       return <NoProject hideLoading={this.hideLoading} />;
     }
     let content;
     const isBelong = this.props.usersProjectList.some(v => v.id === +id);
     if (this.props.user.login && isBelong) {
-      content = <UserProject projectId={id} from={from} hideLoading={this.hideLoading} />;
+      content = (<UserProject
+        projectId={id}
+        cacheProjectList={cacheProjectList}
+        from={from}
+        hideLoading={this.hideLoading}
+      />);
     } else {
       content = <History projectId={id} isHidden hideLoading={this.hideLoading} />;
     }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { editIcon } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
 import { ICON_NAME } from '../../constants/validate';
-import Input from '../common/Input/Index.jsx';
+import Input from '../common/Input/IndexUpdateDialog.jsx';
 import SetTag from '../common/SetTag/SetTag.jsx';
 import { autobind } from 'core-decorators';
 

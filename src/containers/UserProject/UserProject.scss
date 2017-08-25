@@ -1,6 +1,11 @@
 @charset "utf-8";
 $imgUrl: '../../../static/images/';
-
+html {
+  height: 100%;
+  body {
+    height: 100%;
+  }
+}
 .UserProject{
   .global-subtitle{
     .container{
