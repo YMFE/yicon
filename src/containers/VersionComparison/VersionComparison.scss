@@ -66,9 +66,11 @@
 				zoom: 1;
 				overflow: hidden;
 				padding:20px 20px 0 20px;
-				.prj-details{
-					overflow: hidden;
+				.prj-details {
 					float: left;
+				}
+				.prj-details, .prj-details-history{
+					overflow: hidden;
 					.title{
 						float: left;
 						>h3 {

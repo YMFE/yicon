@@ -114,7 +114,7 @@ class UserProject extends Component {
     saveToNewProject: PropTypes.func,
     createEmptyProject: PropTypes.func,
     push: PropTypes.func,
-    cacheProjectList: PropTypes.func,
+    cacheProjectList: PropTypes.object,
   }
 
   static defaultProps ={
