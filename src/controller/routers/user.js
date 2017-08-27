@@ -27,6 +27,7 @@ import {
   getUploadedIcons,
   uploadReplacingIcon,
   replaceIcon,
+  transformIcon,
 } from '../modules/icon';
 
 import { getUserByName, getUserSessionInfo } from '../modules/user';
@@ -47,6 +48,7 @@ user.get('/workbench', getUploadedIcons);
 user.get('/icons', pagination, getSubmittedIcons);
 user.delete('/icons/:iconId', deleteIcons);
 user.patch('/icons/:iconId', updateIconInfo);
+user.post('/icons/svg', transformIcon);
 
 user.get('/projects', getAllProjects);
 user.post('/projects', createProject);

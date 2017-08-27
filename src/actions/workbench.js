@@ -6,6 +6,7 @@ import {
   UPLOAD_ICONS,
   SELECT_EDIT,
   SELECT_REPO,
+  ADJUST_ICON,
 } from '../constants/actionTypes';
 const fetch = isonFetch.create({ baseURL: '/api' });
 
@@ -54,5 +55,12 @@ export function selectRepo(repoId) {
   return {
     type: SELECT_REPO,
     payload: repoId,
+  };
+}
+
+export function adjustIcon(icon) {
+  return {
+    type: ADJUST_ICON,
+    payload: icon,
   };
 }

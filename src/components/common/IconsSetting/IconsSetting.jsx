@@ -122,7 +122,7 @@ class IconsSetting extends Component {
             <i className={'iconfont set-pre-next-icon'}>&#xf1c3;</i>
           </button>
           <IconBgGrid
-            iconPath={iconDetail.path}
+            iconPath={iconDetail.isAdjusted ? iconDetail._path : iconDetail.path}
           />
           <div className="setting-opts">
             {isAudit &&

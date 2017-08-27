@@ -4,6 +4,7 @@ import {
   UPDATE_WORKBENCH,
   SELECT_EDIT,
   SELECT_REPO,
+  ADJUST_ICON,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -41,6 +42,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         repoId: action.payload,
+      };
+    }
+    case ADJUST_ICON: {
+      return {
+        ...state,
+        icons: action.payload,
       };
     }
     default:

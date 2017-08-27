@@ -97,8 +97,7 @@ Icon.belongsToMany(Project, {
   constraints: false,
 });
 Icon.belongsTo(User, { foreignKey: 'uploader' });
-
-Cache.belongsTo(Icon, { foreignKey: 'iconId' });
+Icon.hasOne(Cache, { foreignKey: 'iconId' });
 
 Repo.belongsToMany(Icon, {
   through: {

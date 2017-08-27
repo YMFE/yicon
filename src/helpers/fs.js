@@ -3,6 +3,7 @@ import Q from 'q';
 import fs from 'fs';
 import path from 'path';
 
+import fontBuilder from 'iconfont-builder';
 import SVGO from 'svgo';
 import { render } from 'svgexport';
 import svgBuilder from './svgTemplate';
@@ -79,4 +80,19 @@ export function* buildPNG(name, svgPath) {
   yield ensureCachesExist('hodor', 'png');
   const filePath = path.join(downloadPath.png, `${name}.png`);
   yield Q.nfcall(render, { input: svgPath, output: filePath });
+}
+
+export function* transformSvg2Path(param) {
+  const adjustedPath = param.trim().match(/<svg [a-zA-Z0-9\s<>\/="\.:#\-]+<\/svg>$/)[0]
+    .replace(/(height|width)="([0-9\.]+(px)?)"/g, (all, name) => `${name}="1024"`)
+    .replace(/\sversion="[0-9\.]+"/, () => '')
+    .replace(/\sclass="icon"/, () => '');
+  const buffer = Buffer.from(adjustedPath);
+  const option = {
+    icons: [{ name: 'temp', buffer }],
+    // 标记只返回图标信息数据
+    writeFiles: false,
+  };
+  const icon = yield fontBuilder(option);
+  return icon[0] && icon[0].d;
 }
