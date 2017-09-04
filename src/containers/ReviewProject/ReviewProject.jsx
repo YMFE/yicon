@@ -151,7 +151,7 @@ class ReviewProject extends Component {
                         onClick={() => this.cancelPublicProject(1, v.id)}
                         className="cancel"
                       >
-                        取消
+                        拒绝
                       </button>
                     </td>
                   </tr>
@@ -187,7 +187,7 @@ class ReviewProject extends Component {
                       onClick={() => this.cancelPublicProject(2, v.id)}
                       className="cancel"
                     >
-                      取消
+                      拒绝
                     </button>
                   </td>
                 </tr>
