@@ -67,7 +67,7 @@
 				.prj-details {
 					float: left;
 				}
-				.prj-details, .prj-details-history{
+				.prj-details-history, .prj-details-comparison{
 					overflow: hidden;
 					.title{
 						float: left;
@@ -186,7 +186,8 @@
 				width: 865px;
 			}
 			.no-data {
-				padding: 0 40px;
+				padding: 20px;
+				// padding: 0 40px;
 			}
 		}
 

@@ -26,4 +26,14 @@ export default seq.define('projects', {
     allowNull: true,
     comment: '项目source路径',
   },
+  description: {
+    type: Seq.STRING,
+    allowNull: true,
+    comment: '公开项目描述',
+  },
+  updateAt: {
+    type: Seq.STRING,
+    allowNull: true,
+    comment: '公开项目描述',
+  },
 });

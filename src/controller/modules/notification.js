@@ -116,3 +116,76 @@ export function* setAllReaded(next) {
   this.state.respond = '全部消息置为已读';
   yield next;
 }
+
+/* 提交公共项目 */
+export function* submitPublicProject(next) {
+  let isWrite = ''; // 写入是否成功
+  const { name, reason } = this.param;
+  const date = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+  const result = yield Project.findAll({
+    where: {
+      name,
+    },
+  });
+  if (result.length) {  // 如果项目存在 修改public = 1
+    isWrite = yield Project.update({
+      public: '1',
+      description: reason,
+      updateAt: date(),
+    }, {
+      where: {
+        name,
+      },
+    });
+  }
+  this.state.respond = isWrite;
+  this.state.log = {
+    type: 'APPLICATION_PUBLIC_PROJECT',
+    loggerId: result[0].dataValues.id,
+    subscribers: [result[0].dataValues.owner],
+  };
+
+  yield next;
+}
+
+// 公开项目列表
+export function* publicProjectList(next) {
+  const { id } = this.param;
+  const result = yield Project.findAll({
+    where: {
+      public: id,
+    },
+  });
+  this.state.respond = result;
+  yield next;
+}
+
+export function* agreePublicProject(next) {
+  let isWrite = false;
+  const { id, publicId } = this.param;
+  const result = yield Project.findAll({
+    where: {
+      id,
+    },
+  });
+  if (result.length) {
+    // publick: 2 表示同意为公开项目
+    isWrite = yield Project.update({
+      public: publicId,
+    }, {
+      where: {
+        id,
+      },
+    });
+  }
+  this.state.respond = isWrite;
+  yield next;
+}

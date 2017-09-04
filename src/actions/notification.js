@@ -9,6 +9,9 @@ import {
   SET_POLLING_ID,
   SET_INFO_READED,
   SET_ALL_READED,
+  SUBMIT_PUBLICK_PROJECT,
+  PUBLIC_PROJECT_LIST,
+  AGREE_PUBLIC_PROJECT,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
@@ -67,6 +70,14 @@ export function fetchUnreadNotification(type = 'all') {
     payload: fetch.get(`/unread/notifications/type/${type}`),
   };
 }
+
+export function submitPublicProject(data) {
+  return {
+    type: SUBMIT_PUBLICK_PROJECT,
+    payload: fetch.post('/notification/submitpublicproject', data),
+  };
+}
+
 export function getInfoDetail(id) {
   return {
     type: FETCH_INFO_DETAIL,
@@ -92,5 +103,19 @@ export function setAllReaded() {
   return {
     type: SET_ALL_READED,
     payload: fetch.patch('/notification/all/readed'),
+  };
+}
+
+export function publicProjectList(data) {
+  return {
+    type: PUBLIC_PROJECT_LIST,
+    payload: fetch.get(`/projectspublic/${data}`),
+  };
+}
+
+export function agreePublicProject(data) {
+  return {
+    type: AGREE_PUBLIC_PROJECT,
+    payload: fetch.post('/notification/agreepublicproject', data),
   };
 }

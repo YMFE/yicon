@@ -83,7 +83,9 @@ class InfoItem extends Component {
     const tailText = operation.slice(lastIndex, operation.length);
     if (tailText.length) content.push(<span key={lastIndex}>{tailText}</span>);
 
-    if (this.props.hasScope) {
+    if (operation === '申请公开项目') {
+      prefix = <a href="../reviewproject">{project.name} :</a>;
+    } else if (this.props.hasScope) {
       const scopeData = scope === 'project' ? project : repo;
       if (scopeData) {
         const link = scope === 'project'

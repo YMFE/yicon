@@ -7,6 +7,9 @@ import {
   FETCH_INFO_DETAIL,
   SET_POLLING_ID,
   SET_INFO_READED,
+  SUBMIT_PUBLICK_PROJECT,
+  PUBLIC_PROJECT_LIST,
+  AGREE_PUBLIC_PROJECT,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -33,8 +36,10 @@ const initialState = {
     totalPage: 1,
     currentPage: 1,
   },
+  abc: '',
   infoDetail: {},
   pollingId: null,
+  agreeProject: '',
 };
 
 export default (state = initialState, action) => {
@@ -187,6 +192,24 @@ export default (state = initialState, action) => {
           data = state;
       }
       return data;
+    }
+    case SUBMIT_PUBLICK_PROJECT: {
+      return {
+        ...state,
+        abc: action.payload,
+      };
+    }
+    case PUBLIC_PROJECT_LIST: {
+      return {
+        ...state,
+        publicList: action.payload,
+      };
+    }
+    case AGREE_PUBLIC_PROJECT: {
+      return {
+        ...state,
+        agreeProject: action.payload,
+      };
     }
     default:
       return state;

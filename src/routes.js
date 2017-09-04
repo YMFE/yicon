@@ -26,6 +26,8 @@ import {
   LdapAuth,
   Statistic,
   DisabledCode,
+  ProjectList,
+  ReviewProject,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -61,6 +63,8 @@ export default store => {
       <Route path="help" component={Help} /> {/* 帮助中心 */}
       <Route path="ldapauth" component={LdapAuth} /> {/* LDAP登录 */}
       <Route path="statistic" component={Statistic} /> {/* 图标统计 */}
+      <Route path="projectlist/:id" component={ProjectList} /> {/* 公开项目列表 */}
+      <Route path="reviewproject" component={ReviewProject} /> {/* 后台审核公开项目列表 */}
 
       {/* 登录用户路由 */}
       <Route onEnter={requireLogin}>

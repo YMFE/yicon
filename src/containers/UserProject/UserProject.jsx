@@ -13,6 +13,7 @@ import { replace, push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
+import PublicProject from '../../components/PublicProject/PublicProject.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
@@ -37,6 +38,10 @@ import {
   saveToNewProject,
   createEmptyProject,
 } from '../../actions/project';
+import {
+  submitPublicProject,
+  publicProjectList,
+} from '../../actions/notification';
 import {
   getIconDetail,
   editIconStyle,
@@ -79,6 +84,8 @@ import CreateProject from './CreateProject.jsx';
     saveToNewProject,
     createEmptyProject,
     push,
+    submitPublicProject,
+    publicProjectList,
     // resetIconSize,
   }
 )
@@ -113,6 +120,8 @@ class UserProject extends Component {
     uploadIconToSource: PropTypes.func,
     saveToNewProject: PropTypes.func,
     createEmptyProject: PropTypes.func,
+    submitPublicProject: PropTypes.func,
+    publicProjectList: PropTypes.func,
     push: PropTypes.func,
     cacheProjectList: PropTypes.object,
   }
@@ -141,6 +150,8 @@ class UserProject extends Component {
       isShowLoading: false,
       loadIconOver: false,
       iconList: [],
+      isPublicProject: false,
+      publicId: '',
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -150,7 +161,7 @@ class UserProject extends Component {
     this.nextSourceVersion = '0.0.1';
   }
   componentWillMount() {
-    window.addEventListener('scroll', this.addDiv.bind(this));
+    this.getPublicProject(2);
     this.setState({ showLoading: true });
     // this.props.resetIconSize();
     this.props.cacheProjectList.then(() => {
@@ -175,7 +186,6 @@ class UserProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.renderIconList();
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
     const nextId = nextProps.projectId;
@@ -190,6 +200,7 @@ class UserProject extends Component {
         members: current.members,
       });
     }
+
     if (!nextId && this.props.usersProjectList[0]) {
       this.props.replace(`/projects/${this.props.usersProjectList[0].id}`);
       return;
@@ -220,31 +231,25 @@ class UserProject extends Component {
     }
   }
 
+  setPublicProject(isShow) {
+    this.setState({
+      isPublicProject: isShow,
+    });
+  }
+
+  // 公开项目列表
+  getPublicProject(id) {
+    this.props.publicProjectList(id)
+      .then(data => {
+        this.setState({
+          publicId: data.payload.data[0].id,
+        });
+      });
+  }
+
   @autobind
   getIconsDom() {
     return findDOMNode(this.refs.iconsContainer).getElementsByClassName('Icon');
-  }
-
-  @autobind
-  compareVersion(callback) {
-    const id = this.props.projectId;
-    const versions = this.props.projectInfo.versions;
-    const high = versions[versions.length - 1];
-    const low = '0.0.0';
-    this.highestVersion = high;
-    this.props.compareProjectVersion(id, high, low).then(callback);
-  }
-
-  @autobind
-  handleSingleIconDownload(iconId) {
-    return () => {
-      this.props.getIconDetail(iconId).then(() => {
-        this.props.editIconStyle({ color: '#34475e', size: 256 });
-        this.setState({
-          isShowDownloadDialog: true,
-        });
-      });
-    };
   }
 
   @autobind
@@ -490,6 +495,21 @@ class UserProject extends Component {
   }
 
   @autobind
+  shiftPublickProject(isShow = false, data) {
+    this.submitProject(data);
+    this.setPublicProject(isShow);
+  }
+
+  submitProject(data) {
+    this.props.submitPublicProject(data)
+      .then(result => {
+        if (result.payload.data.length) {
+          Message.success('已申请为公开项目, 请等待审核!');
+        }
+      });
+  }
+
+  @autobind
   uploadAndGenerateVersion() {
     this.setState({ isShowLoading: true });
     // 生成(指定)版本
@@ -596,6 +616,28 @@ class UserProject extends Component {
     });
   }
 
+  @autobind
+  handleSingleIconDownload(iconId) {
+    return () => {
+      this.props.getIconDetail(iconId).then(() => {
+        this.props.editIconStyle({ color: '#34475e', size: 256 });
+        this.setState({
+          isShowDownloadDialog: true,
+        });
+      });
+    };
+  }
+
+  @autobind
+  compareVersion(callback) {
+    const id = this.props.projectId;
+    const versions = this.props.projectInfo.versions;
+    const high = versions[versions.length - 1];
+    const low = '0.0.0';
+    this.highestVersion = high;
+    this.props.compareProjectVersion(id, high, low).then(callback);
+  }
+
   addDiv() {
     if (!this.state.loadIconOver) {
       const body = document.querySelector('body');
@@ -646,9 +688,6 @@ class UserProject extends Component {
         if (!deletedClassName) {
           toolBtns.push('delete');
         }
-        if (index >= 40 && !this.state.loadIconOver) {
-          return false;
-        }
         return (
           <div
             key={index}
@@ -671,10 +710,6 @@ class UserProject extends Component {
             />
           </div>
         );
-      });
-
-      this.setState({
-        iconList,
       });
     }
     return iconList;
@@ -812,6 +847,15 @@ class UserProject extends Component {
         >
           <UpdateDialog />
         </Dialog>,
+        <PublicProject
+          key={10}
+          empty
+          title="申请公开项目"
+          visible={this.state.isPublicProject}
+          getShow={this.shiftUploadSuccess}
+          onOk={(isShow, data) => { this.shiftPublickProject(isShow, data); }}
+          onCancel={() => { this.shiftPublickProject(); }}
+        />,
       ];
     }
     return dialogList;
@@ -823,10 +867,11 @@ class UserProject extends Component {
     const id = this.props.projectId;
     const versions = this.props.projectInfo.versions;
     const len = versions && versions.length;
-    const { iconList } = this.state;
+    const iconList = this.renderIconList();
     const dialogList = this.renderDialogList();
     const owner = current.projectOwner || { name: '' };
     const { isSupportSource } = current;
+    const { publicId } = this.state;
 
     return (
       <div className="UserProject">
@@ -847,6 +892,11 @@ class UserProject extends Component {
                 新建图标项目
               </a>
             </li>
+            <li>
+              <a href={`../projectlist/${publicId}`}>
+                公开项目
+              </a>
+            </li>
             {
               list.map((item, index) => {
                 const infoCount = + this.props.projectChangeInfo[`project${item.id}`];
@@ -863,7 +913,6 @@ class UserProject extends Component {
                   >
                     <Link
                       to={`/projects/${item.id}`}
-                      onClick={this.resumeIconList}
                     >
                         {item.name}
                     </Link>
@@ -907,9 +956,10 @@ class UserProject extends Component {
                     管理项目成员
                   </span>
                   {isSupportSource ?
-                    <span onClick={() => { this.shiftSetPath(true); }}>配置source路径</span>
-                  : null
+                    <span onClick={() => { this.shiftSetPath(true); }}>配置source路径</span> :
+                    null
                   }
+                  <span onClick={() => { this.setPublicProject(true); }}>申请公开项目</span>
                   <span
                     onClick={this.adjustBaseline}
                     title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"
