@@ -80,7 +80,7 @@ user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications/type/:type', getUnreadCount);
 user.post('/notification/submitpublicproject', submitPublicProject, recordLog);
-user.post('/notification/agreepublicproject', agreePublicProject);
+user.post('/notification/agreepublicproject', agreePublicProject, recordLog);
 user.patch('/notification/all/readed', setAllReaded);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
