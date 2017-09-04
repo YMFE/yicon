@@ -2,6 +2,31 @@
   background: #fff;
   width: 1080px;
   margin: 30px auto;
+  .icon-adjust {
+    height: 38px;
+    background: #fff;
+    .icon-adjust-btn {
+      float: left;
+      text-align: center;
+      line-height: 34px;
+      height: 34px;
+      background: #fff;
+      border: 2px solid #dfdfdf;
+      border-radius: 19px;
+      font-size: 14px;
+      color: #9e9e9e;
+      cursor: pointer;
+      padding: 0 17px;
+      margin: -35px 10px 0 531px;
+      .tag {
+        margin-right: 8px;
+      }
+    }
+    .icon-adjust-btn.on {
+      border: 2px solid #4bb052;
+      color: #4bb052;
+    }
+  }
   .upload-submit {
     padding: 0 36px;
     background: #f9fafe;

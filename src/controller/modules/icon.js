@@ -6,7 +6,7 @@ import invariant from 'invariant';
 import { logRecorder } from './log';
 import { seq, Repo, Icon, RepoVersion, User, ProjectVersion, Cache } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
-import { saveOriginalSVG } from '../../helpers/fs';
+import { saveOriginalSVG, transformSvg2Path } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
@@ -202,7 +202,7 @@ export function* uploadReplacingIcon(next) {
  * 5. 更新大库的 updatedAt
  */
 export function* replaceIcon(next) {
-  const { fromId, toId, name, tags } = this.param;
+  const { fromId, toId, name, tags, adjustedPath = '' } = this.param;
   const { userId } = this.state.user;
   // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOLVED 状态
   const from = yield Icon.findOne({ where: { id: fromId } });
@@ -236,16 +236,21 @@ export function* replaceIcon(next) {
     '当前用户没有权限替换该图标，请上传者、库管或者超管进行替换'
   );
 
+  const replacedIcon = {
+    name,
+    fontClass,
+    tags,
+    code,
+    oldId: fromId,
+    applyTime: +new Date,
+    status: iconStatus.RESOLVED,
+  };
+  if (adjustedPath) {
+    replacedIcon.path = adjustedPath;
+  }
+
   yield seq.transaction(transaction =>
-    to.update({
-      name,
-      fontClass,
-      tags,
-      code,
-      oldId: fromId,
-      applyTime: +new Date,
-      status: iconStatus.RESOLVED,
-    }, { transaction })
+    to.update(replacedIcon, { transaction })
     .then(() => Cache.destroy({
       where: { iconId: toId },
       transaction,
@@ -326,6 +331,10 @@ export function* submitIcons(next) {
         data.oldId = +icon.oldId;
       }
 
+      if (icon.isAdjusted && icon._path) {
+        data.path = icon._path;
+      }
+
       return Icon.update(
         data,
         { where: { id: icon.id }, transaction }
@@ -397,7 +406,7 @@ export function* getIconInfo(next) {
         model: RepoVersion,
         version: '0.0.0',
       },
-    }, User],
+    }, User, { model: Cache }],
   });
   const icon = data.get({ plain: true });
   if (icon.repositories && icon.repositories.length) {
@@ -504,6 +513,7 @@ export function* getUploadedIcons(next) {
 
   this.state.respond = yield Icon.findAll({
     where: { uploader: userId, status: iconStatus.UPLOADED },
+    include: [{ model: Cache }],
   });
   yield next;
 }
@@ -567,5 +577,11 @@ export function* getSubmittedIcons(next) {
   } else {
     this.state.respond = [];
   }
+  yield next;
+}
+
+export function* transformIcon(next) {
+  const { svg } = this.param;
+  this.state.respond = yield transformSvg2Path(svg);
   yield next;
 }

@@ -2,13 +2,14 @@
 
 .global{
   &-subtitle {
+    min-width: 1140px;
     background-color: #fff;
     border-bottom: 1px solid #dadcde;
     box-shadow: 0 0 5px #dadcde;
     .container {
       width: 1100px;
       margin: 0 auto;
-      padding: 20px 0;
+      padding: 20px;
       // transition: padding 0.2s;
     }
     .options {

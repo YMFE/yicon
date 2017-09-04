@@ -36,6 +36,22 @@ export default class Select extends Component {
     defaultValue: PropTypes.any,
   }
 
+  componentWillUnmount() {
+    this.allowScroll();
+  }
+
+  preventScroll() {
+    const body = document.getElementsByTagName('body')[0];
+    body.style.height = 'auto';
+    body.style.overflow = 'hidden';
+  }
+
+  allowScroll() {
+    const body = document.getElementsByTagName('body')[0];
+    body.style.height = '100%';
+    body.style.overflow = 'auto';
+  }
+
   render() {
     let { notFoundContent, optionLabelProp } = this.props;
     const { combobox } = this.props;
@@ -50,14 +66,41 @@ export default class Select extends Component {
       optionLabelProp = optionLabelProp || 'value';
     }
 
+    const props = {};
+    Object.assign(props, this.props);
+    if (props.onSelect) {
+      const _onSelect = props.onSelect;
+      props.onSelect = (data) => {
+        _onSelect(data);
+        this.allowScroll();
+      };
+    } else {
+      props.onSelect = () => {
+        this.allowScroll();
+      };
+    }
+    if (props.onBlur) {
+      const _onBlur = props.onBlur;
+      props.onBlur = (data) => {
+        _onBlur(data);
+        this.allowScroll();
+      };
+    } else {
+      props.onBlur = () => {
+        this.allowScroll();
+      };
+    }
+
     return (
-      <RcSelect
-        {...this.props}
-        placeholder="请选择"
-        dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
-        optionLabelProp={optionLabelProp || 'children'}
-        notFoundContent={notFoundContent}
-      />
+      <div onClick={this.preventScroll}>
+        <RcSelect
+          {...props}
+          placeholder="请选择"
+          dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
+          optionLabelProp={optionLabelProp || 'children'}
+          notFoundContent={notFoundContent}
+        />
+      </div>
     );
   }
 }

@@ -1,9 +1,15 @@
 @charset "utf-8";
+@media screen and (max-width: 1200px){
+  .yicon-statistic-list {
+    display: none;
+  }
+}
 .yicon-statistic {
   position: relative;
+  padding: 0 20px 20px;
   &-list {
     position: absolute;
-    left: -40px;
+    left: -20px;
     color: #333;
     .yicon-list-item {
       height: 44px;

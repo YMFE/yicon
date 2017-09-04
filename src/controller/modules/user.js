@@ -43,16 +43,22 @@ export function* validateAuth(next) {
   switch (type) {
     case 'owner': {
       const user = yield User.findOne({ where: { id: userId } });
-      if (!user || user.actor < 1) throw new Error('no-auth');
+      // if (!user || user.actor < 1) throw new Error('no-auth');
+      // 没有权限不算 Error，不应写入错误日志
+      invariant(user && user.actor >= 1, 'no-auth');
       break;
     }
     case 'admin': {
       const user = yield User.findOne({ where: { id: userId } });
-      if (!user || user.actor < 2) throw new Error('no-auth');
+      // if (!user || user.actor < 2) throw new Error('no-auth');
+      // 没有权限不算 Error，不应写入错误日志
+      invariant(user && user.actor >= 2, 'no-auth');
       break;
     }
     default:
-      if (!userId) throw new Error('no-login');
+      // if (!userId) throw new Error('no-login');
+      // 未登录不算 Error，不应写入错误日志
+      invariant(userId, 'no-login');
       break;
   }
   this.state.respond = '校验成功';

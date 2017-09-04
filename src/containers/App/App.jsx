@@ -28,7 +28,7 @@ class App extends Component {
           list={list}
           searchValue={searchValue}
         />
-        <section>
+        <section className="app-main">
           {this.props.children}
         </section>
       </div>

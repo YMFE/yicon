@@ -2,6 +2,8 @@ import './Workbench.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import axios from 'axios';
+
 import {
   fetchWorkbench,
   uploadIcons,
@@ -9,6 +11,7 @@ import {
   updateWorkbench,
   selectEdit,
   selectRepo,
+  adjustIcon,
 } from '../../actions/workbench.js';
 import { push } from 'react-router-redux';
 import dialog from '../../components/common/Dialog/Confirm.jsx';
@@ -32,6 +35,7 @@ import { autobind } from 'core-decorators';
     deleteIcon,
     selectEdit,
     selectRepo,
+    adjustIcon,
     push,
   }
 )
@@ -48,6 +52,7 @@ export default class Workbench extends Component {
     deleteIcon: PropTypes.func,
     selectEdit: PropTypes.func,
     selectRepo: PropTypes.func,
+    adjustIcon: PropTypes.func,
     push: PropTypes.func,
     router: PropTypes.object,
     route: PropTypes.object,
@@ -148,6 +153,26 @@ export default class Workbench extends Component {
     });
   }
 
+
+  // 调整阿里平台上的图标
+  @autobind
+  adjustIcon(isAdjusted) {
+    const { index, icons } = this.props;
+    if (icons[index].isAdjusted === isAdjusted) {
+      icons[index].isAdjusted = !isAdjusted;
+    } else {
+      icons[index].isAdjusted = isAdjusted;
+    }
+    const { svg } = icons[index].cache || {};
+    axios
+      .post('/api/user/icons/svg', { svg })
+      .then(data => {
+        const path = data && data.data && data.data.data;
+        icons[index]._path = icons[index].isAdjusted && path ? path : icons[index].path;
+        this.props.adjustIcon(icons.concat());
+      });
+  }
+
   @autobind
   showUploadDialog() {
     const doneNum = this.calcDone().length;
@@ -186,6 +211,12 @@ export default class Workbench extends Component {
             turnLeft={this.turnLeft}
             turnRight={this.turnRight}
           />
+          <div className="icon-adjust">
+            <div
+              className={`icon-adjust-btn ${icons[index].isAdjusted ? 'on' : ''}`}
+              onClick={() => { this.adjustIcon(true); }}
+            ><i className="iconfont tag">&#xf078;</i>图标调整</div>
+          </div>
           <div className={'upload-submit'}>
             <div className={'clearfix'}>
               <p className={'upload-submit-tips'}>

@@ -188,9 +188,11 @@ export default class Repository extends Component {
             <span className="name">{admin}</span>
             <div className="tool-content">
               <div className="tools">
-                <Link to={`/upload/repository/${repoId}`} className="options-btns btns-blue">
-                  <i className="iconfont">&#xf50a;</i>上传新图标
-                </Link>
+                {status > 1 &&
+                  <Link to={`/upload/repository/${repoId}`} className="options-btns btns-blue">
+                    <i className="iconfont">&#xf50a;</i>上传新图标
+                  </Link>
+                }
                 <button
                   onClick={this.downloadAllIcons}
                   className="options-btns btns-blue"
