@@ -31,7 +31,15 @@ import {
 
 import { getUserByName, getUserSessionInfo } from '../modules/user';
 import { getLogList, recordLog } from '../modules/log';
-import { getAllNotices, getOneNotice, getUnreadCount, setAllReaded } from '../modules/notification';
+import {
+  getAllNotices,
+  getOneNotice,
+  getUnreadCount,
+  setAllReaded,
+  submitPublicProject,
+  publicProjectList,
+  agreePublicProject,
+} from '../modules/notification';
 import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
 
 const user = new Router();
@@ -64,10 +72,13 @@ user.get('/projects/:projectId/version/:highVersion/version/:lowVersion', diffVe
 user.post('/projects/:projectId/source', isProjectOwner, addSourcePath);
 user.get('/projects/:projectId/source/version', isProjectOwner, getSourceVersion);
 user.post('/projects/:projectId/source/upload', isProjectOwner, uploadSource, recordLog);
+user.get('/projectspublic/:id', publicProjectList);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications/type/:type', getUnreadCount);
+user.post('/notification/submitpublicproject', submitPublicProject, recordLog);
+user.post('/notification/agreepublicproject', agreePublicProject);
 user.patch('/notification/all/readed', setAllReaded);
 
 user.get('/log/projects/:projectId', pagination, getLogList);

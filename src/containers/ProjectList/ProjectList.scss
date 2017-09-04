@@ -1,0 +1,49 @@
+/* .project-list.css */
+.project-list {
+  .global-subtitle .container {
+    width: 1080px;
+  }
+  background: #f1f3f6;
+  .box {
+    width: 1080px;
+    margin: 20px auto 0 auto;
+    box-sizing: border-box;
+    display: -webkit-box;
+    .navs, .icons {
+      min-height: 620px;
+    }
+    .navs {
+      width: 216px;
+      background: #f9fafe;
+      li {
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+        a {
+          display: block;
+          padding: 0 34px;
+          color: #344562;
+        }
+      }
+      .active {
+        background: #657289;
+        a {
+          color: #FFF;
+        }
+      }
+    }
+    .icons {
+      padding: 0 40px;
+      width: 864px;
+      box-sizing: border-box;
+      background: #FFF;
+      h3 {
+        font-size: 30px;
+        padding: 20px 40px;
+        color: #344562;
+        line-height: 40px;
+        border-bottom: 1px solid #d8d9d9;
+      }
+    }
+  }
+}

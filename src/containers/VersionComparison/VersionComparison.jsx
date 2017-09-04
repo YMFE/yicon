@@ -125,7 +125,7 @@ export default class VersionComparison extends Component {
             </Menu>
             <Main extraClass="yicon-myicon-main">
               <div className="myicon-prj-info">
-                <div className="prj-details">
+                <div className="prj-details-comparison">
                   <div className="title">
                     <h3>{this.props.projectInfo.name} </h3>
                     <span className="tips">版本对比</span>
