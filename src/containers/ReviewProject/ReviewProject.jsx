@@ -36,6 +36,10 @@ class ReviewProject extends Component {
     this.getPublicProject(1);
   }
 
+  componentWillReceiveProps() {
+    this.getPublicProject(1);
+  }
+
   // 公开项目列表
   getPublicProject(id) {
     this.props.publicProjectList(id)
