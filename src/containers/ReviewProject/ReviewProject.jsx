@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { SubTitle } from '../../components/';
 import Message from '../../components/common/Message/Message';
+import dialog from '../../components/common/Dialog/Confirm.jsx';
 import {
   publicProjectList,
   agreePublicProject,
@@ -40,6 +41,14 @@ class ReviewProject extends Component {
     this.getPublicProject(1);
   }
 
+  setDialog(title, content, method) {
+    dialog({
+      title,
+      content,
+      onOk: () => method(),
+    });
+  }
+
   // 公开项目列表
   getPublicProject(id) {
     this.props.publicProjectList(id)
@@ -57,8 +66,8 @@ class ReviewProject extends Component {
   }
 
   @autobind
-  agreeProject(e) {
-    const content = e.target.getAttribute('data-content').split('/');
+  agreeProject(text) {
+    const content = text.split('/');
     const data = {
       name: content[0],
       description: content[1],
@@ -68,7 +77,7 @@ class ReviewProject extends Component {
     };
     this.props.agreePublicProject(data)
       .then(result => {
-        if (result.payload.data.length) {
+        if (result.payload.res) {
           this.getPublicProject(1);
           this.openMessage('项目审批成功!');
         }
@@ -83,7 +92,8 @@ class ReviewProject extends Component {
     };
     this.props.agreePublicProject(data)
       .then(result => {
-        if (result.payload.data.length) {
+        if (result.payload.res) {
+          // 获取项目列表
           this.getPublicProject(tabId);
           this.tabContent(tabId);
           this.openMessage('项目取消成功!');
@@ -111,8 +121,10 @@ class ReviewProject extends Component {
     const { content, isShow } = this.state;
     const review = isShow ? 'review' : '';
     const by = !isShow ? 'by' : '';
-    // const bindTabContent = value => this.tabContent.bind(this, value);
     const bindTabContent = value => this.tabContent(value);
+    const title = '公开项目';
+    const agreeContent = '同意该项目成为公开项目吗';
+    const cancelContent = '拒绝该项目成为公开项目吗';
 
     return (
       <section className="review-project">
@@ -144,15 +156,22 @@ class ReviewProject extends Component {
                     <td>{v.updateAt}</td>
                     <td>
                       <button
-                        data-content={dataContent}
-                        onClick={this.agreeProject}
+                        onClick={
+                          () => this.setDialog(
+                            title, agreeContent, () => this.agreeProject(dataContent)
+                          )
+                        }
                         className="agree"
                       >
                         同意
                       </button>
                       <button
                         data-id={`${v.id}`}
-                        onClick={() => this.cancelPublicProject(1, v.id)}
+                        onClick={
+                          () => this.setDialog(
+                            title, cancelContent, () => this.cancelPublicProject(1, v.id)
+                          )
+                        }
                         className="cancel"
                       >
                         拒绝
@@ -188,7 +207,11 @@ class ReviewProject extends Component {
                   <td>
                     <button
                       data-id={`${v.id}`}
-                      onClick={() => this.cancelPublicProject(2, v.id)}
+                      onClick={
+                        () => this.setDialog(
+                          title, cancelContent, () => this.cancelPublicProject(2, v.id)
+                        )
+                      }
                       className="cancel"
                     >
                       拒绝

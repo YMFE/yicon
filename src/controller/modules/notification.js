@@ -171,6 +171,7 @@ export function* publicProjectList(next) {
 export function* agreePublicProject(next) {
   let isWrite = false;
   const { id, publicId } = this.param;
+  const arr = ['CANCEL_PUBLIC_PROJECT', '', 'AGREE_PUBLIC_PROJECT'];
   const result = yield Project.findAll({
     where: {
       id,
@@ -184,6 +185,12 @@ export function* agreePublicProject(next) {
       where: {
         id,
       },
+    }).then(() => {
+      this.state.log = {
+        type: arr[publicId],
+        loggerId: result[0].dataValues.id,
+        subscribers: [result[0].dataValues.owner],
+      };
     });
   }
   this.state.respond = isWrite;
