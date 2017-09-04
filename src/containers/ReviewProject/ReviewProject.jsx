@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';
 import { SubTitle } from '../../components/';
-import SliderSize from '../../components/SliderSize/SliderSize';
 import Message from '../../components/common/Message/Message';
 import {
   publicProjectList,
@@ -113,12 +112,10 @@ class ReviewProject extends Component {
 
     return (
       <section className="review-project">
-        <SubTitle tit="审核项目">
-          <SliderSize getIconsDom={this.getIconsDom} />
-        </SubTitle>
+        <SubTitle tit="审核项目" />
         <ul className="navs">
-          <li className={review && 'active'} onClick={bindTabContent(1)}>待审核</li>
-          <li className={by && 'active'} onClick={bindTabContent(2)}>已通过</li>
+          <li className={review && 'active'} onClick={() => { bindTabContent(1); }}>待审核</li>
+          <li className={by && 'active'} onClick={() => { bindTabContent(2); }}>已通过</li>
         </ul>
         <table className={`content ${review}`}>
           <colgroup>
@@ -151,7 +148,7 @@ class ReviewProject extends Component {
                       </button>
                       <button
                         data-id={`${v.id}`}
-                        onClick={this.cancelPublicProject(1, v.id)}
+                        onClick={() => this.cancelPublicProject(1, v.id)}
                         className="cancel"
                       >
                         取消
@@ -187,7 +184,7 @@ class ReviewProject extends Component {
                   <td>
                     <button
                       data-id={`${v.id}`}
-                      onClick={this.cancelPublicProject(2, v.id)}
+                      onClick={() => this.cancelPublicProject(2, v.id)}
                       className="cancel"
                     >
                       取消
