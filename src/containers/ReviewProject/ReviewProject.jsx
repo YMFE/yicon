@@ -34,6 +34,8 @@ class ReviewProject extends Component {
   }
 
   componentDidMount() {
+    // 获取公共项目列表
+    // 1 取未审批的
     this.getPublicProject(1);
   }
 
@@ -135,13 +137,15 @@ class ReviewProject extends Component {
         </ul>
         <table className={`content ${review}`}>
           <colgroup>
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
+            <col width="15%" />
+            <col width="15%" />
+            <col width="30%" />
+            <col width="20%" />
           </colgroup>
           <tbody>
             <tr>
               <th>项目名称</th>
+              <th>原始项目名称</th>
               <th>申请理由</th>
               <th>申请时间</th>
               <th>操作</th>
@@ -151,6 +155,7 @@ class ReviewProject extends Component {
                 const dataContent = `${v.name}/${v.description}/${v.updateAt}/${v.id}`;
                 return (
                   <tr>
+                    <td>{v.publicName}</td>
                     <td>{v.name}</td>
                     <td>{v.description}</td>
                     <td>{v.updateAt}</td>
@@ -186,14 +191,16 @@ class ReviewProject extends Component {
 
         <table className={`content ${by}`}>
           <colgroup>
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
           </colgroup>
 
           <tbody>
             <tr>
-              <th>项目名称</th>
+              <th>公开项目名称</th>
+              <th>原始项目名称</th>
               <th>申请理由</th>
               <th>申请时间</th>
               <th>操作</th>
@@ -201,6 +208,7 @@ class ReviewProject extends Component {
             {
               content.map(v => (
                 <tr>
+                  <td>{v.publicName}</td>
                   <td>{v.name}</td>
                   <td>{v.description}</td>
                   <td>{v.updateAt}</td>

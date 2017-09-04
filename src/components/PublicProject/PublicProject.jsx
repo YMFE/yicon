@@ -18,22 +18,41 @@ class PublicProject extends Component {
       reason: '',
       isShowError: false,
       inputValue: '',
+      publicName: '',
     };
+  }
+
+  componentDidMount() {
+    this.getInputValue();
+  }
+
+  getInputValue() {
+    const parent = document.querySelector('.global-content-menu');
+    const list = parent.getElementsByTagName('li');
+    const leng = list.length;
+    for (let i = 0; i < leng; i++) {
+      if (list[i].className.indexOf('selected') !== -1) {
+        this.setState({
+          name: list[i].getElementsByTagName('a')[0].innerHTML,
+        });
+      }
+    }
   }
 
   @autobind
   getValue() {
-    const { name, reason } = this.state;
+    const { name, reason, publicName } = this.state;
     this.verification(name, reason);
     return {
       name,
       reason,
+      publicName,
     };
   }
 
   @autobind
   getProjectName(e) {
-    this.setValue('name', e.target.value);
+    this.setValue('publicName', e.target.value);
   }
 
   @autobind
@@ -57,11 +76,11 @@ class PublicProject extends Component {
 
   @autobind
   verification(...value) {
-    const [name, reason] = value;
-    if (name && reason) {
+    const [publicName, reason] = value;
+    if (publicName && reason) {
       return false;
     }
-    if (!name) {
+    if (!publicName) {
       this.setInputValue('项目名称不能为空');
     } else if (!reason) {
       this.setInputValue('申请理由不能为空');
@@ -72,15 +91,15 @@ class PublicProject extends Component {
 
   clearValue() {
     this.setValue('reason', '');
-    this.setValue('name', '');
     this.setValue('inputValue', '');
+    this.setValue('publicName', '');
   }
 
   render() {
     const { title, visible, onOk, onCancel } = this.props;
     const { isShowError } = this.state;
     const isBlock = !isShowError ? 'is-block' : '';
-    const { inputValue, name, reason } = this.state;
+    const { inputValue, reason, publicName } = this.state;
     const submitForm = () => {
       const value = this.getValue();
       if (value.name && value.reason) {
@@ -105,7 +124,7 @@ class PublicProject extends Component {
               id="project-name"
               placeholder="请填写申请公开项目的项目名称"
               onInput={this.getProjectName}
-              value={name}
+              value={publicName}
             />
           </article>
           <article>

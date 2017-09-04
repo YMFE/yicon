@@ -61,7 +61,7 @@ class ProjectList extends Component {
     data.forEach(v => {
       if (+id === v.id) {
         this.setState({
-          title: v.name,
+          title: v.publicName,
         });
       }
     });
