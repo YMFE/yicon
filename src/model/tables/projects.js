@@ -36,4 +36,9 @@ export default seq.define('projects', {
     allowNull: true,
     comment: '公开项目描述',
   },
+  publicName: {
+    type: Seq.STRING,
+    allowNull: true,
+    comment: '公开项目名称',
+  },
 });

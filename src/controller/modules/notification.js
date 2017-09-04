@@ -120,7 +120,7 @@ export function* setAllReaded(next) {
 /* 提交公共项目 */
 export function* submitPublicProject(next) {
   let isWrite = ''; // 写入是否成功
-  const { name, reason } = this.param;
+  const { name, reason, publicName } = this.param;
   const date = () => {
     const d = new Date();
     const year = d.getFullYear();
@@ -130,6 +130,7 @@ export function* submitPublicProject(next) {
     const minutes = d.getMinutes();
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
+
   const result = yield Project.findAll({
     where: {
       name,
@@ -140,6 +141,7 @@ export function* submitPublicProject(next) {
       public: '1',
       description: reason,
       updateAt: date(),
+      publicName,
     }, {
       where: {
         name,

@@ -240,9 +240,9 @@ class UserProject extends Component {
   // 公开项目列表
   getPublicProject(id) {
     this.props.publicProjectList(id)
-      .then(() => {
+      .then(data => {
         this.setState({
-          publicId: id,
+          publicId: data.payload.data[0].id,
         });
       });
   }
