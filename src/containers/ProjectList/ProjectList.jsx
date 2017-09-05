@@ -79,11 +79,11 @@ class ProjectList extends Component {
         const data = result.payload.data;
         const jsx = [];
 
-        data.forEach(v => {
+        data.forEach((v, k) => {
           const id = v.id;
           const value = +active === +id ? 'active' : '';
           jsx.push(
-            <li className={value}>
+            <li className={value} key={k}>
               <Link to={`/projectlist/${id}`}>
                 {v.name}
               </Link>
