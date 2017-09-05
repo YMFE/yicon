@@ -27,6 +27,7 @@ import {
   Statistic,
   DisabledCode,
   ProjectList,
+  ProjectNull,
   ReviewProject,
 } from './containers';
 
@@ -64,6 +65,7 @@ export default store => {
       <Route path="ldapauth" component={LdapAuth} /> {/* LDAP登录 */}
       <Route path="statistic" component={Statistic} /> {/* 图标统计 */}
       <Route path="projectlist/:id" component={ProjectList} /> {/* 公开项目列表 */}
+      <Route path="projectlist" component={ProjectNull} /> {/* 公开项目为空页面 */}
       <Route path="reviewproject" component={ReviewProject} /> {/* 后台审核公开项目列表 */}
 
       {/* 登录用户路由 */}

@@ -128,6 +128,11 @@ class ReviewProject extends Component {
     const title = '公开项目';
     const agreeContent = '同意该项目成为公开项目吗';
     const cancelContent = '拒绝该项目成为公开项目吗';
+    const getDataTime = (time) => {
+      let datatime = time.replace('T', ' ');
+      datatime = datatime.replace(/\.[0-9A-Z]+/g, '');
+      return datatime;
+    };
 
     return (
       <section className="review-project">
@@ -152,14 +157,14 @@ class ReviewProject extends Component {
               <th>操作</th>
             </tr>
             {
-              content ? content.map((v, k) => {
+              content.length ? content.map((v, k) => {
                 const dataContent = `${v.name}/${v.description}/${v.updateAt}/${v.id}`;
                 return (
                   <tr key={k}>
                     <td>{v.publicName}</td>
                     <td>{v.name}</td>
                     <td>{v.description}</td>
-                    <td>{v.updateAt}</td>
+                    <td>{getDataTime(v.updateAt)}</td>
                     <td>
                       <button
                         onClick={
@@ -185,7 +190,7 @@ class ReviewProject extends Component {
                     </td>
                   </tr>
                 );
-              }) : ''
+              }) : <tr><td className="no-data" colSpan="9">暂无数据</td></tr>
             }
           </tbody>
         </table>
@@ -207,12 +212,12 @@ class ReviewProject extends Component {
               <th>操作</th>
             </tr>
             {
-              content ? content.map((v, k) => (
+              content.length ? content.map((v, k) => (
                 <tr key={k}>
                   <td>{v.publicName}</td>
                   <td>{v.name}</td>
                   <td>{v.description}</td>
-                  <td>{v.updateAt}</td>
+                  <td>{getDataTime(v.updateAt)}</td>
                   <td>
                     <button
                       data-id={`${v.id}`}
@@ -227,7 +232,7 @@ class ReviewProject extends Component {
                     </button>
                   </td>
                 </tr>
-              )) : ''
+              )) : <tr><td className="no-data" colSpan="9">暂无数据</td></tr>
             }
           </tbody>
         </table>

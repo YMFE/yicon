@@ -67,6 +67,13 @@
         margin: 0 20px 0 0;
       }
     }
+    .no-data {
+      padding: 100px;
+      text-align: center;
+    }
+    .no-data:hover {
+      background: #FFF;
+    }
     .agree {
       background-color: #108ee9;
       border: 1px #108ee9 solid;
