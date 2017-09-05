@@ -125,6 +125,7 @@ class PublicProject extends Component {
               placeholder="请填写申请公开项目的项目名称"
               onInput={this.getProjectName}
               value={publicName}
+              maxLength="100"
             />
           </article>
           <article>
@@ -134,6 +135,7 @@ class PublicProject extends Component {
               placeholder="申请公开项目的理由"
               onInput={this.getProjectReason}
               value={reason}
+              maxLength="500"
             >
             </textarea>
           </article>
