@@ -130,13 +130,29 @@ export function* submitPublicProject(next) {
     const minutes = d.getMinutes();
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
-
   const result = yield Project.findAll({
     where: {
       name,
     },
   });
-  if (result.length) {  // 如果项目存在 修改public = 1
+  // 如果该项目已经是公开项目
+  const isPublicName = yield Project.findAll({
+    where: {
+      name,
+      // publick: 1 表示申请为公开项目
+      public: 1,
+    },
+  });
+  const isProjectPublick = yield Project.findAll({
+    where: {
+      name,
+      // publick: 2 表示为公开项目
+      public: 2,
+    },
+  });
+  if (isPublicName.length || isProjectPublick.length) {
+    this.state.respond = { error: 1 };
+  } else if (result.length) {  // 如果项目存在 修改public = 1
     isWrite = yield Project.update({
       public: '1',
       description: reason,
@@ -147,8 +163,8 @@ export function* submitPublicProject(next) {
         name,
       },
     });
+    this.state.respond = isWrite;
   }
-  this.state.respond = isWrite;
   this.state.log = {
     type: 'APPLICATION_PUBLIC_PROJECT',
     loggerId: result[0].dataValues.id,

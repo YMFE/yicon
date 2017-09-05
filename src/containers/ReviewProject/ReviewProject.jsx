@@ -115,6 +115,7 @@ class ReviewProject extends Component {
     this.getPublicProject(id);
   }
 
+  // 弹层消息
   openMessage(message) {
     Message.success(message);
   }

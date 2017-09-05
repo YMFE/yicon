@@ -498,14 +498,20 @@ class UserProject extends Component {
 
   @autobind
   shiftPublickProject(isShow = false, data) {
-    this.submitProject(data);
+    if (data) {
+      this.submitProject(data);
+    }
     this.setPublicProject(isShow);
   }
 
   submitProject(data) {
     this.props.submitPublicProject(data)
       .then(result => {
-        if (result.payload.data.length) {
+        const obj = result.payload.data;
+        if (obj.error) {
+          Message.error('该项目已申请为公开项目, 不能重复申请!');
+        }
+        if (obj.length) {
           Message.success('已申请为公开项目, 请等待审核!');
         }
       });
