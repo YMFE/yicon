@@ -143,7 +143,14 @@ export function* submitPublicProject(next) {
       public: 1,
     },
   });
-  if (isPublicName.length) {
+  const isProjectPublick = yield Project.findAll({
+    where: {
+      name,
+      // publick: 2 表示为公开项目
+      public: 2,
+    },
+  });
+  if (isPublicName.length || isProjectPublick.length) {
     this.state.respond = { error: 1 };
   } else if (result.length) {  // 如果项目存在 修改public = 1
     isWrite = yield Project.update({
