@@ -87,7 +87,7 @@ export function* transformSvg2Path(param) {
     .replace(/(height|width)="([0-9\.]+(px)?)"/g, (all, name) => `${name}="1024"`)
     .replace(/\sversion="[0-9\.]+"/, () => '')
     .replace(/\sclass="icon"/, () => '');
-  const buffer = Buffer.from(adjustedPath);
+  const buffer = new Buffer(adjustedPath);
   const option = {
     icons: [{ name: 'temp', buffer }],
     // 标记只返回图标信息数据
