@@ -34,7 +34,7 @@ export default seq.define('projects', {
   updateAt: {
     type: Seq.STRING,
     allowNull: true,
-    comment: '公开项目描述',
+    comment: '公开项目修改时间',
   },
   publicName: {
     type: Seq.STRING,
