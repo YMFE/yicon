@@ -175,7 +175,6 @@ export function* publicProjectList(next) {
       public: id,
     },
   });
-  console.log('result', result);
   this.state.respond = result;
   yield next;
 }
