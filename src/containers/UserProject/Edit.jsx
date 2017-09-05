@@ -114,7 +114,7 @@ EditProject.propTypes = {
   onOwnerChange: PropTypes.func,
   projectName: PropTypes.string,
   owner: PropTypes.object,
-  isPublic: PropTypes.bool,
+  isPublic: PropTypes.number,
   members: PropTypes.array,
   id: PropTypes.number,
   onOk: PropTypes.func,
