@@ -151,10 +151,10 @@ class ReviewProject extends Component {
               <th>操作</th>
             </tr>
             {
-              content.map(v => {
+              content.map((v, k) => {
                 const dataContent = `${v.name}/${v.description}/${v.updateAt}/${v.id}`;
                 return (
-                  <tr>
+                  <tr key={k}>
                     <td>{v.publicName}</td>
                     <td>{v.name}</td>
                     <td>{v.description}</td>
@@ -206,8 +206,8 @@ class ReviewProject extends Component {
               <th>操作</th>
             </tr>
             {
-              content.map(v => (
-                <tr>
+              content.map((v, k) => (
+                <tr key={k}>
                   <td>{v.publicName}</td>
                   <td>{v.name}</td>
                   <td>{v.description}</td>

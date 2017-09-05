@@ -8,7 +8,7 @@ class PublicProject extends Component {
     onOk: PropTypes.func,
     onCancel: PropTypes.func,
     title: PropTypes.string,
-    visible: PropTypes.string,
+    visible: PropTypes.bool,
   };
 
   constructor(props) {
