@@ -83,30 +83,52 @@ export function* getProjectInfo(next) {
       `该项目没有${version}版本`
     );
   }
-  invariant(versions.length > 1, '该项目尚未生成稳定版本');
-  version = version || versions[versions.length - 1];
-  invariant(version === versions[versions.length - 1], `当前${version}版本已过期，请使用最新版`);
-  // 检查对应版本图标是否有变更
-  const result = yield projectChangeLog({
-    projectId: id,
-    version,
-  });
-  invariant(!result.hasChange, '该项目存在图标变更，请重新生成新版本');
-  // 获取项目图标
-  const icons = yield project.getIcons({
-    through: {
-      model: ProjectVersion,
-      where: { version: versionTools.v2n(version) },
-    },
-  });
-  this.state.respond = {
+
+  const projectInfo = {
     id,
     name: projectName,
     info,
     owner: projectOwner && projectOwner.name || '',
-    versions,
-    icons,
-    download: `${serviceUrl}/download/name/${projectName}/type/${type}/version/${version}`,
+    versions: versions.slice(1),
+    icons: [],
+    download: '',
+    isStable: false,
+    message: '',
   };
+  if (versions.length <= 1) {
+    projectInfo.message = '该项目尚未生成稳定版本';
+  } else {
+    version = version || versions[versions.length - 1];
+    if (version !== versions[versions.length - 1]) {
+      projectInfo.message = `当前${version}版本已过期，请使用最新版`;
+    } else {
+      // 检查对应版本图标是否有变更
+      const result = yield projectChangeLog({
+        projectId: id,
+        version,
+      });
+      if (result.hasChange) {
+        projectInfo.message = '该项目存在图标变更，请重新生成新版本';
+      } else {
+        // 获取项目图标
+        const icons = yield project.getIcons({
+          attributes: ['id', 'name', 'code'],
+          through: {
+            model: ProjectVersion,
+            where: { version: versionTools.v2n(version) },
+          },
+        });
+        projectInfo.icons = icons.map((icon) => ({
+          id: icon.id,
+          name: icon.name,
+          code: icon.code,
+        }));
+        projectInfo.isStable = true;
+        projectInfo.download =
+          `${serviceUrl}/download/name/${projectName}/type/${type}/version/${version}`;
+      }
+    }
+  }
+  this.state.respond = projectInfo;
   yield next;
 }
