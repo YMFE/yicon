@@ -53,6 +53,10 @@ export default class Repository extends Component {
     isShowLoading: false,
   };
 
+  componentWillMount() {
+    this._isMounted = true;
+  }
+
   componentDidMount() {
     this.fetchRepositoryWrapper();
     window.addEventListener('scroll', this.handleScroll);
@@ -67,6 +71,7 @@ export default class Repository extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     window.removeEventListener('scroll', this.handleScroll);
   }
 
@@ -96,8 +101,20 @@ export default class Repository extends Component {
     }, () => {
       this.refs.myslider.getWrappedInstance().reset();
       this.props.fetchRepository(id)
-        .then(() => this.setState({ isShowLoading: false }))
-        .catch(() => this.setState({ isShowLoading: false }));
+        .then(
+          () => {
+            if (this._isMounted) {
+              this.setState({ isShowLoading: false });
+            }
+          }
+        )
+        .catch(
+          () => {
+            if (this._isMounted) {
+              this.setState({ isShowLoading: false });
+            }
+          }
+        );
     });
   }
 

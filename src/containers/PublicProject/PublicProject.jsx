@@ -45,6 +45,7 @@ export default class PublicProject extends Component {
   };
 
   componentWillMount() {
+    this._isMounted = true;
     if (this.props.user.login) {
       this.replaceProject();
     }
@@ -67,6 +68,7 @@ export default class PublicProject extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     if (this.pulseId) clearInterval(this.pulseId);
   }
 
@@ -78,9 +80,11 @@ export default class PublicProject extends Component {
 
   @autobind
   hideLoading() {
-    this.setState({
-      isShowLoading: false,
-    });
+    if (this._isMounted) {
+      this.setState({
+        isShowLoading: false,
+      });
+    }
   }
 
   renderContent(id) {
