@@ -741,7 +741,7 @@ class UserProject extends Component {
           key={1}
           projectName={current.name}
           owner={current.projectOwner}
-          isPublic={current.public}
+          isPublic={+current.public}
           members={current.members}
           id={current.id}
           onOk={this.updateProjectDetail}
