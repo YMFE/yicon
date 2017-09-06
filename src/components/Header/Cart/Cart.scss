@@ -1,3 +1,9 @@
+// 神奇数字1120，1100 时，在窗口大小略大于 1100 时，导航的小车还是会溢出一点，故稍微放大一点该数字
+@media screen and (max-width: 1120px){
+  .app-container .global-header-cart .user-car {
+    width: 350px;
+  }
+}
 .global-header {
   &-cart {
     $fontTitleColor: #344562;
