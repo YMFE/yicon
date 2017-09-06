@@ -38,11 +38,28 @@
       box-sizing: border-box;
       background: #FFF;
       h3 {
-        font-size: 30px;
-        padding: 20px 40px;
+        padding: 20px;
         color: #344562;
-        line-height: 40px;
+        zoom: 1;
+        overflow: hidden;
         border-bottom: 1px solid #d8d9d9;
+        span {
+          font-size: 16px;
+          margin: 0 25px 0 0;
+          max-width: 300px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          display: inline-block;
+          line-height: auto;
+          float: left;
+        }
+        em {
+          float: left;
+          font-size: 13px;
+          color: #999;
+          margin: 5px 15px 0 0;
+        }
       }
     }
   }
