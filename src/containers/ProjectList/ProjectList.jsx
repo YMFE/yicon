@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { publicProjectList } from '../../actions/notification';
-import { getUserProjectInfo } from '../../actions/project';
+import { getUserProjectInfo, fetchAllVersions } from '../../actions/project';
 import { DesIcon, SubTitle } from '../../components/';
 import SliderSize from '../../components/SliderSize/SliderSize';
 
@@ -12,6 +12,7 @@ import SliderSize from '../../components/SliderSize/SliderSize';
   {
     publicProjectList,
     getUserProjectInfo,
+    fetchAllVersions,
   }
 )
 
@@ -19,6 +20,7 @@ class ProjectList extends Component {
   static propTypes = {
     publicProjectList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
+    fetchAllVersions: PropTypes.func,
   }
 
   constructor(props) {
@@ -26,13 +28,17 @@ class ProjectList extends Component {
     this.state = {
       lists: [],
       icons: [],
-      title: '',
+      publicName: '', // 公开项目名
+      name: '', // 原始项目名
       active: '',
+      version: '',
+      admin: '',
     };
   }
 
   componentDidMount() {
     this.initPageData();
+    this.props.fetchAllVersions('851');
   }
 
   componentWillReceiveProps() {
@@ -61,7 +67,8 @@ class ProjectList extends Component {
     data.forEach(v => {
       if (+id === v.id) {
         this.setState({
-          title: v.publicName,
+          publicName: v.publicName,
+          name: v.name,
         });
       }
     });
@@ -71,6 +78,16 @@ class ProjectList extends Component {
     return location.href.match(/\d+$/g)[0];
   }
 
+  getAllVersions(id) {
+    this.props.fetchAllVersions(id)
+      .then(data => {
+        const version = data.payload.data.version;
+        this.setState({
+          version: version[version.length - 1],
+        });
+      });
+  }
+
   initPageData() {
     this.setActive();
     this.props.publicProjectList(2)
@@ -78,7 +95,6 @@ class ProjectList extends Component {
         const { active } = this.state;
         const data = result.payload.data;
         const jsx = [];
-
         data.forEach((v, k) => {
           const id = v.id;
           const value = +active === +id ? 'active' : '';
@@ -90,16 +106,18 @@ class ProjectList extends Component {
             </li>
           );
         });
+        this.getAllVersions(data[0].id);
         this.getPublicTitle(data);
         this.getIconImages();
         this.setState({
           lists: jsx,
+          admin: data[0].admin,
         });
       });
   }
 
   render() {
-    const { lists, icons, title } = this.state;
+    const { lists, icons, publicName, name, version, admin } = this.state;
     return (
       <section className="project-list">
         <SubTitle tit="公共项目">
@@ -110,7 +128,12 @@ class ProjectList extends Component {
             {lists}
           </ul>
           <div className="icons">
-            <h3>{title}</h3>
+            <h3>
+              <span>公开项目名: {publicName}</span>
+              <span>(原始项目名: {name})</span>
+              <em>负责人: {admin}</em>
+              <em>版本: {version}</em>
+            </h3>
             <div className="clearfix myicon-list" ref="iconsContainer">
               {
                 icons.map((icon, index) => (

@@ -150,7 +150,7 @@ class ReviewProject extends Component {
           </colgroup>
           <tbody>
             <tr>
-              <th>项目名称</th>
+              <th>公开项目名称</th>
               <th>原始项目名称</th>
               <th>申请理由</th>
               <th>申请时间</th>
