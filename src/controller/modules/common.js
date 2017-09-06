@@ -63,9 +63,73 @@ export function* downloadFontForThirdParty(next) {
 }
 
 export function* getProjectInfo(next) {
-  const { projectName, type } = this.param;
-  invariant(['ttf', 'eot', 'svg', 'woff'].indexOf(type) > -1, `${type}格式的字体不存在`);
-  let { version = '' } = this.param;
+  const { projectName } = this.param;
+  // 查询项目基本信息
+  const project = yield Project.findOne({
+    where: { name: projectName },
+    include: [{ model: User, as: 'projectOwner' }],
+  });
+  const { id, info, projectOwner } = project || {};
+  invariant(id, `项目${projectName}不存在`);
+
+  // 获取所有版本
+  const allVersions = yield getAllVersion({ projectId: id });
+  const versions = allVersions && allVersions.version || [];
+
+  const projectInfo = {
+    id,
+    name: projectName,
+    info,
+    owner: projectOwner && projectOwner.name || '',
+    latest_version: null,
+    latest_info: null,
+    has_change: false,
+    versions: versions.slice(1),
+    message: '',
+  };
+  if (versions.length <= 1) {
+    projectInfo.message = '该项目尚未生成稳定版本';
+  } else {
+    const version = versions[versions.length - 1];
+    // 检查对应版本图标是否有变更
+    const result = yield projectChangeLog({
+      projectId: id,
+      version,
+    });
+    if (result.hasChange) {
+      projectInfo.has_change = true;
+      projectInfo.message = '该项目存在图标变更，请重新生成新版本';
+    }
+    // 获取项目图标
+    const icons = yield project.getIcons({
+      attributes: ['id', 'name', 'code'],
+      through: {
+        model: ProjectVersion,
+        where: { version: versionTools.v2n(version) },
+      },
+    });
+    projectInfo.latest_version = version;
+    projectInfo.latest_info = {
+      version,
+      icons: icons.map((icon) => ({
+        id: icon.id,
+        name: icon.name,
+        code: icon.code,
+      })),
+      download: {
+        eot: `${serviceUrl}/download/name/${projectName}/type/eot/version/${version}`,
+        svg: `${serviceUrl}/download/name/${projectName}/type/svg/version/${version}`,
+        ttf: `${serviceUrl}/download/name/${projectName}/type/ttf/version/${version}`,
+        woff: `${serviceUrl}/download/name/${projectName}/type/woff/version/${version}`,
+      },
+    };
+  }
+  this.state.respond = projectInfo;
+  yield next;
+}
+
+export function* getProjectInfoByVersion(next) {
+  const { projectName, version } = this.param;
   // 查询项目基本信息
   const project = yield Project.findOne({
     where: { name: projectName },
@@ -79,34 +143,44 @@ export function* getProjectInfo(next) {
   const versions = allVersions && allVersions.version || [];
   if (version) {
     invariant(
-      Array.isArray(versions) && versions.indexOf(version) > -1,
+      Array.isArray(versions) && versions.indexOf(version) > 0,
       `该项目没有${version}版本`
     );
   }
-  invariant(versions.length > 1, '该项目尚未生成稳定版本');
-  version = version || versions[versions.length - 1];
-  invariant(version === versions[versions.length - 1], `当前${version}版本已过期，请使用最新版`);
-  // 检查对应版本图标是否有变更
-  const result = yield projectChangeLog({
-    projectId: id,
+
+  const projectInfo = {
+    id,
+    name: projectName,
+    info,
+    owner: projectOwner && projectOwner.name || '',
     version,
-  });
-  invariant(!result.hasChange, '该项目存在图标变更，请重新生成新版本');
-  // 获取项目图标
+    icons: [],
+    download: null,
+    message: '',
+  };
   const icons = yield project.getIcons({
+    attributes: ['id', 'name', 'code'],
     through: {
       model: ProjectVersion,
       where: { version: versionTools.v2n(version) },
     },
   });
-  this.state.respond = {
-    id,
-    name: projectName,
-    info,
-    owner: projectOwner && projectOwner.name || '',
-    versions,
-    icons,
-    download: `${serviceUrl}/download/name/${projectName}/type/${type}/version/${version}`,
-  };
+  projectInfo.icons = icons.map((icon) => ({
+    id: icon.id,
+    name: icon.name,
+    code: icon.code,
+  }));
+  if (version !== versions[versions.length - 1]) {
+    projectInfo.message = `当前${version}版本已过期，请使用最新版`;
+  } else {
+    // 获取项目图标
+    projectInfo.download = {
+      eot: `${serviceUrl}/download/name/${projectName}/type/eot/version/${version}`,
+      svg: `${serviceUrl}/download/name/${projectName}/type/svg/version/${version}`,
+      ttf: `${serviceUrl}/download/name/${projectName}/type/ttf/version/${version}`,
+      woff: `${serviceUrl}/download/name/${projectName}/type/woff/version/${version}`,
+    };
+  }
+  this.state.respond = projectInfo;
   yield next;
 }
