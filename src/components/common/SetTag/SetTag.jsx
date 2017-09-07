@@ -105,7 +105,7 @@ class SetTag extends Component {
         >
           {/* <i className="iconfont set-tag-icon">&#xf0ae;</i> */}
         </Input>
-        <button className="add-tag" onClick={this.addTagByClick}>添加</button>
+        <button className="add-tag js-add-tag" onClick={this.addTagByClick}>添加</button>
         <ul className="icon-tag-list">
           {
             tagArr.map((tag, index, arr) => (

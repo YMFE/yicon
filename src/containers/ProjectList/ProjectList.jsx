@@ -38,7 +38,6 @@ class ProjectList extends Component {
 
   componentDidMount() {
     this.initPageData();
-    this.props.fetchAllVersions('851');
   }
 
   componentWillReceiveProps() {
