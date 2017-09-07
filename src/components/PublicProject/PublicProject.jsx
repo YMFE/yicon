@@ -22,7 +22,7 @@ class PublicProject extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillReceiveProps() {
     this.getInputValue();
   }
 

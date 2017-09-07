@@ -241,7 +241,7 @@ class UserProject extends Component {
   getPublicProject(id) {
     this.props.publicProjectList(id)
       .then(data => {
-        if (data.payload.data[0]) {
+        if (data.payload.data && data.payload.data[0]) {
           this.setState({
             publicId: data.payload.data[0].id,
           });
