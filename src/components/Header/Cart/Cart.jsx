@@ -254,13 +254,13 @@ class Cart extends Component {
               }
             </div>
             <span className="button-wrapper">
-              <a className="button-icon" onClick={this.onSaveToProject}>确定</a>
-              <a
+              <button className="button-icon" onClick={this.onSaveToProject}>确定</button>
+              <button
                 className="button-icon button-cancel"
                 onClick={this.cancleSave}
               >
                 取消
-              </a>
+              </button>
             </span>
           </div>
         );
@@ -277,13 +277,13 @@ class Cart extends Component {
               }}
             />
             <span className="button-wrapper">
-              <a className="button-icon" onClick={this.onSaveToNewProject}>确定</a>
-              <a
+              <button className="button-icon" onClick={this.onSaveToNewProject}>确定</button>
+              <button
                 className="button-icon button-cancel"
                 onClick={this.cancleSave}
               >
                 取消
-              </a>
+              </button>
             </span>
           </div>
         );
@@ -295,7 +295,7 @@ class Cart extends Component {
             </div>
             <div className="btn-download">
               {status >= 2 && projectList.length === 0 &&
-                <a className="button-icon">
+                <button className="button-icon">
                   <a
                     style={{ marginLeft: 0 }}
                     className="button-icon"
@@ -304,42 +304,42 @@ class Cart extends Component {
                   >
                     保存为项目
                   </a>
-                </a>
+                </button>
               }
               {status >= 2 && projectList.length > 0 &&
                 <div className="save_selection">
-                  <a className="button-icon">
+                  <button className="button-icon">
                     保存为项目
                     <i className="iconfont">&#xf032;</i>
-                  </a>
+                  </button>
 
                   <div className="save_selection_btns">
-                    <a
+                    <button
                       className="button-icon"
                       onClick={this.onChangeCartSaveType}
                       data-type="SAVE_TO_NEW_PROJECT"
                     >
                       保存为项目
                       <i className="iconfont">&#xf032;</i>
-                    </a>
+                    </button>
                     <div className="save-history">
-                      <a
+                      <button
                         className="button-icon save-exsit"
                         data-type="SAVE_TO_PROJECT"
                         onClick={this.onChangeCartSaveType}
                       >
                         <span>保存到已有项目</span>
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
               }
-              <a
+              <button
                 className="button-icon button-cancel"
                 onClick={this.download}
               >
                 下载
-              </a>
+              </button>
             </div>
           </div>
       );
