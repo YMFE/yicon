@@ -120,7 +120,7 @@ class UpdateDialog extends Component {
 
   @autobind
   cancel(e) {
-    const isElClose = e.target.className.indexOf('iconfont');
+    const isElClose = e.target.className.indexOf('js-iconfont');
     const newValue = this.refs.myInput.getVal();
     const fn = () => {
       this.showNameEdit(false, true);
