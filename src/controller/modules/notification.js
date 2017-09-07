@@ -182,13 +182,17 @@ export function* publicProjectList(next) {
       public: id,
     },
   });
-  const name = yield User.findAll({
-    where: {
-      id: result[0].dataValues.owner,
-    },
-  });
-  // 负责人
-  result[0].dataValues.admin = name[0].dataValues.name;
+
+  if (result.length) {
+    yield User.findAll({
+      where: {
+        id: result[0].dataValues.owner,
+      },
+    }).then(data => {
+      // 负责人
+      result[0].dataValues.admin = data[0].dataValues.name;
+    });
+  }
   this.state.respond = result;
   yield next;
 }

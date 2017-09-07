@@ -121,7 +121,7 @@ class ReviewProject extends Component {
   }
 
   render() {
-    const { content, isShow } = this.state;
+    const { content = [], isShow } = this.state;
     const review = isShow ? 'review' : '';
     const by = !isShow ? 'by' : '';
     const bindTabContent = value => this.tabContent(value);
@@ -133,7 +133,6 @@ class ReviewProject extends Component {
       datatime = datatime.replace(/\.[0-9A-Z]+/g, '');
       return datatime;
     };
-
     return (
       <section className="review-project">
         <SubTitle tit="审核项目" />
