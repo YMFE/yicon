@@ -61,7 +61,7 @@ export default class Modal extends Component {
               <div className="myicon-dialog-title">
                 <h4>{title}</h4>
                 <span className="ibtns">
-                  <i className="iconfont" onClick={() => this.close()}>&#xf077;</i>
+                  <i className="iconfont js-iconfont" onClick={() => this.close()}>&#xf077;</i>
                 </span>
               </div>
               <div className="myicon-dialog-content">
