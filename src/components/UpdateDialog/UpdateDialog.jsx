@@ -153,7 +153,7 @@ class UpdateDialog extends Component {
 
   @autobind
   submit(e) {
-    if (this.state.tagList) {
+    if (this.state.tagList && this.state.inputValue) {
       this.save(e);
       this.saveTags(this.state.tagList);
     } else {
@@ -198,7 +198,6 @@ class UpdateDialog extends Component {
                 placeholder="请输入图标名称"
                 defaultValue={value}
                 extraClass="edit-name"
-                keyDown={this.save}
                 regExp={ICON_NAME.reg}
                 errMsg={ICON_NAME.message}
                 ref="myInput"
