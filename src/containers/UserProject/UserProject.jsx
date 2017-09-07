@@ -161,6 +161,7 @@ class UserProject extends Component {
     this.nextSourceVersion = '0.0.1';
   }
   componentWillMount() {
+    this._isMounted = true;
     this.getPublicProject(2);
     this.setState({ showLoading: true });
     // this.props.resetIconSize();
@@ -229,6 +230,10 @@ class UserProject extends Component {
     } else {
       this.setState({ showLoading: false });
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   setPublicProject(isShow) {
@@ -569,10 +574,12 @@ class UserProject extends Component {
 
   @autobind
   shiftCreateProject(isShow = false, isCreate = false) {
-    this.setState({
-      showCreateProject: isShow,
-      isCreate,
-    });
+    if (this._isMounted) {
+      this.setState({
+        showCreateProject: isShow,
+        isCreate,
+      });
+    }
   }
 
   @autobind
