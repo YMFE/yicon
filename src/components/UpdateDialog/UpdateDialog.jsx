@@ -1,12 +1,13 @@
 import './UpdateDialog.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { autobind } from 'core-decorators';
 import { editIcon } from '../../actions/icon';
 import IconBgGrid from '../common/IconBgGrid/IconBgGrid.jsx';
 import { ICON_NAME } from '../../constants/validate';
 import Input from '../common/Input/IndexUpdateDialog.jsx';
 import SetTag from '../common/SetTag/SetTag.jsx';
-import { autobind } from 'core-decorators';
+import Message from '../../components/common/Message/Message';
 
 @connect(
   state => ({
@@ -27,13 +28,24 @@ class UpdateDialog extends Component {
       inputValue: '',
       tagList: '',
       isOK: true,
+      original: '', // 原始值
     };
   }
 
   componentDidMount() {
-    document.body.addEventListener('click', (e) => {
-      this.cancel(e);
-    }, false);
+    document.body.addEventListener('click', e => this.addEvent(e));
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('click', e => this.addEvent(e));
+  }
+
+  @autobind
+  setOriginalValue() {
+    const { iconDetail } = this.props;
+    this.setState({
+      original: iconDetail.name,
+    });
   }
 
   setTagList() {
@@ -42,21 +54,34 @@ class UpdateDialog extends Component {
     });
   }
 
+  addEvent(e) {
+    const el = e.target;
+    const cls = el.className;
+    const isSpan = cls.indexOf('js-icon-name-txt');
+    const isInput = cls.indexOf('js-input');
+    const isTag = cls.indexOf('js-add-tag');
+    if (isSpan === -1 && isInput === -1 && isTag === -1) {
+      this.cancel(e);
+    }
+  }
   @autobind
-  showNameEdit() {
+  showNameEdit(isEdit, isOK) {
     this.setState({
-      isEdit: true,
-      isOK: false,
+      isEdit,
+      isOK,
     });
   }
+
   validate(tags) {
     // tags必须为非空字符串
     return /\S+/.test(tags);
   }
+
   filter(tags) {
     // 过滤首尾空白字符
     return tags.replace(/^\s*|\s*$/g, '');
   }
+
   @autobind
   saveTags(tags) {
     const { iconDetail } = this.props;
@@ -65,6 +90,7 @@ class UpdateDialog extends Component {
       this.setTagList();
     });
   }
+
   @autobind
   addTags(newTags) {
     this.setState({
@@ -86,29 +112,55 @@ class UpdateDialog extends Component {
             isOK: true,
           });
           this.refs.myInput.reset();
+          Message.success('编辑成功!');
         });
       }
     }
   }
+
   @autobind
-  cancel() {
+  cancel(e) {
+    const isElClose = e.target.className.indexOf('iconfont');
     const newValue = this.refs.myInput.getVal();
+    const fn = () => {
+      this.showNameEdit(false, true);
+      this.setOriginalValue();
+      this.refs.myInput.reset();
+    };
+    // 如果点击关闭按钮 恢复默认数据
+    if (isElClose !== -1) {
+      this.props.resetT();
+      this.setTagList();
+      fn();
+      return false;
+    }
+    // 如果有值 正常走流程
     if (newValue) {
       this.setState({
+        // 控制input是否展现
         isEdit: false,
         inputValue: newValue,
       });
       this.refs.myInput.setVal(newValue);
+      return false;
     }
+    // 点击其他区域 如果没值 恢复原始值
+    if (!newValue) {
+      fn();
+    }
+    return false;
   }
 
   @autobind
   submit(e) {
-    if (!this.state.tagList) {
-      // console.log('error');
+    if (this.state.tagList) {
+      this.save(e);
+      this.saveTags(this.state.tagList);
+    } else {
+      Message.error('编辑失败, 表单内容填写不完整!');
+      return false;
     }
-    this.save(e);
-    this.saveTags(this.state.tagList);
+    return true;
   }
 
   render() {
@@ -123,7 +175,6 @@ class UpdateDialog extends Component {
         status = 3;
       }
     }
-
     return (
       <div className="update-icon-container">
         <IconBgGrid
@@ -135,10 +186,12 @@ class UpdateDialog extends Component {
         <div className="update-icon-detail">
           <div
             className={`update-detail-header ${this.state.isEdit ? 'edit' : ''}`}
-            onClick={this.showNameEdit}
+            onClick={() => this.showNameEdit(true, false)}
           >
             <div className="icon-name">
-              <span className="icon-name-txt">{value}</span>
+              <span className="icon-name-txt js-icon-name-txt" onClick={this.setOriginalValue}>
+                {value}
+              </span>
             </div>
             <div className="edit-name-box clearfix">
               <Input

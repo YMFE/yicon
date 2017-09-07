@@ -123,7 +123,7 @@ export default class Input extends Component {
           disabled={disabled}
           value={value || ''}
           type={type}
-          className="input"
+          className="input js-input"
           placeholder={placeholder}
           onChange={evt => this.validate(evt.target.value)}
           onKeyDown={this.keyDown}
