@@ -238,14 +238,24 @@ class UserProject extends Component {
   }
 
   setPublicProject(isShow) {
-    const current = this.props.currentUserProjectInfo;
-    if (current.isOwner) {
+    const { isOwner } = this.props.currentUserProjectInfo;
+    const { versions } = this.props.projectInfo;
+    const versionTxt = '项目没有生成最新版本，不能申请公开项目。';
+    const ownerTxt = '你不是项目负责人，不能申请公开项目。';
+    const { length } = versions;
+    // 没生成过版本 或者 版本为0.0.0 不允许生成项目
+    if (!length || versions[length - 1] === '0.0.0') {
+      Message.error(versionTxt);
+      return false;
+    }
+    if (isOwner) {
       this.setState({
         isPublicProject: isShow,
       });
-    } else {
-      Message.error('你不是项目负责人，不能申请公开项目。');
+      return false;
     }
+    Message.error(ownerTxt);
+    return false;
   }
 
   // 公开项目列表
