@@ -161,6 +161,7 @@ class UserProject extends Component {
     this.nextSourceVersion = '0.0.1';
   }
   componentWillMount() {
+    this._isMounted = true;
     this.getPublicProject(2);
     this.setState({ showLoading: true });
     // this.props.resetIconSize();
@@ -186,6 +187,7 @@ class UserProject extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.getPublicProject(2);
     this.setState({ showLoading: true });
     const current = nextProps.currentUserProjectInfo;
     const nextId = nextProps.projectId;
@@ -231,10 +233,19 @@ class UserProject extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   setPublicProject(isShow) {
-    this.setState({
-      isPublicProject: isShow,
-    });
+    const current = this.props.currentUserProjectInfo;
+    if (current.isOwner) {
+      this.setState({
+        isPublicProject: isShow,
+      });
+    } else {
+      Message.error('你不是项目负责人，不能申请公开项目。');
+    }
   }
 
   // 公开项目列表
@@ -569,10 +580,12 @@ class UserProject extends Component {
 
   @autobind
   shiftCreateProject(isShow = false, isCreate = false) {
-    this.setState({
-      showCreateProject: isShow,
-      isCreate,
-    });
+    if (this._isMounted) {
+      this.setState({
+        showCreateProject: isShow,
+        isCreate,
+      });
+    }
   }
 
   @autobind
@@ -901,9 +914,9 @@ class UserProject extends Component {
               </a>
             </li>
             <li>
-              <a href={`../projectlist/${publicId}`}>
+              <Link href={`../projectlist/${publicId}`}>
                 公开项目
-              </a>
+              </Link>
             </li>
             {
               list.map((item, index) => {
