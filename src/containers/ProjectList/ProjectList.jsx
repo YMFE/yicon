@@ -119,7 +119,7 @@ class ProjectList extends Component {
     const { lists, icons, publicName, name, version, admin } = this.state;
     return (
       <section className="project-list">
-        <SubTitle tit="公共项目">
+        <SubTitle tit="公开项目">
           <SliderSize getIconsDom={this.getIconsDom} />
         </SubTitle>
         <div className="box">
