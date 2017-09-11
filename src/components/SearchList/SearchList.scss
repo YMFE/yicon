@@ -24,8 +24,11 @@
       }
     }
   }
-  .SuggestList-list {
+  #SearchList-input-width,  {
     width: 338px;
+  }
+  #SuggestList-list-ul {
+    width: 358px;
   }
   .add-collaborators{
     cursor: pointer;
