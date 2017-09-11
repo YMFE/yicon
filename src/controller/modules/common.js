@@ -9,6 +9,7 @@ import {
   getDiffResult,
  } from './project';
 import { versionTools } from '../../helpers/utils';
+import watcher from '../../helpers/watcher';
 import config from '../../config';
 const { serviceUrl } = config.login;
 
@@ -49,6 +50,8 @@ export function* downloadFontForThirdParty(next) {
     id,
   });
   const { fontDest = '' } = file && file.data && file.data.data || {};
+  // 添加监控，查看第三方接口下载量
+  if (fontDest) watcher('font-download-thirdparty', 1);
   const dest = fontDest.replace('.zip', '');
   const fontPath = path.join(dest, `${name}.${type}`);
   if (fs.existsSync(path.join(fontPath))) {
