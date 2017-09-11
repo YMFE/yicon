@@ -222,6 +222,7 @@ class SearchList extends Component {
           className={classList.join(' ')}
         >
           <input
+            id="SearchList-input-width"
             type="text"
             name="project-collaborators"
             className="SearchList-input project-collaborators"

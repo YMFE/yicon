@@ -11,6 +11,7 @@ import Message from '../../components/common/Message/Message';
 
 @connect(
   state => ({
+    currRepository: state.repository.currRepository,
     userInfo: state.user.info,
     iconDetail: state.icon,
     resetT: state.icon.resetT,
@@ -65,11 +66,28 @@ class UpdateDialog extends Component {
     }
   }
   @autobind
-  showNameEdit(isEdit, isOK) {
-    this.setState({
-      isEdit,
-      isOK,
-    });
+  showNameEdit(isEdit, isOK, isTrue) {
+    if (isTrue) {
+      this.setState({
+        isEdit,
+        isOK,
+      });
+    } else {
+      const id = this.props.currRepository.id;
+      const { admin, repoAdmin } = this.props.userInfo;
+      // 如果是超管 库管 可以编辑图标标题
+      if (admin || (repoAdmin && repoAdmin.includes(id))) {
+        this.setState({
+          isEdit: true,
+        });
+      } else {
+        return false;
+      }
+      this.setState({
+        isOK,
+      });
+    }
+    return true;
   }
 
   validate(tags) {
@@ -88,6 +106,7 @@ class UpdateDialog extends Component {
     this.props.editIcon(iconDetail.id, { tags }).then(() => {
       this.props.resetT();
       this.setTagList();
+      Message.success('编辑成功!');
     });
   }
 
@@ -122,16 +141,18 @@ class UpdateDialog extends Component {
   cancel(e) {
     const isElClose = e.target.className.indexOf('js-iconfont');
     const newValue = this.refs.myInput.getVal();
-    const fn = () => {
-      this.showNameEdit(false, true);
-      this.setOriginalValue();
+    const fn = (isTrue) => {
+      if (isTrue) {
+        this.showNameEdit(false, true, true);
+        this.setOriginalValue();
+      }
       this.refs.myInput.reset();
     };
     // 如果点击关闭按钮 恢复默认数据
     if (isElClose !== -1) {
       this.props.resetT();
       this.setTagList();
-      fn();
+      fn(true);
       return false;
     }
     // 如果有值 正常走流程
@@ -146,16 +167,17 @@ class UpdateDialog extends Component {
     }
     // 点击其他区域 如果没值 恢复原始值
     if (!newValue) {
-      fn();
+      fn(false);
     }
     return false;
   }
 
   @autobind
   submit(e) {
-    if (this.state.tagList && this.state.inputValue) {
-      this.save(e);
+    if (this.state.tagList) {
       this.saveTags(this.state.tagList);
+    } else if (this.state.inputValue) {
+      this.save(e);
     } else {
       Message.error('编辑失败, 表单内容填写不完整!');
       return false;
@@ -226,6 +248,7 @@ UpdateDialog.propTypes = {
   type: PropTypes.string,
   iconDetail: PropTypes.object,
   userInfo: PropTypes.object,
+  currRepository: PropTypes.object,
   editIcon: PropTypes.func,
   resetT: PropTypes.func,
 };
