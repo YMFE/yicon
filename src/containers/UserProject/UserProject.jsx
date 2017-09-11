@@ -428,7 +428,8 @@ class UserProject extends Component {
     })
     .then((data) => {
       if (data.payload && !data.payload.res) {
-        return;
+        const { message } = data.payload.res || {};
+        throw new Error(message || '生成版本失败');
       }
       // 生成新版后需要同步一下项目状态
       this.props.getUserProjectInfo(id);
@@ -443,6 +444,9 @@ class UserProject extends Component {
     .then(() => {
       // 下载字体
       this.downloadAllIcons();
+    })
+    .catch(() => {
+      //
     });
     // 关闭dialog
     this.shiftDownloadDialog();
