@@ -65,7 +65,7 @@ class Cart extends Component {
       icons: iconsInLocalStorage,
     });
     if (this.props.userInfo.login) {
-      // this.props.getUsersProjectList();
+      this.props.getUsersProjectList();
     }
   }
 
