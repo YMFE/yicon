@@ -27,6 +27,8 @@ function* projectChangeLog(data) {
 }
 
 export function* downloadFontForThirdParty(next) {
+  // 接口调用开始时间
+  const startTime = (new Date()).getTime();
   const { name, type, version } = this.params;
   invariant(['ttf', 'eot', 'svg', 'woff'].indexOf(type) > -1, `${type}格式的字体不存在`);
   invariant(version !== '0.0.0', '该版本不支持下载');
@@ -50,17 +52,30 @@ export function* downloadFontForThirdParty(next) {
     id,
   });
   const { fontDest = '' } = file && file.data && file.data.data || {};
-  // 添加监控，查看第三方接口下载量
-  if (fontDest) watcher('font-download-thirdparty', 1);
   const dest = fontDest.replace('.zip', '');
   const fontPath = path.join(dest, `${name}.${type}`);
+  let isSuccess = false;
   if (fs.existsSync(path.join(fontPath))) {
     this.set('Content-disposition', `attachment; filename=${name}.${type}`);
     this.set('Content-type', 'application/octet-stream');
+    isSuccess = true;
     this.body = fs.createReadStream(fontPath);
   } else {
     this.status = 500;
     this.body = `无法找到对应下载的文件：${name}`;
+  }
+  // 接口调用结束时间
+  const endTime = (new Date()).getTime();
+  // 请求持续时间（）
+  const duration = endTime - startTime;
+
+  // 添加监控，查看第三方接口下载量，接口调用持续时间等
+  if (isSuccess && fontDest) {
+    watcher('font-download-thirdparty-success', 1);
+    watcher('font-download-duration-success', duration / 1000);
+  } else {
+    watcher('font-download-thirdparty-fail', 1);
+    watcher('font-download-duration-fail', duration / 1000);
   }
   yield next;
 }
