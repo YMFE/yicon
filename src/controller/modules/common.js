@@ -55,7 +55,7 @@ export function* downloadFontForThirdParty(next) {
   const dest = fontDest.replace('.zip', '');
   const fontPath = path.join(dest, `${name}.${type}`);
   let isSuccess = false;
-  if (fs.existsSync(path.join(fontPath))) {
+  if (fs.existsSync(fontPath)) {
     this.set('Content-disposition', `attachment; filename=${name}.${type}`);
     this.set('Content-type', 'application/octet-stream');
     isSuccess = true;

@@ -58,7 +58,7 @@ down.get('/download/:filename', function* f() {
 });
 
 // 下载指定版本指定类型的字体文件
-down.get('/download/name/:name/type/:type/version/:version', downloadFontForThirdParty);
+down.get('/api/download/name/:name/type/:type/version/:version', downloadFontForThirdParty);
 
 router.use(bodyParser());
 router.use(mergeParams);
