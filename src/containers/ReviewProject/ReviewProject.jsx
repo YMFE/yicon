@@ -237,7 +237,13 @@ class ReviewProject extends Component {
                 <tr key={k}>
                   <td>{v.publicName}</td>
                   <td>{v.name}</td>
-                  <td>{v.description}</td>
+                  <td>
+                    <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
+                      {v.description}
+                    </span>
+                    <p className="description">{v.description}</p>
+                    <em className="jiao"></em>
+                  </td>
                   <td>{getDataTime(v.updateAt)}</td>
                   <td>
                     <button
