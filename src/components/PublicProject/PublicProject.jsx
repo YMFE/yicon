@@ -42,7 +42,7 @@ class PublicProject extends Component {
   @autobind
   getValue() {
     const { name, reason, publicName } = this.state;
-    this.verification(name, reason);
+    this.verification(publicName, reason);
     return {
       name,
       reason,
@@ -76,14 +76,21 @@ class PublicProject extends Component {
 
   @autobind
   verification(...value) {
+    const regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/img;
+    const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/img;
     const [publicName, reason] = value;
-    if (publicName && reason) {
+    const isrRegEn = publicName.match(regEn);
+    const isRegCn = publicName.match(regCn);
+
+    if (publicName && reason && !isrRegEn && !isRegCn) {
       return false;
     }
     if (!publicName) {
       this.setInputValue('项目名称不能为空');
     } else if (!reason) {
       this.setInputValue('申请理由不能为空');
+    } else if (isrRegEn || isRegCn) {
+      this.setInputValue('不能包含特殊字符');
     }
     this.setError(false);
     return true;
@@ -100,9 +107,13 @@ class PublicProject extends Component {
     const { isShowError } = this.state;
     const isBlock = !isShowError ? 'is-block' : '';
     const { inputValue, reason, publicName } = this.state;
+    const regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/img;
+    const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/img;
+    const isrRegEn = publicName.match(regEn);
+    const isRegCn = publicName.match(regCn);
     const submitForm = () => {
       const value = this.getValue();
-      if (value.name && value.reason) {
+      if (value.publicName && value.reason && !isrRegEn && !isRegCn) {
         this.clearValue();
         onOk(false, this.getValue());
       }

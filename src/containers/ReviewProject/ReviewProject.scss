@@ -57,6 +57,7 @@
     td {
       color: rgba(0,0,0,.85);
       border-bottom: 1px solid #e9e9e9;
+      position: relative;
       button {
         white-space: nowrap;
         line-height: 1.15;
@@ -65,6 +66,39 @@
         border-radius: 4px;
         height: 28px;
         margin: 0 20px 0 0;
+      }
+      .text {
+        height: 35px;
+        display: inline-block;
+        overflow: hidden;
+        line-height: 35px;
+      }
+      .description {
+        position: absolute;
+        border: 1px #BBB solid;
+        background: #ecf6fd;
+        padding: 10px;
+        bottom: 58px;
+        position: absolute;
+        max-height: 169px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: none;
+        width: 316px;
+      }
+      .jiao {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        border: 1px #BBB solid;
+        background: #ecf6fd;
+        bottom: 51px;
+        left: 157px;
+        transform: rotate(45deg);
+        border-top: none;
+        border-left: none;
+        display: none;
       }
     }
     .no-data {

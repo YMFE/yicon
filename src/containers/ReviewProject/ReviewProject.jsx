@@ -120,6 +120,22 @@ class ReviewProject extends Component {
     Message.success(message);
   }
 
+  @autobind
+  showP(e) {
+    const p = e.target.parentNode.getElementsByTagName('p');
+    const em = e.target.parentNode.getElementsByTagName('em');
+    p[0].style.display = 'block';
+    em[0].style.display = 'block';
+  }
+
+  @autobind
+  hideP(e) {
+    const p = e.target.parentNode.getElementsByTagName('p');
+    const em = e.target.parentNode.getElementsByTagName('em');
+    p[0].style.display = 'none';
+    em[0].style.display = 'none';
+  }
+
   render() {
     const { content = [], isShow } = this.state;
     const review = isShow ? 'review' : '';
@@ -162,7 +178,13 @@ class ReviewProject extends Component {
                   <tr key={k}>
                     <td>{v.publicName}</td>
                     <td>{v.name}</td>
-                    <td>{v.description}</td>
+                    <td>
+                      <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
+                        {v.description}
+                      </span>
+                      <p className="description">{v.description}</p>
+                      <em className="jiao"></em>
+                    </td>
                     <td>{getDataTime(v.updateAt)}</td>
                     <td>
                       <button
@@ -227,7 +249,7 @@ class ReviewProject extends Component {
                       }
                       className="cancel"
                     >
-                      拒绝
+                      取消
                     </button>
                   </td>
                 </tr>
