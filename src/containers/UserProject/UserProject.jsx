@@ -263,9 +263,11 @@ class UserProject extends Component {
     this.props.publicProjectList(id)
       .then(data => {
         if (data.payload.data && data.payload.data[0]) {
-          this.setState({
-            publicId: data.payload.data[0].id,
-          });
+          if (this._isMounted) {
+            this.setState({
+              publicId: data.payload.data[0].id,
+            });
+          }
         }
       });
   }
