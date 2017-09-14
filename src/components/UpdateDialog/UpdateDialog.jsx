@@ -34,6 +34,7 @@ class UpdateDialog extends Component {
   }
 
   componentDidMount() {
+    this.refs.myInput.reset();
     document.body.addEventListener('click', e => this.addEvent(e));
   }
 
@@ -61,6 +62,7 @@ class UpdateDialog extends Component {
     const isSpan = cls.indexOf('js-icon-name-txt');
     const isInput = cls.indexOf('js-input');
     const isTag = cls.indexOf('js-add-tag');
+
     if (isSpan === -1 && isInput === -1 && isTag === -1) {
       this.cancel(e);
     }
@@ -167,7 +169,7 @@ class UpdateDialog extends Component {
     }
     // 点击其他区域 如果没值 恢复原始值
     if (!newValue) {
-      fn(false);
+      fn(true);
     }
     return false;
   }
