@@ -67,7 +67,7 @@
         height: 28px;
         margin: 0 20px 0 0;
       }
-      .text {
+      .text, strong {
         height: 35px;
         display: inline-block;
         overflow: hidden;
@@ -75,10 +75,10 @@
       }
       .description {
         position: absolute;
-        border: 1px #BBB solid;
-        background: #ecf6fd;
+        border: 1px #EEE solid;
+        background: #FFF;
         padding: 10px;
-        bottom: 58px;
+        bottom: 51px;
         position: absolute;
         max-height: 169px;
         overflow-x: hidden;
@@ -89,11 +89,11 @@
       .jiao {
         content: '';
         position: absolute;
-        width: 15px;
-        height: 15px;
+        width: 13px;
+        height: 13px;
         border: 1px #BBB solid;
         background: #ecf6fd;
-        bottom: 51px;
+        bottom: 48px;
         left: 157px;
         transform: rotate(45deg);
         border-top: none;
