@@ -21,6 +21,8 @@
     textarea {
       height: 100px;
       padding: 8px 10px;
+      min-height: 100px;
+      max-height: 200px;
     }
   }
   article:nth-child(2) {
