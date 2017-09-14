@@ -122,18 +122,26 @@ class ReviewProject extends Component {
 
   @autobind
   showP(e) {
-    const p = e.target.parentNode.getElementsByTagName('p');
-    const em = e.target.parentNode.getElementsByTagName('em');
-    p[0].style.display = 'block';
-    em[0].style.display = 'block';
+    e.stopPropagation();
+    const el = e.target;
+    const p = el.parentNode.getElementsByTagName('p');
+    if (el.offsetWidth >= 308) {
+      p[0].style.display = 'block';
+    }
   }
 
   @autobind
   hideP(e) {
+    e.stopPropagation();
     const p = e.target.parentNode.getElementsByTagName('p');
-    const em = e.target.parentNode.getElementsByTagName('em');
     p[0].style.display = 'none';
-    em[0].style.display = 'none';
+  }
+
+  @autobind
+  showE(e) {
+    e.stopPropagation();
+    const el = e.target;
+    el.style.display = 'block';
   }
 
   render() {
@@ -176,13 +184,19 @@ class ReviewProject extends Component {
                 const dataContent = `${v.name}/${v.description}/${v.updateAt}/${v.id}`;
                 return (
                   <tr key={k}>
-                    <td>{v.publicName}</td>
+                    <td title={v.publicName}><strong>{v.publicName}</strong></td>
                     <td>{v.name}</td>
                     <td>
                       <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
                         {v.description}
                       </span>
-                      <p className="description">{v.description}</p>
+                      <p
+                        className="description"
+                        onMouseOver={this.showE}
+                        onMouseOut={this.hideP}
+                      >
+                        {v.description}
+                      </p>
                       <em className="jiao"></em>
                     </td>
                     <td>{getDataTime(v.updateAt)}</td>
@@ -235,13 +249,19 @@ class ReviewProject extends Component {
             {
               content.length ? content.map((v, k) => (
                 <tr key={k}>
-                  <td>{v.publicName}</td>
+                  <td title={v.publicName}><strong>{v.publicName}</strong></td>
                   <td>{v.name}</td>
                   <td>
                     <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
                       {v.description}
                     </span>
-                    <p className="description">{v.description}</p>
+                    <p
+                      className="description"
+                      onMouseOver={this.showE}
+                      onMouseOut={this.hideP}
+                    >
+                      {v.description}
+                    </p>
                     <em className="jiao"></em>
                   </td>
                   <td>{getDataTime(v.updateAt)}</td>
