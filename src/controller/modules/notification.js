@@ -181,18 +181,22 @@ export function* publicProjectList(next) {
     where: {
       public: id,
     },
+    include: [{
+      model: User,
+      as: 'projectOwner',
+    }],
   });
 
-  if (result.length) {
-    yield User.findAll({
-      where: {
-        id: result[0].dataValues.owner,
-      },
-    }).then(data => {
-      // 负责人
-      result[0].dataValues.admin = data[0].dataValues.name;
-    });
-  }
+  // if (result.length) {
+  //   yield User.findAll({
+  //     where: {
+  //       id: result[0].dataValues.owner,
+  //     },
+  //   }).then(data => {
+  //     // 负责人
+  //     result[0].dataValues.admin = data[0].dataValues.name;
+  //   });
+  // }
   this.state.respond = result;
   yield next;
 }

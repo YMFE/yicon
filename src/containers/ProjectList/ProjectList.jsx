@@ -4,16 +4,19 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Loading from '../../components/common/Loading/Loading.jsx';
 import { publicProjectList } from '../../actions/notification';
-import { getUserProjectInfo, fetchAllVersions } from '../../actions/project';
-import { DesIcon, SubTitle } from '../../components/';
-import SliderSize from '../../components/SliderSize/SliderSize';
+import { getUserProjectInfo, fetchAllVersions, fetchHistoryProject } from '../../actions/project';
+import { DesIcon, SubTitle, Content, Menu, Main } from '../../components/';
 
 @connect(
-  () => ({}),
+  (state) => ({
+    publicList: state.user.notification.publicList,
+    historyProject: state.project.historyProject,
+  }),
   {
     publicProjectList,
     getUserProjectInfo,
     fetchAllVersions,
+    fetchHistoryProject,
   }
 )
 
@@ -22,6 +25,11 @@ class ProjectList extends Component {
     publicProjectList: PropTypes.func,
     getUserProjectInfo: PropTypes.func,
     fetchAllVersions: PropTypes.func,
+    fetchHistoryProject: PropTypes.func,
+    params: PropTypes.object,
+    id: PropTypes.number,
+    publicList: PropTypes.array,
+    historyProject: PropTypes.object,
   }
 
   constructor(props) {
@@ -38,12 +46,33 @@ class ProjectList extends Component {
     };
   }
 
-  componentDidMount() {
-    this.initPageData();
+  componentWillMount() {
+    const { id } = this.props.params;
+    this.props.publicProjectList(2)
+      .then(() => this.props.fetchAllVersions(id))
+      .then((data) => {
+        const version = data.payload.data.version || [];
+        const length = Array.isArray(version) && version.length;
+        this.props.fetchHistoryProject(id, version[length - 1]);
+      })
+      .then(() => {
+        this.setState({
+          isShowLoading: false,
+        });
+      });
   }
 
-  componentWillReceiveProps() {
-    this.initPageData();
+  componentWillReceiveProps(nextProps) {
+    const id = this.props.params.id;
+    const nextId = nextProps.params.id;
+    if (id !== nextId) {
+      this.props.fetchAllVersions(nextId)
+        .then((data) => {
+          const version = data.payload.data.version || [];
+          const length = Array.isArray(version) && version.length;
+          this.props.fetchHistoryProject(id, version[length - 1]);
+        });
+    }
   }
 
   getIconImages() {
@@ -121,39 +150,57 @@ class ProjectList extends Component {
   }
 
   render() {
-    const { lists, icons, publicName, name, version, admin } = this.state;
+    const { publicList, historyProject } = this.props;
+    const { id } = this.props.params;
     return (
       <section className="project-list">
-        <SubTitle tit="公开项目">
-          <SliderSize getIconsDom={this.getIconsDom} />
-        </SubTitle>
-        <div className="box">
-          <ul className="navs">
-            {lists}
-          </ul>
-          <div className="icons">
-            <h3>
-              <span>公开项目名: {publicName}</span>
-              <span>(原始项目名: {name})</span>
-              <em>负责人: {admin}</em>
-              <em>版本: {version}</em>
-            </h3>
-            <div className="clearfix myicon-list" ref="iconsContainer">
-              {
-                icons.map((icon, index) => (
-                  <div className="icon-detail-item" key={index}>
-                    <DesIcon
-                      name={icon.name}
-                      code={`&#x${icon.code.toString(16)}`}
-                      showCode
-                      iconPath={icon.path}
-                    />
-                  </div>
-                ))
-              }
+        <SubTitle tit="公开项目" />
+        <Content>
+          <Menu>
+            {
+              publicList.map((item, index) => (
+                <li
+                  key={index}
+                  data-id={item.id}
+                  className={`project-name-item ${item.id === id
+                    ? 'selected'
+                    : null}`}
+                >
+                  <Link
+                    to={`/projectlist/${item.id}`}
+                  >
+                      {item.name}
+                  </Link>
+                </li>
+              ))
+            }
+          </Menu>
+          <Main>
+            <div className="icons">
+              <h3>
+                <span>公开项目名: {historyProject.publicName}</span>
+                <span>(原始项目名: {historyProject.name})</span>
+                <em>负责人: {historyProject.projectOwner && historyProject.projectOwner.name}</em>
+                <em>版本: {historyProject.version}</em>
+              </h3>
+              <div className="clearfix myicon-list" ref="iconsContainer">
+                {
+                  historyProject.icons
+                  && historyProject.icons.map((icon, index) => (
+                    <div className="icon-detail-item" key={index}>
+                      <DesIcon
+                        name={icon.name}
+                        code={`&#x${icon.code.toString(16)}`}
+                        showCode
+                        iconPath={icon.path}
+                      />
+                    </div>
+                  ))
+                }
+              </div>
             </div>
-          </div>
-        </div>
+          </Main>
+        </Content>
         <Loading visible={this.state.isShowLoading} />
       </section>
     );

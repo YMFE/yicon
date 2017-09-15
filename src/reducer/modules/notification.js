@@ -39,6 +39,7 @@ const initialState = {
   infoDetail: {},
   pollingId: null,
   agreeProject: '',
+  publicList: [],
 };
 
 export default (state = initialState, action) => {
@@ -200,7 +201,7 @@ export default (state = initialState, action) => {
     case PUBLIC_PROJECT_LIST: {
       return {
         ...state,
-        publicList: action.payload,
+        publicList: action.payload.data,
       };
     }
     case AGREE_PUBLIC_PROJECT: {
