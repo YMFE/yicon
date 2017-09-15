@@ -39,7 +39,6 @@ import {
   setAllReaded,
   submitPublicProject,
   publicProjectList,
-  agreePublicProject,
 } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
 
@@ -80,7 +79,6 @@ user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications/type/:type', getUnreadCount);
 user.post('/notification/submitpublicproject', isProjectOwner, submitPublicProject, recordLog);
-user.post('/notification/agreepublicproject', isProjectOwner, agreePublicProject, recordLog);
 user.patch('/notification/all/readed', setAllReaded);
 
 user.get('/log/projects/:projectId', pagination, getLogList);

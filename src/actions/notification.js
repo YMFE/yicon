@@ -15,6 +15,7 @@ import {
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
+const fetchAdmin = isonFetch.create({ baseURL: '/api/admin' });
 
 export function fetchAllInfo(currentPage) {
   return {
@@ -116,6 +117,6 @@ export function publicProjectList(data) {
 export function agreePublicProject(data) {
   return {
     type: AGREE_PUBLIC_PROJECT,
-    payload: fetch.post('/notification/agreepublicproject', data),
+    payload: fetchAdmin.post('/notification/agreepublicproject', data),
   };
 }

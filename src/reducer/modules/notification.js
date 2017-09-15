@@ -36,7 +36,6 @@ const initialState = {
     totalPage: 1,
     currentPage: 1,
   },
-  abc: '',
   infoDetail: {},
   pollingId: null,
   agreeProject: '',
@@ -196,7 +195,6 @@ export default (state = initialState, action) => {
     case SUBMIT_PUBLICK_PROJECT: {
       return {
         ...state,
-        abc: action.payload,
       };
     }
     case PUBLIC_PROJECT_LIST: {
