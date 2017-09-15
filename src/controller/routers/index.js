@@ -27,8 +27,8 @@ function* errorHandle(next) {
   } catch (e) {
     this.body = {
       res: false,
-      status: e.status || 500,
-      message: e.message || '服务器错误',
+      status: e.status || 416,
+      message: e.message || '请求范围不符合要求',
     };
   }
 }
