@@ -2,6 +2,7 @@ import './ProjectList.scss';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Loading from '../../components/common/Loading/Loading.jsx';
 import { publicProjectList } from '../../actions/notification';
 import { getUserProjectInfo, fetchAllVersions } from '../../actions/project';
 import { DesIcon, SubTitle } from '../../components/';
@@ -33,6 +34,7 @@ class ProjectList extends Component {
       active: '',
       version: '',
       admin: '',
+      isShowLoading: true,
     };
   }
 
@@ -50,6 +52,9 @@ class ProjectList extends Component {
       .then(data => {
         this.setState({
           icons: data.payload.data.icons,
+        });
+        this.setState({
+          isShowLoading: false,
         });
       });
   }
@@ -149,6 +154,7 @@ class ProjectList extends Component {
             </div>
           </div>
         </div>
+        <Loading visible={this.state.isShowLoading} />
       </section>
     );
   }

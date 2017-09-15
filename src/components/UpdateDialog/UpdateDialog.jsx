@@ -56,6 +56,13 @@ class UpdateDialog extends Component {
     });
   }
 
+  // 是否在图标项目页面
+  isIconProject() {
+    const url = location.href;
+    const reg = /projects$/img;
+    return url.match(reg);
+  }
+
   addEvent(e) {
     const el = e.target;
     const cls = el.className;
@@ -67,8 +74,11 @@ class UpdateDialog extends Component {
       this.cancel(e);
     }
   }
+
+
   @autobind
   showNameEdit(isEdit, isOK, isTrue) {
+    const noIconProject = !this.isIconProject();
     if (isTrue) {
       this.setState({
         isEdit,
@@ -78,7 +88,7 @@ class UpdateDialog extends Component {
       const id = this.props.currRepository.id;
       const { admin, repoAdmin } = this.props.userInfo;
       // 如果是超管 库管 可以编辑图标标题
-      if (admin || (repoAdmin && repoAdmin.includes(id))) {
+      if ((admin || (repoAdmin && repoAdmin.includes(id))) && noIconProject) {
         this.setState({
           isEdit: true,
         });
