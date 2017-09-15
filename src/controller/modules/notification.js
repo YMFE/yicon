@@ -117,10 +117,26 @@ export function* setAllReaded(next) {
   yield next;
 }
 
+// 获取超管列表
+function* getAdminIdList() {
+  // 超管列表
+  let adminId = [];
+  yield User.findAll({
+    where: {
+      actor: 2,
+    },
+  }).then(data => {
+    adminId = data.map(v => v.dataValues.id);
+  });
+  return adminId;
+}
+
 /* 提交公共项目 */
 export function* submitPublicProject(next) {
   let isWrite = ''; // 写入是否成功
   const { name, reason, publicName } = this.param;
+  const adminId = yield getAdminIdList();
+  let subscribers = '';
   const date = () => {
     const d = new Date();
     const year = d.getFullYear();
@@ -163,13 +179,21 @@ export function* submitPublicProject(next) {
         name,
       },
     });
+
+    if (adminId.includes(result[0].dataValues.owner)) {
+      subscribers = adminId;
+    } else {
+      subscribers = [...adminId, result[0].dataValues.owner];
+    }
+
+    this.state.log = {
+      type: 'APPLICATION_PUBLIC_PROJECT',
+      loggerId: result[0].dataValues.id,
+      subscribers,
+    };
+
     this.state.respond = isWrite;
   }
-  this.state.log = {
-    type: 'APPLICATION_PUBLIC_PROJECT',
-    loggerId: result[0].dataValues.id,
-    subscribers: [result[0].dataValues.owner],
-  };
 
   yield next;
 }
@@ -199,6 +223,8 @@ export function* publicProjectList(next) {
 
 export function* agreePublicProject(next) {
   let isWrite = false;
+  const adminId = yield getAdminIdList();
+  let subscribers = '';
   const { id, publicId } = this.param;
   const arr = ['CANCEL_PUBLIC_PROJECT', '', 'AGREE_PUBLIC_PROJECT'];
   const result = yield Project.findAll({
@@ -215,10 +241,15 @@ export function* agreePublicProject(next) {
         id,
       },
     }).then(() => {
+      if (adminId.includes(result[0].dataValues.owner)) {
+        subscribers = adminId;
+      } else {
+        subscribers = [...adminId, result[0].dataValues.owner];
+      }
       this.state.log = {
         type: arr[publicId],
         loggerId: result[0].dataValues.id,
-        subscribers: [result[0].dataValues.owner],
+        subscribers,
       };
     });
   }
