@@ -83,11 +83,11 @@ class InfoItem extends Component {
     const tailText = operation.slice(lastIndex, operation.length);
     if (tailText.length) content.push(<span key={lastIndex}>{tailText}</span>);
     if (operation === '同意申请为公开项目') {
-      prefix = <a href="../reviewproject">{project.name} :</a>;
+      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
     } else if (operation === '拒绝申请为公开项目') {
-      prefix = <a href="../reviewproject">{project.name} :</a>;
+      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
     } else if (operation === '申请公开项目') {
-      prefix = <a href="../reviewproject">{project.name} :</a>;
+      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
     } else if (this.props.hasScope) {
       const scopeData = scope === 'project' ? project : repo;
       if (scopeData) {
