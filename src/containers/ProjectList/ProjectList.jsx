@@ -39,7 +39,6 @@ class ProjectList extends Component {
       icons: [],
       publicName: '', // 公开项目名
       name: '', // 原始项目名
-      active: '',
       version: '',
       admin: '',
       isShowLoading: true,
@@ -70,7 +69,7 @@ class ProjectList extends Component {
         .then((data) => {
           const version = data.payload.data.version || [];
           const length = Array.isArray(version) && version.length;
-          this.props.fetchHistoryProject(id, version[length - 1]);
+          this.props.fetchHistoryProject(nextId, version[length - 1]);
         });
     }
   }
@@ -86,13 +85,6 @@ class ProjectList extends Component {
           isShowLoading: false,
         });
       });
-  }
-
-  setActive() {
-    const id = this.getKeyCode();
-    this.setState({
-      active: id,
-    });
   }
 
   getPublicTitle(data) {
@@ -122,7 +114,6 @@ class ProjectList extends Component {
   }
 
   initPageData() {
-    this.setActive();
     this.props.publicProjectList(2)
       .then(result => {
         const { active } = this.state;
@@ -156,13 +147,13 @@ class ProjectList extends Component {
       <section className="project-list">
         <SubTitle tit="公开项目" />
         <Content>
-          <Menu>
+          <Menu className="icons">
             {
               publicList.map((item, index) => (
                 <li
                   key={index}
                   data-id={item.id}
-                  className={`project-name-item ${item.id === id
+                  className={`project-name-item ${item.id === +id
                     ? 'selected'
                     : null}`}
                 >
