@@ -134,9 +134,11 @@ function* getAdminIdList() {
 /* 提交公共项目 */
 export function* submitPublicProject(next) {
   let isWrite = ''; // 写入是否成功
+  let subscribers = '';
+  let isTrue = true;
+  let ownerId = 0;
   const { name, reason, publicName } = this.param;
   const adminId = yield getAdminIdList();
-  let subscribers = '';
   const date = () => {
     const d = new Date();
     const year = d.getFullYear();
@@ -179,13 +181,17 @@ export function* submitPublicProject(next) {
         name,
       },
     });
-
-    if (adminId.includes(result[0].dataValues.owner)) {
+    ownerId = result[0].dataValues.owner;
+    adminId.forEach(v => {
+      if (v === ownerId) {
+        isTrue = false;
+      }
+    });
+    if (!isTrue) {
       subscribers = adminId;
     } else {
-      subscribers = [...adminId, result[0].dataValues.owner];
+      subscribers = [...adminId, ownerId];
     }
-
     this.state.log = {
       type: 'APPLICATION_PUBLIC_PROJECT',
       loggerId: result[0].dataValues.id,
@@ -216,8 +222,10 @@ export function* publicProjectList(next) {
 
 export function* agreePublicProject(next) {
   let isWrite = false;
-  const adminId = yield getAdminIdList();
+  let isTrue = true;
+  let ownerId = 0;
   let subscribers = '';
+  const adminId = yield getAdminIdList();
   const { id, publicId } = this.param;
   const arr = ['CANCEL_PUBLIC_PROJECT', '', 'AGREE_PUBLIC_PROJECT'];
   const result = yield Project.findAll({
@@ -234,12 +242,17 @@ export function* agreePublicProject(next) {
         id,
       },
     }).then(() => {
-      if (adminId.includes(result[0].dataValues.owner)) {
+      ownerId = result[0].dataValues.owner;
+      adminId.forEach(v => {
+        if (v === ownerId) {
+          isTrue = false;
+        }
+      });
+      if (!isTrue) {
         subscribers = adminId;
       } else {
-        subscribers = [...adminId, result[0].dataValues.owner];
+        subscribers = [...adminId, ownerId];
       }
-
       this.state.log = {
         type: arr[publicId],
         loggerId: result[0].dataValues.id,
