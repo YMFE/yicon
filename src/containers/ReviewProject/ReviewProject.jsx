@@ -88,6 +88,7 @@ class ReviewProject extends Component {
 
   @autobind
   cancelPublicProject(tabId, id) {
+    const text = tabId === 1 ? '项目拒绝成功!' : '项目取消成功!';
     const data = {
       id,
       publicId: 0,
@@ -98,7 +99,7 @@ class ReviewProject extends Component {
           // 获取项目列表
           this.getPublicProject(tabId);
           this.tabContent(tabId);
-          this.openMessage('项目取消成功!');
+          this.openMessage(text);
         }
       });
   }
@@ -157,6 +158,7 @@ class ReviewProject extends Component {
       datatime = datatime.replace(/\.[0-9A-Z]+/g, '');
       return datatime;
     };
+
     return (
       <section className="review-project">
         <SubTitle tit="审核项目" />
@@ -166,8 +168,9 @@ class ReviewProject extends Component {
         </ul>
         <table className={`content ${review}`}>
           <colgroup>
-            <col width="15%" />
-            <col width="15%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
             <col width="30%" />
             <col width="20%" />
           </colgroup>
@@ -175,6 +178,7 @@ class ReviewProject extends Component {
             <tr>
               <th>公开项目名称</th>
               <th>原始项目名称</th>
+              <th>项目负责人</th>
               <th>申请理由</th>
               <th>申请时间</th>
               <th>操作</th>
@@ -186,6 +190,7 @@ class ReviewProject extends Component {
                   <tr key={k}>
                     <td title={v.publicName}><strong>{v.publicName}</strong></td>
                     <td>{v.name}</td>
+                    <td>{v.projectOwner.name}</td>
                     <td>
                       <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
                         {v.description}
@@ -232,8 +237,9 @@ class ReviewProject extends Component {
 
         <table className={`content ${by}`}>
           <colgroup>
-            <col width="15%" />
-            <col width="15%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
             <col width="30%" />
             <col width="20%" />
           </colgroup>
@@ -242,6 +248,7 @@ class ReviewProject extends Component {
             <tr>
               <th>公开项目名称</th>
               <th>原始项目名称</th>
+              <th>项目负责人</th>
               <th>申请理由</th>
               <th>申请时间</th>
               <th>操作</th>
@@ -251,6 +258,7 @@ class ReviewProject extends Component {
                 <tr key={k}>
                   <td title={v.publicName}><strong>{v.publicName}</strong></td>
                   <td>{v.name}</td>
+                  <td>{v.projectOwner.name}</td>
                   <td>
                     <span onMouseOver={this.showP} onMouseOut={this.hideP} className="text">
                       {v.description}

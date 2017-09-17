@@ -210,17 +210,6 @@ export function* publicProjectList(next) {
       as: 'projectOwner',
     }],
   });
-
-  // if (result.length) {
-  //   yield User.findAll({
-  //     where: {
-  //       id: result[0].dataValues.owner,
-  //     },
-  //   }).then(data => {
-  //     // 负责人
-  //     result[0].dataValues.admin = data[0].dataValues.name;
-  //   });
-  // }
   this.state.respond = result;
   yield next;
 }
@@ -250,6 +239,7 @@ export function* agreePublicProject(next) {
       } else {
         subscribers = [...adminId, result[0].dataValues.owner];
       }
+
       this.state.log = {
         type: arr[publicId],
         loggerId: result[0].dataValues.id,
