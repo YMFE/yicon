@@ -76,7 +76,7 @@ class PublicProject extends Component {
 
   @autobind
   verification(...value) {
-    const regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/img;
+    const regEn = /[`~!@#$%^&*()+<>?:"{},.\/;'[\]]/img;
     const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/img;
     const [publicName, reason] = value;
     const isrRegEn = publicName.match(regEn);
