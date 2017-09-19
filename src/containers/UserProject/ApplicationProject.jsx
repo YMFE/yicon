@@ -1,4 +1,4 @@
-import './PublicProject.scss';
+import './ApplicationProject.scss';
 import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import Dialog from '../../components/common/Dialog/Index';
@@ -107,7 +107,7 @@ class PublicProject extends Component {
     const { isShowError } = this.state;
     const isBlock = !isShowError ? 'is-block' : '';
     const { inputValue, reason, publicName } = this.state;
-    const regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/img;
+    const regEn = /[`~!@#$%^&*()+<>?:"{},.\/;'[\]]/img;
     const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/img;
     const isrRegEn = publicName.match(regEn);
     const isRegCn = publicName.match(regCn);

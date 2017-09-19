@@ -193,7 +193,7 @@ export function* submitPublicProject(next) {
       subscribers = [...adminId, ownerId];
     }
     this.state.log = {
-      type: 'APPLICATION_PUBLIC_PROJECT',
+      type: 'PROJECT_APPLICATION_PUBLIC',
       loggerId: result[0].dataValues.id,
       subscribers,
     };
@@ -226,8 +226,8 @@ export function* agreePublicProject(next) {
   let ownerId = 0;
   let subscribers = '';
   const adminId = yield getAdminIdList();
-  const { id, publicId } = this.param;
-  const arr = ['CANCEL_PUBLIC_PROJECT', '', 'AGREE_PUBLIC_PROJECT'];
+  const { id, publicId, tabId } = this.param;
+  const arr = ['PROJECT_CANCEL_PUBLIC', 'PROJECT_REFUSE_PUBLIC', 'PROJECT_AGREE_PUBLIC'];
   const result = yield Project.findAll({
     where: {
       id,
@@ -254,7 +254,7 @@ export function* agreePublicProject(next) {
         subscribers = [...adminId, ownerId];
       }
       this.state.log = {
-        type: arr[publicId],
+        type: arr[tabId],
         loggerId: result[0].dataValues.id,
         subscribers,
       };

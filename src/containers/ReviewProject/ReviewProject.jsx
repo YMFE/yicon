@@ -76,6 +76,7 @@ class ReviewProject extends Component {
       updateAt: content[2],
       id: content[3],
       publicId: 2,
+      tabId: 2,
     };
     this.props.agreePublicProject(data)
       .then(result => {
@@ -87,18 +88,26 @@ class ReviewProject extends Component {
   }
 
   @autobind
-  cancelPublicProject(tabId, id) {
-    const text = tabId === 1 ? '项目拒绝成功!' : '项目取消成功!';
+  cancelPublicProject(publicId, id) {
+    let text = '';
+    let tabId = 0;
+    if (publicId === 1) {
+      text = '项目拒绝成功!';
+      tabId = 1;
+    } else {
+      text = '项目取消成功!';
+    }
     const data = {
       id,
       publicId: 0,
+      tabId,
     };
     this.props.agreePublicProject(data)
       .then(result => {
         if (result.payload.res) {
           // 获取项目列表
-          this.getPublicProject(tabId);
-          this.tabContent(tabId);
+          this.getPublicProject(publicId);
+          this.tabContent(publicId);
           this.openMessage(text);
         }
       });
