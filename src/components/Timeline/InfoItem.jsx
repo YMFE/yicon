@@ -42,6 +42,7 @@ class InfoItem extends Component {
   @autobind
   getDescribeForInfo({ operation, scope, project, repo, type }) {
     const regExp = /@([^@]+)@/g;
+    const name = project && project.name;
     let prefix = null;
     let result = regExp.exec(operation);
     let content = [];
@@ -82,12 +83,11 @@ class InfoItem extends Component {
     // 查看尾巴是否有未捕获的
     const tailText = operation.slice(lastIndex, operation.length);
     if (tailText.length) content.push(<span key={lastIndex}>{tailText}</span>);
-    if (operation === '同意申请为公开项目') {
-      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
-    } else if (operation === '拒绝申请为公开项目') {
-      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
-    } else if (operation === '申请公开项目') {
-      prefix = <a href="../admin/reviewproject">{project.name} :</a>;
+    if (operation === '同意申请为公开项目' ||
+        operation === '拒绝申请为公开项目' ||
+        operation === '申请公开项目' ||
+        operation === '取消该项目为公开项目') {
+      prefix = <Link to="/admin/reviewproject">{name} :</Link>;
     } else if (this.props.hasScope) {
       const scopeData = scope === 'project' ? project : repo;
       if (scopeData) {

@@ -22,7 +22,7 @@ const Tool = (props) => (
       {
         props.admin &&
           <li>
-            <Link href="../../../admin/reviewproject">公开项目</Link>
+            <Link to="/admin/reviewproject">公开项目</Link>
           </li>
       }
       {

@@ -69,9 +69,10 @@ export const logTypes = {
   SOURCE_PUBLISH: '项目发布到 source @path，版本为 @version',
   DISABLED_CODE_ADD: '编码 @code 标示为系统占用',
   DISABLED_CODE_DEL: '编码 @code 解除系统占用标示',
-  APPLICATION_PUBLIC_PROJECT: '申请公开项目',
-  CANCEL_PUBLIC_PROJECT: '拒绝申请为公开项目',
-  AGREE_PUBLIC_PROJECT: '同意申请为公开项目',
+  PROJECT_APPLICATION_PUBLIC: '申请公开项目',
+  PROJECT_REFUSE_PUBLIC: '拒绝申请为公开项目',
+  PROJECT_CANCEL_PUBLIC: '取消该项目为公开项目',
+  PROJECT_AGREE_PUBLIC: '同意申请为公开项目',
 };
 
 export const InfoTypeDetail = [

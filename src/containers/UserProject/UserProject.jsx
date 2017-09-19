@@ -13,7 +13,7 @@ import { replace, push } from 'react-router-redux';
 import Dialog from '../../components/common/Dialog/Index.jsx';
 import DownloadDialog from '../../components/DownloadDialog/DownloadDialog.jsx';
 import UpdateDialog from '../../components/UpdateDialog/UpdateDialog.jsx';
-import PublicProject from '../../components/PublicProject/PublicProject.jsx';
+import ApplicationProject from './ApplicationProject.jsx';
 import IconButton from '../../components/common/IconButton/IconButton.jsx';
 import Message from '../../components/common/Message/Message';
 import Loading from '../../components/common/Loading/Loading.jsx';
@@ -756,12 +756,12 @@ class UserProject extends Component {
     let dialogList = null;
     const url = this.state.iconStr;
     const template = `@font-face {
-      font-family: 'iconfont';
-      src: url('${url}.eot'); /* IE9*/
-      src: url('${url}.woff') format('woff'), /* chrome、firefox */
-      url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
-    }`;
+  font-family: 'iconfont';
+  src: url('${url}.eot'); /* IE9*/
+  src: url('${url}.woff') format('woff'), /* chrome、firefox */
+  url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
+}`;
     this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
     this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
     if (current.name) {
@@ -884,7 +884,7 @@ class UserProject extends Component {
         >
           <UpdateDialog />
         </Dialog>,
-        <PublicProject
+        <ApplicationProject
           key={10}
           empty
           title="申请公开项目"
