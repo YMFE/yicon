@@ -113,33 +113,6 @@ class ProjectList extends Component {
       });
   }
 
-  initPageData() {
-    this.props.publicProjectList(2)
-      .then(result => {
-        const { active } = this.state;
-        const data = result.payload.data;
-        const jsx = [];
-        data.forEach((v, k) => {
-          const id = v.id;
-          const value = +active === +id ? 'active' : '';
-          jsx.push(
-            <li className={value} key={k}>
-              <Link to={`/projectlist/${id}`}>
-                {v.name}
-              </Link>
-            </li>
-          );
-        });
-        this.getAllVersions(data[0].id);
-        this.getPublicTitle(data);
-        this.getIconImages();
-        this.setState({
-          lists: jsx,
-          admin: data[0].admin,
-        });
-      });
-  }
-
   render() {
     const { publicList, historyProject } = this.props;
     const { id } = this.props.params;
