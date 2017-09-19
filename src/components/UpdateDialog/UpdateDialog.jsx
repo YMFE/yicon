@@ -65,7 +65,7 @@ class UpdateDialog extends Component {
 
   addEvent(e) {
     const el = e.target;
-    const cls = el.className;
+    const cls = el.className || '';
     const isSpan = cls.indexOf('js-icon-name-txt');
     const isInput = cls.indexOf('js-input');
     const isTag = cls.indexOf('js-add-tag');
