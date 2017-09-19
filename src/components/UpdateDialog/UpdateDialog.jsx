@@ -65,16 +65,20 @@ class UpdateDialog extends Component {
 
   addEvent(e) {
     const el = e.target;
-    const cls = el.className || '';
-    const isSpan = cls.indexOf('js-icon-name-txt');
-    const isInput = cls.indexOf('js-input');
-    const isTag = cls.indexOf('js-add-tag');
-
-    if (isSpan === -1 && isInput === -1 && isTag === -1) {
+    const tagName = el.nodeName;
+    if (tagName === 'svg' || tagName === 'path') {
       this.cancel(e);
+    } else {
+      const cls = el.className || '';
+      const isSpan = cls.indexOf('js-icon-name-txt');
+      const isInput = cls.indexOf('js-input');
+      const isTag = cls.indexOf('js-add-tag');
+
+      if (isSpan === -1 && isInput === -1 && isTag === -1) {
+        this.cancel(e);
+      }
     }
   }
-
 
   @autobind
   showNameEdit(isEdit, isOK, isTrue) {
@@ -151,7 +155,7 @@ class UpdateDialog extends Component {
 
   @autobind
   cancel(e) {
-    const isElClose = e.target.className.indexOf('js-iconfont');
+    const el = e.target.nodeName;
     const newValue = this.refs.myInput.getVal();
     const fn = (isTrue) => {
       if (isTrue) {
@@ -160,39 +164,51 @@ class UpdateDialog extends Component {
       }
       this.refs.myInput.reset();
     };
-    // 如果点击关闭按钮 恢复默认数据
-    if (isElClose !== -1) {
-      this.props.resetT();
-      this.setTagList();
-      fn(true);
+    const addValue = () => {
+      // 如果有值 正常走流程
+      if (newValue) {
+        this.setState({
+          // 控制input是否展现
+          isEdit: false,
+          inputValue: newValue,
+        });
+        this.refs.myInput.setVal(newValue);
+        return false;
+      }
+      // 点击其他区域 如果没值 恢复原始值
+      if (!newValue) {
+        fn(true);
+      }
       return false;
-    }
-    // 如果有值 正常走流程
-    if (newValue) {
-      this.setState({
-        // 控制input是否展现
-        isEdit: false,
-        inputValue: newValue,
-      });
-      this.refs.myInput.setVal(newValue);
-      return false;
-    }
-    // 点击其他区域 如果没值 恢复原始值
-    if (!newValue) {
-      fn(true);
+    };
+    if (el === 'svg' || el === 'path') {
+      addValue(newValue);
+    } else {
+      const isElClose = e.target.className.indexOf('js-iconfont');
+      // 如果点击关闭按钮 恢复默认数据
+      if (isElClose !== -1) {
+        this.props.resetT();
+        this.setTagList();
+        fn(true);
+        return false;
+      }
+      addValue(newValue);
     }
     return false;
   }
 
   @autobind
   submit(e) {
-    if (this.state.tagList) {
-      this.saveTags(this.state.tagList);
-    } else if (this.state.inputValue) {
-      this.save(e);
-    } else {
+    const { tagList, inputValue } = this.state;
+    if (!tagList && !inputValue) {
       Message.error('编辑失败, 表单内容填写不完整!');
       return false;
+    }
+    if (tagList) {
+      this.saveTags(this.state.tagList);
+    }
+    if (inputValue) {
+      this.save(e);
     }
     return true;
   }
