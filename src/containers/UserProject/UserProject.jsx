@@ -930,7 +930,7 @@ class UserProject extends Component {
               </a>
             </li>
             <li>
-              <Link href={`../projectlist/${publicId}`}>
+              <Link to={`/projectlist/${publicId}`}>
                 公开项目
               </Link>
             </li>
