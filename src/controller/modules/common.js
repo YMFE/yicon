@@ -135,10 +135,10 @@ export function* getProjectInfo(next) {
         code: icon.code,
       })),
       download: {
-        eot: `${serviceUrl}/download/name/${projectName}/type/eot/version/${version}`,
-        svg: `${serviceUrl}/download/name/${projectName}/type/svg/version/${version}`,
-        ttf: `${serviceUrl}/download/name/${projectName}/type/ttf/version/${version}`,
-        woff: `${serviceUrl}/download/name/${projectName}/type/woff/version/${version}`,
+        eot: `${serviceUrl}/api/download/name/${projectName}/type/eot/version/${version}`,
+        svg: `${serviceUrl}/api/download/name/${projectName}/type/svg/version/${version}`,
+        ttf: `${serviceUrl}/api/download/name/${projectName}/type/ttf/version/${version}`,
+        woff: `${serviceUrl}/api/download/name/${projectName}/type/woff/version/${version}`,
       },
     };
   }
@@ -193,10 +193,10 @@ export function* getProjectInfoByVersion(next) {
   } else {
     // 获取项目图标
     projectInfo.download = {
-      eot: `${serviceUrl}/download/name/${projectName}/type/eot/version/${version}`,
-      svg: `${serviceUrl}/download/name/${projectName}/type/svg/version/${version}`,
-      ttf: `${serviceUrl}/download/name/${projectName}/type/ttf/version/${version}`,
-      woff: `${serviceUrl}/download/name/${projectName}/type/woff/version/${version}`,
+      eot: `${serviceUrl}/api/download/name/${projectName}/type/eot/version/${version}`,
+      svg: `${serviceUrl}/api/download/name/${projectName}/type/svg/version/${version}`,
+      ttf: `${serviceUrl}/api/download/name/${projectName}/type/ttf/version/${version}`,
+      woff: `${serviceUrl}/api/download/name/${projectName}/type/woff/version/${version}`,
     };
   }
   this.state.respond = projectInfo;
