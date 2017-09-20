@@ -26,6 +26,7 @@ const propTypes = {
   defaultValue: PropTypes.string,
   onChange: PropTypes.func,
   blur: PropTypes.func,
+  setInputValue: PropTypes.func,
   keyDown: PropTypes.func,
   extraClass: PropTypes.string,
   children: PropTypes.oneOfType([
@@ -94,6 +95,12 @@ export default class Input extends Component {
   @autobind
   keyDown(e) {
     if (!this.state.error) {
+      // 设置表单值为空
+      setTimeout(() => {
+        if (!this.getVal()) {
+          this.props.setInputValue('');
+        }
+      }, 100);
       this.props.keyDown(e, this.getVal());
     }
   }

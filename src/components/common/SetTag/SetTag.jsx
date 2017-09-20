@@ -89,7 +89,7 @@ class SetTag extends Component {
   }
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, setInputValue } = this.props;
     const tagArr = this.tagsToArr(this.state.tags);
     const placeholder = disabled ? '登录可编辑' : '添加图标标签，回车提交，可多次提交';
     return (
@@ -102,6 +102,7 @@ class SetTag extends Component {
           errMsg={ICON_TAG.message}
           ref="myInput"
           disabled={disabled}
+          setInputValue={setInputValue}
         >
           {/* <i className="iconfont set-tag-icon">&#xf0ae;</i> */}
         </Input>
@@ -132,6 +133,7 @@ SetTag.defaultProps = {
 
 SetTag.propTypes = {
   onTagChange: PropTypes.func,
+  setInputValue: PropTypes.func,
   tags: PropTypes.string,
   disabled: PropTypes.bool,
   resetTags: PropTypes.bool,
