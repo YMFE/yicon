@@ -146,6 +146,26 @@ export default class Repository extends Component {
   }
 
   @autobind
+  closeUpdateDialog() {
+    const { params: { id } } = this.props;
+    this.props.fetchRepository(id)
+      .then(
+        () => {
+          if (this._isMounted) {
+            this.setState({ isShowUpdateDialog: false });
+          }
+        }
+      )
+      .catch(
+        () => {
+          if (this._isMounted) {
+            this.setState({ isShowUpdateDialog: false });
+          }
+        }
+      );
+  }
+
+  @autobind
   dialogDownloadShow(isShow) {
     const { params: { id } } = this.props;
     const { currentPage } = this.props.currRepository;
@@ -257,7 +277,7 @@ export default class Repository extends Component {
           visible={this.state.isShowUpdateDialog}
           getShow={this.dialogUpdateShow}
         >
-          <UpdateDialog type="repo" />
+          <UpdateDialog type="repo" closeUpdateDialog={this.closeUpdateDialog} />
         </Dialog>
         <Loading visible={this.state.isShowLoading} />
       </div>

@@ -77,6 +77,15 @@ export default class Search extends Component {
   }
 
   @autobind
+  closeUpdateDialog() {
+    this.setState({
+      isShowUpdateDialog: false,
+    });
+    const query = encodeURIComponent(this.props.location.query.q);
+    this.props.fetchSearchData(query);
+  }
+
+  @autobind
   dialogDownloadShow(isShow) {
     this.setState({
       isShowDownloadDialog: isShow,
@@ -152,7 +161,7 @@ export default class Search extends Component {
           visible={this.state.isShowUpdateDialog}
           getShow={this.dialogUpdateShow}
         >
-          <UpdateDialog />
+          <UpdateDialog closeUpdateDialog={this.closeUpdateDialog} />
         </Dialog>
       </div>
     );
