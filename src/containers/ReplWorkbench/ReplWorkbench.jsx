@@ -50,6 +50,8 @@ export default class ReplWorkbench extends Component {
 
   state = {
     isShowDialog: false,
+    isAdjusted: false,
+    adjustedPath: '',
   }
 
   componentWillMount() {
@@ -76,14 +78,22 @@ export default class ReplWorkbench extends Component {
   submitReplaceIcon() {
     // 库管超管直接替换
     const { params: { fromId, toId }, userInfo, currIcon } = this.props;
+    const { isAdjusted, adjustedPath } = this.state;
+
     if (userInfo.admin || userInfo.repoAdmin.indexOf(currIcon.repo.id) > -1) {
-      this.props.submitReplaceIcon(fromId, toId, {
+      const replaceIcon = {
         name: currIcon.name,
         tags: currIcon.tags,
-      }).then((data) => {
+      };
+      if (isAdjusted && adjustedPath) {
+        replaceIcon.adjustedPath = adjustedPath;
+      }
+      this.props.submitReplaceIcon(fromId, toId, replaceIcon).then((data) => {
         if (data.payload.res) {
           this.setState({
             isShowDialog: false,
+            isAdjusted: false,
+            adjustedPath: '',
           });
           // this.props.push(`/repositories/${currIcon.repo.id}`);
           this.props.push(`/transition/repl-icon?repoId=${currIcon.repo.id}`);
@@ -95,6 +105,8 @@ export default class ReplWorkbench extends Component {
         const icon = info.data && info.data.data;
         icon.code = currIcon.code;
         icon.name = currIcon.name;
+        icon.isAdjusted = isAdjusted;
+        icon._path = isAdjusted && adjustedPath;
         icon.tags = currIcon.tags;
         icon.oldId = fromId;
         icon.fontClass = /-f$/g.test(`${icon.fontClass}`) ? '-f' : '-o';
@@ -106,6 +118,8 @@ export default class ReplWorkbench extends Component {
           if (data.payload.res) {
             this.setState({
               isShowDialog: false,
+              isAdjusted: false,
+              adjustedPath: '',
             });
             this.props.push(`/transition/replUpload-success?repoId=${currIcon.repo.id}`);
           }
@@ -135,8 +149,27 @@ export default class ReplWorkbench extends Component {
     });
   }
 
+  @autobind
+  adjustIcon(flag) {
+    const { repIcon } = this.props;
+    const { isAdjusted } = this.state;
+    if (isAdjusted === flag) {
+      this.setState({ isAdjusted: !flag });
+    } else {
+      this.setState({ isAdjusted: flag });
+    }
+    const { svg } = repIcon.cache || {};
+    axios
+      .post('/api/user/icons/svg', { svg })
+      .then(data => {
+        const path = data && data.data && data.data.data;
+        this.setState({ adjustedPath: path });
+      });
+  }
+
   render() {
     const { currIcon, repIcon } = this.props;
+    const { isAdjusted, adjustedPath } = this.state;
     if (!currIcon.path || !repIcon.path) {
       return null;
     }
@@ -147,7 +180,7 @@ export default class ReplWorkbench extends Component {
           <div className={'upload-setting clearfix'}>
           {repIcon.path &&
             <IconBgGrid
-              iconPath={repIcon.path}
+              iconPath={isAdjusted && adjustedPath ? adjustedPath : repIcon.path}
             />
           }
             <div className="setting-opts">
@@ -172,7 +205,12 @@ export default class ReplWorkbench extends Component {
                   tags={currIcon.tags}
                 />
               </div>
-
+              <div className="icon-adjust">
+                <div
+                  className={`icon-adjust-btn ${isAdjusted ? 'on' : ''}`}
+                  onClick={() => { this.adjustIcon(true); }}
+                ><i className="iconfont tag">&#xf078;</i>图标调整</div>
+              </div>
             </div>
           </div>
           <div className="replace-submit">
@@ -193,7 +231,9 @@ export default class ReplWorkbench extends Component {
           <div className="clearfix" style={{ width: 647 }}>
             {currIcon.path && <IconBgGrid iconPath={currIcon.path} />}
             <div className="replace-icon"><i className="iconfont repl-icon">&#xf0f8;</i></div>
-            {repIcon.path && <IconBgGrid iconPath={repIcon.path} />}
+            {repIcon.path &&
+              <IconBgGrid iconPath={isAdjusted && adjustedPath ? adjustedPath : repIcon.path} />
+            }
           </div>
         </Dialog>
       </div>

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { replace } from 'react-router-redux';
 import { connect } from 'react-redux';
 import './Transition.scss';
+import redirectToLogin from '../../helpers/login';
 
 @connect()
 export default class Transition extends Component {
@@ -21,6 +22,10 @@ export default class Transition extends Component {
     switch (type) {
       case 'no-auth': {
         this.backToPage('/');
+        break;
+      }
+      case 'no-login': {
+        this.goToLoginPage();
         break;
       }
       case 'repl-icon': {
@@ -55,6 +60,19 @@ export default class Transition extends Component {
     clearInterval(this.intervalId);
   }
 
+  goToLoginPage() {
+    this.intervalId = setInterval(() => {
+      this.setState({
+        second: this.state.second - 1,
+      }, () => {
+        if (this.state.second <= 0) {
+          clearInterval(this.intervalId);
+          redirectToLogin();
+        }
+      });
+    }, 1000);
+  }
+
   backToPage(url) {
     this.intervalId = setInterval(() => {
       this.setState({
@@ -79,9 +97,10 @@ export default class Transition extends Component {
     const noLoginHTML = (
       <div>
         <div className="no-auth-logo"></div>
-        <div className="no-auth-tips">
+        <p className="no-auth-tips">
           该页面需要登录
-        </div>
+        </p>
+        <p className="no-auth-tips">{this.state.second} 秒之后跳转至登录页</p>
       </div>
     );
 

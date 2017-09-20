@@ -7,6 +7,7 @@ import admin from './admin';
 import config from '../../config';
 import fs from 'fs';
 import path from 'path';
+import { downloadFontForThirdParty } from '../modules/common';
 import { mergeParams, responder } from './middlewares';
 
 /**
@@ -20,6 +21,18 @@ import { mergeParams, responder } from './middlewares';
 const router = new Router({ prefix: '/api' });
 const down = new Router();
 
+function* errorHandle(next) {
+  try {
+    yield next;
+  } catch (e) {
+    this.body = {
+      res: false,
+      status: e.status || 416,
+      message: e.message || '请求范围不符合要求',
+    };
+  }
+}
+down.use(errorHandle);
 // 下载比较特殊，单独写吧
 down.get('/download/:filename', function* f() {
   const { caches } = config.path;
@@ -43,6 +56,9 @@ down.get('/download/:filename', function* f() {
     this.body = `无法找到对应下载的文件：${filename}`;
   }
 });
+
+// 下载指定版本指定类型的字体文件
+down.get('/api/download/name/:name/type/:type/version/:version', downloadFontForThirdParty);
 
 router.use(bodyParser());
 router.use(mergeParams);

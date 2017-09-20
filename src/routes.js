@@ -26,6 +26,9 @@ import {
   LdapAuth,
   Statistic,
   DisabledCode,
+  ProjectList,
+  ProjectNull,
+  ReviewProject,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -70,7 +73,8 @@ export default store => {
         <Route path="projects/:id/logs" component={ProjectLog} />
         <Route path="projects/:id/comparison" component={VersionComparison} />
         <Route path="projects/:id/history" component={History} />
-
+        <Route path="projectlist/:id" component={ProjectList} /> {/* 公开项目列表 */}
+        <Route path="projectlist" component={ProjectNull} /> {/* 公开项目为空页面 */}
         <Route path="replacement" component={Replacement} /> {/* 替换页面 */}
         <Route path="replacement/icon/:fromId...:toId" component={ReplWorkbench} /> {/* 替换页面 */}
 
@@ -92,6 +96,7 @@ export default store => {
         <Route path="admin" onEnter={requireAdmin}>
           <Route path="authority/:type" component={Authority} /> {/* 权限设置 */}
           <Route path="code" component={DisabledCode} /> {/* 系统占用编码管理 */}
+          <Route path="reviewproject" component={ReviewProject} /> {/* 后台审核公开项目列表 */}
         </Route>
       </Route>
 

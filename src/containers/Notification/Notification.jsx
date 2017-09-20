@@ -174,6 +174,7 @@ export default class Notification extends Component {
     const { infoState } = this.state;
     const infoList = (this.props[attrName] && this.props[attrName].list) || [];
     if (infoList.length <= 0) return null;
+
     const TiemlineEle = (
       <Timeline>
         {

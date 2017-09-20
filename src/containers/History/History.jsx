@@ -103,7 +103,7 @@ export default class History extends Component {
           <Main extraClass="yicon-myicon-main">
             <div style={{ display: `${this.props.historyProject.name ? 'block' : 'none'}` }}>
               <div className="myicon-prj-info">
-                <div className="prj-details">
+                <div className="prj-details-history">
                   <div className="title">
                     <h3>{this.props.projectInfo.name} </h3>
                     <span className="tips">{this.props.isHidden ? '' : '历史版本'}</span>
@@ -123,7 +123,7 @@ export default class History extends Component {
                   <Select
                     className="select-component"
                     value={this.state.version}
-                    style={{ width: 50, textIndent: 0, outline: 0 }}
+                    style={{ width: 60, textIndent: 0, outline: 0 }}
                     onSelect={this.onSelect}
                   >
                   {

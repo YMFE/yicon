@@ -147,7 +147,7 @@ export default class Slick extends Component {
         }
         <Icon
           className={'iconfont upload-icon'}
-          d={item.path}
+          d={item.isAdjusted ? item._path : item.path}
           size={60}
           fill={currentItem === i ? '#008ed6' : '#555f6e'}
         />

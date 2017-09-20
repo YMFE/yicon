@@ -12,6 +12,7 @@ import {
   COMPARE_PROJECT_VERSION,
   FETCH_HISTORY_PROJECT,
   SET_ADJUST_BASELINE,
+  // PUBLIC_PROJECT_LIST,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -42,6 +43,7 @@ const initialState = {
   historyProject: {
     icons: [],
   },
+  publicList: [],
 };
 
 export default (state = initialState, action) => {

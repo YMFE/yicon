@@ -116,3 +116,150 @@ export function* setAllReaded(next) {
   this.state.respond = '全部消息置为已读';
   yield next;
 }
+
+// 获取超管列表
+function* getAdminIdList() {
+  // 超管列表
+  let adminId = [];
+  yield User.findAll({
+    where: {
+      actor: 2,
+    },
+  }).then(data => {
+    adminId = data.map(v => v.dataValues.id);
+  });
+  return adminId;
+}
+
+/* 提交公共项目 */
+export function* submitPublicProject(next) {
+  let isWrite = ''; // 写入是否成功
+  let subscribers = '';
+  let isTrue = true;
+  let ownerId = 0;
+  const { name, reason, publicName } = this.param;
+  const adminId = yield getAdminIdList();
+  const date = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+  const result = yield Project.findAll({
+    where: {
+      name,
+    },
+  });
+  // 如果该项目已经是公开项目
+  const isPublicName = yield Project.findAll({
+    where: {
+      name,
+      // publick: 1 表示申请为公开项目
+      public: 1,
+    },
+  });
+  const isProjectPublick = yield Project.findAll({
+    where: {
+      name,
+      // publick: 2 表示为公开项目
+      public: 2,
+    },
+  });
+  if (isPublicName.length || isProjectPublick.length) {
+    this.state.respond = { error: 1 };
+  } else if (result.length) {  // 如果项目存在 修改public = 1
+    isWrite = yield Project.update({
+      public: '1',
+      description: reason,
+      updateAt: date(),
+      publicName,
+    }, {
+      where: {
+        name,
+      },
+    });
+    ownerId = result[0].dataValues.owner;
+    adminId.forEach(v => {
+      if (v === ownerId) {
+        isTrue = false;
+      }
+    });
+    if (!isTrue) {
+      subscribers = adminId;
+    } else {
+      subscribers = [...adminId, ownerId];
+    }
+    this.state.log = {
+      type: 'PROJECT_APPLICATION_PUBLIC',
+      loggerId: result[0].dataValues.id,
+      subscribers,
+    };
+
+    this.state.respond = isWrite;
+  }
+
+  yield next;
+}
+
+// 公开项目列表
+export function* publicProjectList(next) {
+  const { id } = this.param;
+  const result = yield Project.findAll({
+    where: {
+      public: id,
+    },
+    include: [{
+      model: User,
+      as: 'projectOwner',
+    }],
+  });
+  this.state.respond = result;
+  yield next;
+}
+
+export function* agreePublicProject(next) {
+  let isWrite = false;
+  let isTrue = true;
+  let ownerId = 0;
+  let subscribers = '';
+  const adminId = yield getAdminIdList();
+  const { id, publicId, tabId } = this.param;
+  const arr = ['PROJECT_CANCEL_PUBLIC', 'PROJECT_REFUSE_PUBLIC', 'PROJECT_AGREE_PUBLIC'];
+  const result = yield Project.findAll({
+    where: {
+      id,
+    },
+  });
+  if (result.length) {
+    // publick: 2 表示同意为公开项目
+    isWrite = yield Project.update({
+      public: publicId,
+    }, {
+      where: {
+        id,
+      },
+    }).then(() => {
+      ownerId = result[0].dataValues.owner;
+      adminId.forEach(v => {
+        if (v === ownerId) {
+          isTrue = false;
+        }
+      });
+      if (!isTrue) {
+        subscribers = adminId;
+      } else {
+        subscribers = [...adminId, ownerId];
+      }
+      this.state.log = {
+        type: arr[tabId],
+        loggerId: result[0].dataValues.id,
+        subscribers,
+      };
+    });
+  }
+  this.state.respond = isWrite;
+  yield next;
+}

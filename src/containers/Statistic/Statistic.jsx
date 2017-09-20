@@ -55,6 +55,10 @@ export default class Statistic extends Component {
     libraryName: '',
   };
 
+  componentWillMount() {
+    this._isMounted = true;
+  }
+
   componentDidMount() {
     // 浏览器视口高度
     const viewportHeight = window.innerHeight;
@@ -65,6 +69,7 @@ export default class Statistic extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     window.removeEventListener('scroll', this.handleScroll);
   }
 
@@ -104,10 +109,14 @@ export default class Statistic extends Component {
       isShowLoading: true,
     }, () => {
       this.props.fetchIconStatistic(size, number)
-        .then(() => this.setState({
-          showTip: false,
-          isShowLoading: false,
-        }))
+        .then(() => {
+          if (this._isMounted) {
+            this.setState({
+              showTip: false,
+              isShowLoading: false,
+            });
+          }
+        })
         .catch(() => this.setState({
           showTip: false,
           isShowLoading: false,

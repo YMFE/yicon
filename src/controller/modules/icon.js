@@ -4,9 +4,9 @@ import invariant from 'invariant';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion, User, ProjectVersion } from '../../model';
+import { seq, Repo, Icon, RepoVersion, User, ProjectVersion, Cache } from '../../model';
 import { isPlainObject } from '../../helpers/utils';
-import { saveOriginalSVG } from '../../helpers/fs';
+import { saveOriginalSVG, transformSvg2Path } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
@@ -125,8 +125,21 @@ export function* uploadIcons(next) {
     };
   });
 
-  yield Icon.bulkCreate(data);
-
+  yield seq.transaction(transaction =>
+    Icon.bulkCreate(data, { individualHooks: true, transaction })
+  .then(addedIcons => {
+    const cacheIcons = [];
+    addedIcons.forEach((icon, index) => {
+      const { id, name } = icon || {};
+      const originalIcons = param.icons;
+      if (originalIcons && originalIcons[index] && name === originalIcons[index].name) {
+        // 将 icon id 和 对应的 svg 插入 cache 表
+        const svg = originalIcons[index].buffer && originalIcons[index].buffer.toString() || null;
+        cacheIcons.push({ iconId: id, svg });
+      }
+    });
+    return Cache.bulkCreate(cacheIcons, { transaction });
+  }));
   // TODO: 看一下上传失败是否会直接抛出异常
   this.state.respond = '图标上传成功';
 
@@ -157,12 +170,21 @@ export function* uploadReplacingIcon(next) {
     invariant(false, '读取 svg 文件内容有误，请检查文件');
   }
   const icon = icons[0];
-  const iconData = yield Icon.create({
-    name: icon.name,
-    path: icon.d,
-    status: iconStatus.REPLACING,
-    uploader: userId,
-  });
+
+  let iconData = {};
+
+  yield seq.transaction(transaction =>
+    Icon.create({
+      name: icon.name,
+      path: icon.d,
+      status: iconStatus.REPLACING,
+      uploader: userId,
+    }, { transaction })
+  .then(addedIcon => {
+    iconData = addedIcon;
+    const svg = buffer && buffer.toString() || null;
+    return Cache.create({ iconId: addedIcon && addedIcon.id, svg }, { transaction });
+  }));
 
   this.state.respond = {
     replaceId: iconData.id,
@@ -180,7 +202,7 @@ export function* uploadReplacingIcon(next) {
  * 5. 更新大库的 updatedAt
  */
 export function* replaceIcon(next) {
-  const { fromId, toId, name, tags } = this.param;
+  const { fromId, toId, name, tags, adjustedPath = '' } = this.param;
   const { userId } = this.state.user;
   // 要检验，to 必须是 REPLACING 状态，from 必须是 RESOLVED 状态
   const from = yield Icon.findOne({ where: { id: fromId } });
@@ -214,16 +236,25 @@ export function* replaceIcon(next) {
     '当前用户没有权限替换该图标，请上传者、库管或者超管进行替换'
   );
 
+  const replacedIcon = {
+    name,
+    fontClass,
+    tags,
+    code,
+    oldId: fromId,
+    applyTime: +new Date,
+    status: iconStatus.RESOLVED,
+  };
+  if (adjustedPath) {
+    replacedIcon.path = adjustedPath;
+  }
+
   yield seq.transaction(transaction =>
-    to.update({
-      name,
-      fontClass,
-      tags,
-      code,
-      oldId: fromId,
-      applyTime: +new Date,
-      status: iconStatus.RESOLVED,
-    }, { transaction })
+    to.update(replacedIcon, { transaction })
+    .then(() => Cache.destroy({
+      where: { iconId: toId },
+      transaction,
+    }))
     .then(() => from.update({
       newId: toId, status: iconStatus.REPLACED,
     }, { transaction }))
@@ -300,6 +331,10 @@ export function* submitIcons(next) {
         data.oldId = +icon.oldId;
       }
 
+      if (icon.isAdjusted && icon._path) {
+        data.path = icon._path;
+      }
+
       return Icon.update(
         data,
         { where: { id: icon.id }, transaction }
@@ -321,7 +356,12 @@ export function* submitIcons(next) {
         where: { status: iconStatus.REPLACE, id: +item.id },
         transaction,
       });
-      iconInfo.push(tempRepoVer, tempIcon);
+      // 将被覆盖的图标对应的 cache 中的 svg 删除
+      const tempIconCache = Cache.destroy({
+        where: { iconId: +item.id },
+        transaction,
+      });
+      iconInfo.push(tempRepoVer, tempIcon, tempIconCache);
     });
 
     return Promise
@@ -366,7 +406,7 @@ export function* getIconInfo(next) {
         model: RepoVersion,
         version: '0.0.0',
       },
-    }, User],
+    }, User, { model: Cache }],
   });
   const icon = data.get({ plain: true });
   if (icon.repositories && icon.repositories.length) {
@@ -399,10 +439,21 @@ export function* deleteIcons(next) {
     iconInfo.status === iconStatus.UPLOADED,
     '只能删除审核未通过的图标或未上传的图标'
   );
-  yield Icon.update(
-    { status: iconStatus.DELETE },
-    { where: { id: iconId } },
-  );
+
+  yield seq.transaction(transaction =>
+    Icon.update(
+      { status: iconStatus.DELETE },
+      {
+        where: { id: iconId },
+        transaction,
+      }
+    )
+  .then(() =>
+    Cache.destroy({
+      where: { iconId },
+      transaction,
+    })
+  ));
 
   this.state.respond = '删除图标成功';
   yield next;
@@ -462,6 +513,7 @@ export function* getUploadedIcons(next) {
 
   this.state.respond = yield Icon.findAll({
     where: { uploader: userId, status: iconStatus.UPLOADED },
+    include: [{ model: Cache }],
   });
   yield next;
 }
@@ -525,5 +577,11 @@ export function* getSubmittedIcons(next) {
   } else {
     this.state.respond = [];
   }
+  yield next;
+}
+
+export function* transformIcon(next) {
+  const { svg } = this.param;
+  this.state.respond = yield transformSvg2Path(svg);
   yield next;
 }

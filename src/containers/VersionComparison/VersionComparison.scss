@@ -63,8 +63,11 @@
 			min-height: 640px;
 			display: block;
 			.myicon-prj-info{
-				padding:20px 40px;
-				.prj-details{
+				padding:20px 20px 0 20px;
+				.prj-details {
+					float: left;
+				}
+				.prj-details-history, .prj-details-comparison{
 					overflow: hidden;
 					.title{
 						float: left;
@@ -183,7 +186,8 @@
 				width: 865px;
 			}
 			.no-data {
-				padding: 0 40px;
+				padding: 20px;
+				// padding: 0 40px;
 			}
 		}
 

@@ -2,7 +2,7 @@ import invariant from 'invariant';
 import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, User, RepoVersion, ProjectVersion } from '../../model';
+import { seq, Repo, Icon, User, RepoVersion, ProjectVersion, Cache } from '../../model';
 import { unique } from '../../helpers/utils';
 import { iconStatus, startCode, endCode } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
@@ -161,6 +161,14 @@ function* auditUploadedIcon(uploadedIcons, userId, next) {
     getBaseClassName(uploadedIcons, transaction)
       // 更新图标内容
       .then(iconInfo => Promise.all(iconInfo))
+      // 删除 cache 表中已审核过的（无论审核通过与否）图标的原始 svg 文件
+      .then(() => {
+        const iconIds = uploadedIcons.map(i => i.id);
+        return Cache.destroy({
+          where: { iconId: { $in: iconIds } },
+          transaction,
+        });
+      })
       // 更新大库 updatedAt 字段
       .then(() => {
         const repoIds = unique(uploadedIcons.map(i => i.repoId));
@@ -266,6 +274,11 @@ function* auditReplacedIcon(replacedIcons, userId, next) {
         .then(() => from.update({
           newId: toId, status: iconStatus.REPLACED,
         }, { transaction }))
+        // 将替换审核通过的图标对应的 cache 中的 svg 删除
+        .then(() => Cache.destroy({
+          where: { iconId: toId },
+          transaction,
+        }))
         .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
         .then(() => RepoVersion.destroy({
           where: { repositoryId: icon.repoId, iconId: toId, version: 0 },
@@ -312,6 +325,11 @@ function* auditReplacedIcon(replacedIcons, userId, next) {
           status: iconStatus.REJECTED,
         }, {
           where: { status: iconStatus.REPLACE, id: icon.id },
+          transaction,
+        }))
+        // 将替换审核不通过的图标对应的 cache 中的 svg 删除
+        .then(() => Cache.destroy({
+          where: { iconId: icon.id },
           transaction,
         }))
         .then(() => {

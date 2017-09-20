@@ -56,7 +56,7 @@ class Info extends Component {
     return (
       <li className="lists">
         <Link to="/user/notifications" className="nav-message" onClick={this.stopPolling}>
-          <i className="iconfont">&#xf50d;</i>
+          <i className="iconfont" title="图标信息">&#xf50d;</i>
           {countNum}
         </Link>
       </li>

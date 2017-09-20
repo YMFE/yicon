@@ -68,8 +68,22 @@ body {
 .clearfix {
   *zoom: 1;
 }
+#app {
+  height: 100%;
+  &>div {
+    height: 100%;
+  }
+}
 .app-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: #f1f3f6;
+}
+.app-main {
+  flex: 1;
+  overflow: auto;
 }
 .btns-blue{
 	color: #fff;

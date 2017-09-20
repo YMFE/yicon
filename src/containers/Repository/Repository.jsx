@@ -53,6 +53,10 @@ export default class Repository extends Component {
     isShowLoading: false,
   };
 
+  componentWillMount() {
+    this._isMounted = true;
+  }
+
   componentDidMount() {
     this.fetchRepositoryWrapper();
     window.addEventListener('scroll', this.handleScroll);
@@ -67,6 +71,7 @@ export default class Repository extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     window.removeEventListener('scroll', this.handleScroll);
   }
 
@@ -96,8 +101,20 @@ export default class Repository extends Component {
     }, () => {
       this.refs.myslider.getWrappedInstance().reset();
       this.props.fetchRepository(id)
-        .then(() => this.setState({ isShowLoading: false }))
-        .catch(() => this.setState({ isShowLoading: false }));
+        .then(
+          () => {
+            if (this._isMounted) {
+              this.setState({ isShowLoading: false });
+            }
+          }
+        )
+        .catch(
+          () => {
+            if (this._isMounted) {
+              this.setState({ isShowLoading: false });
+            }
+          }
+        );
     });
   }
 
@@ -126,6 +143,26 @@ export default class Repository extends Component {
         isShowUpdateDialog: true,
       });
     });
+  }
+
+  @autobind
+  closeUpdateDialog() {
+    const { params: { id } } = this.props;
+    this.props.fetchRepository(id)
+      .then(
+        () => {
+          if (this._isMounted) {
+            this.setState({ isShowUpdateDialog: false });
+          }
+        }
+      )
+      .catch(
+        () => {
+          if (this._isMounted) {
+            this.setState({ isShowUpdateDialog: false });
+          }
+        }
+      );
   }
 
   @autobind
@@ -188,9 +225,11 @@ export default class Repository extends Component {
             <span className="name">{admin}</span>
             <div className="tool-content">
               <div className="tools">
-                <Link to={`/upload/repository/${repoId}`} className="options-btns btns-blue">
-                  <i className="iconfont">&#xf50a;</i>上传新图标
-                </Link>
+                {status > 1 &&
+                  <Link to={`/upload/repository/${repoId}`} className="options-btns btns-blue">
+                    <i className="iconfont">&#xf50a;</i>上传新图标
+                  </Link>
+                }
                 <button
                   onClick={this.downloadAllIcons}
                   className="options-btns btns-blue"
@@ -238,7 +277,7 @@ export default class Repository extends Component {
           visible={this.state.isShowUpdateDialog}
           getShow={this.dialogUpdateShow}
         >
-          <UpdateDialog type="repo" />
+          <UpdateDialog type="repo" closeUpdateDialog={this.closeUpdateDialog} />
         </Dialog>
         <Loading visible={this.state.isShowLoading} />
       </div>

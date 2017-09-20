@@ -1,0 +1,41 @@
+/* .public-project.css */
+.public-project {
+  margin: 18px 0 0 0;
+  article {
+    display: block;
+    margin: 0 0 20px 0;
+    label {
+      margin:0 10px 0 0;
+      color: #616161;
+    }
+    input, textarea {
+      border: 1px solid #dfdfdf;
+      width: 378px;
+      box-sizing: border-box;
+      color: #616161;
+    }
+    input {
+      padding: 0 10px;
+      height: 36px;
+    }
+    textarea {
+      height: 100px;
+      padding: 8px 10px;
+      min-height: 100px;
+      max-height: 200px;
+    }
+  }
+  article:nth-child(2) {
+    label {
+      vertical-align: top;
+    }
+  }
+  .error {
+    display: none;
+    color: #C00;
+    margin: -10px 0 0 68px;
+  }
+  .is-block {
+    display: block;
+  }
+}
