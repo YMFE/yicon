@@ -169,7 +169,8 @@ class UpdateDialog extends Component {
       if (newValue) {
         this.setState({
           // 控制input是否展现
-          isEdit: false,
+          // isEdit: false,
+          isEdit: true,
           inputValue: newValue,
         });
         this.refs.myInput.setVal(newValue);
