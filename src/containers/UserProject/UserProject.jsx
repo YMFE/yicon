@@ -288,6 +288,22 @@ class UserProject extends Component {
   }
 
   @autobind
+  closeUpdateDialog() {
+    const fn = () => {
+      this.setState({
+        isShowUpdateDialog: false,
+      });
+    };
+    const id = this.props.projectId;
+    const current = this.props.currentUserProjectInfo;
+    if (!current || id !== +current.id) {
+      this.props.getUserProjectInfo(id)
+        .then(() => fn())
+        .catch(() => fn());
+    }
+  }
+
+  @autobind
   updateProjectDetail(result) {
     this.props.patchUserProject({
       id: result.id,
@@ -882,7 +898,7 @@ class UserProject extends Component {
           visible={this.state.isShowUpdateDialog}
           getShow={this.dialogUpdateShow}
         >
-          <UpdateDialog />
+          <UpdateDialog closeUpdateDialog={this.closeUpdateDialog} />
         </Dialog>,
         <ApplicationProject
           key={10}

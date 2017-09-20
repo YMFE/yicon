@@ -124,6 +124,7 @@ class UpdateDialog extends Component {
       if (data && data.data) {
         this.props.resetT();
         this.setTagList();
+        this.props.closeUpdateDialog();
         Message.success('编辑成功!');
       } else {
         Message.error(data.message);
@@ -153,6 +154,7 @@ class UpdateDialog extends Component {
           });
           this.refs.myInput.reset();
           this.setInputValue();
+          this.props.closeUpdateDialog();
           Message.success('编辑成功!');
         });
       }
@@ -295,6 +297,7 @@ UpdateDialog.propTypes = {
   userInfo: PropTypes.object,
   currRepository: PropTypes.object,
   editIcon: PropTypes.func,
+  closeUpdateDialog: PropTypes.func,
   resetT: PropTypes.func,
 };
 
