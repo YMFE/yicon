@@ -56,11 +56,11 @@ class UpdateDialog extends Component {
     });
   }
 
-  // 是否在图标项目页面
-  isIconProject() {
-    const url = location.href;
-    const reg = /projects$/img;
-    return url.match(reg);
+  @autobind
+  setInputValue() {
+    this.setState({
+      inputValue: '',
+    });
   }
 
   editIcon(e) {
@@ -119,10 +119,15 @@ class UpdateDialog extends Component {
   @autobind
   saveTags(tags) {
     const { iconDetail } = this.props;
-    this.props.editIcon(iconDetail.id, { tags }).then(() => {
-      this.props.resetT();
-      this.setTagList();
-      Message.success('编辑成功!');
+    this.props.editIcon(iconDetail.id, { tags }).then(result => {
+      const data = result.payload;
+      if (data && data.data) {
+        this.props.resetT();
+        this.setTagList();
+        Message.success('编辑成功!');
+      } else {
+        Message.error(data.message);
+      }
     });
   }
 
@@ -147,6 +152,7 @@ class UpdateDialog extends Component {
             isOK: true,
           });
           this.refs.myInput.reset();
+          this.setInputValue();
           Message.success('编辑成功!');
         });
       }
@@ -190,12 +196,20 @@ class UpdateDialog extends Component {
       if (isElClose !== -1) {
         this.props.resetT();
         this.setTagList();
+        this.setInputValue();
         fn(true);
         return false;
       }
       addValue(newValue);
     }
     return false;
+  }
+
+  // 是否在图标项目页面
+  isIconProject() {
+    const url = location.href;
+    const reg = /projects$/img;
+    return url.match(reg);
   }
 
   @autobind
@@ -252,6 +266,7 @@ class UpdateDialog extends Component {
                 regExp={ICON_NAME.reg}
                 errMsg={ICON_NAME.message}
                 ref="myInput"
+                setInputValue={this.setInputValue}
               />
             </div>
           </div>
@@ -262,6 +277,7 @@ class UpdateDialog extends Component {
             disabled={+status === 1}
             onTagChange={this.addTags}
             tags={iconDetail.tags || ''}
+            setInputValue={this.setInputValue}
           />
 
           <button className="options-btns-ok" onClick={this.submit}>
