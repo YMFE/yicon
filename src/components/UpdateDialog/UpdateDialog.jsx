@@ -35,11 +35,11 @@ class UpdateDialog extends Component {
 
   componentDidMount() {
     this.refs.myInput.reset();
-    document.body.addEventListener('click', e => this.addEvent(e));
+    document.body.addEventListener('click', e => this.editIcon(e));
   }
 
   componentWillUnmount() {
-    document.body.removeEventListener('click', e => this.addEvent(e));
+    document.body.removeEventListener('click', e => this.editIcon(e));
   }
 
   @autobind
@@ -63,7 +63,7 @@ class UpdateDialog extends Component {
     return url.match(reg);
   }
 
-  addEvent(e) {
+  editIcon(e) {
     const el = e.target;
     const tagName = el.nodeName;
     if (tagName === 'svg' || tagName === 'path') {
