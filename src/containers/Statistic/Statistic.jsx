@@ -126,11 +126,21 @@ export default class Statistic extends Component {
 
   @autobind
   hoverIcon(e, icon) {
+    function getLibraryName() {
+      const repositories = icon.repositories;
+      let name = '';
+      if (repositories && repositories[0]) {
+        name = repositories[0].name;
+      }
+      return name;
+    }
+
     if (Object.values(icon).length) {
       const { toElement } = e.nativeEvent;
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const { name, code, path, status, description, repositories: [{ name: libraryName }] } = icon;
+      const { name, code, path, status, description } = icon;
+      const libraryName = getLibraryName();
       const node = document.querySelector(`div[id="${icon.id}"]`) || toElement;
       let targetElement = null;
       switch (toElement.tagName.toUpperCase()) {
