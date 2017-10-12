@@ -64,21 +64,22 @@ export default class Statistic extends Component {
     const viewportHeight = window.innerHeight;
     size = Math.max(Math.ceil(viewportHeight / 46) * 16 * 2, 480);
     this.fetchData(1);
-    window.addEventListener('scroll', this.handleScroll);
+    document.querySelector('.app-main').addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    window.removeEventListener('scroll', this.handleScroll);
+    document.querySelector('.app-main').removeEventListener('scroll', this.handleScroll);
   }
 
   @autobind
   handleScroll() {
-    // 页面总高度
-    const pageHeight = document.body.scrollHeight;
+    // '.app-main' 元素总高度
+    const elem = document.querySelector('.app-main');
+    const pageHeight = elem.scrollHeight;
     // 滚动条到顶部的高度
-    const scrollTop = document.body.scrollTop;
+    const scrollTop = elem.scrollTop;
     // 浏览器视口高度
     const viewportHeight = window.innerHeight;
     const element = findDOMNode(this.refs.statistic);
