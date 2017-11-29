@@ -83,11 +83,12 @@ export function* buildPNG(name, svgPath) {
 }
 
 export function* transformSvg2Path(param) {
-  const adjustedPath = param.trim().match(/<svg [a-zA-Z0-9\s<>\/="\.:#\-]+<\/svg>$/)[0]
+  const matchResult = param.trim().match(/<svg [a-zA-Z0-9\s<>\/="\.:#\-]+<\/svg>$/);
+  const adjustedPath = matchResult && Array.isArray(matchResult) && matchResult[0]
     .replace(/(height|width)="([0-9\.]+(px)?)"/g, (all, name) => `${name}="1024"`)
     .replace(/\sversion="[0-9\.]+"/, () => '')
     .replace(/\sclass="icon"/, () => '');
-  const buffer = new Buffer(adjustedPath);
+  const buffer = new Buffer(adjustedPath || '');
   const option = {
     icons: [{ name: 'temp', buffer }],
     // 标记只返回图标信息数据
