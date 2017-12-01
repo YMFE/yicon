@@ -63,6 +63,8 @@ export default class Statistic extends Component {
     // 浏览器视口高度
     const viewportHeight = window.innerHeight;
     size = Math.max(Math.ceil(viewportHeight / 46) * 16 * 2, 480);
+    // 这一次请求不能删除，否则其他页面跳回统计页面，数据不会更新
+    this.fetchData(1);
     document.querySelector('.app-main').addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   }
