@@ -14,6 +14,10 @@ class NoProject extends Component {
     hideLoading: PropTypes.func,
   }
 
+  componentDidMount() {
+    this.props.hideLoading();
+  }
+
   render() {
     return (
       <div className="empty-project"></div>
