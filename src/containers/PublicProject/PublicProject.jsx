@@ -11,11 +11,14 @@ import { getUsersProjectList } from '../../actions/project';
 /* eslint-disable react/no-multi-comp */
 class NoProject extends Component {
   static propTypes = {
+    cacheProjectList: PropTypes.object,
     hideLoading: PropTypes.func,
   }
 
   componentDidMount() {
-    this.props.hideLoading();
+    this.props.cacheProjectList.then(() => {
+      this.props.hideLoading();
+    });
   }
 
   render() {
@@ -91,7 +94,7 @@ export default class PublicProject extends Component {
     const { from } = this.props.location && this.props.location.query;
     const { cacheProjectList } = this.state;
     if (!id) {
-      return <NoProject hideLoading={this.hideLoading} />;
+      return <NoProject cacheProjectList={cacheProjectList} hideLoading={this.hideLoading} />;
     }
     let content;
     const isBelong = this.props.usersProjectList.some(v => v.id === +id);
