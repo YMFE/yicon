@@ -38,11 +38,12 @@ function* ldapQuery(username, password) {
       }
     });
 
-    search.on('searchReference', (referral) => {
-      if (referral) {
-        deferred.reject(referral);
-      }
-    });
+    // FIXME: do not reject when got searchReference
+    // search.on('searchReference', (referral) => {
+    //   if (referral) {
+    //     deferred.reject(referral);
+    //   }
+    // });
 
     search.on('end', () => {
       if (users.length > 0) {
@@ -69,9 +70,10 @@ function* ldapQuery(username, password) {
     }
 
     const searchDn = simpleParse([login.searchDn, login.baseDn].join(','), { username });
+    const searchFilter = simpleParse(login.searchFilter || '(objectclass=*)', { username });
 
     const opts = {
-      filter: '(objectclass=*)',
+      filter: searchFilter,
       scope: 'sub',
     };
 
