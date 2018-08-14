@@ -73,6 +73,10 @@ export const logTypes = {
   PROJECT_REFUSE_PUBLIC: '拒绝申请为公开项目',
   PROJECT_CANCEL_PUBLIC: '取消该项目为公开项目',
   PROJECT_AGREE_PUBLIC: '同意申请为公开项目',
+  PROJECT_APPLICATION_ADMIN: '申请为项目管理员',
+  PROJECT_AGREE_NEW_ADMIN: '同意更换项目管理员',
+  PROJECT_REJECT_NEW_ADMIN: '拒绝更换项目管理员',
+
 };
 
 export const InfoTypeDetail = [

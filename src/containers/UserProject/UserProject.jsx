@@ -36,16 +36,14 @@ import {
   getPathAndVersion,
   uploadIconToSource,
   saveToNewProject,
-  createEmptyProject,
+  createEmptyProject
 } from '../../actions/project';
 import {
   submitPublicProject,
   publicProjectList,
+  applyProjectAdmin
 } from '../../actions/notification';
-import {
-  getIconDetail,
-  editIconStyle,
-} from '../../actions/icon';
+import { getIconDetail, editIconStyle } from '../../actions/icon';
 // import { resetIconSize } from '../../actions/repository';
 import EditProject from './Edit.jsx';
 import ManageMembers from './ManageMembers.jsx';
@@ -61,7 +59,7 @@ import CreateProject from './CreateProject.jsx';
     currentUserProjectInfo: state.project.currentUserProjectInfo,
     suggestList: state.project.memberSuggestList,
     projectInfo: state.project.projectInfo,
-    comparisonResult: state.project.comparisonResult,
+    comparisonResult: state.project.comparisonResult
   }),
   {
     getUsersProjectList,
@@ -87,6 +85,7 @@ import CreateProject from './CreateProject.jsx';
     submitPublicProject,
     publicProjectList,
     // resetIconSize,
+    applyProjectAdmin
   }
 )
 class UserProject extends Component {
@@ -124,12 +123,13 @@ class UserProject extends Component {
     publicProjectList: PropTypes.func,
     push: PropTypes.func,
     cacheProjectList: PropTypes.object,
-  }
+    applyProjectAdmin: PropTypes.func
+  };
 
-  static defaultProps ={
+  static defaultProps = {
     generateVersion: 'revision',
-    showLoading: false,
-  }
+    showLoading: false
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -151,7 +151,7 @@ class UserProject extends Component {
       loadIconOver: false,
       iconList: [],
       isPublicProject: false,
-      publicId: '',
+      publicId: ''
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -165,25 +165,28 @@ class UserProject extends Component {
     this.getPublicProject(2);
     this.setState({ showLoading: true });
     // this.props.resetIconSize();
-    this.props.cacheProjectList.then(() => {
-      const id = this.props.projectId;
-      const current = this.props.currentUserProjectInfo;
-      if (!current || id !== +current.id) {
-        this.props.getUserProjectInfo(id)
-          .then(() => this.props.fetchAllVersions(id))
-          .then(() => {
-            const { versions } = this.props.projectInfo;
-            if (versions && versions.length) {
-              this.compareVersion(() => {});
-            }
-          })
-          .then(() => this.props.hideLoading())
-          .catch(() => this.props.hideLoading());
-        // this.props.fetchAllVersions(id);
-      }
-      this.props.fetchMemberSuggestList();
-      this.setState({ showLoading: false });
-    }).catch(() => this.setState({ showLoading: false }));
+    this.props.cacheProjectList
+      .then(() => {
+        const id = this.props.projectId;
+        const current = this.props.currentUserProjectInfo;
+        if (!current || id !== +current.id) {
+          this.props
+            .getUserProjectInfo(id)
+            .then(() => this.props.fetchAllVersions(id))
+            .then(() => {
+              const { versions } = this.props.projectInfo;
+              if (versions && versions.length) {
+                this.compareVersion(() => {});
+              }
+            })
+            .then(() => this.props.hideLoading())
+            .catch(() => this.props.hideLoading());
+          // this.props.fetchAllVersions(id);
+        }
+        this.props.fetchMemberSuggestList();
+        this.setState({ showLoading: false });
+      })
+      .catch(() => this.setState({ showLoading: false }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -199,7 +202,7 @@ class UserProject extends Component {
         id: current.id,
         owner: current.projectOwner,
         isPublic: current.public,
-        members: current.members,
+        members: current.members
       });
     }
 
@@ -208,7 +211,8 @@ class UserProject extends Component {
       return;
     }
     if (nextId !== this.props.projectId || from !== nextFrom) {
-      this.props.getUserProjectInfo(nextId)
+      this.props
+        .getUserProjectInfo(nextId)
         .then(() => this.props.fetchAllVersions(nextId))
         .then(() => {
           const { versions } = this.props.projectInfo;
@@ -216,9 +220,7 @@ class UserProject extends Component {
             this.compareVersion(() => {});
           }
         })
-        .then(() =>
-          this.setState({ showLoading: false })
-        )
+        .then(() => this.setState({ showLoading: false }))
         .catch(() => this.setState({ showLoading: false }));
       this.props.fetchAllVersions(nextId);
       this.highestVersion = '0.0.0';
@@ -250,7 +252,7 @@ class UserProject extends Component {
     }
     if (isOwner) {
       this.setState({
-        isPublicProject: isShow,
+        isPublicProject: isShow
       });
       return false;
     }
@@ -260,16 +262,15 @@ class UserProject extends Component {
 
   // 公开项目列表
   getPublicProject(id) {
-    this.props.publicProjectList(id)
-      .then(data => {
-        if (data.payload.data && data.payload.data[0]) {
-          if (this._isMounted) {
-            this.setState({
-              publicId: data.payload.data[0].id,
-            });
-          }
+    this.props.publicProjectList(id).then(data => {
+      if (data.payload.data && data.payload.data[0]) {
+        if (this._isMounted) {
+          this.setState({
+            publicId: data.payload.data[0].id
+          });
         }
-      });
+      }
+    });
   }
 
   @autobind
@@ -282,7 +283,7 @@ class UserProject extends Component {
     this.props.getIconDetail(iconId).then(() => {
       this.props.editIconStyle({ color: '#34475e', size: 255 });
       this.setState({
-        isShowUpdateDialog: true,
+        isShowUpdateDialog: true
       });
     });
   }
@@ -291,13 +292,14 @@ class UserProject extends Component {
   closeUpdateDialog() {
     const fn = () => {
       this.setState({
-        isShowUpdateDialog: false,
+        isShowUpdateDialog: false
       });
     };
     const id = this.props.projectId;
     const current = this.props.currentUserProjectInfo;
     if (!current || id !== +current.id) {
-      this.props.getUserProjectInfo(id)
+      this.props
+        .getUserProjectInfo(id)
         .then(() => fn())
         .catch(() => fn());
     }
@@ -309,14 +311,14 @@ class UserProject extends Component {
       id: result.id,
       name: result.projectName,
       publicProject: result.isPublic,
-      owner: result.owner.id,
+      owner: result.owner.id
     });
     this.shiftEidtProject();
   }
   @autobind
   shiftEidtProject(isShow = false) {
     this.setState({
-      showEditProject: isShow,
+      showEditProject: isShow
     });
   }
   @autobind
@@ -327,10 +329,10 @@ class UserProject extends Component {
       onOk: () => {
         const { id } = this.props.currentUserProjectInfo;
         this.props.deleteProject({
-          id,
+          id
         });
       },
-      onCancel: () => {},
+      onCancel: () => {}
     });
   }
 
@@ -341,17 +343,18 @@ class UserProject extends Component {
       title: '删除确认',
       onOk: () => {
         const id = this.props.currentUserProjectInfo.id;
-        this.props.delProjectIcon(id, [icons])
-        .then(() => this.props.getUserProjectInfo(id))
-        .then(() => this.props.fetchAllVersions(id))
-        .then(() => {
-          const { versions } = this.props.projectInfo;
-          if (versions && versions.length) {
-            this.compareVersion(() => {});
-          }
-        });
+        this.props
+          .delProjectIcon(id, [icons])
+          .then(() => this.props.getUserProjectInfo(id))
+          .then(() => this.props.fetchAllVersions(id))
+          .then(() => {
+            const { versions } = this.props.projectInfo;
+            if (versions && versions.length) {
+              this.compareVersion(() => {});
+            }
+          });
       },
-      onCancel: () => {},
+      onCancel: () => {}
     });
   }
 
@@ -359,7 +362,7 @@ class UserProject extends Component {
   updateManageMembers({ members }) {
     this.props.patchProjectMemeber({
       id: this.props.currentUserProjectInfo.id,
-      members,
+      members
     });
     this.shiftShowManageMembers();
   }
@@ -368,7 +371,9 @@ class UserProject extends Component {
     const length = this.props.projectInfo.versions.length;
     const current = this.props.currentUserProjectInfo;
     if (current && current.icons) {
-      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      const disabled = current.icons.filter(
+        icon => icon.status === iconStatus.DISABLED
+      );
       if (disabled.length) {
         Message.error('项目中存在系统占用的图标，请删除后再下载');
         return;
@@ -379,7 +384,7 @@ class UserProject extends Component {
         const { deleted, added } = ret.payload.data;
         if (deleted.length || added.length) {
           this.setState({
-            showDownloadDialog: isShow,
+            showDownloadDialog: isShow
           });
         } else {
           this.downloadAllIcons();
@@ -388,7 +393,7 @@ class UserProject extends Component {
       });
     } else {
       this.setState({
-        showDownloadDialog: isShow,
+        showDownloadDialog: isShow
       });
     }
   }
@@ -396,36 +401,36 @@ class UserProject extends Component {
   @autobind
   dialogDownloadShow(isShow) {
     this.setState({
-      isShowDownloadDialog: isShow,
+      isShowDownloadDialog: isShow
     });
   }
 
   @autobind
   dialogUpdateShow(isShow) {
     this.setState({
-      isShowUpdateDialog: isShow,
+      isShowUpdateDialog: isShow
     });
   }
 
   @autobind
   shiftShowManageMembers(isShow = false) {
     this.setState({
-      showManageMember: isShow,
+      showManageMember: isShow
     });
   }
   @autobind
   changeGenerateVersion(e) {
     const type = e.currentTarget.querySelector('input').value;
     this.setState({
-      generateVersion: type,
+      generateVersion: type
     });
   }
 
   @autobind
-  downloadAllIcons() {
+  originDownloadAllIcons(isNeedNewFontFamily) {
     const id = this.props.projectId;
     axios
-      .post('/api/download/font', { type: 'project', id })
+      .post('/api/download/font', { type: 'project', id, isNeedNewFontFamily })
       .then(({ data }) => {
         if (data.res) {
           const { foldName } = data.data;
@@ -437,35 +442,50 @@ class UserProject extends Component {
   }
 
   @autobind
+  downloadAllIcons() {
+    confirm({
+      content: '是否需要在font-family中加入版本号',
+      title: '提示',
+      onOk: () => {
+        this.originDownloadAllIcons(true);
+      },
+      onCancel: () => {
+        this.originDownloadAllIcons(false);
+      }
+    });
+  }
+
+  @autobind
   downloadAndGenerateVersion() {
     // 生成版本
     const id = this.props.currentUserProjectInfo.id;
-    this.props.generateVersion({
-      id,
-      versionType: this.state.generateVersion,
-    })
-    .then((data) => {
-      if (data.payload && !data.payload.res) {
-        const { message } = data.payload.res || {};
-        throw new Error(message || '生成版本失败');
-      }
-      // 生成新版后需要同步一下项目状态
-      this.props.getUserProjectInfo(id);
-    })
-    .then(() => this.props.fetchAllVersions(id))
-    .then(() => {
-      const { versions } = this.props.projectInfo;
-      if (versions && versions.length) {
-        this.compareVersion(() => {});
-      }
-    })
-    .then(() => {
-      // 下载字体
-      this.downloadAllIcons();
-    })
-    .catch(() => {
-      //
-    });
+    this.props
+      .generateVersion({
+        id,
+        versionType: this.state.generateVersion
+      })
+      .then(data => {
+        if (data.payload && !data.payload.res) {
+          const { message } = data.payload.res || {};
+          throw new Error(message || '生成版本失败');
+        }
+        // 生成新版后需要同步一下项目状态
+        this.props.getUserProjectInfo(id);
+      })
+      .then(() => this.props.fetchAllVersions(id))
+      .then(() => {
+        const { versions } = this.props.projectInfo;
+        if (versions && versions.length) {
+          this.compareVersion(() => {});
+        }
+      })
+      .then(() => {
+        // 下载字体
+        this.downloadAllIcons();
+      })
+      .catch(() => {
+        //
+      });
     // 关闭dialog
     this.shiftDownloadDialog();
   }
@@ -476,13 +496,15 @@ class UserProject extends Component {
       this.props.getUserProjectInfo(this.props.projectId);
     }
     this.setState({
-      showSetPath: isShow,
+      showSetPath: isShow
     });
   }
 
   @autobind
   updateSourcePath(data) {
-    const oldPath = this.props.currentUserProjectInfo && this.props.currentUserProjectInfo.source;
+    const oldPath =
+      this.props.currentUserProjectInfo &&
+      this.props.currentUserProjectInfo.source;
     const newPath = data && data.sourcePath;
     if (decodeURIComponent(oldPath) === newPath) {
       this.shiftSetPath();
@@ -502,7 +524,9 @@ class UserProject extends Component {
     const id = this.props.currentUserProjectInfo.id;
     const current = this.props.currentUserProjectInfo;
     if (current && current.icons) {
-      const disabled = current.icons.filter(icon => icon.status === iconStatus.DISABLED);
+      const disabled = current.icons.filter(
+        icon => icon.status === iconStatus.DISABLED
+      );
       if (disabled.length) {
         Message.error('项目中存在系统占用的图标，请删除后再同步');
         return;
@@ -513,17 +537,25 @@ class UserProject extends Component {
         if (!data.payload.res) return;
         const val = data.payload.data;
         this.sourcePath = val && val.source;
-        this.compareVersion((ret) => {
+        this.compareVersion(ret => {
           const { deleted, added } = ret.payload.data;
           const v = val && val.version;
           const sourceNum = versionTools.v2n(v);
           const platformNum = versionTools.v2n(this.highestVersion);
-          if (sourceNum && platformNum && sourceNum === platformNum
-          && !deleted.length && !added.length) {
-            Message.error('线上最新版项目图标与当前项目图标一致，无需进行图标同步');
+          if (
+            sourceNum &&
+            platformNum &&
+            sourceNum === platformNum &&
+            !deleted.length &&
+            !added.length
+          ) {
+            Message.error(
+              '线上最新版项目图标与当前项目图标一致，无需进行图标同步'
+            );
             return;
           }
-          this.sourceVersion = sourceNum > platformNum ? v : this.highestVersion;
+          this.sourceVersion =
+            sourceNum > platformNum ? v : this.highestVersion;
           this.setState({ showUploadDialog: isShow });
         });
       });
@@ -533,9 +565,27 @@ class UserProject extends Component {
   }
 
   @autobind
+  applyProjectAdmin() {
+    this.props
+      .applyProjectAdmin({
+        projectId: this.props.projectId
+      })
+      .then(result => {
+        const { res } = result && result.payload;
+        if (!res) {
+          return;
+        }
+        Message.success('已申请, 请等待审核');
+      })
+      .catch(() => {
+        Message.error('申请失败');
+      });
+  }
+
+  @autobind
   shiftUploadSuccess(isShow = false) {
     this.setState({
-      isUploadSuccess: isShow,
+      isUploadSuccess: isShow
     });
   }
 
@@ -548,16 +598,15 @@ class UserProject extends Component {
   }
 
   submitProject(data) {
-    this.props.submitPublicProject(data)
-      .then(result => {
-        const obj = result.payload.data;
-        if (obj.error) {
-          Message.error('该项目已申请为公开项目, 不能重复申请!');
-        }
-        if (obj.length) {
-          Message.success('已申请为公开项目, 请等待审核!');
-        }
-      });
+    this.props.submitPublicProject(data).then(result => {
+      const obj = result.payload.data;
+      if (obj.error) {
+        Message.error('该项目已申请为公开项目, 不能重复申请!');
+      }
+      if (obj.length) {
+        Message.success('已申请为公开项目, 请等待审核!');
+      }
+    });
   }
 
   @autobind
@@ -565,47 +614,48 @@ class UserProject extends Component {
     this.setState({ isShowLoading: true });
     // 生成(指定)版本
     const { id, name, source } = this.props.currentUserProjectInfo;
-    this.props.generateVersion({
-      id,
-      versionType: this.state.generateVersion,
-      // 指定升级到的版本
-      version: this.nextSourceVersion,
-    })
-    .then((data) => {
-      if (data.payload && !data.payload.res) {
-        throw Error();
-      }
-      // 上传字体
-      this.props.fetchAllVersions(id);
-      return this.props.uploadIconToSource(id, {
-        project: name,
-        path: decodeURIComponent(source),
-        branch: 'master',
-        version: this.nextSourceVersion,
+    this.props
+      .generateVersion({
+        id,
+        versionType: this.state.generateVersion,
+        // 指定升级到的版本
+        version: this.nextSourceVersion
+      })
+      .then(data => {
+        if (data.payload && !data.payload.res) {
+          throw Error();
+        }
+        // 上传字体
+        this.props.fetchAllVersions(id);
+        return this.props.uploadIconToSource(id, {
+          project: name,
+          path: decodeURIComponent(source),
+          branch: 'master',
+          version: this.nextSourceVersion
+        });
+      })
+      .then(val => {
+        const { res, data } = val.payload;
+        if (res && data) {
+          this.shiftUploadSource();
+          this.shiftUploadSuccess(true);
+          this.setState({ iconStr: data });
+        }
+        this.setState({ isShowLoading: false });
+      })
+      .then(() => {
+        // 生成新版后需要同步一下项目状态
+        this.props.getUserProjectInfo(id);
+      })
+      .then(() => {
+        const { versions } = this.props.projectInfo;
+        if (versions && versions.length) {
+          this.compareVersion(() => {});
+        }
+      })
+      .catch(() => {
+        this.setState({ isShowLoading: false });
       });
-    })
-    .then((val) => {
-      const { res, data } = val.payload;
-      if (res && data) {
-        this.shiftUploadSource();
-        this.shiftUploadSuccess(true);
-        this.setState({ iconStr: data });
-      }
-      this.setState({ isShowLoading: false });
-    })
-    .then(() => {
-      // 生成新版后需要同步一下项目状态
-      this.props.getUserProjectInfo(id);
-    })
-    .then(() => {
-      const { versions } = this.props.projectInfo;
-      if (versions && versions.length) {
-        this.compareVersion(() => {});
-      }
-    })
-    .catch(() => {
-      this.setState({ isShowLoading: false });
-    });
     // 关闭dialog
     this.shiftUploadSource();
   }
@@ -615,7 +665,7 @@ class UserProject extends Component {
     if (this._isMounted) {
       this.setState({
         showCreateProject: isShow,
-        isCreate,
+        isCreate
       });
     }
   }
@@ -630,30 +680,36 @@ class UserProject extends Component {
     const current = this.props.currentUserProjectInfo;
     let icons = [];
     if (this.state.isCreate) {
-      this.props.createEmptyProject({ name: projectName }).then(result => {
-        const { res, data } = result && result.payload;
-        if (!res) {
-          return;
-        }
-        const { id } = data;
-        this.props.push(`/projects/${id}`);
-        this.shiftCreateProject();
-      }).catch(() => {
-        this.shiftCreateProject();
-      });
+      this.props
+        .createEmptyProject({ name: projectName })
+        .then(result => {
+          const { res, data } = result && result.payload;
+          if (!res) {
+            return;
+          }
+          const { id } = data;
+          this.props.push(`/projects/${id}`);
+          this.shiftCreateProject();
+        })
+        .catch(() => {
+          this.shiftCreateProject();
+        });
     } else {
-      icons = current && current.icons || [];
-      this.props.saveToNewProject(projectName, icons).then(result => {
-        const { res, data } = result && result.payload;
-        if (!res) {
-          return;
-        }
-        const { projectId } = data;
-        this.props.push(`/projects/${projectId}`);
-        this.shiftCreateProject();
-      }).catch(() => {
-        this.shiftCreateProject();
-      });
+      icons = (current && current.icons) || [];
+      this.props
+        .saveToNewProject(projectName, icons)
+        .then(result => {
+          const { res, data } = result && result.payload;
+          if (!res) {
+            return;
+          }
+          const { projectId } = data;
+          this.props.push(`/projects/${projectId}`);
+          this.shiftCreateProject();
+        })
+        .catch(() => {
+          this.shiftCreateProject();
+        });
     }
   }
 
@@ -665,7 +721,7 @@ class UserProject extends Component {
 
   resumeIconList() {
     this.setState({
-      iconList: false,
+      iconList: false
     });
   }
 
@@ -675,7 +731,7 @@ class UserProject extends Component {
       this.props.getIconDetail(iconId).then(() => {
         this.props.editIconStyle({ color: '#34475e', size: 256 });
         this.setState({
-          isShowDownloadDialog: true,
+          isShowDownloadDialog: true
         });
       });
     };
@@ -697,12 +753,15 @@ class UserProject extends Component {
       const bodyHeight = body.offsetHeight;
       const scrollHeight = body.scrollTop;
       const appHeight = document.querySelector('#app').offsetHeight;
-      if ((bodyHeight + scrollHeight) >= (appHeight - 50)) {
-        this.setState({
-          loadIconOver: true,
-        }, () => {
-          this.renderIconList();
-        });
+      if (bodyHeight + scrollHeight >= appHeight - 50) {
+        this.setState(
+          {
+            loadIconOver: true
+          },
+          () => {
+            this.renderIconList();
+          }
+        );
       }
     }
   }
@@ -714,7 +773,7 @@ class UserProject extends Component {
     const { deleted, added, replaced } = this.props.comparisonResult;
     let iconList = (
       <div className="no-icon">
-        <div className="no-icon-pic"></div>
+        <div className="no-icon-pic" />
         <div className="no-icon-tips">
           <p>还没有图标</p>
           <p>快从购物车添加吧</p>
@@ -724,19 +783,28 @@ class UserProject extends Component {
     if (current.icons && current.icons.length > 0) {
       const hasReplacedIcons = replaced.map(item => item.old && item.old.id);
       const replacedIcons = replaced.map(item => item.new && item.new.id);
-      const deletedIcons =
-        deleted.map(item => item.id).filter(item => hasReplacedIcons.indexOf(item) === -1);
-      const addedIcons =
-        added.map(item => item.id).filter(item => replacedIcons.indexOf(item) === -1);
+      const deletedIcons = deleted
+        .map(item => item.id)
+        .filter(item => hasReplacedIcons.indexOf(item) === -1);
+      const addedIcons = added
+        .map(item => item.id)
+        .filter(item => replacedIcons.indexOf(item) === -1);
 
-      const currentIcons = deletedIcons && deletedIcons.length
-        ? current.icons.concat(deleted.filter(item => deletedIcons.indexOf(item.id) > -1))
-        : current.icons;
+      const currentIcons =
+        deletedIcons && deletedIcons.length
+          ? current.icons.concat(
+              deleted.filter(item => deletedIcons.indexOf(item.id) > -1)
+            )
+          : current.icons;
       iconList = currentIcons.map((item, index) => {
-        const deletedClassName = deletedIcons.indexOf(item.id) > -1 ? 'deleted-icon' : '';
-        const addedClassName = addedIcons.indexOf(item.id) > -1 ? 'added-icon' : '';
-        const replacedClassName = replacedIcons.indexOf(item.id) > -1 ? 'replaced-icon' : '';
-        const disabledClassName = item.status === iconStatus.DISABLED ? 'disabled-icon' : '';
+        const deletedClassName =
+          deletedIcons.indexOf(item.id) > -1 ? 'deleted-icon' : '';
+        const addedClassName =
+          addedIcons.indexOf(item.id) > -1 ? 'added-icon' : '';
+        const replacedClassName =
+          replacedIcons.indexOf(item.id) > -1 ? 'replaced-icon' : '';
+        const disabledClassName =
+          item.status === iconStatus.DISABLED ? 'disabled-icon' : '';
         const toolBtns = ['copy', 'download', 'copytip', 'update'];
         if (!deletedClassName) {
           toolBtns.push('delete');
@@ -747,7 +815,9 @@ class UserProject extends Component {
             className={`project-icon clearfix ${disabledClassName} ${deletedClassName}`}
           >
             <ul className="status-tag">
-              <li className={`status-tag-item ${disabledClassName}`}>系统占用</li>
+              <li className={`status-tag-item ${disabledClassName}`}>
+                系统占用
+              </li>
               <li className={`status-tag-item ${addedClassName}`}>新增</li>
               <li className={`status-tag-item ${replacedClassName}`}>已替换</li>
               <li className={`status-tag-item ${deletedClassName}`}>删除</li>
@@ -755,10 +825,12 @@ class UserProject extends Component {
             <IconButton
               icon={item}
               toolBtns={toolBtns}
-              delete={(icons) => {
+              delete={icons => {
                 this.deleteIcon(icons);
               }}
-              update={() => { this.updateIconInfo(item.id); }}
+              update={() => {
+                this.updateIconInfo(item.id);
+              }}
               download={this.handleSingleIconDownload(item.id)}
             />
           </div>
@@ -778,8 +850,14 @@ class UserProject extends Component {
   url('${url}.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('${url}.svg#iconfont') format('svg'); /* iOS 4.1- */
 }`;
-    this.nextVersion = versionTools.update(this.highestVersion, this.state.generateVersion);
-    this.nextSourceVersion = versionTools.update(this.sourceVersion, this.state.generateVersion);
+    this.nextVersion = versionTools.update(
+      this.highestVersion,
+      this.state.generateVersion
+    );
+    this.nextSourceVersion = versionTools.update(
+      this.sourceVersion,
+      this.state.generateVersion
+    );
     if (current.name) {
       dialogList = [
         <EditProject
@@ -792,11 +870,9 @@ class UserProject extends Component {
           onOk={this.updateProjectDetail}
           onCancel={this.shiftEidtProject}
           showEditProject={this.state.showEditProject}
-          ref={
-            (node) => {
-              this.EditProjectEle = node;
-            }
-          }
+          ref={node => {
+            this.EditProjectEle = node;
+          }}
         />,
         <ManageMembers
           key={2}
@@ -808,11 +884,9 @@ class UserProject extends Component {
           members={current.members}
           owner={current.projectOwner}
           id={current.id}
-          ref={
-            (node) => {
-              this.ManageMembersEle = node;
-            }
-          }
+          ref={node => {
+            this.ManageMembersEle = node;
+          }}
         />,
         <SetPath
           key={3}
@@ -822,11 +896,9 @@ class UserProject extends Component {
           onOk={this.updateSourcePath}
           onCancel={this.shiftSetPath}
           showSetPath={this.state.showSetPath}
-          ref={
-            (node) => {
-              this.SetPathEle = node;
-            }
-          }
+          ref={node => {
+            this.SetPathEle = node;
+          }}
         />,
         <Upload
           key={4}
@@ -866,11 +938,15 @@ class UserProject extends Component {
           title="查看在线链接（支持点击内容进行复制）"
           visible={this.state.isUploadSuccess}
           getShow={this.shiftUploadSuccess}
-          onOk={() => { this.shiftUploadSuccess(); }}
-          onCancel={() => { this.shiftUploadSuccess(); }}
+          onOk={() => {
+            this.shiftUploadSuccess();
+          }}
+          onCancel={() => {
+            this.shiftUploadSuccess();
+          }}
         >
           <ClipboardButton
-            className={"copy-source-addr"}
+            className={'copy-source-addr'}
             button-title="复制在线链接"
             data-clipboard-text={template}
             onSuccess={() => {
@@ -882,7 +958,9 @@ class UserProject extends Component {
           >
             <pre>{template}</pre>
           </ClipboardButton>
-          <div style={{ marginTop: 14, color: '#666' }}>* 注：移动端只需引用 woff 和 ttf 格式字体</div>
+          <div style={{ marginTop: 14, color: '#666' }}>
+            * 注：移动端只需引用 woff 和 ttf 格式字体
+          </div>
         </Dialog>,
         <CreateProject
           key={8}
@@ -906,9 +984,13 @@ class UserProject extends Component {
           title="申请公开项目"
           visible={this.state.isPublicProject}
           getShow={this.shiftUploadSuccess}
-          onOk={(isShow, data) => { this.shiftPublickProject(isShow, data); }}
-          onCancel={() => { this.shiftPublickProject(); }}
-        />,
+          onOk={(isShow, data) => {
+            this.shiftPublickProject(isShow, data);
+          }}
+          onCancel={() => {
+            this.shiftPublickProject();
+          }}
+        />
       ];
     }
     return dialogList;
@@ -934,51 +1016,57 @@ class UserProject extends Component {
         <Content>
           <Menu>
             <li
-              className={`project-name-item ${!list.length
-                ? 'selected'
-                : null}`
-              }
-              onClick={() => { this.shiftCreateProject(true, true); }}
+              className={`project-name-item ${
+                !list.length ? 'selected' : null
+              }`}
+              onClick={() => {
+                this.shiftCreateProject(true, true);
+              }}
             >
               <a>
-                <i className="iconfont" style={{ marginTop: -3, fontWeight: 700 }}>&#xf470;</i>
+                <i
+                  className="iconfont"
+                  style={{ marginTop: -3, fontWeight: 700 }}
+                >
+                  &#xf470;
+                </i>
                 新建图标项目
               </a>
             </li>
             <li>
-              <Link to={`/projectlist/${publicId}`}>
-                公开项目
-              </Link>
+              <Link to={`/projectlist/${publicId}`}>公开项目</Link>
             </li>
-            {
-              list.map((item, index) => {
-                const infoCount = + this.props.projectChangeInfo[`project${item.id}`];
-                return (
-                  <li
-                    key={index}
-                    data-id={item.id}
-                    // title={item.name}
-                    title={infoCount ? `该项目有${infoCount < 100 ? infoCount : '99+'}条变更，请仔细查看` : ''}
-                    className={`project-name-item ${item.id === this.props.currentUserProjectInfo.id
+            {list.map((item, index) => {
+              const infoCount = +this.props.projectChangeInfo[
+                `project${item.id}`
+              ];
+              return (
+                <li
+                  key={index}
+                  data-id={item.id}
+                  // title={item.name}
+                  title={
+                    infoCount
+                      ? `该项目有${
+                          infoCount < 100 ? infoCount : '99+'
+                        }条变更，请仔细查看`
+                      : ''
+                  }
+                  className={`project-name-item ${
+                    item.id === this.props.currentUserProjectInfo.id
                       ? 'selected'
-                      : null}`
-                    }
-                  >
-                    <Link
-                      to={`/projects/${item.id}`}
-                    >
-                        {item.name}
-                    </Link>
-                    {infoCount ?
-                      (<span className="info-num">
-                        {infoCount < 100 ? infoCount : '···'}
-                      </span>)
                       : null
-                    }
-                  </li>
-                );
-              })
-            }
+                  }`}
+                >
+                  <Link to={`/projects/${item.id}`}>{item.name}</Link>
+                  {infoCount ? (
+                    <span className="info-num">
+                      {infoCount < 100 ? infoCount : '···'}
+                    </span>
+                  ) : null}
+                </li>
+              );
+            })}
           </Menu>
           <Main>
             <div className="UserProject-info">
@@ -989,7 +1077,7 @@ class UserProject extends Component {
                   {versions.length > 1 ? `版本：${versions[len - 1]}` : ''}
                 </div>
               </header>
-              {current.isOwner ?
+              {current.isOwner ? (
                 <menu className="options">
                   <span
                     className="edit"
@@ -999,7 +1087,9 @@ class UserProject extends Component {
                   >
                     编辑项目
                   </span>
-                  <span className="delete" onClick={this.deleteProject}>删除项目</span>
+                  <span className="delete" onClick={this.deleteProject}>
+                    删除项目
+                  </span>
                   <span
                     className="team-member"
                     onClick={() => {
@@ -1008,45 +1098,61 @@ class UserProject extends Component {
                   >
                     管理项目成员
                   </span>
-                  {isSupportSource ?
-                    <span onClick={() => { this.shiftSetPath(true); }}>配置source路径</span> :
-                    null
-                  }
-                  <span onClick={() => { this.setPublicProject(true); }}>申请公开项目</span>
+                  {isSupportSource ? (
+                    <span
+                      onClick={() => {
+                        this.shiftSetPath(true);
+                      }}
+                    >
+                      配置source路径
+                    </span>
+                  ) : null}
+                  <span
+                    onClick={() => {
+                      this.setPublicProject(true);
+                    }}
+                  >
+                    申请公开项目
+                  </span>
                   <span
                     onClick={this.adjustBaseline}
                     title="调整基线后，图标将向下偏移，更适合跟中、英文字体对齐"
                     className="baseline-adjust"
                   >
-                    {!current.baseline ?
-                      <i className="iconfont">&#xf35f;</i> :
+                    {!current.baseline ? (
+                      <i className="iconfont">&#xf35f;</i>
+                    ) : (
                       <i className="iconfont">&#xf496;</i>
-                    }
+                    )}
                     调整基线
                   </span>
                 </menu>
-              : null
-              }
+              ) : null}
               <div className="tool">
                 <button
                   className="options-btns btns-blue"
-                  onClick={() => { this.shiftDownloadDialog(true); }}
+                  onClick={() => {
+                    this.shiftDownloadDialog(true);
+                  }}
                 >
                   <i className="iconfont">&#xf50b;</i>
                   下载全部图标
                 </button>
-                {isSupportSource ?
+                {isSupportSource ? (
                   <button
                     className="options-btns btns-default"
-                    onClick={() => { this.shiftUploadSource(true); }}
+                    onClick={() => {
+                      this.shiftUploadSource(true);
+                    }}
                   >
                     同步source
                   </button>
-                : null
-                }
+                ) : null}
                 <button
                   className="options-btns btns-default"
-                  onClick={() => { this.shiftCreateProject(true); }}
+                  onClick={() => {
+                    this.shiftCreateProject(true);
+                  }}
                 >
                   拷贝项目
                 </button>
@@ -1058,12 +1164,20 @@ class UserProject extends Component {
                 </Link>
                 <Link
                   to={`/projects/${id}/history`}
-                  className={
-                    `options-btns btns-default ${versions.length <= 1 ? 'btn-history-hidden' : ''}`
-                  }
+                  className={`options-btns btns-default ${
+                    versions.length <= 1 ? 'btn-history-hidden' : ''
+                  }`}
                 >
                   历史版本
                 </Link>
+                <button
+                  className="options-btns btns-default"
+                  onClick={() => {
+                    this.applyProjectAdmin(true);
+                  }}
+                >
+                  申请管理员
+                </button>
               </div>
             </div>
             <div className="clearfix icon-list" ref="iconsContainer">

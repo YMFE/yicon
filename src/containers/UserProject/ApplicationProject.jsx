@@ -85,6 +85,7 @@ class PublicProject extends Component {
     if (publicName && reason && !isrRegEn && !isRegCn) {
       return false;
     }
+
     if (!publicName) {
       this.setInputValue('项目名称不能为空');
     } else if (!reason) {

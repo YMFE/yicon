@@ -2,11 +2,17 @@ import zip from 'zip-dir';
 import Q from 'q';
 import invariant from 'invariant';
 import fontBuilder from 'iconfont-builder';
+import fs from 'fs';
 
 import { iconStatus } from '../../constants/utils';
 import { versionTools } from '../../helpers/utils';
 import { Repo, Project, Icon, RepoVersion, ProjectVersion } from '../../model';
-import { ensureCachesExist, getModifyTime, buildSVG, buildPNG } from '../../helpers/fs';
+import {
+  ensureCachesExist,
+  getModifyTime,
+  buildSVG,
+  buildPNG
+} from '../../helpers/fs';
 
 /**
  * 由于 SVG 每次都会选择颜色和 size
@@ -43,7 +49,7 @@ export function* downloadSingleIcon(next) {
 export function* downloadFont(next) {
   const { type, id, icons } = this.param;
   let { version } = this.param;
-  let { fontName } = this.param;
+  let { fontName, isNeedNewFontFamily } = this.param;
   let iconData;
   let foldName;
   let lastModify = null;
@@ -53,14 +59,10 @@ export function* downloadFont(next) {
   if (Array.isArray(icons) && icons.length) {
     iconData = yield Icon.findAll({
       where: { id: { $in: icons }, status: iconStatus.RESOLVED },
-      attributes: [
-        ['fontClass', 'name'],
-        ['code', 'codepoint'],
-        ['path', 'd'],
-      ],
-      raw: true,
+      attributes: [['fontClass', 'name'], ['code', 'codepoint'], ['path', 'd']],
+      raw: true
     });
-    foldName = `temporary_${+new Date}`;
+    foldName = `temporary_${+new Date()}`;
     fontName = fontName || 'iconfont';
   } else {
     const model = isRepo ? Repo : Project;
@@ -87,31 +89,41 @@ export function* downloadFont(next) {
         where: { status: iconStatus.DISABLED },
         through: {
           model: ProjectVersion,
-          where: { version: 0 },
+          where: { version: 0 }
         },
-        raw: true,
+        raw: true
       });
-      invariant(!icon.length, `项目中的 ${icon.map(item => item.name).join('、')} 等图标被系统占用，请先删除，再下载或同步`);
+      invariant(
+        !icon.length,
+        `项目中的 ${icon
+          .map(item => item.name)
+          .join('、')} 等图标被系统占用，请先删除，再下载或同步`
+      );
     }
 
     iconData = yield instance.getIcons({
-      attributes: [
-        ['fontClass', 'name'],
-        ['code', 'codepoint'],
-        ['path', 'd'],
-      ],
+      attributes: [['fontClass', 'name'], ['code', 'codepoint'], ['path', 'd']],
       through: {
         model: throughModel,
-        where: { version },
+        where: { version }
       },
       where: { status: iconStatus.RESOLVED },
-      raw: true,
+      raw: true
     });
-    foldName = `${type}-${isRepo ? instance.id : instance.name}-${versionTools.n2v(version)}`;
+    foldName = `${type}-${
+      isRepo ? instance.id : instance.name
+    }-${versionTools.n2v(version)}`;
     fontName = fontName || (isRepo ? `iconfont${instance.id}` : instance.name);
     if (isRepo) {
       lastModify = +new Date(instance.updatedAt);
     }
+  }
+
+  // font-family增加版本号
+  let originFontName = '';
+  if (isNeedNewFontFamily) {
+    originFontName = fontName;
+    fontName += '-' + versionTools.n2v(version);
   }
 
   const fontDest = yield ensureCachesExist(foldName, 'font');
@@ -121,6 +133,7 @@ export function* downloadFont(next) {
     const modifyTime = yield getModifyTime(foldName, 'font', 'zip');
     needReBuild = !modifyTime || modifyTime < lastModify;
   }
+
   // 除了大库已存在副本之外，项目和单独下载都需要 rebuild
   if (needReBuild) {
     const zipDest = `${fontDest}.zip`;
@@ -130,13 +143,44 @@ export function* downloadFont(next) {
       dest: fontDest,
       descent: baselineShouldBeAdjusted ? 128 : 0,
       fontName,
-      translate: baselineShouldBeAdjusted ? -128 : 0,
+      translate: baselineShouldBeAdjusted ? -128 : 0
     });
+
+    // font-name 是否需要加版本号
+    if (isNeedNewFontFamily) {
+      // 处理文件名 改回原来的
+      fs.readdirSync(fontDest).forEach(fileName => {
+        const path = fontDest + '/' + fileName;
+
+        var fileExt = fileName.replace(/.+\./, '');
+
+        // 处理html 删除带版本号的后缀
+        if (fileExt === 'html') {
+          let htmlContent = fs.readFileSync(path, 'utf8');
+          let arr = htmlContent.split(fontName + '.');
+          htmlContent = arr.join(originFontName + '.');
+
+          fs.writeFileSync(path, htmlContent);
+        }
+
+        const oldPath = path;
+        const newPath =
+          fontDest + '/' + fileName.replace(/.+\./, originFontName + '.');
+
+        // 替换回原文件名
+        fs.rename(oldPath, newPath, function(err) {
+          if (err) {
+            invariant(false, `错误: ${err}`);
+          }
+        });
+      });
+    }
+
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });
   }
   this.state.respond = {
     foldName: `${foldName}.zip`,
-    fontDest: `${fontDest}.zip`,
+    fontDest: `${fontDest}.zip`
   };
   yield next;
 }

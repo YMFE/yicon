@@ -41,4 +41,9 @@ export default seq.define('projects', {
     allowNull: true,
     comment: '公开项目名称',
   },
+  owner: {
+    type: Seq.INTEGER,
+    allowNull: true,
+    comment: '项目管理员的id',
+  },
 });

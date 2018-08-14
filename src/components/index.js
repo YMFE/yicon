@@ -6,4 +6,17 @@ import InfoItem from './Timeline/InfoItem.jsx';
 import DesIcon from './DesIcon';
 import Panel from './Panel';
 import Footer from './Footer/Footer';
-export { Header, Footer, SubTitle, Content, Menu, Main, Timeline, DesIcon, InfoItem, Panel };
+import Review from './Review/Review';
+export {
+    Header,
+    Footer,
+    SubTitle,
+    Content,
+    Menu,
+    Main,
+    Timeline,
+    DesIcon,
+    InfoItem,
+    Panel,
+    Review,
+};

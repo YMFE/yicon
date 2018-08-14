@@ -464,6 +464,15 @@ export default class Authority extends Component {
                       className="options-btns btns-blue"
                       onClick={this.createRepoOrProject}
                     >新建{btnName}</button>
+                    {
+                      type !== 'project' ? null :
+                        <Link
+                          to="/admin/reviewprojectadmin"
+                          className="options-btns btns-default"
+                        >
+                          管理员申请
+                        </Link>
+                    }
                     <div className="authority-search">
                       <input
                         type="text"

@@ -135,3 +135,15 @@ const reg = /\{\{(\w+)\}\}/g;
 export function simpleParse(template, data) {
   return template.replace(reg, (_, m) => data[m]);
 }
+
+export function formatDate(d) {
+	return formatDateTime(d).substr(0, 10);
+};
+
+export function formatDateTime(d) {
+	if(!d) d = new Date();
+  if(!(d instanceof Date)) d = new Date(d);
+  
+  return `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)} 
+          ${("0" + d.getHours()).slice(-2)}:${("0" + d.getMinutes()).slice(-2)}:${("0" + d.getSeconds()).slice(-2)}`;
+};
