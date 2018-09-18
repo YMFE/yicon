@@ -52,7 +52,7 @@ import SetPath from './SetPath.jsx';
 import Upload from './Upload.jsx';
 import CreateProject from './CreateProject.jsx';
 
-const tipsForFontFamily = `是否需要在font-fa是否需要在（font-family）中加入版本号？（加入版本号，可以解决 QRN 中 iOS 版本第一次更新字体时新图标不显示的问题，请配合新的 QRN 打包脚本使用，任何问题请联系 @甘红旗）mily中加入版本号(可能会影响RN字体)`;
+const tipsForFontFamily = `是否需要在font-fa是否需要在（font-family）中加入版本号？`;
 
 @connect(
   state => ({
