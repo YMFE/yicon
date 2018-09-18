@@ -152,7 +152,7 @@ export function* downloadFont(next) {
       fs.readdirSync(fontDest).forEach(fileName => {
         const path = fontDest + '/' + fileName;
 
-        var fileExt = fileName.replace(/.+\./, '');
+        let fileExt = fileName.replace(/.+\./, '');
 
         // 处理html 删除带版本号的后缀
         if (fileExt === 'html') {
@@ -168,12 +168,12 @@ export function* downloadFont(next) {
           fontDest + '/' + fileName.replace(/.+\./, originFontName + '.');
 
         // 替换回原文件名
-        fs.rename(oldPath, newPath, function(err) {
-          if (err) {
-            invariant(false, `错误: ${err}`);
-          }
-        });
+        fs.renameSync(oldPath, newPath);
       });
+
+      let fileCc = fs.readdirSync(fontDest).length;
+
+      invariant(fileCc >= 5, '文件缺失, 请重试');
     }
 
     yield Q.nfcall(zip, fontDest, { saveTo: zipDest });

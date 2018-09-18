@@ -1,5 +1,5 @@
 import { Icon, Repo, Project, Log, Notification, User } from '../../model';
-import { analyzeLog } from '../../helpers/utils';
+import { analyzeLog, formatDateTime } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
 import invariant from 'invariant';
 
@@ -340,6 +340,9 @@ export function* getApplyProjectAdminList(next) {
 
   for (let i = 0; i < result.length; i++) {
     const d = result[i];
+
+    if (!d.project) continue;
+
     const project = yield Project.findOne({
       where: {
         id: d.project.id,
@@ -356,7 +359,7 @@ export function* getApplyProjectAdminList(next) {
       project,
       scope: d.scope,
       type: d.type,
-      updatedAt: d.updatedAt,
+      updatedAt: formatDateTime(d.updatedAt),
     });
   }
 

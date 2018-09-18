@@ -52,6 +52,8 @@ import SetPath from './SetPath.jsx';
 import Upload from './Upload.jsx';
 import CreateProject from './CreateProject.jsx';
 
+const tipsForFontFamily = `是否需要在font-fa是否需要在（font-family）中加入版本号？（加入版本号，可以解决 QRN 中 iOS 版本第一次更新字体时新图标不显示的问题，请配合新的 QRN 打包脚本使用，任何问题请联系 @甘红旗）mily中加入版本号(可能会影响RN字体)`;
+
 @connect(
   state => ({
     usersProjectList: state.project.usersProjectList,
@@ -151,7 +153,8 @@ class UserProject extends Component {
       loadIconOver: false,
       iconList: [],
       isPublicProject: false,
-      publicId: ''
+      publicId: '',
+      isNeedNewFontFamily: ''
     };
     this.highestVersion = '0.0.0';
     this.nextVersion = '0.0.1';
@@ -444,15 +447,34 @@ class UserProject extends Component {
   @autobind
   downloadAllIcons() {
     confirm({
-      content: '是否需要在font-family中加入版本号',
+      content: tipsForFontFamily,
       title: '提示',
+      confrimText: '不增加版本号',
+      cancelText: '增加版本号',
+      isOnlyClosed: true,
       onOk: () => {
-        this.originDownloadAllIcons(true);
+        this.originDownloadAllIcons(false);
       },
       onCancel: () => {
-        this.originDownloadAllIcons(false);
+        this.tipsAgain(this.originDownloadAllIcons);
       }
     });
+  }
+
+  @autobind
+  tipsAgain(func) {
+    setTimeout(() => {
+      confirm({
+        content: '确认要在字体名后面加版本号码?',
+        title: '提示',
+        confrimText: '确定',
+        cancelText: '不确定',
+        onOk: () => {
+          func(true);
+        },
+        onCancel: () => {}
+      });
+    }, 1);
   }
 
   @autobind
@@ -556,7 +578,27 @@ class UserProject extends Component {
           }
           this.sourceVersion =
             sourceNum > platformNum ? v : this.highestVersion;
-          this.setState({ showUploadDialog: isShow });
+
+          const f = bool => {
+            this.setState({
+              showUploadDialog: isShow,
+              isNeedNewFontFamily: bool
+            });
+          };
+
+          confirm({
+            content: tipsForFontFamily,
+            title: '提示',
+            confrimText: '不增加版本号',
+            cancelText: '增加版本号',
+            isOnlyClosed: true,
+            onOk: () => {
+              f(false);
+            },
+            onCancel: () => {
+              this.tipsAgain(f);
+            }
+          });
         });
       });
     } else {
@@ -631,7 +673,8 @@ class UserProject extends Component {
           project: name,
           path: decodeURIComponent(source),
           branch: 'master',
-          version: this.nextSourceVersion
+          version: this.nextSourceVersion,
+          isNeedNewFontFamily: this.state.isNeedNewFontFamily === true
         });
       })
       .then(val => {
@@ -1072,7 +1115,10 @@ class UserProject extends Component {
             <div className="UserProject-info">
               <header className="clearfix">
                 <h3>{current.name}</h3>
-                <div className="powerby">负责人：{owner.name}</div>
+                <div className="powerby">
+                  负责人：
+                  {owner.name}
+                </div>
                 <div className="version">
                   {versions.length > 1 ? `版本：${versions[len - 1]}` : ''}
                 </div>
