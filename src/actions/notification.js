@@ -12,6 +12,9 @@ import {
   SUBMIT_PUBLICK_PROJECT,
   PUBLIC_PROJECT_LIST,
   AGREE_PUBLIC_PROJECT,
+  APPLY_PROJECT_ADMIN,
+  APPLY_PROJECT_ADMIN_LIST,
+  CHANGE_PROJECT_NEW_ADMIN,
 } from '../constants/actionTypes';
 
 const fetch = isonFetch.create({ baseURL: '/api/user' });
@@ -118,5 +121,26 @@ export function agreePublicProject(data) {
   return {
     type: AGREE_PUBLIC_PROJECT,
     payload: fetchAdmin.post('/notification/agreepublicproject', data),
+  };
+}
+
+export function applyProjectAdmin(data) {
+  return {
+    type: APPLY_PROJECT_ADMIN,
+    payload: fetch.post('/notification/applyProjectAdmin', data),
+  };
+}
+
+export function getApplyAdminList() {
+  return {
+    type: APPLY_PROJECT_ADMIN_LIST,
+    payload: fetch.get('/getApplyProjectAdminList'),
+  };
+}
+
+export function changeProjectNewAdmin(data) {
+  return {
+    type: CHANGE_PROJECT_NEW_ADMIN,
+    payload: fetchAdmin.post('/notification/changeProjectNewAdmin', data),
   };
 }

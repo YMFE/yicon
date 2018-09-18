@@ -22,6 +22,7 @@ import {
 import { getCurrentUser, isAdmin, pagination, isProjectOwner } from './middlewares';
 import {
   agreePublicProject,
+  changeProjectNewAdmin,
 } from '../modules/notification';
 import { recordLog } from '../modules/log';
 
@@ -52,5 +53,7 @@ admin.post('/manager/:userId', addAdmin);
 admin.delete('/manager/:userId', delAdmin);
 
 admin.post('/notification/agreepublicproject', isProjectOwner, agreePublicProject, recordLog);
+admin.post('/notification/changeProjectNewAdmin', isProjectOwner, changeProjectNewAdmin, recordLog);
+
 
 export default admin;

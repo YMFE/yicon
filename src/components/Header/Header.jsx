@@ -107,7 +107,7 @@ class Header extends Component {
                   </li>
                 }
                 <li className="lists">
-                  <a href="http://yicon.ymfe.org/index.html" className="help" target="_blank">
+                  <a href="https://yicon.ymfe.org/index.html" className="help" target="_blank">
                     <i className="iconfont" title="使用说明">&#xf19e;</i>
                   </a>
                 </li>

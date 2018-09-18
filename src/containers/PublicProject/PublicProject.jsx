@@ -97,8 +97,8 @@ export default class PublicProject extends Component {
       return <NoProject cacheProjectList={cacheProjectList} hideLoading={this.hideLoading} />;
     }
     let content;
-    const isBelong = this.props.usersProjectList.some(v => v.id === +id);
-    if (this.props.user.login && isBelong) {
+    // const isBelong = this.props.usersProjectList.some(v => v.id === +id);
+    if (this.props.user.login) {
       content = (<UserProject
         projectId={id}
         cacheProjectList={cacheProjectList}

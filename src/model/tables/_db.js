@@ -13,20 +13,18 @@ const sequelize = new Sequelize(
     host: model.host,
     define: {
       charset: 'utf8',
-      timestamps: false,
+      timestamps: false
     },
     /* eslint-disable no-console */
     logging: __DEVELOPMENT__ ? logger.info.bind(logger) : false,
+    timezone: '+08:00'
   }
 );
 
-sequelize.authenticate()
-  .then(() =>
-    logger.info('Connection has been established successfully.')
-  )
-  .catch(err =>
-    logger.error('Unable to connect to the database:', err)
-  );
+sequelize
+  .authenticate()
+  .then(() => logger.info('Connection has been established successfully.'))
+  .catch(err => logger.error('Unable to connect to the database:', err));
 
 export { sequelize as seq };
 export { Sequelize as Seq };

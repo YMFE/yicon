@@ -128,7 +128,10 @@ class IconsSetting extends Component {
             {isAudit &&
               <div className="upload-author">
                 <span className="repository">{iconDetail.repo.name}</span>
-                <span className="author">上传人：{iconDetail.user.name}</span>
+                <div className="authorInfo">
+                  <span className="author">上传人：{iconDetail.user.name}</span>
+                  <span className="author">上传时间：{iconDetail.createTime}</span>
+                </div>
               </div>
             }
             <div className="setting-opt">

@@ -39,6 +39,8 @@ import {
   setAllReaded,
   submitPublicProject,
   publicProjectList,
+  applyProjectAdmin,
+  getApplyProjectAdminList,
 } from '../modules/notification';
 import { getCurrentUser, pagination, isProjectMember, isProjectOwner } from './middlewares';
 
@@ -74,12 +76,14 @@ user.post('/projects/:projectId/source', isProjectOwner, addSourcePath);
 user.get('/projects/:projectId/source/version', isProjectOwner, getSourceVersion);
 user.post('/projects/:projectId/source/upload', isProjectOwner, uploadSource, recordLog);
 user.get('/projectspublic/:id', publicProjectList);
+user.get('/getApplyProjectAdminList', getApplyProjectAdminList);
 
 user.get('/notifications/type/:type', pagination, getAllNotices);
 user.get('/notifications/:logId', getOneNotice);
 user.get('/unread/notifications/type/:type', getUnreadCount);
 user.post('/notification/submitpublicproject', isProjectOwner, submitPublicProject, recordLog);
 user.patch('/notification/all/readed', setAllReaded);
+user.post('/notification/applyProjectAdmin', isProjectOwner, applyProjectAdmin, recordLog);
 
 user.get('/log/projects/:projectId', pagination, getLogList);
 
@@ -87,5 +91,6 @@ user.get('/list', getUserByName);
 
 user.post('/replacement', uploader.single('icon'), uploadReplacingIcon);
 user.post('/replacement/icon/:fromId...:toId', replaceIcon);
+
 
 export default user;

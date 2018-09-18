@@ -3,7 +3,7 @@ import py from 'pinyin';
 
 import { logRecorder } from './log';
 import { seq, Repo, Icon, User, RepoVersion, ProjectVersion, Cache } from '../../model';
-import { unique } from '../../helpers/utils';
+import { unique, formatDate } from '../../helpers/utils';
 import { iconStatus, startCode, endCode } from '../../constants/utils';
 import { ICON_NAME, ICON_TAG } from '../../constants/validate';
 
@@ -138,6 +138,7 @@ export function* getAuditList(next) {
         icon.repo = icon.repositories[0];
         delete icon.repo.repoVersion;
         delete icon.repositories;
+        icon.createTime = formatDate(icon.createTime);
         return icon;
       }
       return null;

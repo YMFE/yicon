@@ -5,7 +5,17 @@
 		position: relative;
 	}
 	.yicon-authority-info{
-		padding:20px 20px 0;
+    padding:20px 20px 0;
+    .tools{
+      .options-btns{
+        margin-right: 10px;
+        box-sizing: border-box;
+        vertical-align: middle;
+      }
+      .btn-history-hidden{
+        display: none;
+      }
+    }
 	}
 	.authority-search{
 		float: right;

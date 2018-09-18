@@ -4,7 +4,15 @@ import invariant from 'invariant';
 // import py from 'pinyin';
 
 import { logRecorder } from './log';
-import { seq, Repo, Icon, RepoVersion, User, ProjectVersion, Cache } from '../../model';
+import {
+  seq,
+  Repo,
+  Icon,
+  RepoVersion,
+  User,
+  ProjectVersion,
+  Cache
+} from '../../model';
 import { isPlainObject } from '../../helpers/utils';
 import { saveOriginalSVG, transformSvg2Path } from '../../helpers/fs';
 import { iconStatus } from '../../constants/utils';
@@ -15,7 +23,7 @@ export function* getById(next) {
 
   this.state.respond = yield Icon.findAll({
     attributes: ['id', 'name', 'path', 'oldId', 'newId'],
-    where: { id: { $in: icons } },
+    where: { id: { $in: icons } }
   });
 
   yield next;
@@ -32,13 +40,13 @@ export function* getByCondition(next) {
   const isCode = regExp.test(query);
   let icons = null;
   if (isCode) {
-    const code = query.replace(/[^0-9a-f]+/ig, '');
+    const code = query.replace(/[^0-9a-f]+/gi, '');
     icons = yield Icon.findAndCountAll({
       where: {
         status: { $gte: iconStatus.RESOLVED },
-        code: parseInt(code, 16),
+        code: parseInt(code, 16)
       },
-      include: [{ model: Repo }],
+      include: [{ model: Repo }]
     });
   } else {
     const queryKey = `%${query}%`;
@@ -47,16 +55,20 @@ export function* getByCondition(next) {
         status: { $gte: iconStatus.RESOLVED },
         $or: {
           name: { $like: queryKey },
-          tags: { $like: queryKey },
-        },
+          tags: { $like: queryKey }
+        }
       },
-      include: [{ model: Repo }],
+      include: [{ model: Repo }]
     });
   }
   let data = [];
   icons.rows.forEach(v => {
     const id = v.repositories[0].id;
-    if (!data[id]) data[id] = Object.assign({}, { id, name: v.repositories[0].name, icons: [] });
+    if (!data[id])
+      data[id] = Object.assign(
+        {},
+        { id, name: v.repositories[0].name, icons: [] }
+      );
     data[id].icons.push(v);
   });
   this.state.respond = this.state.respond || {};
@@ -65,13 +77,17 @@ export function* getByCondition(next) {
   const len = data.length;
   for (; i < len; i++) {
     data[i].icons = data[i].icons.map(value =>
-      Object.assign({}, {
-        id: value.id,
-        name: value.name,
-        code: value.code,
-        path: value.path,
-        uploader: value.uploader,
-      }));
+      Object.assign(
+        {},
+        {
+          id: value.id,
+          name: value.name,
+          code: value.code,
+          path: value.path,
+          uploader: value.uploader
+        }
+      )
+    );
   }
   this.state.respond.data = data;
   this.state.respond.totalCount = icons.count;
@@ -80,6 +96,40 @@ export function* getByCondition(next) {
 }
 
 const getFileName = name => (name ? name.replace(/\.svg$/, '') : '迷の文件');
+
+/**
+ * iconfont-builder 会把 <defs> 里面绘制类的标签合并, 无论是否使用 <use>
+ * 暂不支持 <defs>
+ * 如果没有使用 <use> 直接删除, 否则会提示错误
+ */
+const replaceDefs = (buffer, originalname) => {
+  let str = buffer.toString();
+
+  if (str.indexOf('<defs>') >= 0) {
+    if (str.indexOf('<use ') >= 0) {
+      const arr = str.split('\n');
+      let line = 0;
+      
+      arr.forEach((s, i) => {
+        if (s.indexOf('<defs>') >= 0) {
+          line = i;
+          return;
+        }
+      });
+      invariant(
+        false,
+        `暂不支持<defs>, 请重新编辑. 
+        (文件: ${originalname}  行: ${line + 1})`
+      );
+    } else {
+      // 删除没有使用use的defs
+      str = str.replace(/<defs(([\s\S])*?)<\/defs>/g, '');
+    }
+  }
+
+  // buffer = Buffer.from(str, 'utf8');
+  return new Buffer(str);
+};
 
 /**
  * 上传图标至图标库，插入 Icon 表中，但不建立表与图标的关联
@@ -94,12 +144,15 @@ export function* uploadIcons(next) {
   // 处理传入文件
   const param = {
     icons: this.req.files.map(file => {
-      const { originalname, buffer } = file;
+      const { originalname } = file;
+      console.log(file);
+      let buffer = file.buffer;
+      buffer = replaceDefs(buffer, originalname);
       const name = getFileName(originalname);
       return { name, buffer };
     }),
     // 标记只返回图标信息数据
-    writeFiles: false,
+    writeFiles: false
   };
 
   yield saveOriginalSVG(param.icons);
@@ -121,25 +174,34 @@ export function* uploadIcons(next) {
       tags: icon.name,
       path: icon.d,
       status: iconStatus.UPLOADED,
-      uploader: userId,
+      uploader: userId
     };
   });
 
   yield seq.transaction(transaction =>
-    Icon.bulkCreate(data, { individualHooks: true, transaction })
-  .then(addedIcons => {
-    const cacheIcons = [];
-    addedIcons.forEach((icon, index) => {
-      const { id, name } = icon || {};
-      const originalIcons = param.icons;
-      if (originalIcons && originalIcons[index] && name === originalIcons[index].name) {
-        // 将 icon id 和 对应的 svg 插入 cache 表
-        const svg = originalIcons[index].buffer && originalIcons[index].buffer.toString() || null;
-        cacheIcons.push({ iconId: id, svg });
+    Icon.bulkCreate(data, { individualHooks: true, transaction }).then(
+      addedIcons => {
+        const cacheIcons = [];
+        addedIcons.forEach((icon, index) => {
+          const { id, name } = icon || {};
+          const originalIcons = param.icons;
+          if (
+            originalIcons &&
+            originalIcons[index] &&
+            name === originalIcons[index].name
+          ) {
+            // 将 icon id 和 对应的 svg 插入 cache 表
+            const svg =
+              (originalIcons[index].buffer &&
+                originalIcons[index].buffer.toString()) ||
+              null;
+            cacheIcons.push({ iconId: id, svg });
+          }
+        });
+        return Cache.bulkCreate(cacheIcons, { transaction });
       }
-    });
-    return Cache.bulkCreate(cacheIcons, { transaction });
-  }));
+    )
+  );
   // TODO: 看一下上传失败是否会直接抛出异常
   this.state.respond = '图标上传成功';
 
@@ -161,7 +223,7 @@ export function* uploadReplacingIcon(next) {
   const name = getFileName(originalname);
   const param = {
     icons: [{ name, buffer }],
-    writeFiles: false,
+    writeFiles: false
   };
   let icons;
   try {
@@ -174,20 +236,26 @@ export function* uploadReplacingIcon(next) {
   let iconData = {};
 
   yield seq.transaction(transaction =>
-    Icon.create({
-      name: icon.name,
-      path: icon.d,
-      status: iconStatus.REPLACING,
-      uploader: userId,
-    }, { transaction })
-  .then(addedIcon => {
-    iconData = addedIcon;
-    const svg = buffer && buffer.toString() || null;
-    return Cache.create({ iconId: addedIcon && addedIcon.id, svg }, { transaction });
-  }));
+    Icon.create(
+      {
+        name: icon.name,
+        path: icon.d,
+        status: iconStatus.REPLACING,
+        uploader: userId
+      },
+      { transaction }
+    ).then(addedIcon => {
+      iconData = addedIcon;
+      const svg = (buffer && buffer.toString()) || null;
+      return Cache.create(
+        { iconId: addedIcon && addedIcon.id, svg },
+        { transaction }
+      );
+    })
+  );
 
   this.state.respond = {
-    replaceId: iconData.id,
+    replaceId: iconData.id
   };
 
   yield next;
@@ -217,10 +285,7 @@ export function* replaceIcon(next) {
     to.status === iconStatus.REPLACING,
     `替换的新图标 ${to.name} 并非待替换状态的图标`
   );
-  invariant(
-    repos.length,
-    `被替换的图标 ${from.name} 竟然不属于任何一个大库`
-  );
+  invariant(repos.length, `被替换的图标 ${from.name} 竟然不属于任何一个大库`);
   invariant(ICON_NAME.reg.test(name), ICON_NAME.message);
   invariant(ICON_TAG.reg.test(tags), ICON_TAG.message);
 
@@ -242,42 +307,55 @@ export function* replaceIcon(next) {
     tags,
     code,
     oldId: fromId,
-    applyTime: +new Date,
-    status: iconStatus.RESOLVED,
+    applyTime: +new Date(),
+    status: iconStatus.RESOLVED
   };
   if (adjustedPath) {
     replacedIcon.path = adjustedPath;
   }
 
   yield seq.transaction(transaction =>
-    to.update(replacedIcon, { transaction })
-    .then(() => Cache.destroy({
-      where: { iconId: toId },
-      transaction,
-    }))
-    .then(() => from.update({
-      newId: toId, status: iconStatus.REPLACED,
-    }, { transaction }))
-    .then(() => repos[0].update({ updatedAt: new Date }, { transaction }))
-    .then(() => RepoVersion.update(
-      { iconId: toId, version: '0.0.0' },
-      { where: { version: 0, iconId: fromId }, transaction }
-    ))
-    .then(() => ProjectVersion.update(
-      { iconId: toId, version: '0.0.0' },
-      { where: { version: 0, iconId: fromId }, transaction }
-    ))
-    .then(() => {
-      const log = {
-        params: {
-          iconFrom: { id: fromId, name: fromName },
-          iconTo: { id: toId, name: toName },
-        },
-        type: 'REPLACE',
-        loggerId: repoVersion.repositoryId,
-      };
-      return logRecorder(log, transaction, userId);
-    })
+    to
+      .update(replacedIcon, { transaction })
+      .then(() =>
+        Cache.destroy({
+          where: { iconId: toId },
+          transaction
+        })
+      )
+      .then(() =>
+        from.update(
+          {
+            newId: toId,
+            status: iconStatus.REPLACED
+          },
+          { transaction }
+        )
+      )
+      .then(() => repos[0].update({ updatedAt: new Date() }, { transaction }))
+      .then(() =>
+        RepoVersion.update(
+          { iconId: toId, version: '0.0.0' },
+          { where: { version: 0, iconId: fromId }, transaction }
+        )
+      )
+      .then(() =>
+        ProjectVersion.update(
+          { iconId: toId, version: '0.0.0' },
+          { where: { version: 0, iconId: fromId }, transaction }
+        )
+      )
+      .then(() => {
+        const log = {
+          params: {
+            iconFrom: { id: fromId, name: fromName },
+            iconTo: { id: toId, name: toName }
+          },
+          type: 'REPLACE',
+          loggerId: repoVersion.repositoryId
+        };
+        return logRecorder(log, transaction, userId);
+      })
   );
 
   yield next;
@@ -290,10 +368,7 @@ export function* submitIcons(next) {
   const { repoId, icons } = this.param;
   const { userId } = this.state.user;
   // 预处理，防止有不传 id、repoId 的情况
-  invariant(
-    !isNaN(repoId),
-    `期望传入合法 repoId，目前传入的是 ${repoId}`
-  );
+  invariant(!isNaN(repoId), `期望传入合法 repoId，目前传入的是 ${repoId}`);
 
   icons.forEach(icon => {
     invariant(
@@ -308,7 +383,7 @@ export function* submitIcons(next) {
   if (icons[0] && icons[0].isReplace) {
     const { oldId } = icons[0];
     isExistIcon = yield Icon.findAll({
-      where: { status: iconStatus.REPLACE, oldId: +oldId },
+      where: { status: iconStatus.REPLACE, oldId: +oldId }
     });
   }
 
@@ -322,7 +397,7 @@ export function* submitIcons(next) {
         tags: icon.tags,
         fontClass: icon.fontClass,
         status: iconStatus.PENDING,
-        applyTime: new Date,
+        applyTime: new Date()
       };
 
       if (icon.isReplace) {
@@ -335,10 +410,7 @@ export function* submitIcons(next) {
         data.path = icon._path;
       }
 
-      return Icon.update(
-        data,
-        { where: { id: icon.id }, transaction }
-      );
+      return Icon.update(data, { where: { id: icon.id }, transaction });
     });
 
     // 某个图标被上传者替换，上传的图标还在审核中，后再次替换该图标
@@ -347,30 +419,32 @@ export function* submitIcons(next) {
       // 删除 RepoVersions 表中对应图标的记录
       const tempRepoVer = RepoVersion.destroy({
         where: { repositoryId: repoId, iconId: +item.id },
-        transaction,
+        transaction
       });
       // 将被覆盖的图标状态置为 -1
-      const tempIcon = Icon.update({
-        status: iconStatus.DELETE,
-      }, {
-        where: { status: iconStatus.REPLACE, id: +item.id },
-        transaction,
-      });
+      const tempIcon = Icon.update(
+        {
+          status: iconStatus.DELETE
+        },
+        {
+          where: { status: iconStatus.REPLACE, id: +item.id },
+          transaction
+        }
+      );
       // 将被覆盖的图标对应的 cache 中的 svg 删除
       const tempIconCache = Cache.destroy({
         where: { iconId: +item.id },
-        transaction,
+        transaction
       });
       iconInfo.push(tempRepoVer, tempIcon, tempIconCache);
     });
 
-    return Promise
-      .all(iconInfo)
+    return Promise.all(iconInfo)
       .then(() => {
         const iconData = icons.map(i => ({
           version: '0.0.0',
           iconId: i.id,
-          repositoryId: repoId,
+          repositoryId: repoId
         }));
         return RepoVersion.bulkCreate(iconData, { transaction });
       })
@@ -378,11 +452,11 @@ export function* submitIcons(next) {
         // 配置项目 log
         const log = {
           params: {
-            icon: icons.map(i => ({ id: i.id, name: i.name })),
+            icon: icons.map(i => ({ id: i.id, name: i.name }))
           },
           type: 'UPLOAD',
           loggerId: repoId,
-          subscribers: [repo.admin],
+          subscribers: [repo.admin]
         };
         return logRecorder(log, transaction, userId);
       });
@@ -400,13 +474,17 @@ export function* getIconInfo(next) {
 
   const data = yield Icon.findOne({
     where: { id: iconId },
-    include: [{
-      model: Repo,
-      through: {
-        model: RepoVersion,
-        version: '0.0.0',
+    include: [
+      {
+        model: Repo,
+        through: {
+          model: RepoVersion,
+          version: '0.0.0'
+        }
       },
-    }, User, { model: Cache }],
+      User,
+      { model: Cache }
+    ]
   });
   const icon = data.get({ plain: true });
   if (icon.repositories && icon.repositories.length) {
@@ -423,20 +501,20 @@ export function* deleteIcons(next) {
   const { iconId } = this.param;
   const { userId } = this.state.user;
 
-  invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
+  invariant(
+    !isNaN(iconId),
+    `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`
+  );
   const iconInfo = yield Icon.findOne({
     attributes: ['status', 'uploader'],
-    where: { id: iconId },
+    where: { id: iconId }
   });
 
   invariant(iconInfo, '未获取图标信息');
-  invariant(
-    userId === iconInfo.uploader,
-    '没有权限删除他人上传的图标'
-  );
+  invariant(userId === iconInfo.uploader, '没有权限删除他人上传的图标');
   invariant(
     iconInfo.status === iconStatus.REJECTED ||
-    iconInfo.status === iconStatus.UPLOADED,
+      iconInfo.status === iconStatus.UPLOADED,
     '只能删除审核未通过的图标或未上传的图标'
   );
 
@@ -445,15 +523,15 @@ export function* deleteIcons(next) {
       { status: iconStatus.DELETE },
       {
         where: { id: iconId },
-        transaction,
+        transaction
       }
+    ).then(() =>
+      Cache.destroy({
+        where: { iconId },
+        transaction
+      })
     )
-  .then(() =>
-    Cache.destroy({
-      where: { iconId },
-      transaction,
-    })
-  ));
+  );
 
   this.state.respond = '删除图标成功';
   yield next;
@@ -463,7 +541,10 @@ export function* updateIconInfo(next) {
   const { iconId, tags, name } = this.param;
   const { userId, model } = this.state.user;
 
-  invariant(!isNaN(iconId), `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`);
+  invariant(
+    !isNaN(iconId),
+    `传入的 id 不合法，期望是数字，传入的却是 ${iconId}`
+  );
   const iconInfo = yield Icon.findOne({
     where: { id: iconId },
     include: [
@@ -471,10 +552,10 @@ export function* updateIconInfo(next) {
         model: Repo,
         through: {
           model: RepoVersion,
-          where: { iconId },
-        },
-      },
-    ],
+          where: { iconId }
+        }
+      }
+    ]
   });
   const data = {};
   const errorMsg = [];
@@ -487,7 +568,10 @@ export function* updateIconInfo(next) {
   }
 
   // 大库管理员和超管可以修改 icon 的 name
-  if ((!iconInfo.repositories[0] || iconInfo.repositories[0].admin !== userId) && model.actor < 2) {
+  if (
+    (!iconInfo.repositories[0] || iconInfo.repositories[0].admin !== userId) &&
+    model.actor < 2
+  ) {
     errorMsg.push('用户不是大库管理员，无法修改图标名称');
   } else if (typeof name !== 'string' || name === '') {
     errorMsg.push(`期望传入的 name 是非空字符串，传入的却是 ${name}`);
@@ -501,7 +585,7 @@ export function* updateIconInfo(next) {
 
   this.state.respond = yield Icon.findOne({
     where: { id: iconId },
-    attributes: ['name', 'tags'],
+    attributes: ['name', 'tags']
   });
 
   yield next;
@@ -513,7 +597,7 @@ export function* getUploadedIcons(next) {
 
   this.state.respond = yield Icon.findAll({
     where: { uploader: userId, status: iconStatus.UPLOADED },
-    include: [{ model: Cache }],
+    include: [{ model: Cache }]
   });
   yield next;
 }
@@ -523,24 +607,26 @@ export function* getSubmittedIcons(next) {
   const { userId } = this.state.user;
   const { pageMixin } = this.state;
   const statusIn = {
-    status: { $in: [
-      iconStatus.RESOLVED,
-      iconStatus.UPLOADED,
-      iconStatus.REJECTED,
-      iconStatus.PENDING,
-    ] },
+    status: {
+      $in: [
+        iconStatus.RESOLVED,
+        iconStatus.UPLOADED,
+        iconStatus.REJECTED,
+        iconStatus.PENDING
+      ]
+    }
   };
 
   const timeGroup = yield Icon.findAll({
     attributes: ['createTime'],
     where: {
       uploader: userId,
-      ...statusIn,
+      ...statusIn
     },
     order: 'createTime DESC',
     group: 'createTime',
     ...pageMixin,
-    raw: true,
+    raw: true
   });
   const len = timeGroup.length;
   if (len) {
@@ -549,18 +635,20 @@ export function* getSubmittedIcons(next) {
         uploader: userId,
         createTime: {
           $lte: timeGroup[0].createTime,
-          $gte: timeGroup[len - 1].createTime,
+          $gte: timeGroup[len - 1].createTime
         },
-        ...statusIn,
+        ...statusIn
       },
       order: 'createTime DESC',
-      raw: true,
+      raw: true
     });
     const result = [];
     const _tmp = { createTime: '', icons: [] };
     icons.forEach(v => {
-      if (_tmp.createTime
-        && _tmp.createTime.toString() !== v.createTime.toString()) {
+      if (
+        _tmp.createTime &&
+        _tmp.createTime.toString() !== v.createTime.toString()
+      ) {
         result.push(Object.assign({}, _tmp)); // 只有一条数据时不会push进result；多条数据的最后一条数据也不会
         _tmp.icons = [];
       }
@@ -571,7 +659,7 @@ export function* getSubmittedIcons(next) {
     this.state.respond = result;
     const total = yield Icon.count({
       where: { uploader: userId, ...statusIn },
-      group: 'createTime',
+      group: 'createTime'
     });
     this.state.page.totalCount = total.length;
   } else {

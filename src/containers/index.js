@@ -28,6 +28,8 @@ import DisabledCode from './DisabledCode/DisabledCode';
 import ProjectList from './ProjectList/ProjectList';
 import ProjectNull from './ProjectList/ProjectNull';
 import ReviewProject from './ReviewProject/ReviewProject';
+import ReviewProjectAdmin from './ReviewProjectAdmin/ReviewProjectAdmin';
+
 
 export {
   App,
@@ -60,4 +62,5 @@ export {
   ProjectList,
   ProjectNull,
   ReviewProject,
+  ReviewProjectAdmin,
 };

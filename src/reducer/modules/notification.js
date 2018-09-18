@@ -10,6 +10,8 @@ import {
   SUBMIT_PUBLICK_PROJECT,
   PUBLIC_PROJECT_LIST,
   AGREE_PUBLIC_PROJECT,
+  APPLY_PROJECT_ADMIN_LIST,
+  CHANGE_PROJECT_NEW_ADMIN,
 } from '../../constants/actionTypes';
 
 const initialState = {
@@ -208,6 +210,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         agreeProject: action.payload,
+      };
+    }
+    case APPLY_PROJECT_ADMIN_LIST: {
+      return {
+        ...state,
+        list: action.payload.data,
+      };
+    }
+    case CHANGE_PROJECT_NEW_ADMIN: {
+      return {
+        ...state,
+        changeNewAdmin: action.payload,
       };
     }
     default:

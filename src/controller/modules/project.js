@@ -703,7 +703,7 @@ export function* getSourceVersion(next) {
 
 // 上传图标到 source
 export function* uploadSource(next) {
-  const { projectId, project, path, branch, version } = this.param;
+  const { projectId, project, path, branch, version, isNeedNewFontFamily } = this.param;
   const { userId } = this.state.user;
   const user = yield User.findOne({ where: { id: userId } });
   const form = new FormData();
@@ -711,6 +711,7 @@ export function* uploadSource(next) {
   const file = yield axios.post(`${serviceUrl}/api/download/font`, {
     type: 'project',
     id: projectId,
+    isNeedNewFontFamily
   });
   if (file.data && !file.data.res) {
     return;

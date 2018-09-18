@@ -29,6 +29,7 @@ import {
   ProjectList,
   ProjectNull,
   ReviewProject,
+  ReviewProjectAdmin,
 } from './containers';
 
 const fetch = isomFetch.create({ baseURL: '/api' });
@@ -97,6 +98,7 @@ export default store => {
           <Route path="authority/:type" component={Authority} /> {/* 权限设置 */}
           <Route path="code" component={DisabledCode} /> {/* 系统占用编码管理 */}
           <Route path="reviewproject" component={ReviewProject} /> {/* 后台审核公开项目列表 */}
+          <Route path="reviewprojectadmin" component={ReviewProjectAdmin} /> {/* 后台审核申请项目管理员列表 */}
         </Route>
       </Route>
 

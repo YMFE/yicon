@@ -1,7 +1,18 @@
 import { Icon, Repo, Project, Log, Notification, User } from '../../model';
-import { analyzeLog } from '../../helpers/utils';
+import { analyzeLog, formatDateTime } from '../../helpers/utils';
 import { logTypes } from '../../constants/utils';
 import invariant from 'invariant';
+
+function formatDate() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  const hours = d.getHours();
+  const minutes = d.getMinutes();
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
 
 export function* getUnreadCount(next) {
   const { model } = this.state.user;
@@ -263,3 +274,171 @@ export function* agreePublicProject(next) {
   this.state.respond = isWrite;
   yield next;
 }
+
+export function* applyProjectAdmin(next) {
+  let subscribers = '';
+  let isTrue = true;
+  let ownerId = 0;
+  const { projectId } = this.param;
+  const adminId = yield getAdminIdList();
+
+  const project = yield Project.findOne({
+    where: {
+      id: projectId,
+    },
+  });
+
+  const isDoing = yield Log.findOne({
+    where: {
+      type: 'PROJECT_APPLICATION_ADMIN',
+      operator: this.state.user.userId,
+    },
+  });
+
+  if (!project || !!isDoing) {
+    this.state.respond = { error: 1 };
+  } else {
+    ownerId = project.owner;
+    adminId.forEach(v => {
+      if (v === ownerId) {
+        isTrue = false;
+      }
+    });
+    if (!isTrue) {
+      subscribers = adminId;
+    } else {
+      subscribers = [...adminId, ownerId];
+    }
+
+    this.state.log = {
+      type: 'PROJECT_APPLICATION_ADMIN',
+      loggerId: project.id,
+      subscribers,
+    };
+    this.state.respond = project;
+  }
+
+  yield next;
+}
+
+export function* getApplyProjectAdminList(next) {
+  const result = yield Log.findAll({
+    where: {
+      type: 'PROJECT_APPLICATION_ADMIN',
+      scope: 'project',
+    },
+    include: [{
+      model: User,
+      as: 'logCreator',
+    }, {
+      model: Project,
+      as: 'project',
+    }],
+  });
+
+  const res = [];
+
+  for (let i = 0; i < result.length; i++) {
+    const d = result[i];
+
+    if (!d.project) continue;
+
+    const project = yield Project.findOne({
+      where: {
+        id: d.project.id,
+      },
+      include: [{
+        model: User,
+        as: 'projectOwner',
+      }],
+    });
+
+    res.push({
+      id: d.id,
+      logCreator: d.logCreator,
+      project,
+      scope: d.scope,
+      type: d.type,
+      updatedAt: formatDateTime(d.updatedAt),
+    });
+  }
+
+  this.state.respond = res;
+
+  yield next;
+}
+
+export function* changeProjectNewAdmin(next) {
+  const { projectId, action, logId } = this.param;
+  let isWrite = false;
+  let subscribers = '';
+  let isTrue = true;
+  const adminId = yield getAdminIdList();
+
+  const project = yield Project.findOne({
+    where: {
+      id: projectId,
+    },
+  });
+
+  const logRow = yield Log.findOne({
+    where: {
+      id: logId,
+      type: 'PROJECT_APPLICATION_ADMIN',
+      loggerId: projectId,
+    },
+  });
+
+  if (!project || !logRow) {
+    this.state.respond = { error: 1 };
+  } else {
+    if (action === 'agree') {
+      // 同意 则更新项目owner
+      yield Project.update({
+        owner: logRow.operator,
+        updatedAt: formatDate(),
+      }, {
+        where: {
+          id: projectId,
+        },
+      });
+    }
+
+    // 更新log状态为申请完成
+    isWrite = yield Log.update({
+      type: 'PROJECT_APPLICATION_ADMIN_DONE',
+      updatedAt: formatDate(),
+    }, {
+      where: {
+        id: logId,
+      },
+    });
+
+    const ownerId = project.owner;
+    adminId.forEach(v => {
+      if (v === ownerId) {
+        isTrue = false;
+      }
+    });
+    if (!isTrue) {
+      subscribers = adminId;
+    } else {
+      subscribers = [...adminId, ownerId];
+    }
+
+    const logType = action === 'agree' ?
+      'PROJECT_AGREE_NEW_ADMIN' :
+      'PROJECT_REJECT_NEW_ADMIN';
+
+    this.state.log = {
+      type: logType,
+      loggerId: projectId,
+      subscribers,
+    };
+
+    this.state.respond = isWrite;
+  }
+
+  yield next;
+}
+

@@ -16,6 +16,9 @@ class ConfirmReact extends Component {
       onCancel: () => {},
       zIndex: 1000,
       empty: false,
+      confrimText: '确定',
+      cancelText: '取消',
+      isOnlyClosed: false
     };
     that = this;
   }
@@ -25,7 +28,18 @@ class ConfirmReact extends Component {
   }
 
   render() {
-    const { visible, dTitle, dContent, onOk, onCancel, zIndex, empty } = this.state;
+    const {
+      visible,
+      dTitle,
+      dContent,
+      onOk,
+      onCancel,
+      zIndex,
+      empty,
+      confrimText,
+      cancelText,
+      isOnlyClosed
+    } = this.state;
     return (
       <Modal
         visible={visible}
@@ -34,6 +48,9 @@ class ConfirmReact extends Component {
         onCancel={onCancel}
         zIndex={zIndex}
         empty={empty}
+        confrimText={confrimText}
+        cancelText={cancelText}
+        isOnlyClosed={isOnlyClosed}
       >
         {dContent}
       </Modal>
@@ -67,6 +84,9 @@ export default function Confirm({
   onCancel = () => {},
   zIndex = 1000,
   empty = false,
+  confrimText,
+  cancelText,
+  isOnlyClosed
 }) {
   that.setState({
     visible: true,
@@ -76,5 +96,8 @@ export default function Confirm({
     onCancel: transFn(onCancel),
     zIndex,
     empty,
+    confrimText,
+    cancelText,
+    isOnlyClosed
   });
 }
