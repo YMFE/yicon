@@ -64,12 +64,12 @@ function* ldapQuery(username, password) {
     });
   };
 
-  client.bind([login.bindDn, login.baseDn].join(','), login.bindPassword, (err) => {
+  client.bind([login.bindDn, login.baseDn].filter(Boolean).join(','), login.bindPassword, (err) => {
     if (err) {
       deferred.reject(err);
     }
 
-    const searchDn = simpleParse([login.searchDn, login.baseDn].join(','), { username });
+    const searchDn = simpleParse([login.searchDn, login.baseDn].filter(Boolean).join(','), { username });
     const searchFilter = simpleParse(login.searchFilter || '(objectclass=*)', { username });
 
     const opts = {
