@@ -12,7 +12,7 @@ YIcon 是一个集图标上传、展示、使用于一身的字体图标管理�
 
 ## 编码控制
 
-我们的字体使用的都是 unicode 编码，尽管大部分编码都有其固定作用，但 unicode 留出了一个[『私用区』](https://unicode-table.com/cn/#cjk-unified-ideographs)可以用来进行字体扩展，这一区域的码值范围是：**E000 - F8FF**。
+我们的字体使用的都是 unicode 编码，尽管大部分编码都有其固定作用，但 unicode 留出了一个[『私用区』](https://symbl.cc/cn/unicode-table/#cjk-unified-ideographs)可以用来进行字体扩展，这一区域的码值范围是：**E000 - F8FF**。
 
 我们的字体站规定的码值范围严格按照 unicode 私用区范围，每个上传的新字体都会从 E000 开始生成一个全站唯一固定的编码，之后就不会变动。这样用户在添加到项目或从删除删除时，图标的码值也不会发生改变，增强用户的体验。
 
